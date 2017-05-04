@@ -1,0 +1,27 @@
+{
+  "name": "valexar/qtranslate-next",
+  "description": "Multilingual plugin foe WordPress.",
+  "type": "wordpress-plugin",
+  "license": "GPL2",
+  "authors": [
+    {
+      "name": "Valentyn Riaboshtan",
+      "email": "valexar12@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "keywords": [
+    "wordpress"
+  ],
+  "require": {
+    "php": ">=5.6.4"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^2.5.1"
+  },
+  "scripts": {
+    "test": [
+      "vendor/bin/phpcs"
+    ]
+  }
+}
