@@ -1,4 +1,5 @@
 <?php
+
 namespace QtNext\Core;
 
 if ( ! class_exists( 'Qtranslate_Next' ) ) :
@@ -106,8 +107,8 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 		 */
 		public function __construct() {
 			$this->define_constants();
-			$this->setup_languages();
 			$this->includes();
+			$this->setup_languages();
 			$this->init_hooks();
 
 			do_action( 'qtn_loaded' );
@@ -119,11 +120,11 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 		 */
 		private function init_hooks() {
 			add_action( 'after_setup_theme', array( $this, 'setup_lang_query' ) );
-			add_action('plugins_loaded', array($this, 'set_locale'), PHP_INT_MAX);
+			add_action( 'plugins_loaded', array( $this, 'set_locale' ), PHP_INT_MAX );
 			add_action( 'init', array( $this, 'init' ), 0 );
 
-			add_filter( 'option_home', array($this, 'set_home_url'));
-			add_filter( 'query_vars', array($this, 'set_lang_var'));
+			add_filter( 'option_home', array( $this, 'set_home_url' ) );
+			add_filter( 'query_vars', array( $this, 'set_lang_var' ) );
 		}
 
 		/**
@@ -273,28 +274,11 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 			do_action( 'qtn_init' );
 		}
 
+		public function setup_languages() {
 
-		public function set_locale() {
-			global $locale;
-			$available_languages = array_merge( array( 'en_US' ), get_available_languages() );
+			$this->default_lang = get_option( 'WPLANG' );
 
-			foreach ($available_languages as $language) {
-				$current_lang = current( $this->languages[ $language ]['iso'] );
-
-				if ($current_lang == $this->user_language) {
-					$locale = $language;
-					if ($language == get_option( 'WPLANG')) {
-						wp_redirect( home_url(str_replace( '/' . $this->user_language . '/', '/', $_SERVER['REQUEST_URI'])), 301);
-						exit;
-					}
-					break;
-				}
-			}
-		}
-
-		public function setup_languages(){
-
-			if ( ! $this->user_language) {
+			if ( ! $this->user_language ) {
 				$path = $_SERVER['REQUEST_URI'];
 
 				if ( preg_match( '!^/([a-z]{2})(/|$)!i', $path, $match ) ) {
@@ -305,14 +289,18 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 			if ( ! $this->languages ) {
 				$this->languages = $this->get_translations();
 			}
+
+			if ( ! $this->available_languages ) {
+				$this->available_languages = array_merge( array( 'en_US' ), get_available_languages() );
+			}
 		}
 
-		private function get_translations(){
+		private function get_translations() {
 
 			require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
 			$available_translations = array_merge_recursive( array(
 				'en_US' => array(
-					'iso'      => array( 'en' )
+					'iso' => array( 'en' )
 				)
 			), wp_get_available_translations() );
 
@@ -322,25 +310,44 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 		private function get_current_lang() {
 			global $locale;
 			$current_lang = current( $this->languages[ $locale ]['iso'] );
+
 			return $current_lang;
 		}
 
+		public function set_locale() {
+			global $locale;
 
-		public function setup_lang_query(){
-			set_query_var( 'lang', $this->get_current_lang() );
-			add_filter( 'request', function( $query_vars ) {
-				$query_vars['lang'] = get_query_var( 'lang' );
-				return $query_vars;
-			});
+			foreach ( $this->available_languages as $language ) {
+				$current_lang = current( $this->languages[ $language ]['iso'] );
+
+				if ( $current_lang == $this->user_language ) {
+					$locale = $language;
+					if ( $language == $this->default_lang ) {
+						wp_redirect( home_url( str_replace( '/' . $this->user_language . '/', '/', $_SERVER['REQUEST_URI'] ) ), 301 );
+						exit;
+					}
+					break;
+				}
+			}
 		}
 
-		public function set_home_url($value){
-			if ( defined('DOING_AJAX') || defined('REST_REQUEST') ) {
+
+		public function setup_lang_query() {
+			set_query_var( 'lang', $this->get_current_lang() );
+			add_filter( 'request', function ( $query_vars ) {
+				$query_vars['lang'] = get_query_var( 'lang' );
+
+				return $query_vars;
+			} );
+		}
+
+		public function set_home_url( $value ) {
+			if ( defined( 'DOING_AJAX' ) || defined( 'REST_REQUEST' ) ) {
 				return $value;
 			}
 
 			$lang = $this->get_current_lang();
-			if ($lang != get_option( 'WPLANG')) {
+			if ( $lang != $this->default_lang ) {
 				$value .= '/' . $lang;
 			}
 
@@ -348,8 +355,9 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 		}
 
 
-		public function set_lang_var($public_query_vars){
+		public function set_lang_var( $public_query_vars ) {
 			$public_query_vars[] = 'lang';
+
 			return $public_query_vars;
 		}
 
