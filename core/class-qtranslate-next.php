@@ -321,13 +321,7 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 
 		private function get_current_lang() {
 			global $locale;
-			require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
-			$available_translations = array_merge_recursive( array(
-				'en_US' => array(
-					'iso'      => array( 'en' )
-				)
-			), wp_get_available_translations() );
-			$current_lang = current( $available_translations[ $locale ]['iso'] );
+			$current_lang = current( $this->languages[ $locale ]['iso'] );
 			return $current_lang;
 		}
 
