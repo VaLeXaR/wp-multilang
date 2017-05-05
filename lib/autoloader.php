@@ -19,6 +19,7 @@ spl_autoload_register(function( $filename ) {
 
 	// First, separate the components of the incoming file.
 	$file_path = explode( '\\', $filename );
+	$class_file = '';
 
 	/**
 	 * - The first index will always be WCATL since it's part of the plugin.
