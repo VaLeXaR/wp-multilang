@@ -1,6 +1,6 @@
 {
   "name": "valexar/qtranslate-next",
-  "description": "Multilingual plugin foe WordPress.",
+  "description": "Multilingual plugin for WordPress.",
   "type": "wordpress-plugin",
   "license": "GPL2",
   "authors": [
@@ -9,7 +9,7 @@
       "email": "valexar12@gmail.com"
     }
   ],
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "keywords": [
     "wordpress"
   ],
