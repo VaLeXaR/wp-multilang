@@ -14,6 +14,8 @@
  * @author   Valentyn Riaboshtan
  */
 
+use QtNext\Core;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
@@ -21,7 +23,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once __DIR__ . '/lib/autoloader.php';
 require_once __DIR__ . '/vendor/autoload.php';
 
-use QtNext\Core;
+if ( WP_DEBUG ) {
+	if ( class_exists( 'Kint' ) ) {
+		Kint::$enabled_mode = false;
+	}
+
+	require_once 'debug.php';
+}
 
 
 if ( ! class_exists( 'Qtranslate_Next' ) ) :
@@ -52,9 +60,9 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 		/**
 		 * Order factory instance.
 		 *
-		 * @var string
+		 * @var Core\QtN_Config
 		 */
-		public $config = null;
+		public $setup = null;
 
 		/**
 		 * Main Qtranslate_Next Instance.
@@ -156,7 +164,7 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 		 */
 		public function includes() {
 //			include_once( 'core/class-wc-autoloader.php' );
-//			include_once( 'core/wc-core-functions.php' );
+			include_once( 'core/qtn-core-functions.php' );
 //			include_once( 'core/wc-widget-functions.php' );
 //			include_once( 'core/wc-webhook-functions.php' );
 //			include_once( 'core/class-wc-install.php' );
@@ -166,8 +174,10 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 //			include_once( 'core/class-wc-post-data.php' );
 //			include_once( 'core/class-wc-ajax.php' );
 
+			new Core\QtN_Posts();
+
 			if ( $this->is_request( 'admin' ) ) {
-//				include_once( 'core/admin/class-wc-admin.php' );
+				new QtNext\Core\Admin\QtN_Admin;
 			}
 
 			if ( $this->is_request( 'frontend' ) ) {
@@ -203,7 +213,8 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 //				include_once( 'core/class-wc-cli.php' );
 			}
 
-			$this->config = new Core\QtN_Config();
+			global $qtn_config;
+			$qtn_config = new Core\QtN_Config();
 //			$this->api   = new WC_API();
 		}
 
@@ -217,12 +228,6 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 //			include_once( 'core/class-wc-template-loader.php' );                // Template Loader
 //			include_once( 'core/class-wc-frontend-scripts.php' );               // Frontend Scripts
 //			include_once( 'core/class-wc-form-handler.php' );                   // Form Handlers
-//			include_once( 'core/class-wc-cart.php' );                           // The main cart class
-//			include_once( 'core/class-wc-tax.php' );                            // Tax class
-//			include_once( 'core/class-wc-shipping-zones.php' );                 // Shipping Zones class
-//			include_once( 'core/class-wc-customer.php' );                       // Customer class
-//			include_once( 'core/class-wc-shortcodes.php' );                     // Shortcodes class
-//			include_once( 'core/class-wc-embed.php' );                          // Embeds
 		}
 
 		/**

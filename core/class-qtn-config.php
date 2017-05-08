@@ -24,7 +24,21 @@ class QtN_Config {
 	 *
 	 * @var array
 	 */
-	public $available_languages = array();
+	public $languages = array();
+
+	/**
+	 * Order factory instance.
+	 *
+	 * @var array
+	 */
+	public $options = array();
+
+	/**
+	 * Order factory instance.
+	 *
+	 * @var array
+	 */
+	public $installed_languages = array();
 
 	/**
 	 * Order factory instance.
@@ -36,16 +50,9 @@ class QtN_Config {
 	/**
 	 * Order factory instance.
 	 *
-	 * @var string
-	 */
-	public $user_locale = '';
-
-	/**
-	 * Order factory instance.
-	 *
 	 * @var array
 	 */
-	public $languages = array();
+	public $translations = array();
 
 	/**
 	 * WooCommerce Constructor.
@@ -69,18 +76,26 @@ class QtN_Config {
 
 	public function setup_languages() {
 
+		require_once( ABSPATH . 'wp-includes/pluggable.php' );
+
 		$this->default_lang = get_option( 'WPLANG' );
 
-		if ( ! $this->user_language ) {
-			$path = $_SERVER['REQUEST_URI'];
+		$this->options = get_option( 'qtn_languages' );
 
-			if ( preg_match( '!^/([a-z]{2})(/|$)!i', $path, $match ) ) {
-				$this->user_language = $match[1];
+		foreach ( $this->options as $locale => $language ) {
+			if ( $language['enable'] ) {
+				$this->languages[ $locale ] = $language['slug'];
 			}
 		}
 
-		$this->languages           = $this->get_translations();
-		$this->available_languages = get_option( 'qtn_available_languages' );
+		$path = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+		if ( preg_match( '!^/([a-z]{2})(/|$)!i', $path, $match ) ) {
+			$this->user_language = $match[1];
+		}
+
+		$this->installed_languages = array_merge( array( 'en_US' ), get_available_languages() );
+		$this->translations        = $this->get_translations();
 		$this->set_locale();
 	}
 
@@ -98,7 +113,7 @@ class QtN_Config {
 
 	private function get_current_lang() {
 		global $locale;
-		$current_lang = $this->available_languages[ $locale ]['slug'];
+		$current_lang = $this->languages[ $locale ];
 
 		return $current_lang;
 	}
@@ -106,18 +121,19 @@ class QtN_Config {
 	public function set_locale() {
 		global $locale;
 
-		foreach ( $this->available_languages as $key => $value ) {
+		foreach ( $this->languages as $key => $value ) {
 
-			if ( ( $value['slug'] == $this->user_language ) && ! $value['disable'] ) {
+			if ( ( $value == $this->user_language ) ) {
 				$locale = $key;
 				if ( $locale == $this->default_lang ) {
-					require_once( ABSPATH . 'wp-includes/pluggable.php' );
 					wp_redirect( home_url( str_replace( '/' . $this->user_language . '/', '/', $_SERVER['REQUEST_URI'] ) ), 301 );
 					exit;
 				}
 				break;
 			}
 		}
+
+		$this->user_language = $this->languages[ $this->default_lang ];
 	}
 
 	public function setup_lang_query() {
@@ -154,8 +170,10 @@ class QtN_Config {
 	}
 
 	public function set_meta_languages() {
-		foreach ( $this->available_languages as $locale => $language ) {
-			printf( '<link rel="alternate" hreflang="%s" href="%s"/>', $language['slug'], home_url( $language['slug'] ) );
+		global $wp;
+		$current_url = home_url( $wp->request );
+		foreach ( $this->languages as $locale => $language ) {
+			printf( '<link rel="alternate" hreflang="%s" href="%s"/>', $language, qtn_localize_url( $current_url, $locale ) );
 		}
 	}
 }

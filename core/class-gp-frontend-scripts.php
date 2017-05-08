@@ -2,38 +2,38 @@
 /**
  * Handle frontend scripts
  *
- * @class       GP_Frontend_Scripts
+ * @class       QtN_Frontend_Scripts
  * @version     2.3.0
  * @package     GamePortal/Classes/
  * @category    Class
  * @author      VaLeXaR
  */
 
-namespace GP;
+namespace QtNext;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * GP_Frontend_Scripts Class.
+ * QTN_Frontend_Scripts Class.
  */
-class GP_Frontend_Scripts {
+class QtN_Frontend_Scripts {
 
 	/**
-	 * Contains an array of script handles registered by GP.
+	 * Contains an array of script handles registered by QtN.
 	 * @var array
 	 */
 	private static $scripts = array();
 
 	/**
-	 * Contains an array of script handles registered by GP.
+	 * Contains an array of script handles registered by QtN.
 	 * @var array
 	 */
 	private static $styles = array();
 
 	/**
-	 * Contains an array of script handles localized by GP.
+	 * Contains an array of script handles localized by QtN.
 	 * @var array
 	 */
 	private static $wp_localize_scripts = array();
@@ -54,12 +54,12 @@ class GP_Frontend_Scripts {
 	 */
 	public static function get_styles() {
 		$styles = array(
-			'game-portal-general' => array(
-				'src'     => gp_asset_path( 'css/main.css' ),
+			/*'game-portal-general' => array(
+				'src'     => qtn_asset_path( 'css/main.css' ),
 				'deps'    => '',
-				'version' => GP_VERSION,
+				'version' => QTN_VERSION,
 				'media'   => 'all'
-			),
+			),*/
 		);
 
 		return $styles;
@@ -77,7 +77,7 @@ class GP_Frontend_Scripts {
 	 * @param  string   $version
 	 * @param  boolean  $in_footer
 	 */
-	private static function register_script( $handle, $path, $deps = array( 'jquery' ), $version = GP_VERSION, $in_footer = true ) {
+	private static function register_script( $handle, $path, $deps = array( 'jquery' ), $version = QTN_VERSION, $in_footer = true ) {
 		self::$scripts[] = $handle;
 		wp_register_script( $handle, $path, $deps, $version, $in_footer );
 	}
@@ -94,7 +94,7 @@ class GP_Frontend_Scripts {
 	 * @param  string   $version
 	 * @param  boolean  $in_footer
 	 */
-	private static function enqueue_script( $handle, $path = '', $deps = array( 'jquery' ), $version = GP_VERSION, $in_footer = true ) {
+	private static function enqueue_script( $handle, $path = '', $deps = array( 'jquery' ), $version = QTN_VERSION, $in_footer = true ) {
 		if ( ! in_array( $handle, self::$scripts ) && $path ) {
 			self::register_script( $handle, $path, $deps, $version, $in_footer );
 		}
@@ -113,7 +113,7 @@ class GP_Frontend_Scripts {
 	 * @param  string   $version
 	 * @param  string   $media
 	 */
-	private static function register_style( $handle, $path, $deps = array(), $version = GP_VERSION, $media = 'all' ) {
+	private static function register_style( $handle, $path, $deps = array(), $version = QTN_VERSION, $media = 'all' ) {
 		self::$styles[] = $handle;
 		wp_register_style( $handle, $path, $deps, $version, $media );
 	}
@@ -130,7 +130,7 @@ class GP_Frontend_Scripts {
 	 * @param  string   $version
 	 * @param  string   $media
 	 */
-	private static function enqueue_style( $handle, $path = '', $deps = array(), $version = GP_VERSION, $media = 'all' ) {
+	private static function enqueue_style( $handle, $path = '', $deps = array(), $version = QTN_VERSION, $media = 'all' ) {
 		if ( ! in_array( $handle, self::$styles ) && $path ) {
 			self::register_style( $handle, $path, $deps, $version, $media );
 		}
@@ -142,14 +142,14 @@ class GP_Frontend_Scripts {
 	 */
 	public static function load_scripts() {
 
-		if ( ! did_action( 'before_game_portal_init' ) ) {
+		if ( ! did_action( 'before_qtranslate_next_init' ) ) {
 			return;
 		}
 
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		// Register any scripts for later use, or used as dependencies
-		self::register_script( 'gp-bootstrap', gp_asset_path( 'js/vendor/bootstrap/bootstrap' . $suffix . '.js' ), array( 'jquery' ) );
+		/*self::register_script( 'gp-bootstrap', gp_asset_path( 'js/vendor/bootstrap/bootstrap' . $suffix . '.js' ), array( 'jquery' ) );
 		self::register_script( 'gp-blueimp-gallery', gp_asset_path( 'js/vendor/blueimp-gallery/blueimp-gallery' . $suffix . '.js' ), array( 'jquery' ) );
 		self::register_script( 'gp-download', gp_asset_path( 'js/vendor/download/download' . $suffix . '.js' ) );
 		self::register_script( 'gp-owl-carousel', gp_asset_path( 'js/vendor/owl-carousel/owl-carousel' . $suffix . '.js' ), array( 'jquery' ) );
@@ -174,7 +174,7 @@ class GP_Frontend_Scripts {
 		) );
 		wp_localize_jquery_ui_datepicker();
 
-		self::enqueue_script( 'gp-google-maps' );
+		self::enqueue_script( 'gp-google-maps' );*/
 
 
 		// CSS Styles
@@ -186,7 +186,7 @@ class GP_Frontend_Scripts {
 	}
 
 	/**
-	 * Localize a GP script once.
+	 * Localize a QtN script once.
 	 * @access private
 	 *
 	 * @param  string $handle
@@ -212,9 +212,9 @@ class GP_Frontend_Scripts {
 		switch ( $handle ) {
 			case 'game-portal' :
 
-				$default = array(
-					'ajax_url'       => GP()->ajax_url(),
-					'gp_ajax_url'    => GP_AJAX::get_endpoint( "%%endpoint%%" ),
+				/*$default = array(
+					'ajax_url'       => QN()->ajax_url(),
+					'gp_ajax_url'    => QTN_AJAX::get_endpoint( "%%endpoint%%" ),
 					'html_templates' => array(
 						'modals' => gp_get_template_html( 'jquery-templates/modals.tpl' ),
 					)
@@ -284,7 +284,7 @@ class GP_Frontend_Scripts {
 					);
 				}
 
-				return array_merge_recursive( $default, $data );
+				return array_merge_recursive( $default, $data );*/
 				break;
 		}
 

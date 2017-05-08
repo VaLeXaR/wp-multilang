@@ -1,17 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: VaLeXaR
- * Date: 28.01.2017
- * Time: 17:37
- */
-
-namespace QtNext\Helpers;
+namespace QtNext\Libraries;
 
 /**
  * Get paths for assets
  */
-class JsonManifest {
+class Json_Manifest {
 	private $manifest;
 
 	public function __construct( $manifest_path ) {
