@@ -1,12 +1,12 @@
 <?php
 /**
- * GamePortal Updates
+ * qTranslateNext Updates
  *
  * Functions for updating data, used by the background updater.
  *
  * @author   VaLeXaR
  * @category Core
- * @package  GamePortal/Functions
+ * @package  qTranslateNext/Functions
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

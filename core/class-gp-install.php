@@ -4,7 +4,7 @@
  *
  * @author   VaLeXaR
  * @category Admin
- * @package  GamePortal/Classes
+ * @package  qTranslateNext/Classes
  */
 
 namespace GP;
@@ -64,7 +64,7 @@ class GP_Install {
 	}
 
 	/**
-	 * Check GamePortal version and run the updater is required.
+	 * Check qTranslateNext version and run the updater is required.
 	 *
 	 * This check is done on all requests and runs if he versions do not match.
 	 */
@@ -297,7 +297,7 @@ class GP_Install {
 	 */
 	private static function create_options() {
 
-		$settings = Admin\GP_Admin_Settings::get_settings_pages();
+		$settings = Admin\QtN_Admin_Settings::get_settings_pages();
 
 		foreach ( $settings as $section ) {
 			if ( ! method_exists( $section, 'get_settings' ) ) {
@@ -452,7 +452,7 @@ CREATE TABLE {$wpdb->prefix}game_portal_api_keys (
 	}
 
 	/**
-	 * Get capabilities for GamePortal - these are assigned to admin/shop manager during installation or reset.
+	 * Get capabilities for qTranslateNext - these are assigned to admin/shop manager during installation or reset.
 	 *
 	 * @return array
 	 */

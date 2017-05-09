@@ -4,12 +4,10 @@
  *
  * @author   VaLeXaR
  * @category Admin
- * @package  GamePortal/Admin
+ * @package  qTranslateNext/Admin
  */
 
 namespace QtNext\Core\Admin;
-
-use GP;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -22,85 +20,95 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 	 *
 	 * Handles the edit posts views and some functionality on the edit post screen for WC post types.
 	 */
-	class QtN_Admin_Posts {
+	class QtN_Admin_Posts extends \QtN_Admin_Object {
+
+		public $object_type = 'post';
+		public $object_table = 'postmeta';
 
 		/**
 		 * Constructor.
 		 */
 		public function __construct() {
-
 			add_action( 'edit_form_top', array( $this, 'translate_post' ), 0 );
-
 			add_action( 'admin_init', array( $this, 'save_post' ), 0 );
+			add_action( 'admin_init', array($this, 'init'));
 
 			add_filter( 'redirect_post_location', array( $this, 'redirect_after_save' ), 0 );
+			add_filter( "update_{$this->object_type}_metadata", array( $this, 'update_meta_field' ), 0, 5 );
+		}
 
-			// WP List table columns. Defined here so they are always available for events such as inline editing.
-//			add_filter( 'manage_wpsc_cart_orders_posts_columns', array( $this, 'orders_columns' ) );
-//
-//			add_action( 'manage_wpsc_cart_orders_posts_custom_column', array( $this, 'render_order_columns' ), 10, 2 );
-//
-//			add_filter( 'bulk_actions-edit-wpsc_cart_orders', array( $this, 'order_bulk_actions' ) );
 
-			// Bulk / quick edit
-//			add_filter( 'handle_bulk_actions-edit-wpsc_cart_orders', array( $this, 'order_bulk_download' ), 10, 3 );
+		public function init() {
+			global $qtn_config;
 
-			// Status transitions
-//			add_action( 'before_delete_post', array( $this, 'delete_order_invoices' ) );
+			foreach($qtn_config->settings['post_types'] as $post_type) {
 
-			// Meta-Box Class
-//			new GP_Admin_Meta_Boxes();
+				if ( 'attachment' == $post_type) {
+					add_filter( "manage_media_columns", array( $this, 'language_columns' ) );
+					add_action( "manage_media_custom_column", array( $this, 'render_language_column' ) );
+					continue;
+				}
 
-			// Disable post type view mode options
-//			add_filter( 'view_mode_post_types', array( $this, 'disable_view_mode_options' ) );
-//
-//			add_action( 'restrict_manage_posts', array( $this, 'add_filter_media_author' ) );
-//
-//			add_action( 'parse_query', array( $this, 'search_user_media' ) );
+				add_filter( "manage_{$post_type}_posts_columns", array( $this, 'language_columns' ) );
+				add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'render_language_column' ) );
+			}
+
 		}
 
 
 		public function translate_post() {
-			global $post, $qtn_config, $locale;
+			global $post, $qtn_config;
 			$languages = $qtn_config->languages;
-			$lang      = $qtn_config->languages[$locale];
-			$post = qtn_translate_post( $post );
+			$lang      = $qtn_config->languages[ get_locale() ];
+			$post      = qtn_translate_post( $post );
 
 			if ( isset( $_GET['edit_lang'] ) ) {
 				$lang = qtn_clean( $_GET['edit_lang'] );
+			}
+			?>
+			<input type="hidden" name="lang" value="<?php echo $lang; ?>">
+			<?php
 
-				if ( in_array( $lang, $languages ) ) {
-					foreach ( $languages as $key => $language ) {
-						if ( $language == $lang ) {
-							$post = qtn_translate_post( $post, $key );
-						}
-					}
-				}
+			if ( count( $languages ) <= 1 ) {
+				return '';
 			}
 
-			//TODO додати фільтр на тип запису
+			if ( in_array( $post->post_type, $qtn_config->settings['post_types'] ) ) {
 
-			$url = remove_query_arg( 'edit_lang', get_edit_post_link( $post->ID ) );
-
-			?>
-			<ul class="language-switcher">
-				<?php foreach ( $languages as $key => $language ) { ?>
-					<li<?php if ( $lang == $language ) { ?> class="active"<?php } ?>><a
-							href="<?php echo add_query_arg( 'edit_lang', $language, $url ); ?>"><?php echo $qtn_config->options[ $key ]['name']; ?></a>
-					</li>
-				<?php } ?>
-			</ul>
-			<input type="hidden" name="edit_lang" value="<?php echo $lang; ?>">
-			<?php
+				$url = remove_query_arg( 'edit_lang', get_edit_post_link( $post->ID ) );
+				?>
+				<h3 class="nav-tab-wrapper language-switcher">
+					<?php foreach ( $languages as $key => $language ) { ?>
+						<a class="nav-tab<?php if ( $lang == $language ) { ?> nav-tab-active<?php } ?>"
+						   href="<?php echo add_query_arg( 'edit_lang', $language, $url ); ?>">
+							<img src="<?php echo QN()->flag_dir() . $qtn_config->options[ $key ]['flag'] . '.png'; ?>"
+							     alt="<?php echo $qtn_config->options[ $key ]['name']; ?>">
+							<span><?php echo $qtn_config->options[ $key ]['name']; ?></span>
+						</a>
+					<?php } ?>
+				</h3>
+				<?php
+			}
 		}
 
 		public function save_post() {
+			global $qtn_config;
 
 			if ( 'POST' == $_SERVER['REQUEST_METHOD'] ) {
 
-				if ( isset( $_POST['action'] ) && ( 'editpost' == $_POST['action'] ) && isset( $_POST['edit_lang'] ) ) {
-					$post_id = qtn_clean( $_POST['post_ID'] );
-					$lang    = qtn_clean( $_POST['edit_lang'] );
+				$actions = array(
+					'editpost',
+					'inline-save'
+				);
+
+				if ( isset( $_POST['action'] ) && ! in_array( $_POST['action'], $actions ) ) {
+					return;
+				}
+
+				$locale  = get_locale();
+				$post_id = qtn_clean( $_POST['post_ID'] );
+				$lang    = isset( $_POST['lang'] ) ? qtn_clean( $_POST['lang'] ) : $qtn_config->languages[ $locale ];
+				if ( in_array( get_post_type( $post_id ), $qtn_config->settings['post_types'] ) ) {
 
 					$post_fields = array(
 						'post_title' => 'post_title',
@@ -117,35 +125,48 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 							$_POST[ $field ]  = qtn_localize_array_to_string( $strings );
 						}
 					}
+
+					if ( empty( $_POST['post_name'] ) ) {
+						$_POST['post_name'] = sanitize_title( qtn_localize_text( $_POST['post_title'] ) );
+					}
 				}
 			}
 		}
 
 		public function redirect_after_save( $location ) {
-			if ( isset( $_POST['edit_lang'] ) ) {
-				$location = add_query_arg( 'edit_lang', qtn_clean( $_POST['edit_lang'] ), $location );
+			if ( isset( $_POST['lang'] ) ) {
+				$location = add_query_arg( 'edit_lang', qtn_clean( $_POST['lang'] ), $location );
 			}
 
 			return $location;
 		}
 
 		/**
-		 * Define custom columns for products.
+		 * Define custom columns for post_types.
 		 *
 		 * @param  array $existing_columns
 		 *
 		 * @return array
 		 */
-		public function orders_columns( $columns ) {
+		public function language_columns( $columns ) {
 			if ( empty( $columns ) && ! is_array( $columns ) ) {
 				$columns = array();
 			}
 
-			$columns['invoice']     = __( 'Invoice', 'game-portal' );
-			$columns['invoice_num'] = __( 'Invoice Number', 'game-portal' );
+			$insert_after = 'title';
+
+			$i = 0;
+			foreach ( $columns as $key => $value ) {
+				if ( $key == $insert_after ) {
+					break;
+				}
+				$i ++;
+			}
+
+			$columns =
+				array_slice( $columns, 0, $i + 1 ) + array( 'languages' => __( 'Languages', 'qtranslate-next' ) ) + array_slice( $columns, $i + 1 );
 
 			return $columns;
-
 		}
 
 		/**
@@ -153,36 +174,27 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 		 *
 		 * @param string $column
 		 */
-		public function render_order_columns( $column, $post_id ) {
-			if ( 'invoice' == $column ) {
-				$invoice = new GP\GP_Invoice_Document( $post_id );
-				if ( $invoice->exists() ) {
-					echo '<a href="' . wp_nonce_url( admin_url( '?preview_game_portal_invoice=true&order_id=' . $post_id ), 'preview-invoice' ) . '" class="button">' . __( 'Download', 'game-portal' ) . '</a>';
-				} else {
-					echo '<button type="button" class="button button-primary gp-generate-invoice" data-id="' . $post_id . '">' . __( 'Generate', 'game-portal' ) . '</button>';
+		public function render_language_column( $column ) {
+			global $post, $qtn_config;
+
+			if ( 'languages' == $column ) {
+
+				$_post   = qtn_untranslate_post( $post );
+				$output  = array();
+				$text    = $_post->post_title . $_post->post_content;
+				$strings = qtn_string_to_localize_array( $text );
+				$options = $qtn_config->options;
+
+				foreach ( $qtn_config->languages as $locale => $language ) {
+					if ( isset( $strings[ $language ] ) && ! empty( $strings[ $language ] ) ) {
+						$output[] = '<img src="' . QN()->flag_dir() . $options[ $locale ]['flag'] . '.png" alt="' . $options[ $locale ]['name'] . '" title="' . $options[ $locale ]['name'] . '">';
+					}
+				}
+
+				if ( ! empty( $output ) ) {
+					echo implode( '<br />', $output );
 				}
 			}
-			if ( 'invoice_num' == $column ) {
-				echo get_post_meta( $post_id, '_gp_formatted_invoice_number', true );
-			}
-		}
-
-		/**
-		 * Remove edit from the bulk actions.
-		 *
-		 * @param array $actions
-		 *
-		 * @return array
-		 */
-		public function order_bulk_actions( $actions ) {
-
-			$actions['download_invoices'] = __( 'Download Invoices', 'game-portal' );
-
-			if ( isset( $actions['edit'] ) ) {
-				unset( $actions['edit'] );
-			}
-
-			return $actions;
 		}
 	}
 

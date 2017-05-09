@@ -1,11 +1,11 @@
 <?php
 /**
- * GamePortal Admin
+ * qTranslateNext Admin
  *
  * @class    GP_Admin
  * @author   VaLeXaR
  * @category Admin
- * @package  GamePortal/Admin
+ * @package  qTranslateNext/Admin
  * @version  1.0.0
  */
 
@@ -40,12 +40,12 @@ class QtN_Admin {
 	 * Include any classes we need within admin.
 	 */
 	public function includes() {
-//		include_once( 'gp-admin-functions.php' );
-//		new GP_Admin_Menus();
-//		GP_Admin_Notices::init();
+		include_once( 'qtn-admin-functions.php' );
+		include_once( 'abstracts/abstract-qtn-admin-object.php' );
+		new QtN_Admin_Menus();
 		new QtN_Admin_Posts();
+		new QtN_Admin_Settings();
 //		new GP_Admin_Taxonomies();
 //		new GP_Admin_Assets();
-//		new GP_Admin_API_Keys();
 	}
 }

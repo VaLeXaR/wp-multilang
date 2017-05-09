@@ -4,7 +4,7 @@
  *
  * @author      VaLeXaR
  * @category    Admin
- * @package     GamePortal/Admin
+ * @package     qTranslateNext/Admin
  */
 
 namespace GP\Admin;
@@ -95,7 +95,7 @@ class GP_Admin_Assets {
 			'search_players_nonce'    => wp_create_nonce( 'search-players' )
 		) );
 
-		// GamePortal admin pages
+		// qTranslateNext admin pages
 		if ( in_array( $screen_id, gp_get_screen_ids() ) ) {
 			wp_enqueue_script( 'game_portal_admin' );
 			wp_enqueue_script( 'gp-enhanced-select' );

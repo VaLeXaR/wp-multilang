@@ -166,18 +166,16 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 //			include_once( 'core/class-wc-autoloader.php' );
 			include_once( 'core/qtn-core-functions.php' );
 //			include_once( 'core/wc-widget-functions.php' );
-//			include_once( 'core/wc-webhook-functions.php' );
 //			include_once( 'core/class-wc-install.php' );
-//			include_once( 'core/class-wc-geolocation.php' );
-//			include_once( 'core/class-wc-download-handler.php' );
 //			include_once( 'core/class-wc-comments.php' );
 //			include_once( 'core/class-wc-post-data.php' );
-//			include_once( 'core/class-wc-ajax.php' );
+			Core\QtN_AJAX::init();
 
+			include_once( 'core/abstracts/abstract-qtn-object.php' );
 			new Core\QtN_Posts();
 
 			if ( $this->is_request( 'admin' ) ) {
-				new QtNext\Core\Admin\QtN_Admin;
+				new Core\Admin\QtN_Admin;
 			}
 
 			if ( $this->is_request( 'frontend' ) ) {
@@ -192,22 +190,6 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 //			include_once( 'core/class-wc-api.php' ); // API Class
 //			include_once( 'core/class-wc-auth.php' ); // Auth Class
 //			include_once( 'core/class-wc-post-types.php' ); // Registers post types
-//			include_once( 'core/abstracts/abstract-wc-data.php' );                 // WC_Data for CRUD
-//			include_once( 'core/abstracts/abstract-wc-payment-token.php' ); // Payment Tokens
-//			include_once( 'core/abstracts/abstract-wc-product.php' ); // Products
-//			include_once( 'core/abstracts/abstract-wc-order.php' ); // Orders
-//			include_once( 'core/abstracts/abstract-wc-settings-api.php' ); // Settings API (for gateways, shipping, and integrations)
-//			include_once( 'core/abstracts/abstract-wc-shipping-method.php' ); // A Shipping method
-//			include_once( 'core/abstracts/abstract-wc-payment-gateway.php' ); // A Payment gateway
-//			include_once( 'core/abstracts/abstract-wc-integration.php' ); // An integration with a service
-//			include_once( 'core/class-wc-product-factory.php' ); // Product factory
-//			include_once( 'core/class-wc-payment-tokens.php' ); // Payment tokens controller
-//			include_once( 'core/gateways/class-wc-payment-gateway-cc.php' ); // CC Payment Gateway
-//			include_once( 'core/gateways/class-wc-payment-gateway-echeck.php' ); // eCheck Payment Gateway
-//			include_once( 'core/class-wc-countries.php' ); // Defines countries and states
-//			include_once( 'core/class-wc-integrations.php' ); // Loads integrations
-//			include_once( 'core/class-wc-cache-helper.php' ); // Cache Helper
-//			include_once( 'core/class-wc-https.php' ); // https Helper
 
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 //				include_once( 'core/class-wc-cli.php' );
@@ -288,6 +270,14 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 		}
 
 		/**
+		 * Get the plugin path.
+		 * @return string
+		 */
+		public function flag_dir() {
+			return $this->plugin_url() . '/flags/';
+		}
+
+		/**
 		 * Get Ajax URL.
 		 * @return string
 		 */
@@ -313,3 +303,7 @@ function QN() {
 }
 
 QN();
+
+/*add_action( 'pre_post_update', function (){
+	die();
+});*/

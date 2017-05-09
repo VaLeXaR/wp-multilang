@@ -6,7 +6,7 @@
  * updates in the background.
  *
  * @class    GP_Background_Updater
- * @package  GamePortal/Classes
+ * @package  qTranslateNext/Classes
  * @category Class
  * @author   VaLeXaR
  */

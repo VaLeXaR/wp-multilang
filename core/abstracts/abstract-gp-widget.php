@@ -7,9 +7,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Abstract Widget Class
  *
- * @author   GamePortal
+ * @author   qTranslateNext
  * @category Widgets
- * @package  GamePortal/Abstracts
+ * @package  qTranslateNext/Abstracts
  * @extends  WP_Widget
  */
 

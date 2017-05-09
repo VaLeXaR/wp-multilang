@@ -1,12 +1,12 @@
 <?php
 /**
- * GamePortal Widget Functions
+ * qTranslateNext Widget Functions
  *
  * Widget related functions and widget registration.
  *
  * @author 		VaLeXaR
  * @category 	Core
- * @package 	GamePortal/Functions
+ * @package 	qTranslateNext/Functions
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

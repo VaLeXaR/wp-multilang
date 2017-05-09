@@ -1,9 +1,9 @@
 <?php
 /**
- * Contains the query functions for GamePortal which alter the front-end post queries and loops
+ * Contains the query functions for qTranslateNext which alter the front-end post queries and loops
  *
  * @class          GP_Query
- * @package        GamePortal/Classes
+ * @package        qTranslateNext/Classes
  * @category       Class
  * @author         VaLeXaR
  */

@@ -4,7 +4,7 @@
  *
  * @class       QtN_Frontend_Scripts
  * @version     2.3.0
- * @package     GamePortal/Classes/
+ * @package     qTranslateNext/Classes/
  * @category    Class
  * @author      VaLeXaR
  */

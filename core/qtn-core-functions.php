@@ -6,7 +6,7 @@
  *
  * @author        VaLeXaR
  * @category      Core
- * @package       GamePortal/Functions
+ * @package       qTranslateNext/Functions
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -67,7 +67,7 @@ function qtn_print_js() {
 		$qtn_queued_js = preg_replace( '/&#(x)?0*(?(1)27|39);?/i', "'", $qtn_queued_js );
 		$qtn_queued_js = str_replace( "\r", '', $qtn_queued_js );
 
-		$js = "<!-- GamePortal JavaScript -->\n<script type=\"text/javascript\">\njQuery(function($) { $qtn_queued_js });\n</script>\n";
+		$js = "<!-- qTranslateNext JavaScript -->\n<script type=\"text/javascript\">\njQuery(function($) { $qtn_queued_js });\n</script>\n";
 
 		/**
 		 * game_portal_queued_js filter.

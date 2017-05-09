@@ -9,7 +9,7 @@
  *   ‘id’ – id of widget, which is used as a distinctive string to create CSS entities.
  */
 function qtn_language_switcher( $args = array(), $echo = true ) {
-	global $qtn_config;
+	global $qtn_config, $wp;
 	$default = array(
 		'type' => 'list',
 		'flag' => true,
@@ -18,8 +18,13 @@ function qtn_language_switcher( $args = array(), $echo = true ) {
 	$args = array_merge( $args, $default);
 
 	$languages = $qtn_config->languages;
+
+	if ( count( $languages ) <= 1 ) {
+		return '';
+	}
+
 	$options = $qtn_config->options;
-	$current_url = wp_get_referer();
+	$current_url = home_url( $wp->request );
 	$locale = get_locale();
 	ob_start();
 	if ('list' == $args['type']) { ?>
@@ -28,7 +33,7 @@ function qtn_language_switcher( $args = array(), $echo = true ) {
 				<li<?php if ( $key == $locale ) { ?> class="active"<?php } ?>>
 					<a href="<?php echo qtn_localize_url( $current_url, $key ); ?>">
 						<?php if ( $args['flag'] ) { ?>
-							<img src="<?php echo QN()->plugin_url() . '/flags/' . $language . '.png'; ?>"
+							<img src="<?php echo QN()->flag_dir() . $options[ $key ]['flag'] . '.png'; ?>"
 							     alt="<?php echo $options[ $key ]['name']; ?>">
 						<?php } ?>
 						<?php if ( $args['text'] ) { ?>
@@ -59,18 +64,3 @@ function qtn_language_switcher( $args = array(), $echo = true ) {
 		return $content;
 	}
 }
-
-/*$language = array(
-	'en_US' => array(
-		'enable' => 1,
-		'slug' => 'en',
-		'name' => 'English'
-	),
-	'uk' => array(
-		'enable' => 1,
-		'slug' => 'uk',
-		'name' => 'Українська'
-	)
-);
-
-update_option( 'qtn_languages', $language, true);*/

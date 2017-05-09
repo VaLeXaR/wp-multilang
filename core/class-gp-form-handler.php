@@ -4,7 +4,7 @@
  *
  * @class          GP_Form_Handler
  * @version        2.2.0
- * @package        GamePortal/Classes/
+ * @package        qTranslateNext/Classes/
  * @category       Class
  * @author         VaLeXaR
  */

@@ -1,12 +1,12 @@
 <?php
 /**
- * GamePortal Formatting
+ * qTranslateNext Formatting
  *
  * Functions for formatting data.
  *
  * @author        VaLeXaR
  * @category      Core
- * @package       GamePortal/Functions
+ * @package       qTranslateNext/Functions
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

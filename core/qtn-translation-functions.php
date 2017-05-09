@@ -7,13 +7,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 function qtn_localize_url( $url, $new_locale = '' ) {
 	global $locale, $qtn_config;
 
-	$current_locale = $locale;
+	$current_locale = get_locale();
+	$locale = get_locale();
 
 	if ( $new_locale ) {
 		if ( ( $new_locale == $locale ) || ! isset( $qtn_config->languages[ $locale ] ) ) {
 			return $url;
 		}
-		$locale = $new_locale;
+		switch_to_locale( $new_locale );
 	}
 
 	$path = parse_url( $url, PHP_URL_PATH );
@@ -22,7 +23,7 @@ function qtn_localize_url( $url, $new_locale = '' ) {
 	}
 
 	$url    = home_url( $path );
-	$locale = $current_locale;
+	switch_to_locale( $current_locale );
 
 	return $url;
 }
@@ -30,7 +31,10 @@ function qtn_localize_url( $url, $new_locale = '' ) {
 function qtn_localize_text( $text, $new_locale = '' ) {
 	global $qtn_config;
 
-	$locale = get_locale();
+	if ( ! is_string( $text ) ) {
+		return $text;
+	}
+
 	$strings = qtn_string_to_localize_array( $text );
 
 	if ( empty( $strings ) ) {
@@ -47,10 +51,21 @@ function qtn_localize_text( $text, $new_locale = '' ) {
 		}
 	}
 
+	if ( ! $new_locale && isset( $_GET['edit_lang'] ) ) {
+		$lang = qtn_clean( $_GET['edit_lang'] );
+		if ( isset( $strings[ $lang ] ) ) {
+			return $strings[ $lang ];
+		} else {
+			return '';
+		}
+	}
+
+	$locale = get_locale();
+
 	if ( isset( $strings[ $languages[ $locale ] ] ) ) {
 		return $strings[ $languages[ $locale ] ];
-	} elseif ( isset( $strings[ $languages[ $qtn_config->default_lang ] ] ) ) {
-		return $strings[ $languages[ $qtn_config->default_lang ] ];
+	} elseif ( isset( $strings[ $languages[ $qtn_config->default_locale ] ] ) ) {
+		return $strings[ $languages[ $qtn_config->default_locale ] ];
 	} else {
 		return $text;
 	}
@@ -58,6 +73,7 @@ function qtn_localize_text( $text, $new_locale = '' ) {
 
 
 function qtn_string_to_localize_array( $string ) {
+	global $qtn_config;
 	$result = array();
 
 	if ( ! is_string( $string ) ) {
@@ -71,6 +87,10 @@ function qtn_string_to_localize_array( $string ) {
 
 	if ( empty( $blocks ) || count( $blocks ) == 1 ) {
 		return $result;
+	}
+
+	foreach ($qtn_config->languages as $language) {
+		$result[$language] = '';
 	}
 
 	$language = '';
@@ -97,7 +117,7 @@ function qtn_string_to_localize_array( $string ) {
 				break;
 			default:
 				if ( $language ) {
-					$result[ $language ] = $block;
+					$result[ $language ] .= $block;
 					$language            = '';
 				}
 		}
@@ -132,10 +152,6 @@ function qtn_localize_array_to_string( $strings ) {
 
 function qtn_translate_post( $post, $locale = '' ) {
 
-	if ( ! $locale) {
-		$locale = get_locale();
-	}
-
 	foreach( get_object_vars( $post ) as $key => $content ) {
 		switch( $key ){
 			case 'post_title':
@@ -147,4 +163,35 @@ function qtn_translate_post( $post, $locale = '' ) {
 	}
 
 	return $post;
+}
+
+function qtn_untranslate_post( $post ) {
+
+	foreach( get_object_vars( $post ) as $key => $content ) {
+		switch( $key ){
+			case 'post_title':
+			case 'post_content':
+			case 'post_excerpt':
+				$post->$key = get_post_field( $key, $post->ID, 'edit' );
+				break;
+		}
+	}
+
+	return $post;
+}
+
+function qtn_is_localize_string( $string ) {
+	global $qtn_config;
+
+	$strings = qtn_string_to_localize_array( $string );
+
+	if ( is_array( $strings ) && ! empty( $strings ) ) {
+		foreach ( $qtn_config->languages as $language ) {
+			if ( isset( $strings[ $language ] ) ) {
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
