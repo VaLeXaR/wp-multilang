@@ -20,21 +20,16 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 	 *
 	 * Handles the edit posts views and some functionality on the edit post screen for WC post types.
 	 */
-	class QtN_Admin_Posts extends \QtN_Admin_Object {
-
-		public $object_type = 'post';
-		public $object_table = 'postmeta';
+	class QtN_Admin_Posts {
 
 		/**
 		 * Constructor.
 		 */
 		public function __construct() {
 			add_action( 'edit_form_top', array( $this, 'translate_post' ), 0 );
-			add_action( 'admin_init', array( $this, 'save_post' ), 0 );
 			add_action( 'admin_init', array($this, 'init'));
 
 			add_filter( 'redirect_post_location', array( $this, 'redirect_after_save' ), 0 );
-			add_filter( "update_{$this->object_type}_metadata", array( $this, 'update_meta_field' ), 0, 5 );
 		}
 
 
@@ -58,19 +53,22 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 
 		public function translate_post() {
 			global $post, $qtn_config;
-			$languages = $qtn_config->languages;
-			$lang      = $qtn_config->languages[ get_locale() ];
-			$post      = qtn_translate_post( $post );
 
-			if ( isset( $_GET['edit_lang'] ) ) {
-				$lang = qtn_clean( $_GET['edit_lang'] );
+			$screen = get_current_screen();
+
+			if ( 'add' === $screen->action) {
+				return;
 			}
+
+			$languages = $qtn_config->languages;
+			$lang      = isset( $_GET['edit_lang'] ) ? qtn_clean( $_GET['edit_lang'] ) : $qtn_config->languages[ get_locale() ];
+			$post      = qtn_translate_object( $post );
 			?>
 			<input type="hidden" name="lang" value="<?php echo $lang; ?>">
 			<?php
 
 			if ( count( $languages ) <= 1 ) {
-				return '';
+				return;
 			}
 
 			if ( in_array( $post->post_type, $qtn_config->settings['post_types'] ) ) {
@@ -88,48 +86,6 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 					<?php } ?>
 				</h3>
 				<?php
-			}
-		}
-
-		public function save_post() {
-			global $qtn_config;
-
-			if ( 'POST' == $_SERVER['REQUEST_METHOD'] ) {
-
-				$actions = array(
-					'editpost',
-					'inline-save'
-				);
-
-				if ( isset( $_POST['action'] ) && ! in_array( $_POST['action'], $actions ) ) {
-					return;
-				}
-
-				$locale  = get_locale();
-				$post_id = qtn_clean( $_POST['post_ID'] );
-				$lang    = isset( $_POST['lang'] ) ? qtn_clean( $_POST['lang'] ) : $qtn_config->languages[ $locale ];
-				if ( in_array( get_post_type( $post_id ), $qtn_config->settings['post_types'] ) ) {
-
-					$post_fields = array(
-						'post_title' => 'post_title',
-						'content'    => 'post_content',
-						'excerpt'    => 'post_excerpt'
-					);
-
-					foreach ( $post_fields as $field => $post_field ) {
-						if ( isset( $_POST[ $field ] ) ) {
-							$old_value        = get_post_field( $post_field, $post_id, 'edit' );
-							$strings          = qtn_string_to_localize_array( $old_value );
-							$value            = $_POST[ $field ];
-							$strings[ $lang ] = $value;
-							$_POST[ $field ]  = qtn_localize_array_to_string( $strings );
-						}
-					}
-
-					if ( empty( $_POST['post_name'] ) ) {
-						$_POST['post_name'] = sanitize_title( qtn_localize_text( $_POST['post_title'] ) );
-					}
-				}
 			}
 		}
 

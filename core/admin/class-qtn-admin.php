@@ -41,7 +41,6 @@ class QtN_Admin {
 	 */
 	public function includes() {
 		include_once( 'qtn-admin-functions.php' );
-		include_once( 'abstracts/abstract-qtn-admin-object.php' );
 		new QtN_Admin_Menus();
 		new QtN_Admin_Posts();
 		new QtN_Admin_Settings();

@@ -117,8 +117,10 @@ function qtn_string_to_localize_array( $string ) {
 				break;
 			default:
 				if ( $language ) {
-					$result[ $language ] .= $block;
-					$language            = '';
+					if ( isset( $result[ $language ] ) ) {
+						$result[ $language ] .= $block;
+					}
+					$language = '';
 				}
 		}
 	}
@@ -150,19 +152,23 @@ function qtn_localize_array_to_string( $strings ) {
 	return $string;
 }
 
-function qtn_translate_post( $post, $locale = '' ) {
+function qtn_translate_object( $object, $locale = '' ) {
 
-	foreach( get_object_vars( $post ) as $key => $content ) {
+	foreach( get_object_vars( $object ) as $key => $content ) {
 		switch( $key ){
 			case 'post_title':
 			case 'post_content':
 			case 'post_excerpt':
-				$post->$key = qtn_localize_text( $content, $locale );
+			case 'name':
+			case 'description':
+				$object->$key = qtn_localize_text( $content, $locale );
 				break;
 		}
 	}
 
-	return $post;
+	d($object);
+
+	return $object;
 }
 
 function qtn_untranslate_post( $post ) {

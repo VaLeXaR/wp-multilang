@@ -173,6 +173,7 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 
 			include_once( 'core/abstracts/abstract-qtn-object.php' );
 			new Core\QtN_Posts();
+			new Core\QtN_Taxonomies();
 
 			if ( $this->is_request( 'admin' ) ) {
 				new Core\Admin\QtN_Admin;
@@ -180,10 +181,6 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 
 			if ( $this->is_request( 'frontend' ) ) {
 				$this->frontend_includes();
-			}
-
-			if ( $this->is_request( 'frontend' ) || $this->is_request( 'cron' ) ) {
-//				include_once( 'core/class-wc-session-handler.php' );
 			}
 
 //			include_once( 'core/class-wc-query.php' ); // The main query class
@@ -227,12 +224,6 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 //			$this->order_factory   = new WC_Order_Factory();                        // Order Factory to create new order instances
 //			$this->countries       = new WC_Countries();                            // Countries class
 //			$this->integrations    = new WC_Integrations();                         // Integrations class
-
-			// Session class, handles session data for users - can be overwritten if custom handler is needed.
-			if ( $this->is_request( 'frontend' ) || $this->is_request( 'cron' ) ) {
-//				$session_class = apply_filters( 'woocommerce_session_handler', 'WC_Session_Handler' );
-//				$this->session = new $session_class();
-			}
 
 			// Classes/actions loaded for the frontend and for ajax requests.
 			if ( $this->is_request( 'frontend' ) ) {
@@ -288,22 +279,8 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 
 endif;
 
-/*add_filter('posts_where', function ($where, $query) {
-	if (isset($query->query)) {
-		global $wpdb;
-		$lang = $query->query['lang'];
-		$like = '%{:' . $wpdb->esc_like($lang) . '}%';
-		$where .= $wpdb->prepare( " AND ({$wpdb->posts}.post_title LIKE %s OR {$wpdb->posts}.post_content LIKE %s)", $like, $like );
-	}
-	return $where;
-}, 10, 2);*/
-
 function QN() {
 	return Qtranslate_Next::instance();
 }
 
 QN();
-
-/*add_action( 'pre_post_update', function (){
-	die();
-});*/

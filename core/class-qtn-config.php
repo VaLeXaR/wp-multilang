@@ -76,7 +76,7 @@ class QtN_Config {
 		add_action( 'after_setup_theme', array( $this, 'setup_lang_query' ) );
 		add_action( 'change_locale', array( $this, 'change_locale' ) );
 		add_action( 'wp_head', array( $this, 'set_meta_languages' ) );
-		add_action( 'init', array( $this, 'setup_config' ) );
+		add_action( 'after_setup_theme', array( $this, 'setup_config' ) );
 
 		add_filter( 'option_home', array( $this, 'set_home_url' ) );
 		add_filter( 'query_vars', array( $this, 'set_lang_var' ) );
@@ -223,13 +223,17 @@ class QtN_Config {
 	public function setup_config() {
 		$settings = array(
 			'post_types'  => array(
-				'post',
 				'page',
+				'post',
 				'attachment'
 			),
 			'post_fields' => array(
 				'_wp_attachment_image_alt'
 			),
+			'taxonomies' => array(
+				'category',
+				'post_tag'
+			)
 		);
 
 		$this->settings = apply_filters( 'qtn_settings', $settings );
