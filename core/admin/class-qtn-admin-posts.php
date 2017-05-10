@@ -131,14 +131,14 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 		 * @param string $column
 		 */
 		public function render_language_column( $column ) {
-			global $post, $qtn_config;
+			global $qtn_config;
 
 			if ( 'languages' == $column ) {
 
-				$_post   = qtn_untranslate_post( $post );
+				$_post   = qtn_untranslate_post( get_post() );
 				$output  = array();
 				$text    = $_post->post_title . $_post->post_content;
-				$strings = qtn_string_to_localize_array( $text );
+				$strings = qtn_value_to_localize_array( $text );
 				$options = $qtn_config->options;
 
 				foreach ( $qtn_config->languages as $locale => $language ) {

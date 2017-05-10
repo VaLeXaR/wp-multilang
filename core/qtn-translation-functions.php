@@ -4,14 +4,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-function qtn_localize_url( $url, $new_locale = '' ) {
-	global $locale, $qtn_config;
+function qtn_translate_url( $url, $new_locale = '' ) {
+	global $qtn_config;
 
-	$current_locale = get_locale();
 	$locale = get_locale();
 
 	if ( $new_locale ) {
-		if ( ( $new_locale == $locale ) || ! isset( $qtn_config->languages[ $locale ] ) ) {
+		if ( ( $new_locale == $locale ) || ! isset( $qtn_config->languages[ $new_locale ] ) ) {
 			return $url;
 		}
 		switch_to_locale( $new_locale );
@@ -22,52 +21,54 @@ function qtn_localize_url( $url, $new_locale = '' ) {
 		$path = str_replace( $match[1], '/', $path );
 	}
 
-	$url    = home_url( $path );
-	switch_to_locale( $current_locale );
+	$url = home_url( $path );
+	switch_to_locale( $locale );
 
 	return $url;
 }
 
-function qtn_localize_text( $text, $new_locale = '' ) {
+function qtn_translate_string( $string, $locale = '' ) {
 	global $qtn_config;
 
-	if ( ! is_string( $text ) ) {
-		return $text;
-	}
-
-	$strings = qtn_string_to_localize_array( $text );
+	$strings = qtn_string_to_localize_array( $string );
 
 	if ( empty( $strings ) ) {
-		return $text;
+		return $string;
 	}
 
 	$languages = $qtn_config->languages;
 
-	if ( $new_locale ) {
-		if ( isset( $strings[ $languages[ $new_locale ] ] ) ) {
-			return  $strings[ $languages[ $new_locale ] ];
+	if ( $locale ) {
+		if ( isset( $strings[ $languages[ $locale ] ] ) ) {
+			return $strings[ $languages[ $locale ] ];
 		} else {
 			return '';
 		}
 	}
 
-	if ( ! $new_locale && isset( $_GET['edit_lang'] ) ) {
-		$lang = qtn_clean( $_GET['edit_lang'] );
-		if ( isset( $strings[ $lang ] ) ) {
-			return $strings[ $lang ];
-		} else {
-			return '';
-		}
-	}
+	$lang = isset( $_GET['edit_lang'] ) ? qtn_clean( $_GET['edit_lang'] ) : $languages[ get_locale() ];
 
-	$locale = get_locale();
-
-	if ( isset( $strings[ $languages[ $locale ] ] ) ) {
-		return $strings[ $languages[ $locale ] ];
+	if ( isset( $strings[ $lang ] ) ) {
+		return $strings[ $lang ];
 	} elseif ( isset( $strings[ $languages[ $qtn_config->default_locale ] ] ) ) {
 		return $strings[ $languages[ $qtn_config->default_locale ] ];
 	} else {
-		return $text;
+		return $string;
+	}
+}
+
+function qtn_translate_value( $value, $locale = '' ) {
+	if ( is_array( $value ) ) {
+		$result = array();
+		foreach ( $value as $k => $item ) {
+			$result[ $k ] = qtn_translate_value( $item, $locale );
+		}
+
+		return $result;
+	} elseif ( is_string( $value ) ) {
+		return qtn_translate_string( $value, $locale );
+	} else {
+		return $value;
 	}
 }
 
@@ -76,21 +77,17 @@ function qtn_string_to_localize_array( $string ) {
 	global $qtn_config;
 	$result = array();
 
-	if ( ! is_string( $string ) ) {
-		return $result;
-	}
-
 	$string = htmlspecialchars_decode( $string );
 
 	$split_regex = "#(<!--:[a-z]{2}-->|<!--:-->|\[:[a-z]{2}\]|\[:\]|\{:[a-z]{2}\}|\{:\})#ism";
 	$blocks      = preg_split( $split_regex, $string, - 1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
 
 	if ( empty( $blocks ) || count( $blocks ) == 1 ) {
-		return $result;
+		return $string;
 	}
 
-	foreach ($qtn_config->languages as $language) {
-		$result[$language] = '';
+	foreach ( $qtn_config->languages as $language ) {
+		$result[ $language ] = '';
 	}
 
 	$language = '';
@@ -132,17 +129,32 @@ function qtn_string_to_localize_array( $string ) {
 	return $result;
 }
 
+function qtn_value_to_localize_array( $value ) {
+	if ( is_array( $value ) ) {
+		$result = array();
+		foreach ( $value as $k => $item ) {
+			$result[ $k ] = qtn_value_to_localize_array( $item );
+		}
+
+		return $result;
+	} elseif ( is_string( $value ) ) {
+		return qtn_string_to_localize_array( $value );
+	} else {
+		return $value;
+	}
+}
+
 function qtn_localize_array_to_string( $strings ) {
 	global $qtn_config;
 
 	$string = '';
 
-	if ( ! is_array( $strings ) ) {
+	if ( ! is_array( $strings ) || ! qtn_is_localize_array( $strings ) ) {
 		return $string;
 	}
 
 	foreach ( $strings as $key => $value ) {
-		if ( in_array( $key, $qtn_config->languages) ) {
+		if ( in_array( $key, $qtn_config->languages ) ) {
 			$string .= '[:' . $key . ']' . trim( $value );
 		}
 	}
@@ -152,29 +164,77 @@ function qtn_localize_array_to_string( $strings ) {
 	return $string;
 }
 
+function qtn_localize_value_to_string( $value ) {
+
+	if ( is_array( $value ) ) {
+		if ( qtn_is_localize_array( $value ) ) {
+			return qtn_localize_array_to_string( $value );
+		} else {
+			$result = array();
+			foreach ( $value as $key => $item ) {
+				$result[ $key ] = qtn_localize_value_to_string( $item );
+			}
+
+			return $result;
+		}
+	} else {
+		return $value;
+	}
+}
+
+function qtn_set_language_value( $localize_array, $value, $locale = '' ) {
+	global $qtn_config;
+	$lang = isset( $_POST['lang'] ) ? qtn_clean( $_POST['lang'] ) : $qtn_config->languages[ get_locale() ];
+
+	if ( $locale && isset( $qtn_config->languages[ $locale ] ) ) {
+		$lang = $qtn_config->languages[ $locale ];
+	}
+
+	//TODO зневадити функцію
+
+	if ( is_array( $value ) ) {
+		$result = array();
+		foreach ( $value as $key => $item ) {
+			$result[ $key ] = qtn_set_language_value( $localize_array[ $key ], $value[ $key ], $locale );
+		}
+		return $result;
+	} else {
+		if ( is_string( $value ) ) {
+			$result = array();
+			foreach ($qtn_config->languages as $language) {
+				$result[ $language ] = '';
+			}
+			$result [ $lang ] = $value;
+			return $result;
+		} else {
+			return $value;
+		}
+	}
+}
+
 function qtn_translate_object( $object, $locale = '' ) {
 
-	foreach( get_object_vars( $object ) as $key => $content ) {
-		switch( $key ){
+	foreach ( get_object_vars( $object ) as $key => $content ) {
+		switch ( $key ) {
 			case 'post_title':
 			case 'post_content':
 			case 'post_excerpt':
 			case 'name':
 			case 'description':
-				$object->$key = qtn_localize_text( $content, $locale );
+				$object->$key = qtn_translate_string( $content, $locale );
 				break;
 		}
 	}
 
-	d($object);
+//	d($object);
 
 	return $object;
 }
 
 function qtn_untranslate_post( $post ) {
 
-	foreach( get_object_vars( $post ) as $key => $content ) {
-		switch( $key ){
+	foreach ( get_object_vars( $post ) as $key => $content ) {
+		switch ( $key ) {
 			case 'post_title':
 			case 'post_content':
 			case 'post_excerpt':
@@ -186,18 +246,46 @@ function qtn_untranslate_post( $post ) {
 	return $post;
 }
 
+function qtn_is_localize_array( $array ) {
+	global $qtn_config;
+
+	if ( is_array( $array ) ) {
+		foreach ( $array as $key => $item ) {
+			if ( ! in_array( $key, $qtn_config->languages ) ) {
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
 function qtn_is_localize_string( $string ) {
 	global $qtn_config;
 
 	$strings = qtn_string_to_localize_array( $string );
 
 	if ( is_array( $strings ) && ! empty( $strings ) ) {
-		foreach ( $qtn_config->languages as $language ) {
-			if ( isset( $strings[ $language ] ) ) {
+		foreach ( $strings as $language ) {
+			if ( isset( $qtn_config->languages[ $language ] ) ) {
 				return true;
 			}
 		}
 	}
 
 	return false;
+}
+
+function qtn_is_localize_value( $value ) {
+
+	if ( is_array( $value ) ) {
+		$result = array_filter( $value, 'qtn_is_localize_array' );
+		if ( $result ) {
+			return true;
+		}
+
+		return false;
+	} else {
+		return qtn_is_localize_string( $value );
+	}
 }

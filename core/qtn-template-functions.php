@@ -31,7 +31,7 @@ function qtn_language_switcher( $args = array(), $echo = true ) {
 		<ul class="qtn-language-switcher switcher-<?php echo $args['type']; ?>">
 			<?php foreach ( $languages as $key => $language ) { ?>
 				<li<?php if ( $key == $locale ) { ?> class="active"<?php } ?>>
-					<a href="<?php echo qtn_localize_url( $current_url, $key ); ?>">
+					<a href="<?php echo qtn_translate_url( $current_url, $key ); ?>">
 						<?php if ( $args['flag'] ) { ?>
 							<img src="<?php echo QN()->flag_dir() . $options[ $key ]['flag'] . '.png'; ?>"
 							     alt="<?php echo $options[ $key ]['name']; ?>">
@@ -46,9 +46,9 @@ function qtn_language_switcher( $args = array(), $echo = true ) {
 		<? }
 
 	if ('dropdown' == $args['type'] ) { ?>
-		<select class="qtn-language-switcher switcher-<?php echo $args['type']; ?>" onchange="location = this.value;">
+		<select class="qtn-language-switcher switcher-<?php echo $args['type']; ?>" onchange="location = this.value;" title="<?php esc_html_e( __('Language Switcher', 'qtranslate-next')); ?>">
 			<?php foreach ($languages as $key => $language) { ?>
-				<option value="<?php echo qtn_localize_url( $current_url, $key ); ?>"<?php if ( $key == $locale ) { ?> selected="selected"<?php } ?>>
+				<option value="<?php echo qtn_translate_url( $current_url, $key ); ?>"<?php if ( $key == $locale ) { ?> selected="selected"<?php } ?>>
 					<?php echo $options[ $key ]['name']; ?>
 				</option>
 			<?php } ?>

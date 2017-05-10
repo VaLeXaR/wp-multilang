@@ -201,3 +201,11 @@ function qtn_set_time_limit( $limit = 0 ) {
 		@set_time_limit( $limit );
 	}
 }
+
+add_filter( 'document_title_parts', function ( $title ) {
+	if ( isset( $title['title'] ) ) {
+		$title['title'] = qtn_translate_value( $title['title'] );
+	}
+
+	return $title;
+} );

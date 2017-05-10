@@ -1,4 +1,5 @@
 <?php
+
 namespace QtNext\Core;
 
 class QtN_Posts extends \QtN_Object {
@@ -7,20 +8,14 @@ class QtN_Posts extends \QtN_Object {
 	public $object_table = 'postmeta';
 
 	public function __construct() {
-		add_filter( 'the_posts', array($this, 'filter_posts'), 0, 2 );
-		add_filter( 'get_pages', array($this, 'filter_posts'), 0, 2 );
-		add_filter( 'the_post',   array($this, 'filter_post' ), 0, 2 );
-		add_filter( 'the_title', 'qtn_localize_text', 0);
-		add_filter( 'the_content', 'qtn_localize_text', 0);
-		add_filter( 'get_the_excerpt', 'qtn_localize_text', 0);
-		add_filter( 'single_post_title', 'qtn_localize_text', 0);
-		add_filter( 'post_type_archive_title', 'qtn_localize_text', 0);
-		add_filter( 'sanitize_title', 'qtn_localize_text', 0);
+		add_filter( 'the_posts', array( $this, 'filter_posts' ), 0, 2 );
+		add_filter( 'get_pages', array( $this, 'filter_posts' ), 0, 2 );
+		add_filter( 'the_post', array( $this, 'filter_post' ), 0, 2 );
 
-		add_filter( 'post_title', array($this, 'translate_post_field'), 0, 3);
-		add_filter( 'post_content', array($this, 'translate_post_field'), 0, 3);
-		add_filter( 'post_excerpt', array($this, 'translate_post_field'), 0, 3);
-		add_filter( 'get_edit_post_link', array($this, 'edit_post_link'), 0, 3);
+//		add_filter( 'post_title', array($this, 'translate_post_field'), 0, 3);
+//		add_filter( 'post_content', array($this, 'translate_post_field'), 0, 3);
+//		add_filter( 'post_excerpt', array($this, 'translate_post_field'), 0, 3);
+		add_filter( 'get_edit_post_link', array( $this, 'edit_post_link' ), 0, 3 );
 		add_filter( "get_{$this->object_type}_metadata", array( $this, 'get_meta_field' ), 0, 3 );
 		add_filter( "update_{$this->object_type}_metadata", array( $this, 'update_meta_field' ), 0, 5 );
 		add_action( 'wp_insert_post_data', array( $this, 'save_post' ), 0, 2 );
@@ -28,7 +23,7 @@ class QtN_Posts extends \QtN_Object {
 	}
 
 	public function filter_posts( $posts ) {
-		return array_map( 'qtn_translate_object', $posts);
+		return array_map( 'qtn_translate_object', $posts );
 	}
 
 	public function filter_post( $post ) {
@@ -38,7 +33,7 @@ class QtN_Posts extends \QtN_Object {
 	public function translate_post_field( $value, $post_id, $context ) {
 
 		if ( 'display' == $context ) {
-			$value = qtn_localize_text( $value );
+			$value = qtn_translate_value( $value );
 		}
 
 		return $value;
@@ -53,7 +48,7 @@ class QtN_Posts extends \QtN_Object {
 		return $link;
 	}
 
-	public function save_post($data, $postarr){
+	public function save_post( $data, $postarr ) {
 		global $qtn_config;
 
 		if ( ! in_array( $data['post_type'], $qtn_config->settings['post_types'] ) ) {
@@ -61,14 +56,6 @@ class QtN_Posts extends \QtN_Object {
 		}
 
 		if ( 'attachment' !== $data['post_type'] ) {
-
-			if ( 'revision' == $postarr['post_type'] ) {
-				return $data;
-			}
-
-			if ( 'auto-draft' == $postarr['post_status'] ) {
-				return $data;
-			}
 
 			if ( 'trash' == $postarr['post_status'] ) {
 				return $data;
@@ -79,9 +66,7 @@ class QtN_Posts extends \QtN_Object {
 			}
 		}
 
-		$locale  = get_locale();
-		$post_id = isset($data[ 'ID' ]) ? qtn_clean( $data['ID'] ) : (isset( $postarr['ID'] ) ? qtn_clean( $postarr['ID'] ) :  0 ) ;
-		$lang    = isset( $postarr['lang'] ) ? qtn_clean( $postarr['lang'] ) : $qtn_config->languages[ $locale ];
+		$post_id = isset( $data['ID'] ) ? qtn_clean( $data['ID'] ) : ( isset( $postarr['ID'] ) ? qtn_clean( $postarr['ID'] ) : 0 );
 
 		if ( ! $post_id ) {
 			return $data;
@@ -92,19 +77,18 @@ class QtN_Posts extends \QtN_Object {
 				case 'post_title':
 				case 'post_content':
 				case 'post_excerpt':
-					if ( ! qtn_is_localize_string( $content ) ) {
-						$old_value        = get_post_field( $key, $post_id, 'edit' );
-						$strings          = qtn_string_to_localize_array( $old_value );
-						$value            = $data[ $key ];
-						$strings[ $lang ] = $value;
-						$data[ $key ]     = qtn_localize_array_to_string( $strings );
+					if ( ! qtn_is_localize_value( $content ) ) {
+						$old_value    = get_post_field( $key, $post_id, 'edit' );
+						$strings      = qtn_value_to_localize_array( $old_value );
+						$value        = qtn_set_language_value( $strings, $data[ $key ] );
+						$data[ $key ] = qtn_localize_value_to_string( $value );
 					}
 					break;
 			}
 		}
 
 		if ( empty( $data['post_name'] ) ) {
-			$data['post_name'] = sanitize_title( qtn_localize_text( $data['post_title'] ) );
+			$data['post_name'] = sanitize_title( qtn_translate_value( $data['post_title'] ) );
 		}
 
 		return $data;

@@ -69,6 +69,26 @@ class QtN_Config {
 		$this->init_hooks();
 	}
 
+
+	public function setup_languages() {
+
+		require_once( ABSPATH . 'wp-includes/pluggable.php' );
+
+		$this->default_locale = get_option( 'WPLANG' );
+		$this->options        = get_option( 'qtn_languages' );
+
+		foreach ( $this->options as $locale => $language ) {
+			if ( $language['enable'] ) {
+				$this->languages[ $locale ] = $language['slug'];
+			}
+		}
+
+		$this->installed_languages = array_merge( array( 'en_US' ), get_available_languages() );
+		$this->translations        = $this->get_translations();
+		$this->set_user_lang();
+		$this->set_locale();
+	}
+
 	/**
 	 * Hook into actions and filters.
 	 */
@@ -83,27 +103,6 @@ class QtN_Config {
 	}
 
 
-	public function setup_languages() {
-
-		require_once( ABSPATH . 'wp-includes/pluggable.php' );
-
-		$this->default_locale = get_option( 'WPLANG' );
-
-		$this->options = get_option( 'qtn_languages' );
-
-		foreach ( $this->options as $locale => $language ) {
-			if ( $language['enable'] ) {
-				$this->languages[ $locale ] = $language['slug'];
-			}
-		}
-
-		$this->installed_languages = array_merge( array( 'en_US' ), get_available_languages() );
-		$this->translations        = $this->get_translations();
-		$this->set_user_lang();
-		$this->set_locale();
-	}
-
-
 	private function get_translations() {
 
 		require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
@@ -112,17 +111,10 @@ class QtN_Config {
 
 		$available_translations['en_US'] = array(
 			'native_name' => 'English (US)',
-			'iso' => array( 'en' )
+			'iso'         => array( 'en' )
 		);
 
 		return $available_translations;
-	}
-
-	private function get_current_lang() {
-		global $locale;
-		$current_lang = $this->languages[ $locale ];
-
-		return $current_lang;
 	}
 
 
@@ -175,7 +167,7 @@ class QtN_Config {
 
 
 	public function setup_lang_query() {
-		set_query_var( 'lang', $this->get_current_lang() );
+		set_query_var( 'lang', $this->user_language );
 		add_filter( 'request', function ( $query_vars ) {
 			$query_vars['lang'] = get_query_var( 'lang' );
 
@@ -189,9 +181,9 @@ class QtN_Config {
 			return $value;
 		}
 
-		$lang = $this->get_current_lang();
-		if ( $lang != $this->default_locale ) {
-			$value .= '/' . $lang;
+		$locale = get_locale();
+		if ( $this->languages[ $locale ] != $this->languages[ $this->default_locale ] ) {
+			$value .= '/' . $this->languages[ $locale ];
 		}
 
 		return $value;
@@ -215,7 +207,7 @@ class QtN_Config {
 		global $wp;
 		$current_url = home_url( $wp->request );
 		foreach ( $this->languages as $locale => $language ) {
-			printf( '<link rel="alternate" hreflang="%s" href="%s"/>', $language, qtn_localize_url( $current_url, $locale ) );
+			printf( '<link rel="alternate" hreflang="%s" href="%s"/>', $language, qtn_translate_url( $current_url, $locale ) );
 		}
 	}
 
@@ -230,7 +222,7 @@ class QtN_Config {
 			'post_fields' => array(
 				'_wp_attachment_image_alt'
 			),
-			'taxonomies' => array(
+			'taxonomies'  => array(
 				'category',
 				'post_tag'
 			)
