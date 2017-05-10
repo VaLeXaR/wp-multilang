@@ -88,7 +88,7 @@ class QtN_Posts extends \QtN_Object {
 		}
 
 		if ( empty( $data['post_name'] ) ) {
-			$data['post_name'] = sanitize_title( qtn_translate_value( $data['post_title'] ) );
+			$data['post_name'] = sanitize_title( qtn_translate_value( $data['post_title'], $qtn_config->languages[ $qtn_config->default_locale ] ) );
 		}
 
 		return $data;

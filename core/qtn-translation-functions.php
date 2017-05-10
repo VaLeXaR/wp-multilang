@@ -75,7 +75,10 @@ function qtn_translate_value( $value, $locale = '' ) {
 
 function qtn_string_to_localize_array( $string ) {
 	global $qtn_config;
-	$result = array();
+
+	if ( ! is_string( $string ) ) {
+		return $string;
+	}
 
 	$string = htmlspecialchars_decode( $string );
 
@@ -85,6 +88,8 @@ function qtn_string_to_localize_array( $string ) {
 	if ( empty( $blocks ) || count( $blocks ) == 1 ) {
 		return $string;
 	}
+
+	$result = array();
 
 	foreach ( $qtn_config->languages as $language ) {
 		$result[ $language ] = '';
@@ -190,26 +195,28 @@ function qtn_set_language_value( $localize_array, $value, $locale = '' ) {
 		$lang = $qtn_config->languages[ $locale ];
 	}
 
-	//TODO зневадити функцію
-
 	if ( is_array( $value ) ) {
-		$result = array();
 		foreach ( $value as $key => $item ) {
-			$result[ $key ] = qtn_set_language_value( $localize_array[ $key ], $value[ $key ], $locale );
+			$localize_array[ $key ] = qtn_set_language_value( $localize_array[ $key ], $value[ $key ], $locale );
 		}
-		return $result;
 	} else {
 		if ( is_string( $value ) ) {
-			$result = array();
-			foreach ($qtn_config->languages as $language) {
-				$result[ $language ] = '';
+			if ( qtn_is_localize_array( $localize_array) ) {
+				$localize_array[ $lang ] = $value;
+			} else {
+				$result = array();
+				foreach ( $qtn_config->languages as $language ) {
+					$result[ $language ] = '';
+				}
+				$result[ $lang ] = $value;
+				$localize_array = $result;
 			}
-			$result [ $lang ] = $value;
-			return $result;
 		} else {
-			return $value;
+			$localize_array = $value;
 		}
 	}
+
+	return $localize_array;
 }
 
 function qtn_translate_object( $object, $locale = '' ) {
@@ -221,12 +228,10 @@ function qtn_translate_object( $object, $locale = '' ) {
 			case 'post_excerpt':
 			case 'name':
 			case 'description':
-				$object->$key = qtn_translate_string( $content, $locale );
+				$object->$key = qtn_translate_value( $content, $locale );
 				break;
 		}
 	}
-
-//	d($object);
 
 	return $object;
 }
@@ -261,16 +266,15 @@ function qtn_is_localize_array( $array ) {
 }
 
 function qtn_is_localize_string( $string ) {
-	global $qtn_config;
+
+	if ( ! is_string( $string ) ) {
+		return false;
+	}
 
 	$strings = qtn_string_to_localize_array( $string );
 
 	if ( is_array( $strings ) && ! empty( $strings ) ) {
-		foreach ( $strings as $language ) {
-			if ( isset( $qtn_config->languages[ $language ] ) ) {
-				return true;
-			}
-		}
+		return true;
 	}
 
 	return false;

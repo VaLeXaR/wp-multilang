@@ -60,7 +60,6 @@ abstract class QtN_Object {
 		$column    = sanitize_key( $this->object_type . '_id' );
 		$id_column = 'user' == $this->object_type ? 'umeta_id' : 'meta_id';
 
-		//TODO зневадити функцію
 		if ( empty( $prev_value ) ) {
 
 			if ( qtn_is_localize_value( $meta_value ) ) {
@@ -86,23 +85,11 @@ abstract class QtN_Object {
 		}
 
 		if ( ! qtn_is_localize_value( $meta_value ) ) {
-
-			$old_results = $wpdb->get_results( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->{$this->object_table}} WHERE meta_key = %s AND {$column} = %d;", $meta_key, $object_id ), ARRAY_A );
-
-			if ($old_results ) {
-				foreach ($old_results as $old_value) {
-					$old_value = maybe_unserialize( $old_value );
-				}
-			}
-
-			if ( is_array( $old_value ) ) {
-				array_walk_recursive( $old_value, 'qtn_value_to_localize_array' );
-			} else {
-				$old_value = qtn_value_to_localize_array( $old_value );
-			}
-
+			$old_value = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->{$this->object_table}} WHERE meta_key = %s AND {$column} = %d LIMIT 1;", $meta_key, $object_id ) );
+			$old_value = maybe_unserialize( $old_value );
+			$old_value = qtn_value_to_localize_array( $old_value );
 			$meta_value = qtn_set_language_value( $old_value, $meta_value );
-			array_walk_recursive( $meta_value, 'qtn_localize_value_to_string' );
+			$meta_value = qtn_localize_value_to_string( $meta_value );
 		}
 
 		$meta_value = maybe_serialize( $meta_value );
