@@ -32,8 +32,7 @@ class QtN_Admin_Settings {
 			'qtn_switch_locale',
 			'',
 			array( $this, 'switch_locale' ),
-			'general',
-			'default'
+			'general'
 		);
 
 		add_settings_section( 'qtn_options', __( 'Multilingual Settings', 'qtranslate-next' ), array(
