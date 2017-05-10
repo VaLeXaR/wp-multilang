@@ -187,24 +187,13 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 //			include_once( 'core/class-wc-api.php' ); // API Class
 //			include_once( 'core/class-wc-auth.php' ); // Auth Class
 //			include_once( 'core/class-wc-post-types.php' ); // Registers post types
-
-			if ( defined( 'WP_CLI' ) && WP_CLI ) {
-//				include_once( 'core/class-wc-cli.php' );
-			}
-
-			global $qtn_config;
-			$qtn_config = new Core\QtN_Config();
-//			$this->api   = new WC_API();
 		}
 
 		/**
 		 * Include required frontend files.
 		 */
 		public function frontend_includes() {
-//			include_once( 'core/wc-cart-functions.php' );
-//			include_once( 'core/wc-notice-functions.php' );
-//			include_once( 'core/wc-template-hooks.php' );
-//			include_once( 'core/class-wc-template-loader.php' );                // Template Loader
+			include_once( 'core/qtn-template-hooks.php' );
 //			include_once( 'core/class-wc-frontend-scripts.php' );               // Frontend Scripts
 //			include_once( 'core/class-wc-form-handler.php' );                   // Form Handlers
 		}
@@ -284,3 +273,5 @@ function QN() {
 }
 
 QN();
+
+$GLOBALS['qtn_config'] = new Core\QtN_Config();

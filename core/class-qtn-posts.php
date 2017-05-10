@@ -11,10 +11,6 @@ class QtN_Posts extends \QtN_Object {
 		add_filter( 'the_posts', array( $this, 'filter_posts' ), 0, 2 );
 		add_filter( 'get_pages', array( $this, 'filter_posts' ), 0, 2 );
 		add_filter( 'the_post', array( $this, 'filter_post' ), 0, 2 );
-
-//		add_filter( 'post_title', array($this, 'translate_post_field'), 0, 3);
-//		add_filter( 'post_content', array($this, 'translate_post_field'), 0, 3);
-//		add_filter( 'post_excerpt', array($this, 'translate_post_field'), 0, 3);
 		add_filter( 'get_edit_post_link', array( $this, 'edit_post_link' ), 0, 3 );
 		add_filter( "get_{$this->object_type}_metadata", array( $this, 'get_meta_field' ), 0, 3 );
 		add_filter( "update_{$this->object_type}_metadata", array( $this, 'update_meta_field' ), 0, 5 );
