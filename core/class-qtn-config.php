@@ -95,7 +95,6 @@ class QtN_Config {
 	private function init_hooks() {
 		add_action( 'after_setup_theme', array( $this, 'setup_lang_query' ) );
 		add_action( 'change_locale', array( $this, 'change_locale' ) );
-		add_action( 'wp_head', array( $this, 'set_meta_languages' ) );
 		add_action( 'after_setup_theme', array( $this, 'setup_config' ) );
 
 		add_filter( 'option_home', array( $this, 'set_home_url' ) );
@@ -202,15 +201,6 @@ class QtN_Config {
 	public function change_locale( $new_locale ) {
 		global $locale;
 		$locale = $new_locale;
-	}
-
-
-	public function set_meta_languages() {
-		global $wp;
-		$current_url = home_url( $wp->request );
-		foreach ( $this->languages as $locale => $language ) {
-			printf( '<link rel="alternate" hreflang="%s" href="%s"/>', $language, qtn_translate_url( $current_url, $locale ) );
-		}
 	}
 
 
