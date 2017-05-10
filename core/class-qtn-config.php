@@ -177,9 +177,11 @@ class QtN_Config {
 
 
 	public function set_home_url( $value ) {
-		if ( defined( 'DOING_AJAX' ) || defined( 'REST_REQUEST' ) ) {
+		if ( ( is_admin() && ! defined( 'DOING_AJAX' ) ) || defined( 'REST_REQUEST' ) ) {
 			return $value;
 		}
+
+		//TODO set cookie for ajax
 
 		$locale = get_locale();
 		if ( $this->languages[ $locale ] != $this->languages[ $this->default_locale ] ) {

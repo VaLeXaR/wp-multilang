@@ -31,7 +31,7 @@ class QtN_Admin_Settings {
 		add_settings_field(
 			'qtn_switch_locale',
 			'',
-			array($this, 'switch_locale'),
+			array( $this, 'switch_locale' ),
 			'general',
 			'default'
 		);
@@ -42,10 +42,10 @@ class QtN_Admin_Settings {
 		), 'general' );
 
 		register_setting( 'general', 'qtn_languages', array(
-			'type'              => 'string',
+			'type'              => 'array',
 			'group'             => 'general',
 			'description'       => '',
-			'sanitize_callback' => array($this, 'save_options'),
+			'sanitize_callback' => array( $this, 'save_options' ),
 			'show_in_rest'      => true,
 		) );
 	}
