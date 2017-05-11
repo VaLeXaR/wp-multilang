@@ -96,7 +96,6 @@ class QtN_Config {
 		add_action( 'after_setup_theme', array( $this, 'setup_lang_query' ) );
 		add_action( 'change_locale', array( $this, 'change_locale' ) );
 		add_action( 'after_setup_theme', array( $this, 'setup_config' ) );
-
 		add_filter( 'option_home', array( $this, 'set_home_url' ) );
 		add_filter( 'query_vars', array( $this, 'set_lang_var' ) );
 	}
@@ -209,7 +208,9 @@ class QtN_Config {
 			'post_types'  => array(
 				'page',
 				'post',
-				'attachment'
+				'attachment',
+				'nav_menu_item',
+				'revision'
 			),
 			'post_fields' => array(
 				'_wp_attachment_image_alt'

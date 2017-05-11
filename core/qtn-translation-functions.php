@@ -30,7 +30,7 @@ function qtn_translate_url( $url, $new_locale = '' ) {
 function qtn_translate_string( $string, $locale = '' ) {
 	global $qtn_config;
 
-	$strings = qtn_string_to_localize_array( $string );
+	$strings = qtn_string_to_ml_array( $string );
 
 	if ( empty( $strings ) ) {
 		return $string;
@@ -73,7 +73,7 @@ function qtn_translate_value( $value, $locale = '' ) {
 }
 
 
-function qtn_string_to_localize_array( $string ) {
+function qtn_string_to_ml_array( $string ) {
 	global $qtn_config;
 
 	if ( ! is_string( $string ) ) {
@@ -134,27 +134,27 @@ function qtn_string_to_localize_array( $string ) {
 	return $result;
 }
 
-function qtn_value_to_localize_array( $value ) {
+function qtn_value_to_ml_array( $value ) {
 	if ( is_array( $value ) ) {
 		$result = array();
 		foreach ( $value as $k => $item ) {
-			$result[ $k ] = qtn_value_to_localize_array( $item );
+			$result[ $k ] = qtn_value_to_ml_array( $item );
 		}
 
 		return $result;
 	} elseif ( is_string( $value ) ) {
-		return qtn_string_to_localize_array( $value );
+		return qtn_string_to_ml_array( $value );
 	} else {
 		return $value;
 	}
 }
 
-function qtn_localize_array_to_string( $strings ) {
+function qtn_ml_array_to_string( $strings ) {
 	global $qtn_config;
 
 	$string = '';
 
-	if ( ! is_array( $strings ) || ! qtn_is_localize_array( $strings ) ) {
+	if ( ! is_array( $strings ) || ! qtn_is_ml_array( $strings ) ) {
 		return $string;
 	}
 
@@ -169,15 +169,15 @@ function qtn_localize_array_to_string( $strings ) {
 	return $string;
 }
 
-function qtn_localize_value_to_string( $value ) {
+function qtn_ml_value_to_string( $value ) {
 
 	if ( is_array( $value ) ) {
-		if ( qtn_is_localize_array( $value ) ) {
-			return qtn_localize_array_to_string( $value );
+		if ( qtn_is_ml_array( $value ) ) {
+			return qtn_ml_array_to_string( $value );
 		} else {
 			$result = array();
 			foreach ( $value as $key => $item ) {
-				$result[ $key ] = qtn_localize_value_to_string( $item );
+				$result[ $key ] = qtn_ml_value_to_string( $item );
 			}
 
 			return $result;
@@ -201,7 +201,7 @@ function qtn_set_language_value( $localize_array, $value, $locale = '' ) {
 		}
 	} else {
 		if ( is_string( $value ) ) {
-			if ( qtn_is_localize_array( $localize_array) ) {
+			if ( qtn_is_ml_array( $localize_array ) ) {
 				$localize_array[ $lang ] = $value;
 			} else {
 				$result = array();
@@ -221,16 +221,21 @@ function qtn_set_language_value( $localize_array, $value, $locale = '' ) {
 
 function qtn_translate_object( $object, $locale = '' ) {
 
-	foreach ( get_object_vars( $object ) as $key => $content ) {
-		switch ( $key ) {
-			case 'post_title':
-			case 'post_content':
-			case 'post_excerpt':
-			case 'name':
-			case 'description':
-				$object->$key = qtn_translate_value( $content, $locale );
-				break;
+	if ( is_object( $object) && ($object instanceof WP_Post || $object instanceof WP_Term)) {
+
+		foreach ( get_object_vars( $object ) as $key => $content ) {
+			switch ( $key ) {
+				case 'post_title':
+				case 'post_content':
+				case 'post_excerpt':
+				case 'name':
+				case 'description':
+					$object->$key = qtn_translate_value( $content, $locale );
+					break;
+			}
 		}
+
+		return $object;
 	}
 
 	return $object;
@@ -251,27 +256,29 @@ function qtn_untranslate_post( $post ) {
 	return $post;
 }
 
-function qtn_is_localize_array( $array ) {
+function qtn_is_ml_array( $array ) {
 	global $qtn_config;
 
-	if ( is_array( $array ) ) {
-		foreach ( $array as $key => $item ) {
-			if ( ! in_array( $key, $qtn_config->languages ) ) {
-				return false;
-			}
+	if ( ! is_array( $array) ) {
+		return false;
+	}
+
+	foreach ( $array as $key => $item ) {
+		if ( ! in_array( $key, $qtn_config->languages ) ) {
+			return false;
 		}
 	}
 
 	return true;
 }
 
-function qtn_is_localize_string( $string ) {
+function qtn_is_ml_string( $string ) {
 
 	if ( ! is_string( $string ) ) {
 		return false;
 	}
 
-	$strings = qtn_string_to_localize_array( $string );
+	$strings = qtn_string_to_ml_array( $string );
 
 	if ( is_array( $strings ) && ! empty( $strings ) ) {
 		return true;
@@ -280,16 +287,16 @@ function qtn_is_localize_string( $string ) {
 	return false;
 }
 
-function qtn_is_localize_value( $value ) {
+function qtn_is_ml_value( $value ) {
 
 	if ( is_array( $value ) ) {
-		$result = array_filter( $value, 'qtn_is_localize_array' );
+		$result = array_filter( $value, 'qtn_is_ml_array' );
 		if ( $result ) {
 			return true;
 		}
 
 		return false;
 	} else {
-		return qtn_is_localize_string( $value );
+		return qtn_is_ml_string( $value );
 	}
 }

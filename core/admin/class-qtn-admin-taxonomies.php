@@ -1,6 +1,6 @@
 <?php
 /**
- * Post Types Admin
+ * Taxonomies Admin
  *
  * @author   VaLeXaR
  * @category Admin
@@ -13,57 +13,52 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
+if ( ! class_exists( 'QtN_Admin_Taxonomies' ) ) :
 
 	/**
-	 * WC_Admin_Post_Types Class.
+	 * QtN_Admin_Taxonomies Class.
 	 *
 	 * Handles the edit posts views and some functionality on the edit post screen for WC post types.
 	 */
-	class QtN_Admin_Posts {
+	class QtN_Admin_Taxonomies {
 
 		/**
 		 * Constructor.
 		 */
 		public function __construct() {
-			add_action( 'edit_form_top', array( $this, 'translate_post' ), 0 );
 			add_action( 'admin_init', array($this, 'init'));
 
-			add_filter( 'redirect_post_location', array( $this, 'redirect_after_save' ), 0 );
-			add_filter( 'get_sample_permalink', array( $this, 'translate_post_link' ), 0);
+//			add_filter( 'redirect_post_location', array( $this, 'redirect_after_save' ), 0 );
+//			add_filter( 'get_sample_permalink', array( $this, 'translate_post_link' ), 0);
 		}
 
 
 		public function init() {
 			global $qtn_config;
 
-			foreach($qtn_config->settings['post_types'] as $post_type) {
+			foreach($qtn_config->settings['taxonomies'] as $taxonomy) {
 
-				if ( 'attachment' == $post_type) {
+				add_action( "{$taxonomy}_term_edit_form_top", array( $this, 'translate_taxonomies' ), 0 );
+
+/*				if ( 'attachment' == $post_type) {
 					add_filter( "manage_media_columns", array( $this, 'language_columns' ) );
 					add_action( "manage_media_custom_column", array( $this, 'render_language_column' ) );
 					continue;
 				}
 
 				add_filter( "manage_{$post_type}_posts_columns", array( $this, 'language_columns' ) );
-				add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'render_language_column' ) );
+				add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'render_language_column' ) );*/
 			}
 
 		}
 
 
-		public function translate_post() {
-			global $post, $qtn_config;
-
-			$screen = get_current_screen();
-
-			if ( 'add' === $screen->action) {
-				return;
-			}
+		public function translate_taxonomies($tag) {
+			global $qtn_config;
 
 			$languages = $qtn_config->languages;
 			$lang      = isset( $_GET['edit_lang'] ) ? qtn_clean( $_GET['edit_lang'] ) : $qtn_config->languages[ get_locale() ];
-			$post      = qtn_translate_object( $post );
+			$tag      = qtn_translate_object( $tag );
 			?>
 			<input type="hidden" name="lang" value="<?php echo $lang; ?>">
 			<?php
@@ -72,22 +67,19 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 				return;
 			}
 
-			if ( in_array( $post->post_type, $qtn_config->settings['post_types'] ) ) {
-
-				$url = remove_query_arg( 'edit_lang', get_edit_post_link( $post->ID ) );
-				?>
-				<h3 class="nav-tab-wrapper language-switcher">
-					<?php foreach ( $languages as $key => $language ) { ?>
-						<a class="nav-tab<?php if ( $lang == $language ) { ?> nav-tab-active<?php } ?>"
-						   href="<?php echo add_query_arg( 'edit_lang', $language, $url ); ?>">
-							<img src="<?php echo QN()->flag_dir() . $qtn_config->options[ $key ]['flag'] . '.png'; ?>"
-							     alt="<?php echo $qtn_config->options[ $key ]['name']; ?>">
-							<span><?php echo $qtn_config->options[ $key ]['name']; ?></span>
-						</a>
-					<?php } ?>
-				</h3>
-				<?php
-			}
+			$url = remove_query_arg( 'edit_lang', get_edit_term_link( $tag->term_id ) );
+			?>
+			<h3 class="nav-tab-wrapper language-switcher">
+				<?php foreach ( $languages as $key => $language ) { ?>
+					<a class="nav-tab<?php if ( $lang == $language ) { ?> nav-tab-active<?php } ?>"
+					   href="<?php echo add_query_arg( 'edit_lang', $language, $url ); ?>">
+						<img src="<?php echo QN()->flag_dir() . $qtn_config->options[ $key ]['flag'] . '.png'; ?>"
+						     alt="<?php echo $qtn_config->options[ $key ]['name']; ?>">
+						<span><?php echo $qtn_config->options[ $key ]['name']; ?></span>
+					</a>
+				<?php } ?>
+			</h3>
+			<?php
 		}
 
 		public function redirect_after_save( $location ) {

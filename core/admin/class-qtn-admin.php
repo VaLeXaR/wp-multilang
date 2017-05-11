@@ -43,6 +43,7 @@ class QtN_Admin {
 		include_once( 'qtn-admin-functions.php' );
 		new QtN_Admin_Menus();
 		new QtN_Admin_Posts();
+		new QtN_Admin_Taxonomies();
 		new QtN_Admin_Settings();
 //		new GP_Admin_Taxonomies();
 //		new GP_Admin_Assets();
