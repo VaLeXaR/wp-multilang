@@ -18,7 +18,7 @@ class QtN_Posts extends \QtN_Object {
 		add_filter( 'get_edit_post_link', array( $this, 'edit_post_link' ), 0, 3 );
 		add_filter( "get_{$this->object_type}_metadata", array( $this, 'get_meta_field' ), 0, 3 );
 		add_filter( "update_{$this->object_type}_metadata", array( $this, 'update_meta_field' ), 0, 5 );
-//		add_filter( 'heartbeat_received', array( 'WPGlobus_Filters', 'filter__heartbeat_received' ), 501, 3 );
+//		add_filter( 'heartbeat_received', array( 'WPGlobus_Filters', 'filter__heartbeat_received' ), 501, 2 );
 
 //		add_filter( 'get_pages', array( $this, 'filter_posts' ), 0, 2 );
 //		add_filter( 'the_content', 'qtn_translate_string', 0);
@@ -41,18 +41,7 @@ class QtN_Posts extends \QtN_Object {
 		return $link;
 	}
 
-	public static function filter__heartbeat_received(
-		$response, $data,
-		/** @noinspection PhpUnusedParameterInspection */
-		$screen_id
-	) {
-
-		if ( false !== strpos( $_SERVER['HTTP_REFERER'], 'wpglobus=off' ) ) {
-			/**
-			 * Check $_SERVER['HTTP_REFERER'] for wpglobus toggle is off because wpglobus-admin.js doesn't loaded in this mode
-			 */
-			return $response;
-		}
+	public static function filter__heartbeat_received( $response, $data ) {
 
 		if ( ! empty( $data['wp_autosave'] ) ) {
 

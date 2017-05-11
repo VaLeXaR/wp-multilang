@@ -218,6 +218,11 @@ class QtN_Config {
 			'taxonomies'  => array(
 				'category',
 				'post_tag'
+			),
+			'admin_pages' => array(
+				'options-general',
+				'widgets',
+				'settings_page_media-taxonomies'
 			)
 		);
 

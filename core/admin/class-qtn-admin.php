@@ -46,11 +46,20 @@ class QtN_Admin {
 		new QtN_Admin_Posts();
 		new QtN_Admin_Taxonomies();
 		new QtN_Admin_Settings();
+		new QtN_Admin_Edit_Menus();
 //		new GP_Admin_Assets();
 	}
 
 
 	public function redirect_to_edit_lang() {
-		d(get_current_screen(), admin_url());
+		global $qtn_config;
+		$screen = get_current_screen();
+
+		if ( in_array( $screen->id, $qtn_config->settings['admin_pages'] ) ) {
+			if ( ! isset( $_GET['edit_lang'] ) ) {
+				wp_redirect( add_query_arg( 'edit_lang', $qtn_config->languages[ get_locale() ], $_SERVER['REQUEST_URI'] ) );
+				exit;
+			}
+		}
 	}
 }
