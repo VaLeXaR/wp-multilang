@@ -47,7 +47,7 @@ class QtN_Admin {
 		new QtN_Admin_Taxonomies();
 		new QtN_Admin_Settings();
 		new QtN_Admin_Edit_Menus();
-//		new GP_Admin_Assets();
+		new QtN_Admin_Assets();
 	}
 
 

@@ -183,7 +183,7 @@ class QtN_Config {
 
 		$locale = get_locale();
 		if ( $this->languages[ $locale ] != $this->languages[ $this->default_locale ] ) {
-			$value .= '/' . $this->languages[ $locale ] . '/';
+			$value .= '/' . $this->languages[ $locale ];
 		}
 
 		return $value;
@@ -220,9 +220,14 @@ class QtN_Config {
 				'post_tag'
 			),
 			'admin_pages' => array(
+				'nav-menus',
 				'options-general',
 				'widgets',
 				'settings_page_media-taxonomies'
+			),
+			'options' => array(
+				'blogname',
+				'blogdescription'
 			)
 		);
 

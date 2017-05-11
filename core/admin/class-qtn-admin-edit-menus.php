@@ -25,20 +25,13 @@ if ( ! class_exists( 'QtN_Admin_Edit_Menus' ) ) :
 		 * Hook in tabs.
 		 */
 		public function __construct() {
-			add_action( 'admin_head', array( $this, 'redirect_to_edit_lang' ), 0 );
+			add_filter( 'wp_setup_nav_menu_item', array( $this, 'translate_menu_item' ), 0 );
 		}
 
 
-		public function redirect_to_edit_lang() {
-			global $qtn_config;
-			$screen = get_current_screen();
-
-			if ( $screen->id == 'nav-menus' && ! isset( $_GET['action'] ) ) {
-				if ( ! isset( $_GET['edit_lang'] ) ) {
-					wp_redirect( add_query_arg( 'edit_lang', $qtn_config->languages[ get_locale() ], $_SERVER['REQUEST_URI'] ) );
-					exit;
-				}
-			}
+		public function translate_menu_item( $menu_item ) {
+			$menu_item = qtn_translate_object( $menu_item );
+			return $menu_item;
 		}
 	}
 

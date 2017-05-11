@@ -174,7 +174,7 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 			include_once( 'core/abstracts/abstract-qtn-object.php' );
 			new Core\QtN_Posts();
 			new Core\QtN_Taxonomies();
-			new Core\QtN_Menus();
+			new Core\QtN_Options();
 
 			if ( $this->is_request( 'admin' ) ) {
 				new Core\Admin\QtN_Admin;
@@ -248,6 +248,14 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 		 */
 		public function plugin_path() {
 			return untrailingslashit( plugin_dir_path( __FILE__ ) );
+		}
+
+		/**
+		 * Get the plugin path.
+		 * @return string
+		 */
+		public function template_path() {
+			return $this->plugin_path() . '/templates/';
 		}
 
 		/**

@@ -75,13 +75,11 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 			}
 
 			if ( in_array( $post->post_type, $qtn_config->settings['post_types'] ) ) {
-
-				$url = remove_query_arg( 'edit_lang', get_edit_post_link( $post->ID ) );
 				?>
-				<h3 class="nav-tab-wrapper language-switcher">
+				<h3 id="qtn-language-switcher" class="nav-tab-wrapper language-switcher">
 					<?php foreach ( $languages as $key => $language ) { ?>
 						<a class="nav-tab<?php if ( $lang == $language ) { ?> nav-tab-active<?php } ?>"
-						   href="<?php echo add_query_arg( 'edit_lang', $language, $url ); ?>">
+						   href="<?php echo add_query_arg( 'edit_lang', $language, get_edit_post_link( $post->ID ) ); ?>">
 							<img src="<?php echo QN()->flag_dir() . $qtn_config->options[ $key ]['flag'] . '.png'; ?>"
 							     alt="<?php echo $qtn_config->options[ $key ]['name']; ?>">
 							<span><?php echo $qtn_config->options[ $key ]['name']; ?></span>
@@ -119,8 +117,6 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 
 			foreach ( $data as $key => $content ) {
 				switch ( $key ) {
-					case 'title':
-					case 'attr_title':
 					case 'post_title':
 					case 'post_content':
 					case 'post_excerpt':
@@ -133,6 +129,17 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 						$value        = qtn_set_language_value( $strings, $data[ $key ] );
 						$data[ $key ] = qtn_ml_value_to_string( $value );
 						break;
+				}
+			}
+
+			if ( 'nav_menu_item' == $data['post_type'] ) {
+				$screen = get_current_screen();
+
+				if ( 'POST' == $_SERVER['REQUEST_METHOD'] && 'update' == $_POST['action'] && $screen->id == 'nav-menus' ) {
+					// hack to get wp to create a post object when too many properties are empty
+					if ( '' == $data['post_title'] && '' == $data['post_content'] ) {
+						$data['post_content'] = ' ';
+					}
 				}
 			}
 

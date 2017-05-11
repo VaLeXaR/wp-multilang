@@ -138,6 +138,7 @@ function qtn_string_to_ml_array( $string ) {
 	return $result;
 }
 
+
 function qtn_value_to_ml_array( $value ) {
 	if ( is_array( $value ) ) {
 		$result = array();
@@ -176,6 +177,7 @@ function qtn_ml_array_to_string( $strings ) {
 
 	return $string;
 }
+
 
 function qtn_ml_value_to_string( $value ) {
 

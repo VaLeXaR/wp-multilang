@@ -21,15 +21,31 @@ include( 'qtn-translation-functions.php' );
 include( 'qtn-template-functions.php' );
 
 
+function gp_get_template_html( $path ) {
+	ob_start();
+
+	$located = QN()->template_path() . $path;
+	if ( ! file_exists( $located ) ) {
+		_doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', $located ), '1.0' );
+
+		return false;
+	}
+
+	include( $located );
+
+	return ob_get_clean();
+}
+
+
 function qtn_asset_path( $filename ) {
-	$dist_path = str_replace( array( 'http:', 'https:' ), '', QN()->plugin_url() ) . '/dist/';
+	$dist_path = str_replace( array( 'http:', 'https:' ), '', QN()->plugin_url() ) . '/assets/';
 	$directory = dirname( $filename ) . '/';
 	$file      = basename( $filename );
 	static $manifest;
 
 	if ( empty( $manifest ) ) {
-		$manifest_path = QN()->plugin_path() . '/dist/assets.json';
-		$manifest      = new QtNext\Libraries\Json_Manifest( $manifest_path );
+		$manifest_path = QN()->plugin_path() . '/assets/assets.json';
+		$manifest      = new QtNext\Core\Libraries\Json_Manifest( $manifest_path );
 	}
 
 	if ( array_key_exists( $file, $manifest->get() ) ) {
@@ -37,22 +53,6 @@ function qtn_asset_path( $filename ) {
 	} else {
 		return $dist_path . $directory . $file;
 	}
-}
-
-/**
- * Queue some JavaScript code to be output in the footer.
- *
- * @param string $code
- */
-
-function qtn_enqueue_js( $code ) {
-	global $qtn_queued_js;
-
-	if ( empty( $qtn_queued_js ) ) {
-		$qtn_queued_js = '';
-	}
-
-	$qtn_queued_js .= "\n" . $code . "\n";
 }
 
 /**
@@ -95,73 +95,6 @@ function qtn_setcookie( $name, $value, $expire = 0, $secure = false ) {
 		headers_sent( $file, $line );
 		trigger_error( "{$name} cookie cannot be set - headers already sent by {$file} on line {$line}", E_USER_NOTICE );
 	}
-}
-
-/**
- * Find all possible combinations of values from the input array and return in a logical order.
- *
- * @param array $input
- *
- * @return array
- */
-function qtn_array_cartesian( $input ) {
-	$input   = array_filter( $input );
-	$results = array();
-	$indexes = array();
-	$index   = 0;
-
-	// Generate indexes from keys and values so we have a logical sort order
-	foreach ( $input as $key => $values ) {
-		foreach ( $values as $value ) {
-			$indexes[ $key ][ $value ] = $index ++;
-		}
-	}
-
-	// Loop over the 2D array of indexes and generate all combinations
-	foreach ( $indexes as $key => $values ) {
-		// When result is empty, fill with the values of the first looped array
-		if ( empty( $results ) ) {
-			foreach ( $values as $value ) {
-				$results[] = array( $key => $value );
-			}
-
-			// Second and subsequent input sub-array merging.
-		} else {
-			foreach ( $results as $result_key => $result ) {
-				foreach ( $values as $value ) {
-					// If the key is not set, we can set it
-					if ( ! isset( $results[ $result_key ][ $key ] ) ) {
-						$results[ $result_key ][ $key ] = $value;
-						// If the key is set, we can add a new combination to the results array
-					} else {
-						$new_combination         = $results[ $result_key ];
-						$new_combination[ $key ] = $value;
-						$results[]               = $new_combination;
-					}
-				}
-			}
-		}
-	}
-
-	// Sort the indexes
-	arsort( $results );
-
-	// Convert indexes back to values
-	foreach ( $results as $result_key => $result ) {
-		$converted_values = array();
-
-		// Sort the values
-		arsort( $results[ $result_key ] );
-
-		// Convert the values
-		foreach ( $results[ $result_key ] as $key => $value ) {
-			$converted_values[ $key ] = array_search( $value, $indexes[ $key ] );
-		}
-
-		$results[ $result_key ] = $converted_values;
-	}
-
-	return $results;
 }
 
 /**
