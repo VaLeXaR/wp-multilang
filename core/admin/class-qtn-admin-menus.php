@@ -56,7 +56,7 @@ class QtN_Admin_Menus {
 			            '</span>',
 		) );
 
-		$current_url = $_SERVER['REQUEST_URI'];
+		$current_url = home_url( $_SERVER['REQUEST_URI'] );
 
 		foreach ( $languages as $key => $language ) {
 

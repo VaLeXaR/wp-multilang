@@ -26,6 +26,7 @@ class QtN_Admin {
 	public function __construct() {
 		add_action( 'init', array( $this, 'includes' ) );
 		add_action( 'admin_init', array( $this, 'buffer' ), 1 );
+		add_action( 'admin_head', array( $this, 'redirect_to_edit_lang' ), 0 );
 		add_action( 'admin_footer', 'qtn_print_js', 25 );
 	}
 
@@ -45,7 +46,11 @@ class QtN_Admin {
 		new QtN_Admin_Posts();
 		new QtN_Admin_Taxonomies();
 		new QtN_Admin_Settings();
-//		new GP_Admin_Taxonomies();
 //		new GP_Admin_Assets();
+	}
+
+
+	public function redirect_to_edit_lang() {
+		d(get_current_screen(), admin_url());
 	}
 }

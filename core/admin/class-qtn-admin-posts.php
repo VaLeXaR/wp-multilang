@@ -28,6 +28,8 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 		public function __construct() {
 			add_action( 'edit_form_top', array( $this, 'translate_post' ), 0 );
 			add_action( 'admin_init', array($this, 'init'));
+			add_filter( 'wp_insert_post_data', array( $this, 'save_post' ), 0, 2 );
+			add_filter( 'wp_insert_attachment_data', array( $this, 'save_post' ), 0, 2 );
 			add_filter( 'redirect_post_location', array( $this, 'redirect_after_save' ), 0 );
 			add_filter( 'get_sample_permalink', array( $this, 'translate_post_link' ), 0);
 			add_filter( 'preview_post_link', array( $this, 'translate_post_link' ), 0);
@@ -89,6 +91,56 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 				<?php
 			}
 		}
+
+
+		public function save_post( $data, $postarr ) {
+			global $qtn_config;
+
+			if ( ! in_array( $data['post_type'], $qtn_config->settings['post_types'] ) ) {
+				return $data;
+			}
+
+			if ( 'attachment' !== $data['post_type'] ) {
+
+				if ( 'trash' == $postarr['post_status'] ) {
+					return $data;
+				}
+
+				if ( isset( $_GET['action'] ) && 'untrash' == $_GET['action'] ) {
+					return $data;
+				}
+			}
+
+			$post_id = isset( $data['ID'] ) ? qtn_clean( $data['ID'] ) : ( isset( $postarr['ID'] ) ? qtn_clean( $postarr['ID'] ) : 0 );
+
+			if ( ! $post_id ) {
+				return $data;
+			}
+
+			foreach ( $data as $key => $content ) {
+				switch ( $key ) {
+					case 'post_title':
+					case 'post_content':
+					case 'post_excerpt':
+						if ( qtn_is_ml_value( $content ) ) {
+							break;
+						}
+
+						$old_value    = get_post_field( $key, $post_id, 'edit' );
+						$strings      = qtn_value_to_ml_array( $old_value );
+						$value        = qtn_set_language_value( $strings, $data[ $key ] );
+						$data[ $key ] = qtn_ml_value_to_string( $value );
+						break;
+				}
+			}
+
+			if ( empty( $data['post_name'] ) ) {
+				$data['post_name'] = sanitize_title( qtn_translate_value( $data['post_title'], $qtn_config->languages[ $qtn_config->default_locale ] ) );
+			}
+
+			return $data;
+		}
+
 
 		public function redirect_after_save( $location ) {
 			if ( isset( $_POST['lang'] ) ) {
