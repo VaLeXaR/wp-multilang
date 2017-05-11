@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-class QtN_Menus extends \QtN_Object {
+class QtN_Menus {
 
 	public function __construct() {
 		add_filter( 'wp_setup_nav_menu_item', array( $this, 'translate_menu_item' ), 0 );
