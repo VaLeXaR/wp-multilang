@@ -141,10 +141,10 @@ class QtN_Config {
 	 * Hook into actions and filters.
 	 */
 	private function init_hooks() {
-		add_action( 'after_setup_theme', array( $this, 'setup_lang_query' ) );
-		add_action( 'change_locale', array( $this, 'change_locale' ) );
-		add_action( 'after_setup_theme', array( $this, 'setup_config' ) );
-		add_filter( 'option_home', array( $this, 'set_home_url' ) );
+		add_action( 'after_setup_theme', array( $this, 'setup_lang_query' ), 0 );
+		add_action( 'change_locale', array( $this, 'change_locale' ), 0 );
+		add_action( 'after_setup_theme', array( $this, 'setup_config' ), 0 );
+		add_filter( 'option_home', array( $this, 'set_home_url' ), 0 );
 		add_filter( 'query_vars', array( $this, 'set_lang_var' ) );
 	}
 

@@ -10,7 +10,7 @@ class QtN_Options {
 
 	public function __construct() {
 
-		add_filter( 'init', array( $this, 'get_options' ), 0 );
+		add_filter( 'after_setup_theme', array( $this, 'get_options' ), 1 );
 	}
 
 	public function get_options() {
