@@ -19,7 +19,7 @@ class QtN_Options {
 		$options = $qtn_config->settings['options'];
 
 		foreach ( $options as $option ) {
-			add_filter( "option_{$option}", 'qtn_translate_value' );
+			add_filter( "option_{$option}", 'qtn_translate_value', 0 );
 		}
 	}
 }
