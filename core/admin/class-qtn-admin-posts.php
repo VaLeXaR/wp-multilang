@@ -119,6 +119,8 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 
 			foreach ( $data as $key => $content ) {
 				switch ( $key ) {
+					case 'title':
+					case 'attr_title':
 					case 'post_title':
 					case 'post_content':
 					case 'post_excerpt':

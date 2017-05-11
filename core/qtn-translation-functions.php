@@ -246,8 +246,6 @@ function qtn_translate_object( $object, $locale = '' ) {
 					break;
 			}
 		}
-
-		return $object;
 	}
 
 	return $object;
@@ -255,13 +253,18 @@ function qtn_translate_object( $object, $locale = '' ) {
 
 function qtn_untranslate_post( $post ) {
 
-	foreach ( get_object_vars( $post ) as $key => $content ) {
-		switch ( $key ) {
-			case 'post_title':
-			case 'post_content':
-			case 'post_excerpt':
-				$post->$key = get_post_field( $key, $post->ID, 'edit' );
-				break;
+	if ( $post instanceof WP_Post ) {
+
+		foreach ( get_object_vars( $post ) as $key => $content ) {
+			switch ( $key ) {
+				case 'post_title':
+				case 'post_content':
+				case 'post_excerpt':
+				case 'title':
+				case 'attr_title':
+					$post->$key = get_post_field( $key, $post->ID, 'edit' );
+					break;
+			}
 		}
 	}
 
