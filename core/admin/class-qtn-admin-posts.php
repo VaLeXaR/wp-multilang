@@ -28,9 +28,9 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 		public function __construct() {
 			add_action( 'edit_form_top', array( $this, 'translate_post' ), 0 );
 			add_action( 'admin_init', array($this, 'init'));
-
 			add_filter( 'redirect_post_location', array( $this, 'redirect_after_save' ), 0 );
 			add_filter( 'get_sample_permalink', array( $this, 'translate_post_link' ), 0);
+			add_filter( 'preview_post_link', array( $this, 'translate_post_link' ), 0);
 		}
 
 
@@ -136,9 +136,9 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 
 			if ( 'languages' == $column ) {
 
-				$_post   = qtn_untranslate_post( get_post() );
+				$post   = qtn_untranslate_post( get_post() );
 				$output  = array();
-				$text    = $_post->post_title . $_post->post_content;
+				$text    = $post->post_title . $post->post_content;
 				$strings = qtn_value_to_ml_array( $text );
 				$options = $qtn_config->options;
 
@@ -160,7 +160,12 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 			if ( is_admin() && isset( $_GET['edit_lang'] ) ) {
 				$lang      = qtn_clean( $_GET['edit_lang'] );
 				if ( in_array( $lang, $qtn_config->languages ) && $lang != $qtn_config->languages[ $qtn_config->default_locale ] ) {
-					$link[0] = str_replace( home_url(), home_url() . '/' . $lang, $link[0] );
+					if ( is_array( $link ) ) {
+						$link[0] = str_replace( home_url(), home_url('/' . $lang), $link[0] );
+					} else {
+						$link = str_replace( home_url(), home_url('/' . $lang ), $link );
+
+					}
 				}
 			}
 

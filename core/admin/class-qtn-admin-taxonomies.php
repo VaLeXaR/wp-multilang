@@ -26,39 +26,27 @@ if ( ! class_exists( 'QtN_Admin_Taxonomies' ) ) :
 		 * Constructor.
 		 */
 		public function __construct() {
-			add_action( 'admin_init', array($this, 'init'));
-
-//			add_filter( 'redirect_post_location', array( $this, 'redirect_after_save' ), 0 );
-//			add_filter( 'get_sample_permalink', array( $this, 'translate_post_link' ), 0);
+			add_action( 'admin_init', array( $this, 'init' ) );
 		}
 
 
 		public function init() {
 			global $qtn_config;
 
-			foreach($qtn_config->settings['taxonomies'] as $taxonomy) {
-
+			foreach ( $qtn_config->settings['taxonomies'] as $taxonomy ) {
 				add_action( "{$taxonomy}_term_edit_form_top", array( $this, 'translate_taxonomies' ), 0 );
-
-/*				if ( 'attachment' == $post_type) {
-					add_filter( "manage_media_columns", array( $this, 'language_columns' ) );
-					add_action( "manage_media_custom_column", array( $this, 'render_language_column' ) );
-					continue;
-				}
-
-				add_filter( "manage_{$post_type}_posts_columns", array( $this, 'language_columns' ) );
-				add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'render_language_column' ) );*/
+				add_filter( "manage_edit-{$taxonomy}_columns", array( $this, 'language_columns' ) );
+				add_filter( "manage_{$taxonomy}_custom_column", array( $this, 'render_language_column' ), 0, 3 );
 			}
-
 		}
 
 
-		public function translate_taxonomies($tag) {
+		public function translate_taxonomies( $tag ) {
 			global $qtn_config;
 
 			$languages = $qtn_config->languages;
 			$lang      = isset( $_GET['edit_lang'] ) ? qtn_clean( $_GET['edit_lang'] ) : $qtn_config->languages[ get_locale() ];
-			$tag      = qtn_translate_object( $tag );
+			$tag       = qtn_translate_object( $tag );
 			?>
 			<input type="hidden" name="lang" value="<?php echo $lang; ?>">
 			<?php
@@ -82,14 +70,6 @@ if ( ! class_exists( 'QtN_Admin_Taxonomies' ) ) :
 			<?php
 		}
 
-		public function redirect_after_save( $location ) {
-			if ( isset( $_POST['lang'] ) ) {
-				$location = add_query_arg( 'edit_lang', qtn_clean( $_POST['lang'] ), $location );
-			}
-
-			return $location;
-		}
-
 		/**
 		 * Define custom columns for post_types.
 		 *
@@ -102,7 +82,7 @@ if ( ! class_exists( 'QtN_Admin_Taxonomies' ) ) :
 				$columns = array();
 			}
 
-			$insert_after = 'title';
+			$insert_after = 'name';
 
 			$i = 0;
 			foreach ( $columns as $key => $value ) {
@@ -123,14 +103,15 @@ if ( ! class_exists( 'QtN_Admin_Taxonomies' ) ) :
 		 *
 		 * @param string $column
 		 */
-		public function render_language_column( $column ) {
+		public function render_language_column( $columns, $column, $term_id ) {
 			global $qtn_config;
 
 			if ( 'languages' == $column ) {
-
-				$_post   = qtn_untranslate_post( get_post() );
+				remove_filter( 'get_term', 'qtn_translate_object', 0 );
+				$term = get_term( $term_id );
+				add_filter( 'get_term', 'qtn_translate_object', 0 );
 				$output  = array();
-				$text    = $_post->post_title . $_post->post_content;
+				$text    = $term->name . $term->description;
 				$strings = qtn_value_to_ml_array( $text );
 				$options = $qtn_config->options;
 
@@ -141,22 +122,11 @@ if ( ! class_exists( 'QtN_Admin_Taxonomies' ) ) :
 				}
 
 				if ( ! empty( $output ) ) {
-					echo implode( '<br />', $output );
-				}
-			}
-		}
-
-
-		public function translate_post_link( $link ) {
-			global $qtn_config;
-			if ( is_admin() && isset( $_GET['edit_lang'] ) ) {
-				$lang      = qtn_clean( $_GET['edit_lang'] );
-				if ( in_array( $lang, $qtn_config->languages ) && $lang != $qtn_config->languages[ $qtn_config->default_locale ] ) {
-					$link[0] = str_replace( home_url(), home_url() . '/' . $lang, $link[0] );
+					$columns .= implode( '<br />', $output );
 				}
 			}
 
-			return $link;
+			return $columns;
 		}
 	}
 

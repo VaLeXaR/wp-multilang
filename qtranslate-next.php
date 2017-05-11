@@ -174,6 +174,7 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 			include_once( 'core/abstracts/abstract-qtn-object.php' );
 			new Core\QtN_Posts();
 			new Core\QtN_Taxonomies();
+			new Core\QtN_Menus();
 
 			if ( $this->is_request( 'admin' ) ) {
 				new Core\Admin\QtN_Admin;

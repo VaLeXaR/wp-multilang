@@ -89,32 +89,6 @@ class QtN_Config {
 		$this->set_locale();
 	}
 
-	/**
-	 * Hook into actions and filters.
-	 */
-	private function init_hooks() {
-		add_action( 'after_setup_theme', array( $this, 'setup_lang_query' ) );
-		add_action( 'change_locale', array( $this, 'change_locale' ) );
-		add_action( 'after_setup_theme', array( $this, 'setup_config' ) );
-		add_filter( 'option_home', array( $this, 'set_home_url' ) );
-		add_filter( 'query_vars', array( $this, 'set_lang_var' ) );
-	}
-
-
-	private function get_translations() {
-
-		require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
-
-		$available_translations = wp_get_available_translations();
-
-		$available_translations['en_US'] = array(
-			'native_name' => 'English (US)',
-			'iso'         => array( 'en' )
-		);
-
-		return $available_translations;
-	}
-
 
 	private function set_user_lang() {
 
@@ -163,6 +137,32 @@ class QtN_Config {
 		}
 	}
 
+	/**
+	 * Hook into actions and filters.
+	 */
+	private function init_hooks() {
+		add_action( 'after_setup_theme', array( $this, 'setup_lang_query' ) );
+		add_action( 'change_locale', array( $this, 'change_locale' ) );
+		add_action( 'after_setup_theme', array( $this, 'setup_config' ) );
+		add_filter( 'option_home', array( $this, 'set_home_url' ) );
+		add_filter( 'query_vars', array( $this, 'set_lang_var' ) );
+	}
+
+
+	private function get_translations() {
+
+		require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
+
+		$available_translations = wp_get_available_translations();
+
+		$available_translations['en_US'] = array(
+			'native_name' => 'English (US)',
+			'iso'         => array( 'en' )
+		);
+
+		return $available_translations;
+	}
+
 
 	public function setup_lang_query() {
 		set_query_var( 'lang', $this->user_language );
@@ -183,7 +183,7 @@ class QtN_Config {
 
 		$locale = get_locale();
 		if ( $this->languages[ $locale ] != $this->languages[ $this->default_locale ] ) {
-			$value .= '/' . $this->languages[ $locale ];
+			$value .= '/' . $this->languages[ $locale ] . '/';
 		}
 
 		return $value;

@@ -32,6 +32,10 @@ function qtn_translate_string( $string, $locale = '' ) {
 
 	$strings = qtn_string_to_ml_array( $string );
 
+	if ( ! is_array( $strings )) {
+		return $string;
+	}
+
 	if ( empty( $strings ) ) {
 		return $string;
 	}
@@ -159,9 +163,13 @@ function qtn_ml_array_to_string( $strings ) {
 	}
 
 	foreach ( $strings as $key => $value ) {
-		if ( in_array( $key, $qtn_config->languages ) ) {
+		if ( in_array( $key, $qtn_config->languages ) && ! empty( $value ) ) {
 			$string .= '[:' . $key . ']' . trim( $value );
 		}
+	}
+
+	if ( ! $string ) {
+		return '';
 	}
 
 	$string .= '[:]';
@@ -221,15 +229,19 @@ function qtn_set_language_value( $localize_array, $value, $locale = '' ) {
 
 function qtn_translate_object( $object, $locale = '' ) {
 
-	if ( is_object( $object) && ($object instanceof WP_Post || $object instanceof WP_Term)) {
+	if ( $object instanceof WP_Post || $object instanceof WP_Term ) {
 
 		foreach ( get_object_vars( $object ) as $key => $content ) {
 			switch ( $key ) {
+				case 'attr_title':
 				case 'post_title':
-				case 'post_content':
 				case 'post_excerpt':
 				case 'name':
+				case 'title':
 				case 'description':
+					$object->$key = qtn_translate_string( $content, $locale );
+					break;
+				case 'post_content':
 					$object->$key = qtn_translate_value( $content, $locale );
 					break;
 			}

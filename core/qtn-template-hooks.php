@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
+}
+
 add_filter( 'document_title_parts', 'qtn_translate_value', 0 );
 
 function qtn_set_meta_languages() {
