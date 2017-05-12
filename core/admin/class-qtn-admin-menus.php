@@ -29,7 +29,6 @@ class QtN_Admin_Menus {
 	}
 
 	public function admin_bar_menu( \WP_Admin_Bar $wp_admin_bar ) {
-		global $qtn_config;
 
 		$user_id = get_current_user_id();
 
@@ -38,13 +37,13 @@ class QtN_Admin_Menus {
 		}
 
 		$locale = get_locale();
-		$languages = $qtn_config->languages;
+		$languages = qtn_get_languages();
 
 		if ( count( $languages ) <= 1 ) {
 			return false;
 		}
 
-		$options = $qtn_config->options;
+		$options = qtn_get_options();
 
 		$wp_admin_bar->add_menu( array(
 			'id'     => 'qtn-language-switcher',

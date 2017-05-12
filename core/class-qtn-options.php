@@ -9,16 +9,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 class QtN_Options {
 
 	public function __construct() {
-
-		add_filter( 'after_setup_theme', array( $this, 'get_options' ), 1 );
+		add_action( 'init', array( $this, 'init' ) );
 	}
 
-	public function get_options() {
-		global $qtn_config;
+	public function init() {
 
-		$options = $qtn_config->settings['options'];
+		$settings = qtn_get_settings();
 
-		foreach ( $options as $option ) {
+		foreach ( $settings['options'] as $option ) {
 			add_filter( "option_{$option}", 'qtn_translate_value', 0 );
 		}
 	}

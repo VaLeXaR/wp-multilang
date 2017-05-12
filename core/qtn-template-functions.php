@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *   ‘id’ – id of widget, which is used as a distinctive string to create CSS entities.
  */
 function qtn_language_switcher( $args = array(), $echo = true ) {
-	global $qtn_config, $wp;
+	global $wp;
 	$default = array(
 		'type' => 'list',
 		'flag' => true,
@@ -20,13 +20,13 @@ function qtn_language_switcher( $args = array(), $echo = true ) {
 	);
 	$args = array_merge( $args, $default);
 
-	$languages = $qtn_config->languages;
+	$languages = qtn_get_languages();
 
 	if ( count( $languages ) <= 1 ) {
 		return '';
 	}
 
-	$options = $qtn_config->options;
+	$options = qtn_get_options();
 	$current_url = home_url( $wp->request );
 	$locale = get_locale();
 	ob_start();

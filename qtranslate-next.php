@@ -62,7 +62,7 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 		 *
 		 * @var Core\QtN_Config
 		 */
-		public $setup = null;
+		public $config = null;
 
 		/**
 		 * Main Qtranslate_Next Instance.
@@ -113,6 +113,7 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 		 * @since  2.3
 		 */
 		private function init_hooks() {
+			register_activation_hook( __FILE__, array( 'QtNext\Core\QtN_Install', 'install' ) );
 			add_action( 'init', array( $this, 'init' ), 0 );
 		}
 
@@ -163,18 +164,18 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 		 * Include required core files used in admin and on the frontend.
 		 */
 		public function includes() {
-//			include_once( 'core/class-wc-autoloader.php' );
 			include_once( 'core/qtn-core-functions.php' );
+			include_once( 'core/qtn-core-hooks.php' );
 //			include_once( 'core/wc-widget-functions.php' );
-//			include_once( 'core/class-wc-install.php' );
-//			include_once( 'core/class-wc-comments.php' );
-//			include_once( 'core/class-wc-post-data.php' );
+			$this->config = new Core\QtN_Config();
+			$this->config->set_locale();
 			Core\QtN_AJAX::init();
 
 			include_once( 'core/abstracts/abstract-qtn-object.php' );
 			new Core\QtN_Posts();
 			new Core\QtN_Taxonomies();
 			new Core\QtN_Options();
+//			new Core\QtN_Widgets();
 
 			if ( $this->is_request( 'admin' ) ) {
 				new Core\Admin\QtN_Admin;
@@ -183,11 +184,6 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 			if ( $this->is_request( 'frontend' ) ) {
 				$this->frontend_includes();
 			}
-
-//			include_once( 'core/class-wc-query.php' ); // The main query class
-//			include_once( 'core/class-wc-api.php' ); // API Class
-//			include_once( 'core/class-wc-auth.php' ); // Auth Class
-//			include_once( 'core/class-wc-post-types.php' ); // Registers post types
 		}
 
 		/**
@@ -196,7 +192,6 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 		public function frontend_includes() {
 			include_once( 'core/qtn-template-hooks.php' );
 //			include_once( 'core/class-wc-frontend-scripts.php' );               // Frontend Scripts
-//			include_once( 'core/class-wc-form-handler.php' );                   // Form Handlers
 		}
 
 		/**
@@ -208,18 +203,6 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 
 			// Set up localisation.
 			$this->load_plugin_textdomain();
-
-			// Load class instances.
-//			$this->product_factory = new WC_Product_Factory();                      // Product Factory to create new product instances
-//			$this->order_factory   = new WC_Order_Factory();                        // Order Factory to create new order instances
-//			$this->countries       = new WC_Countries();                            // Countries class
-//			$this->integrations    = new WC_Integrations();                         // Integrations class
-
-			// Classes/actions loaded for the frontend and for ajax requests.
-			if ( $this->is_request( 'frontend' ) ) {
-//				$this->cart     = new WC_Cart();                                    // Cart class, stores the cart contents
-//				$this->customer = new WC_Customer();                                // Customer class, handles data such as customer location
-			}
 
 			// Init action.
 			do_action( 'qtn_init' );
@@ -282,5 +265,3 @@ function QN() {
 }
 
 QN();
-
-$GLOBALS['qtn_config'] = new Core\QtN_Config();

@@ -27,21 +27,21 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 		 */
 		public function __construct() {
 			add_action( 'edit_form_top', array( $this, 'translate_post' ), 0 );
-			add_action( 'admin_init', array($this, 'init'));
+			add_action( 'admin_init', array( $this, 'init' ) );
 			add_filter( 'wp_insert_post_data', array( $this, 'save_post' ), 0, 2 );
 			add_filter( 'wp_insert_attachment_data', array( $this, 'save_post' ), 0, 2 );
-			add_filter( 'redirect_post_location', array( $this, 'redirect_after_save' ), 0 );
-			add_filter( 'get_sample_permalink', array( $this, 'translate_post_link' ), 0);
-			add_filter( 'preview_post_link', array( $this, 'translate_post_link' ), 0);
+			add_filter( 'get_sample_permalink', array( $this, 'translate_post_link' ), 0 );
+			add_filter( 'preview_post_link', array( $this, 'translate_post_link' ), 0 );
 		}
 
 
 		public function init() {
-			global $qtn_config;
 
-			foreach($qtn_config->settings['post_types'] as $post_type) {
+			$settings = qtn_get_settings();
 
-				if ( 'attachment' == $post_type) {
+			foreach ( $settings['post_types'] as $post_type ) {
+
+				if ( 'attachment' == $post_type ) {
 					add_filter( "manage_media_columns", array( $this, 'language_columns' ) );
 					add_action( "manage_media_custom_column", array( $this, 'render_language_column' ) );
 					continue;
@@ -55,46 +55,16 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 
 
 		public function translate_post() {
-			global $post, $qtn_config;
-
-			$screen = get_current_screen();
-
-			if ( 'add' === $screen->action) {
-				return;
-			}
-
-			$languages = $qtn_config->languages;
-			$lang      = isset( $_GET['edit_lang'] ) ? qtn_clean( $_GET['edit_lang'] ) : $qtn_config->languages[ get_locale() ];
-			$post      = qtn_translate_object( $post );
-			?>
-			<input type="hidden" name="lang" value="<?php echo $lang; ?>">
-			<?php
-
-			if ( count( $languages ) <= 1 ) {
-				return;
-			}
-
-			if ( in_array( $post->post_type, $qtn_config->settings['post_types'] ) ) {
-				?>
-				<h3 id="qtn-language-switcher" class="nav-tab-wrapper language-switcher">
-					<?php foreach ( $languages as $key => $language ) { ?>
-						<a class="nav-tab<?php if ( $lang == $language ) { ?> nav-tab-active<?php } ?>"
-						   href="<?php echo add_query_arg( 'edit_lang', $language, get_edit_post_link( $post->ID ) ); ?>">
-							<img src="<?php echo QN()->flag_dir() . $qtn_config->options[ $key ]['flag'] . '.png'; ?>"
-							     alt="<?php echo $qtn_config->options[ $key ]['name']; ?>">
-							<span><?php echo $qtn_config->options[ $key ]['name']; ?></span>
-						</a>
-					<?php } ?>
-				</h3>
-				<?php
-			}
+			global $post;
+			$post = qtn_translate_object( $post );
+			get_permalink();
 		}
 
 
 		public function save_post( $data, $postarr ) {
-			global $qtn_config;
+			$settings = qtn_get_settings();
 
-			if ( ! in_array( $data['post_type'], $qtn_config->settings['post_types'] ) ) {
+			if ( ! in_array( $data['post_type'], $settings['post_types'] ) ) {
 				return $data;
 			}
 
@@ -143,20 +113,14 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 				}
 			}
 
+			$languages      = qtn_get_languages();
+			$default_locale = qtn_get_default_locale();
+
 			if ( empty( $data['post_name'] ) ) {
-				$data['post_name'] = sanitize_title( qtn_translate_value( $data['post_title'], $qtn_config->languages[ $qtn_config->default_locale ] ) );
+				$data['post_name'] = sanitize_title( qtn_translate_value( $data['post_title'], $languages[ $default_locale ] ) );
 			}
 
 			return $data;
-		}
-
-
-		public function redirect_after_save( $location ) {
-			if ( isset( $_POST['lang'] ) ) {
-				$location = add_query_arg( 'edit_lang', qtn_clean( $_POST['lang'] ), $location );
-			}
-
-			return $location;
 		}
 
 		/**
@@ -193,17 +157,17 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 		 * @param string $column
 		 */
 		public function render_language_column( $column ) {
-			global $qtn_config;
 
 			if ( 'languages' == $column ) {
 
-				$post   = qtn_untranslate_post( get_post() );
-				$output  = array();
-				$text    = $post->post_title . $post->post_content;
-				$strings = qtn_value_to_ml_array( $text );
-				$options = $qtn_config->options;
+				$post      = qtn_untranslate_post( get_post() );
+				$output    = array();
+				$text      = $post->post_title . $post->post_content;
+				$strings   = qtn_value_to_ml_array( $text );
+				$options   = qtn_get_options();
+				$languages = qtn_get_languages();
 
-				foreach ( $qtn_config->languages as $locale => $language ) {
+				foreach ( $languages as $locale => $language ) {
 					if ( isset( $strings[ $language ] ) && ! empty( $strings[ $language ] ) ) {
 						$output[] = '<img src="' . QN()->flag_dir() . $options[ $locale ]['flag'] . '.png" alt="' . $options[ $locale ]['name'] . '" title="' . $options[ $locale ]['name'] . '">';
 					}
@@ -217,16 +181,14 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 
 
 		public function translate_post_link( $link ) {
-			global $qtn_config;
-			if ( is_admin() && isset( $_GET['edit_lang'] ) ) {
-				$lang      = qtn_clean( $_GET['edit_lang'] );
-				if ( in_array( $lang, $qtn_config->languages ) && $lang != $qtn_config->languages[ $qtn_config->default_locale ] ) {
-					if ( is_array( $link ) ) {
-						$link[0] = str_replace( home_url(), home_url('/' . $lang), $link[0] );
-					} else {
-						$link = str_replace( home_url(), home_url('/' . $lang ), $link );
+			$languages = qtn_get_languages();
+			$lang = isset( $_GET['edit_lang'] ) ? qtn_clean( $_GET['edit_lang'] ) : qtn_clean( $_COOKIE['edit_language'] );
+			if ( in_array( $lang, $languages ) && $lang != $languages[ qtn_get_default_locale() ] ) {
+				if ( is_array( $link ) ) {
+					$link[0] = str_replace( home_url(), home_url( '/' . $lang ), $link[0] );
+				} else {
+					$link = str_replace( home_url(), home_url( '/' . $lang ), $link );
 
-					}
 				}
 			}
 

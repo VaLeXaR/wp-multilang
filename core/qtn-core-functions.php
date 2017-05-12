@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Include core functions (available in both admin and frontend).
 include( 'libraries/mbstring.php' );
 include( 'libraries/xml2array.php' );
+include( 'qtn-language-functions.php' );
 include( 'qtn-formatting-functions.php' );
 include( 'qtn-translation-functions.php' );
 include( 'qtn-template-functions.php' );

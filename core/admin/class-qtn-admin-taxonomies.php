@@ -36,10 +36,9 @@ if ( ! class_exists( 'QtN_Admin_Taxonomies' ) ) :
 
 
 		public function init() {
-			global $qtn_config;
+			$settings = qtn_get_settings();
 
-			foreach ( $qtn_config->settings['taxonomies'] as $taxonomy ) {
-				add_action( "{$taxonomy}_term_edit_form_top", array( $this, 'translate_taxonomies' ), 0 );
+			foreach ( $settings['taxonomies'] as $taxonomy ) {
 				add_filter( "manage_edit-{$taxonomy}_columns", array( $this, 'language_columns' ) );
 				add_filter( "manage_{$taxonomy}_custom_column", array( $this, 'render_language_column' ), 0, 3 );
 			}
@@ -47,10 +46,10 @@ if ( ! class_exists( 'QtN_Admin_Taxonomies' ) ) :
 
 
 		public function pre_insert_term( $term, $taxonomy ) {
-			global $wpdb, $qtn_config;
+			global $wpdb;
 
 			$to_locale = '';
-			$languages = array_flip( $qtn_config->languages );
+			$languages = array_flip( qtn_get_languages() );
 			if ( isset( $_POST['lang'] ) && isset( $languages[ qtn_clean( $_POST['lang'] ) ] ) ) {
 				$to_locale = $languages[ qtn_clean( $_POST['lang'] ) ];
 			}
@@ -70,9 +69,9 @@ if ( ! class_exists( 'QtN_Admin_Taxonomies' ) ) :
 
 
 		public function save_term( $data, $term_id, $taxonomy, $args ) {
-			global $qtn_config;
+			$settings = qtn_get_settings();
 
-			if ( ! in_array( $taxonomy, $qtn_config->settings['taxonomies'] ) ) {
+			if ( ! in_array( $taxonomy, $settings['taxonomies'] ) ) {
 				return $data;
 			}
 
@@ -98,8 +97,9 @@ if ( ! class_exists( 'QtN_Admin_Taxonomies' ) ) :
 
 
 		public function update_description( $tt_id, $taxonomy ) {
-			global $wpdb, $qtn_config;
-			if ( ! in_array( $taxonomy, $qtn_config->settings['taxonomies'] ) ) {
+			global $wpdb;
+			$settings = qtn_get_settings();
+			if ( ! in_array( $taxonomy, $settings['taxonomies'] ) ) {
 				return;
 			}
 
@@ -119,34 +119,6 @@ if ( ! class_exists( 'QtN_Admin_Taxonomies' ) ) :
 			$description = qtn_ml_value_to_string( $value );
 
 			$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_taxonomy_id' => $tt_id ) );
-		}
-
-
-		public function translate_taxonomies( $tag ) {
-			global $qtn_config;
-
-			$languages = $qtn_config->languages;
-			$lang      = isset( $_GET['edit_lang'] ) ? qtn_clean( $_GET['edit_lang'] ) : $qtn_config->languages[ get_locale() ];
-			$tag       = qtn_translate_object( $tag );
-			?>
-			<input type="hidden" name="lang" value="<?php echo $lang; ?>">
-			<?php
-
-			if ( count( $languages ) <= 1 ) {
-				return;
-			}
-			?>
-			<h3 id="qtn-language-switcher" class="nav-tab-wrapper language-switcher">
-				<?php foreach ( $languages as $key => $language ) { ?>
-					<a class="nav-tab<?php if ( $lang == $language ) { ?> nav-tab-active<?php } ?>"
-					   href="<?php echo add_query_arg( 'edit_lang', $language, get_edit_term_link( $tag->term_id ) ); ?>">
-						<img src="<?php echo QN()->flag_dir() . $qtn_config->options[ $key ]['flag'] . '.png'; ?>"
-						     alt="<?php echo $qtn_config->options[ $key ]['name']; ?>">
-						<span><?php echo $qtn_config->options[ $key ]['name']; ?></span>
-					</a>
-				<?php } ?>
-			</h3>
-			<?php
 		}
 
 		/**
@@ -183,7 +155,6 @@ if ( ! class_exists( 'QtN_Admin_Taxonomies' ) ) :
 		 * @param string $column
 		 */
 		public function render_language_column( $columns, $column, $term_id ) {
-			global $qtn_config;
 
 			if ( 'languages' == $column ) {
 				remove_filter( 'get_term', 'qtn_translate_object', 0 );
@@ -192,9 +163,10 @@ if ( ! class_exists( 'QtN_Admin_Taxonomies' ) ) :
 				$output  = array();
 				$text    = $term->name . $term->description;
 				$strings = qtn_value_to_ml_array( $text );
-				$options = $qtn_config->options;
+				$options = qtn_get_options();
+				$languages = qtn_get_languages();
 
-				foreach ( $qtn_config->languages as $locale => $language ) {
+				foreach ( $languages as $locale => $language ) {
 					if ( isset( $strings[ $language ] ) && ! empty( $strings[ $language ] ) ) {
 						$output[] = '<img src="' . QN()->flag_dir() . $options[ $locale ]['flag'] . '.png" alt="' . $options[ $locale ]['name'] . '" title="' . $options[ $locale ]['name'] . '">';
 					}

@@ -51,30 +51,29 @@ class QtN_Admin_Settings {
 
 
 	public function switch_locale() {
-		global $qtn_config;
-		switch_to_locale( $qtn_config->default_locale );
+		switch_to_locale( qtn_get_default_locale() );
 	}
 
 
 	public function view_settings(){
-		global $qtn_config;
 
-		$_languages = array_flip( $qtn_config->languages );
-		switch_to_locale( $_languages[ $qtn_config->user_language ] );
+		$_languages = array_flip( qtn_get_languages() );
+		switch_to_locale( $_languages[ qtn_get_user_language()] );
 
-		$options = get_option('qtn_languages');
+		$options = qtn_get_options();
+		$_installed_languages = array();
+		$installed_languages = qtn_get_installed_languages();
+		$translations = qtn_get_translations();
 
-		$installed_languages = array();
-
-		foreach ($qtn_config->installed_languages as $language ) {
-			$installed_languages[ $language ] = array(
-				'name' => $qtn_config->translations[ $language ]['native_name'],
-				'slug' => current( $qtn_config->translations[ $language ]['iso'] ),
-				'flag' => current( $qtn_config->translations[ $language ]['iso'] )
+		foreach ($installed_languages as $language ) {
+			$_installed_languages[ $language ] = array(
+				'name' => $translations[ $language ]['native_name'],
+				'slug' => current( $translations[ $language ]['iso'] ),
+				'flag' => current( $translations[ $language ]['iso'] )
 			);
 		}
 
-		$languages = $installed_languages;
+		$languages = $_installed_languages;
 
 		if ( $options ) {
 			$languages = array_merge( $languages, $options );
@@ -113,7 +112,7 @@ class QtN_Admin_Settings {
 				<tr>
 					<td><input name="qtn_languages[<?php echo $key; ?>][enable]" type="checkbox" value="1"<?php checked( $language['enable'] ); ?> title="<?php esc_attr_e( 'Enable', 'qtranslate-next' ); ?>"></td>
 					<td>
-						<?php if ( in_array( $key, $qtn_config->installed_languages ) ) { ?>
+						<?php if ( in_array( $key, $installed_languages ) ) { ?>
 							<?php esc_attr_e ( $key ); ?>
 						<?php } else { ?>
 							<input type="text" name="qtn_languages[<?php echo $key; ?>][locale]" value="<?php esc_attr_e ( $key ); ?>" title="<?php esc_attr_e( 'Locale', 'qtranslate-next' ); ?>" placeholder="<?php esc_attr_e( 'Locale', 'qtranslate-next' ); ?>">
@@ -133,7 +132,9 @@ class QtN_Admin_Settings {
 						<?php } ?>
 					</td>
 					<td>
-						<?php if ( 'en_US' != $key ) { ?>
+						<?php if ( 'en_US' == $key ) { ?>
+							Built-in
+						<?php } else { ?>
 							<button type="button" class="button button-link delete-language" data-locale="<?php echo $key; ?>"><?php esc_attr_e( 'Delete', 'qtranslate-next' ); ?></button>
 						<?php } ?>
 					</td>
@@ -157,7 +158,7 @@ class QtN_Admin_Settings {
 	public function save_options( $value ) {
 
 		$option_name = 'qtn_languages';
-		$error = false;
+		$type = '';
 
 		$languages = array();
 
@@ -170,7 +171,7 @@ class QtN_Admin_Settings {
 			}
 
 			if (empty($item['slug'])) {
-				$error = true;
+				$type = 'error';
 				break;
 			}
 
@@ -180,17 +181,32 @@ class QtN_Admin_Settings {
 				'name'   => qtn_clean( $item['name'] ),
 				'flag'   => qtn_clean( $item['flag'] )
 			);
+
+			$translations = qtn_get_translations();
+			$installed_languages = qtn_get_installed_languages();
+
+			foreach ($installed_languages as $installed_language) {
+				unset($translations[$installed_language]);
+			}
+
+			if ( in_array( $locale, $translations)) {
+				if ( wp_can_install_language_pack() ) {
+					wp_download_language_pack( $locale );
+					$type = 'updated';
+				}
+			}
 		}
 
-		if ( $error  ) {
+		if ('updated' == $type ) {
+			add_settings_error( $option_name, '', __('New language package installed', 'qtranslate-next'), $type );
+		}
 
-			add_settings_error( $option_name, '', __('Language slug is required', 'qtranslate-next'), 'error' );
-
+		if ( 'error' == $type  ) {
+			add_settings_error( $option_name, '', __('Language slug is required', 'qtranslate-next'), $type );
 			return get_option( $option_name );
 
-		} else {
-			return $languages;
 		}
+		return $languages;
 	}
 
 	private function set_default_settings( $language ) {

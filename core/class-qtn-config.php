@@ -61,44 +61,74 @@ class QtN_Config {
 	 */
 	public $settings = array();
 
-	/**
-	 * WooCommerce Constructor.
-	 */
-	public function __construct() {
-		$this->setup_languages();
-		$this->init_hooks();
+
+	public function get_options() {
+		if ( ! $this->options ) {
+			$this->options = get_option( 'qtn_languages' );
+		}
+
+		return $this->options;
 	}
 
 
-	public function setup_languages() {
+	public function get_installed_languages() {
+		if ( ! $this->installed_languages ) {
+			$this->installed_languages = array_merge( array( 'en_US' ), get_available_languages() );
+		}
 
-		require_once( ABSPATH . 'wp-includes/pluggable.php' );
+		return $this->installed_languages;
+	}
 
-		$this->default_locale = get_option( 'WPLANG' );
-		$this->options        = get_option( 'qtn_languages' );
 
-		foreach ( $this->options as $locale => $language ) {
-			if ( $language['enable'] ) {
-				$this->languages[ $locale ] = $language['slug'];
+	public function get_languages() {
+		if ( ! $this->languages ) {
+
+			$options = $this->get_options();
+
+			foreach ( $options as $locale => $language ) {
+				if ( $language['enable'] ) {
+					$this->languages[ $locale ] = $language['slug'];
+				}
 			}
 		}
 
-		$this->installed_languages = array_merge( array( 'en_US' ), get_available_languages() );
-		$this->translations        = $this->get_translations();
-		$this->set_user_lang();
-		$this->set_locale();
+		return $this->languages;
 	}
 
 
-	private function set_user_lang() {
+	public function get_default_locale() {
+		if ( ! $this->default_locale ) {
+			$this->default_locale = get_option( 'WPLANG' ) ?  get_option( 'WPLANG' ) : 'en_US';
+		}
+
+		return $this->default_locale;
+	}
+
+
+	public function get_user_language() {
+		if ( ! $this->user_language ) {
+			$this->set_user_language();
+		}
+
+		return $this->user_language;
+	}
+
+
+	public function set_user_language() {
 
 		if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
+			$default_locale = $this->get_default_locale();
 			if ( isset( $_GET['lang'] ) ) {
-				qtn_setcookie( 'language', qtn_clean( $_GET['lang'] ), time() + MONTH_IN_SECONDS );
+				$languages = $this->get_languages();
+				$lang = qtn_clean( $_GET['lang'] );
+				if ( ! in_array( $lang, $languages ) ) {
+					$lang           = $languages[ $default_locale ];
+				}
+				qtn_setcookie( 'language', $lang, time() + MONTH_IN_SECONDS );
 			}
 
 			if ( ! isset( $_COOKIE['language'] ) ) {
-				qtn_setcookie( 'language', $this->default_locale, time() + MONTH_IN_SECONDS );
+				qtn_setcookie( 'language', $default_locale, time() + MONTH_IN_SECONDS );
 			} else {
 				$this->user_language = qtn_clean( $_COOKIE['language'] );
 			}
@@ -117,15 +147,22 @@ class QtN_Config {
 	}
 
 
-	private function set_locale() {
+	public function set_locale() {
 		global $locale;
 
-		foreach ( $this->languages as $key => $value ) {
+		require_once( ABSPATH . 'wp-includes/pluggable.php' );
 
-			if ( ( $value == $this->user_language ) ) {
+		$language       = $this->get_languages();
+		$default_locale = $this->get_default_locale();
+
+		foreach ( $language as $key => $value ) {
+
+			$user_language = $this->get_user_language();
+
+			if ( ( $value == $user_language ) ) {
 				$locale = $key;
-				if ( $locale == $this->default_locale && ! is_admin() && ! isset( $_GET['lang'] ) ) {
-					wp_redirect( home_url( str_replace( '/' . $this->user_language . '/', '/', $_SERVER['REQUEST_URI'] ) ), 301 );
+				if ( $locale == $default_locale && ! is_admin() && ! isset( $_GET['lang'] ) ) {
+					wp_redirect( home_url( str_replace( '/' . $user_language . '/', '/', $_SERVER['REQUEST_URI'] ) ), 301 );
 					exit;
 				}
 				break;
@@ -133,104 +170,61 @@ class QtN_Config {
 		}
 
 		if ( ! $this->user_language ) {
-			$this->user_language = $this->languages[ $this->default_locale ];
+			$this->user_language = $this->languages[ $default_locale ];
 		}
 	}
 
-	/**
-	 * Hook into actions and filters.
-	 */
-	private function init_hooks() {
-		add_action( 'after_setup_theme', array( $this, 'setup_lang_query' ), 0 );
-		add_action( 'change_locale', array( $this, 'change_locale' ), 0 );
-		add_action( 'after_setup_theme', array( $this, 'setup_config' ), 0 );
-		add_filter( 'option_home', array( $this, 'set_home_url' ), 0 );
-		add_filter( 'query_vars', array( $this, 'set_lang_var' ) );
-	}
 
+	public function get_translations() {
 
-	private function get_translations() {
+		if ( ! $this->translations ) {
+			require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
+			$available_translations          = wp_get_available_translations();
+			$available_translations['en_US'] = array(
+				'native_name' => 'English (US)',
+				'iso'         => array( 'en' )
+			);
 
-		require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
-
-		$available_translations = wp_get_available_translations();
-
-		$available_translations['en_US'] = array(
-			'native_name' => 'English (US)',
-			'iso'         => array( 'en' )
-		);
-
-		return $available_translations;
-	}
-
-
-	public function setup_lang_query() {
-		set_query_var( 'lang', $this->user_language );
-		add_filter( 'request', function ( $query_vars ) {
-			$query_vars['lang'] = get_query_var( 'lang' );
-
-			return $query_vars;
-		} );
-	}
-
-
-	public function set_home_url( $value ) {
-		if ( ( is_admin() && ! defined( 'DOING_AJAX' ) ) || defined( 'REST_REQUEST' ) ) {
-			return $value;
+			$this->translations = $available_translations;
 		}
 
-		//TODO set cookie for ajax
+		return $this->translations;
+	}
 
-		$locale = get_locale();
-		if ( $this->languages[ $locale ] != $this->languages[ $this->default_locale ] ) {
-			$value .= '/' . $this->languages[ $locale ];
+	public function get_settings() {
+		if ( ! $this->settings ) {
+			if ( ! $this->settings ) {
+				$settings = array(
+					'post_types'  => array(
+						'page',
+						'post',
+						'attachment',
+						'nav_menu_item',
+						'revision'
+					),
+					'post_fields' => array(
+						'_wp_attachment_image_alt'
+					),
+					'taxonomies'  => array(
+						'category',
+						'post_tag'
+					),
+					'admin_pages' => array(
+						'nav-menus',
+						'options-general',
+						'widgets',
+						'settings_page_media-taxonomies'
+					),
+					'options'     => array(
+						'blogname',
+						'blogdescription'
+					)
+				);
+
+				$this->settings = apply_filters( 'qtn_settings', $settings );
+			}
 		}
 
-		return $value;
-	}
-
-
-	public function set_lang_var( $public_query_vars ) {
-		$public_query_vars[] = 'lang';
-
-		return $public_query_vars;
-	}
-
-
-	public function change_locale( $new_locale ) {
-		global $locale;
-		$locale = $new_locale;
-	}
-
-
-	public function setup_config() {
-		$settings = array(
-			'post_types'  => array(
-				'page',
-				'post',
-				'attachment',
-				'nav_menu_item',
-				'revision'
-			),
-			'post_fields' => array(
-				'_wp_attachment_image_alt'
-			),
-			'taxonomies'  => array(
-				'category',
-				'post_tag'
-			),
-			'admin_pages' => array(
-				'nav-menus',
-				'options-general',
-				'widgets',
-				'settings_page_media-taxonomies'
-			),
-			'options' => array(
-				'blogname',
-				'blogdescription'
-			)
-		);
-
-		$this->settings = apply_filters( 'qtn_settings', $settings );
+		return $this->settings;
 	}
 }

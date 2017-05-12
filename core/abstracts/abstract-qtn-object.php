@@ -10,9 +10,11 @@ abstract class QtN_Object {
 	public $object_table;
 
 	public function get_meta_field( $value, $object_id, $meta_key ) {
-		global $wpdb, $qtn_config;
+		global $wpdb;
 
-		if ( ! in_array( $meta_key, $qtn_config->settings[ $this->object_type . '_fields' ] ) ) {
+		$settings = qtn_get_settings();
+
+		if ( ! in_array( $meta_key, $settings[ $this->object_type . '_fields' ] ) ) {
 			return $value;
 		}
 
@@ -54,9 +56,11 @@ abstract class QtN_Object {
 	}
 
 	public function update_meta_field( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
-		global $wpdb, $qtn_config;
+		global $wpdb;
 
-		if ( ! in_array( $meta_key, $qtn_config->settings[ $this->object_type . '_fields' ] ) ) {
+		$settings = qtn_get_settings();
+
+		if ( ! in_array( $meta_key, $settings[ $this->object_type . '_fields' ] ) ) {
 			return $check;
 		}
 

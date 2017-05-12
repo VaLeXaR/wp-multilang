@@ -5,12 +5,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function qtn_translate_url( $url, $new_locale = '' ) {
-	global $qtn_config;
 
-	$locale = get_locale();
+	$locale    = get_locale();
+	$languages = qtn_get_languages();
 
 	if ( $new_locale ) {
-		if ( ( $new_locale == $locale ) || ! isset( $qtn_config->languages[ $new_locale ] ) ) {
+		if ( ( $new_locale == $locale ) || ! isset( $languages[ $new_locale ] ) ) {
 			return $url;
 		}
 		switch_to_locale( $new_locale );
@@ -28,11 +28,10 @@ function qtn_translate_url( $url, $new_locale = '' ) {
 }
 
 function qtn_translate_string( $string, $locale = '' ) {
-	global $qtn_config;
 
 	$strings = qtn_string_to_ml_array( $string );
 
-	if ( ! is_array( $strings )) {
+	if ( ! is_array( $strings ) ) {
 		return $string;
 	}
 
@@ -40,7 +39,7 @@ function qtn_translate_string( $string, $locale = '' ) {
 		return $string;
 	}
 
-	$languages = $qtn_config->languages;
+	$languages = qtn_get_languages();
 
 	if ( $locale ) {
 		if ( isset( $strings[ $languages[ $locale ] ] ) ) {
@@ -50,12 +49,18 @@ function qtn_translate_string( $string, $locale = '' ) {
 		}
 	}
 
-	$lang = isset( $_GET['edit_lang'] ) ? qtn_clean( $_GET['edit_lang'] ) : $languages[ get_locale() ];
+	if ( is_admin() ) {
+		$lang = isset( $_GET['edit_lang'] ) ? qtn_clean( $_GET['edit_lang'] ) : qtn_clean( $_COOKIE['edit_language'] );
+	} else {
+		$lang = $languages[ get_locale() ];
+	}
+
+	$default_locale = qtn_get_default_locale();
 
 	if ( isset( $strings[ $lang ] ) ) {
 		return $strings[ $lang ];
-	} elseif ( isset( $strings[ $languages[ $qtn_config->default_locale ] ] ) ) {
-		return $strings[ $languages[ $qtn_config->default_locale ] ];
+	} elseif ( isset( $strings[ $languages[ $default_locale ] ] ) ) {
+		return $strings[ $languages[ $default_locale ] ];
 	} else {
 		return $string;
 	}
@@ -78,7 +83,6 @@ function qtn_translate_value( $value, $locale = '' ) {
 
 
 function qtn_string_to_ml_array( $string ) {
-	global $qtn_config;
 
 	if ( ! is_string( $string ) ) {
 		return $string;
@@ -95,7 +99,9 @@ function qtn_string_to_ml_array( $string ) {
 
 	$result = array();
 
-	foreach ( $qtn_config->languages as $language ) {
+	$languages = qtn_get_languages();
+
+	foreach ( $languages as $language ) {
 		$result[ $language ] = '';
 	}
 
@@ -155,7 +161,6 @@ function qtn_value_to_ml_array( $value ) {
 }
 
 function qtn_ml_array_to_string( $strings ) {
-	global $qtn_config;
 
 	$string = '';
 
@@ -163,8 +168,9 @@ function qtn_ml_array_to_string( $strings ) {
 		return $string;
 	}
 
+	$languages = qtn_get_languages();
 	foreach ( $strings as $key => $value ) {
-		if ( in_array( $key, $qtn_config->languages ) && ! empty( $value ) ) {
+		if ( in_array( $key, $languages ) && ! empty( $value ) && ! qtn_is_ml_string( $value) ) {
 			$string .= '[:' . $key . ']' . trim( $value );
 		}
 	}
@@ -198,11 +204,11 @@ function qtn_ml_value_to_string( $value ) {
 }
 
 function qtn_set_language_value( $localize_array, $value, $locale = '' ) {
-	global $qtn_config;
-	$lang = isset( $_POST['lang'] ) ? qtn_clean( $_POST['lang'] ) : $qtn_config->languages[ get_locale() ];
+	$languages = qtn_get_languages();
+	$lang      = isset( $_POST['lang'] ) ? qtn_clean( $_POST['lang'] ) : $languages[ get_locale() ];
 
-	if ( $locale && isset( $qtn_config->languages[ $locale ] ) ) {
-		$lang = $qtn_config->languages[ $locale ];
+	if ( $locale && isset( $languages[ $locale ] ) ) {
+		$lang = $languages[ $locale ];
 	}
 
 	if ( is_array( $value ) ) {
@@ -215,11 +221,11 @@ function qtn_set_language_value( $localize_array, $value, $locale = '' ) {
 				$localize_array[ $lang ] = $value;
 			} else {
 				$result = array();
-				foreach ( $qtn_config->languages as $language ) {
+				foreach ( $languages as $language ) {
 					$result[ $language ] = '';
 				}
 				$result[ $lang ] = $value;
-				$localize_array = $result;
+				$localize_array  = $result;
 			}
 		} else {
 			$localize_array = $value;
@@ -274,14 +280,15 @@ function qtn_untranslate_post( $post ) {
 }
 
 function qtn_is_ml_array( $array ) {
-	global $qtn_config;
 
-	if ( ! is_array( $array) ) {
+	if ( ! is_array( $array ) ) {
 		return false;
 	}
 
+	$languages = qtn_get_languages();
+
 	foreach ( $array as $key => $item ) {
-		if ( ! in_array( $key, $qtn_config->languages ) ) {
+		if ( ! in_array( $key, $languages ) ) {
 			return false;
 		}
 	}

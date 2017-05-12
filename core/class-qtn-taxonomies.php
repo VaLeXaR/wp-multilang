@@ -15,7 +15,6 @@ class QtN_Taxonomies extends \QtN_Object {
 
 		add_filter( 'get_term', 'qtn_translate_object', 0 );
 		add_filter( 'get_terms', array($this, 'filter_terms'), 0 );
-		add_filter( 'get_edit_term_link', array( $this, 'edit_term_link' ), 0, 3 );
 		add_filter( "get_{$this->object_type}_metadata", array( $this, 'get_meta_field' ), 0, 3 );
 		add_filter( "update_{$this->object_type}_metadata", array( $this, 'update_meta_field' ), 0, 5 );
 
@@ -39,14 +38,5 @@ class QtN_Taxonomies extends \QtN_Object {
 		}
 
 		return $terms;
-	}
-
-	public function edit_term_link( $location, $term_id, $taxonomy ) {
-		global $qtn_config;
-		if ( in_array( $taxonomy, $qtn_config->settings['taxonomies'] ) ) {
-			$location = add_query_arg( 'edit_lang', $qtn_config->languages[ get_locale() ], $location );
-		}
-
-		return $location;
 	}
 }

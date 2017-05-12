@@ -3,11 +3,12 @@
 
   $(function () {
 
-    if (typeof qtn_params != 'undefined') {
+    if (qtn_params) {
 
       if ($('#qtn-language-switcher').length === 0) {
         var language_switcher = _.template(qtn_params.switcher);
-        $('h1').after(language_switcher);
+
+        $('h1').before(language_switcher);
       }
 
       if ($('.qtn-edit-lang').length === 0) {

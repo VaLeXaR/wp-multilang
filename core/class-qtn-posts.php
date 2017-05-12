@@ -15,7 +15,6 @@ class QtN_Posts extends \QtN_Object {
 		add_filter( 'the_posts', array( $this, 'filter_posts' ), 0, 2 );
 		add_filter( 'the_post', 'qtn_translate_object', 0 );
 		add_filter( 'the_title', 'qtn_translate_string', 0);
-		add_filter( 'get_edit_post_link', array( $this, 'edit_post_link' ), 0, 3 );
 		add_filter( "get_{$this->object_type}_metadata", array( $this, 'get_meta_field' ), 0, 3 );
 		add_filter( "update_{$this->object_type}_metadata", array( $this, 'update_meta_field' ), 0, 5 );
 //		add_filter( 'heartbeat_received', array( 'WPGlobus_Filters', 'filter__heartbeat_received' ), 501, 2 );
@@ -28,18 +27,11 @@ class QtN_Posts extends \QtN_Object {
 //		add_filter( 'sanitize_title', 'qtn_translate_string', 0);
 	}
 
+
 	public function filter_posts( $posts ) {
 		return array_map( 'qtn_translate_object', $posts );
 	}
 
-	public function edit_post_link( $link, $post_id, $context ) {
-		global $qtn_config;
-		if ( 'display' == $context && in_array( get_post_type( $post_id ), $qtn_config->settings['post_types'] ) ) {
-			$link = add_query_arg( 'edit_lang', $qtn_config->languages[ get_locale() ], $link );
-		}
-
-		return $link;
-	}
 
 	public static function filter__heartbeat_received( $response, $data ) {
 
