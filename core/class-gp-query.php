@@ -1,9 +1,9 @@
 <?php
 /**
- * Contains the query functions for qTranslateNext which alter the front-end post queries and loops
+ * Contains the query functions for WPMPlugin which alter the front-end post queries and loops
  *
  * @class          GP_Query
- * @package        qTranslateNext/Classes
+ * @package        WPMPlugin/Classes
  * @category       Class
  * @author         VaLeXaR
  */

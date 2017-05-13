@@ -2,14 +2,14 @@
 /**
  * Handle frontend scripts
  *
- * @class       QtN_Frontend_Scripts
+ * @class       WPM_Frontend_Scripts
  * @version     2.3.0
- * @package     qTranslateNext/Classes/
+ * @package     WPMPlugin/Classes/
  * @category    Class
  * @author      VaLeXaR
  */
 
-namespace QtNext;
+namespace WPM;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -18,22 +18,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * QTN_Frontend_Scripts Class.
  */
-class QtN_Frontend_Scripts {
+class WPM_Frontend_Scripts {
 
 	/**
-	 * Contains an array of script handles registered by QtN.
+	 * Contains an array of script handles registered by WPM.
 	 * @var array
 	 */
 	private static $scripts = array();
 
 	/**
-	 * Contains an array of script handles registered by QtN.
+	 * Contains an array of script handles registered by WPM.
 	 * @var array
 	 */
 	private static $styles = array();
 
 	/**
-	 * Contains an array of script handles localized by QtN.
+	 * Contains an array of script handles localized by WPM.
 	 * @var array
 	 */
 	private static $wp_localize_scripts = array();
@@ -55,7 +55,7 @@ class QtN_Frontend_Scripts {
 	public static function get_styles() {
 		$styles = array(
 			/*'game-portal-general' => array(
-				'src'     => qtn_asset_path( 'css/main.css' ),
+				'src'     => wpm_asset_path( 'css/main.css' ),
 				'deps'    => '',
 				'version' => QTN_VERSION,
 				'media'   => 'all'
@@ -142,7 +142,7 @@ class QtN_Frontend_Scripts {
 	 */
 	public static function load_scripts() {
 
-		if ( ! did_action( 'before_qtranslate_next_init' ) ) {
+		if ( ! did_action( 'before_wpm_init' ) ) {
 			return;
 		}
 
@@ -186,7 +186,7 @@ class QtN_Frontend_Scripts {
 	}
 
 	/**
-	 * Localize a QtN script once.
+	 * Localize a WPM script once.
 	 * @access private
 	 *
 	 * @param  string $handle
@@ -213,7 +213,7 @@ class QtN_Frontend_Scripts {
 			case 'game-portal' :
 
 				/*$default = array(
-					'ajax_url'       => QN()->ajax_url(),
+					'ajax_url'       => WPM()->ajax_url(),
 					'gp_ajax_url'    => QTN_AJAX::get_endpoint( "%%endpoint%%" ),
 					'html_templates' => array(
 						'modals' => gp_get_template_html( 'jquery-templates/modals.tpl' ),

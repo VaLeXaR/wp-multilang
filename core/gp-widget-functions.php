@@ -1,12 +1,12 @@
 <?php
 /**
- * qTranslateNext Widget Functions
+ * WPMPlugin Widget Functions
  *
  * Widget related functions and widget registration.
  *
  * @author 		VaLeXaR
  * @category 	Core
- * @package 	qTranslateNext/Functions
+ * @package 	WPMPlugin/Functions
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

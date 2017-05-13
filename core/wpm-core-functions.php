@@ -1,12 +1,12 @@
 <?php
 /**
- * qTranslateNext Core Functions
+ * WPMPlugin Core Functions
  *
  * General core functions available on both the front-end and admin.
  *
  * @author        VaLeXaR
  * @category      Core
- * @package       qTranslateNext/Functions
+ * @package       WPMPlugin/Functions
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -16,16 +16,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Include core functions (available in both admin and frontend).
 include( 'libraries/mbstring.php' );
 include( 'libraries/xml2array.php' );
-include( 'qtn-language-functions.php' );
-include( 'qtn-formatting-functions.php' );
-include( 'qtn-translation-functions.php' );
-include( 'qtn-template-functions.php' );
+include( 'wpm-formatting-functions.php' );
+include( 'wpm-language-functions.php' );
+include( 'wpm-translation-functions.php' );
+include( 'wpm-template-functions.php' );
 
 
 function gp_get_template_html( $path ) {
 	ob_start();
 
-	$located = QN()->template_path() . $path;
+	$located = WPM()->template_path() . $path;
 	if ( ! file_exists( $located ) ) {
 		_doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', $located ), '1.0' );
 
@@ -38,15 +38,15 @@ function gp_get_template_html( $path ) {
 }
 
 
-function qtn_asset_path( $filename ) {
-	$dist_path = str_replace( array( 'http:', 'https:' ), '', QN()->plugin_url() ) . '/assets/';
+function wpm_asset_path( $filename ) {
+	$dist_path = str_replace( array( 'http:', 'https:' ), '', WPM()->plugin_url() ) . '/assets/';
 	$directory = dirname( $filename ) . '/';
 	$file      = basename( $filename );
 	static $manifest;
 
 	if ( empty( $manifest ) ) {
-		$manifest_path = QN()->plugin_path() . '/assets/assets.json';
-		$manifest      = new QtNext\Core\Libraries\Json_Manifest( $manifest_path );
+		$manifest_path = WPM()->plugin_path() . '/assets/assets.json';
+		$manifest      = new WPM\Core\Libraries\Json_Manifest( $manifest_path );
 	}
 
 	if ( array_key_exists( $file, $manifest->get() ) ) {
@@ -59,16 +59,16 @@ function qtn_asset_path( $filename ) {
 /**
  * Output any queued javascript code in the footer.
  */
-function qtn_print_js() {
-	global $qtn_queued_js;
+function wpm_print_js() {
+	global $wpm_queued_js;
 
-	if ( ! empty( $qtn_queued_js ) ) {
+	if ( ! empty( $wpm_queued_js ) ) {
 		// Sanitize.
-		$qtn_queued_js = wp_check_invalid_utf8( $qtn_queued_js );
-		$qtn_queued_js = preg_replace( '/&#(x)?0*(?(1)27|39);?/i', "'", $qtn_queued_js );
-		$qtn_queued_js = str_replace( "\r", '', $qtn_queued_js );
+		$wpm_queued_js = wp_check_invalid_utf8( $wpm_queued_js );
+		$wpm_queued_js = preg_replace( '/&#(x)?0*(?(1)27|39);?/i', "'", $wpm_queued_js );
+		$wpm_queued_js = str_replace( "\r", '', $wpm_queued_js );
 
-		$js = "<!-- qTranslateNext JavaScript -->\n<script type=\"text/javascript\">\njQuery(function($) { $qtn_queued_js });\n</script>\n";
+		$js = "<!-- WPMPlugin JavaScript -->\n<script type=\"text/javascript\">\njQuery(function($) { $wpm_queued_js });\n</script>\n";
 
 		/**
 		 * game_portal_queued_js filter.
@@ -77,7 +77,7 @@ function qtn_print_js() {
 		 */
 		echo $js;
 
-		unset( $qtn_queued_js );
+		unset( $wpm_queued_js );
 	}
 }
 
@@ -89,7 +89,7 @@ function qtn_print_js() {
  * @param  integer $expire Expiry of the cookie.
  * @param  string  $secure Whether the cookie should be served only over https.
  */
-function qtn_setcookie( $name, $value, $expire = 0, $secure = false ) {
+function wpm_setcookie( $name, $value, $expire = 0, $secure = false ) {
 	if ( ! headers_sent() ) {
 		setcookie( $name, $value, $expire, COOKIEPATH ? COOKIEPATH : '/', COOKIE_DOMAIN, $secure );
 	} elseif ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
@@ -103,7 +103,7 @@ function qtn_setcookie( $name, $value, $expire = 0, $secure = false ) {
  *
  * @param string $type start (default), commit, rollback
  */
-function qtn_transaction_query( $type = 'start' ) {
+function wpm_transaction_query( $type = 'start' ) {
 	global $wpdb;
 
 	$wpdb->hide_errors();
@@ -130,7 +130,7 @@ function qtn_transaction_query( $type = 'start' ) {
 /**
  * Wrapper for set_time_limit to see if it is enabled.
  */
-function qtn_set_time_limit( $limit = 0 ) {
+function wpm_set_time_limit( $limit = 0 ) {
 	if ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
 		@set_time_limit( $limit );
 	}

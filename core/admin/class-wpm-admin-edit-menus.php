@@ -4,33 +4,33 @@
  *
  * @author   VaLeXaR
  * @category Admin
- * @package  qTranslateNext/Admin
+ * @package  WPMPlugin/Admin
  * @version  1.0.0
  */
 
-namespace QtNext\Core\Admin;
+namespace WPM\Core\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'QtN_Admin_Edit_Menus' ) ) :
+if ( ! class_exists( 'WPM_Admin_Edit_Menus' ) ) :
 
 	/**
-	 * QtN_Admin_Edit_Menus Class.
+	 * WPM_Admin_Edit_Menus Class.
 	 */
-	class QtN_Admin_Edit_Menus {
+	class WPM_Admin_Edit_Menus {
 
 		/**
 		 * Hook in tabs.
 		 */
 		public function __construct() {
-			add_filter( 'wp_setup_nav_menu_item', array( $this, 'translate_menu_item' ), 0 );
+			add_filter( 'wp_setup_nav_menu_item', array( $this, 'translate_menu_item' ), ( 'POST' == $_SERVER['REQUEST_METHOD'] ? 99 : 0 ) );
 		}
 
 
 		public function translate_menu_item( $menu_item ) {
-			$menu_item = qtn_translate_object( $menu_item );
+			$menu_item = wpm_translate_object( $menu_item );
 
 			if ( isset( $menu_item->post_type ) ) {
 				if ( 'nav_menu_item' == $menu_item->post_type ) {

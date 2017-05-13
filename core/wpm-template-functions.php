@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *   ‘format’ – needs to be provided if ‘type’ is ‘custom’. Read help text to this option on widget admin page.
  *   ‘id’ – id of widget, which is used as a distinctive string to create CSS entities.
  */
-function qtn_language_switcher( $args = array(), $echo = true ) {
+function wpm_language_switcher( $args = array(), $echo = true ) {
 	global $wp;
 	$default = array(
 		'type' => 'list',
@@ -20,23 +20,23 @@ function qtn_language_switcher( $args = array(), $echo = true ) {
 	);
 	$args = array_merge( $args, $default);
 
-	$languages = qtn_get_languages();
+	$languages = wpm_get_languages();
 
 	if ( count( $languages ) <= 1 ) {
 		return '';
 	}
 
-	$options = qtn_get_options();
+	$options = wpm_get_options();
 	$current_url = home_url( $wp->request );
 	$locale = get_locale();
 	ob_start();
 	if ('list' == $args['type']) { ?>
-		<ul class="qtn-language-switcher switcher-<?php echo $args['type']; ?>">
+		<ul class="wpm-language-switcher switcher-<?php echo $args['type']; ?>">
 			<?php foreach ( $languages as $key => $language ) { ?>
 				<li<?php if ( $key == $locale ) { ?> class="active"<?php } ?>>
-					<a href="<?php echo qtn_translate_url( $current_url, $key ); ?>">
+					<a href="<?php echo wpm_translate_url( $current_url, $key ); ?>">
 						<?php if ( $args['flag'] ) { ?>
-							<img src="<?php echo QN()->flag_dir() . $options[ $key ]['flag'] . '.png'; ?>"
+							<img src="<?php echo WPM()->flag_dir() . $options[ $key ]['flag'] . '.png'; ?>"
 							     alt="<?php echo $options[ $key ]['name']; ?>">
 						<?php } ?>
 						<?php if ( $args['text'] ) { ?>
@@ -49,9 +49,9 @@ function qtn_language_switcher( $args = array(), $echo = true ) {
 		<? }
 
 	if ('dropdown' == $args['type'] ) { ?>
-		<select class="qtn-language-switcher switcher-<?php echo $args['type']; ?>" onchange="location = this.value;" title="<?php esc_html_e( __('Language Switcher', 'qtranslate-next')); ?>">
+		<select class="wpm-language-switcher switcher-<?php echo $args['type']; ?>" onchange="location = this.value;" title="<?php esc_html_e( __('Language Switcher', 'wpm')); ?>">
 			<?php foreach ($languages as $key => $language) { ?>
-				<option value="<?php echo qtn_translate_url( $current_url, $key ); ?>"<?php if ( $key == $locale ) { ?> selected="selected"<?php } ?>>
+				<option value="<?php echo wpm_translate_url( $current_url, $key ); ?>"<?php if ( $key == $locale ) { ?> selected="selected"<?php } ?>>
 					<?php echo $options[ $key ]['name']; ?>
 				</option>
 			<?php } ?>

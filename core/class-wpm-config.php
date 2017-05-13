@@ -1,16 +1,16 @@
 <?php
 /**
  *
- * @class   QtN_Config
+ * @class   WPM_Config
  */
 
-namespace QtNext\Core;
+namespace WPM\Core;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QtN_Config {
+class WPM_Config {
 
 	/**
 	 * Order factory instance.
@@ -61,10 +61,40 @@ class QtN_Config {
 	 */
 	public $settings = array();
 
+	/**
+	 * The single instance of the class.
+	 *
+	 * @var WPM_Config
+	 */
+	protected static $_instance = null;
+
+	/**
+	 * Main WPM_Config Instance.
+	 *
+	 * @static
+	 * @return WPM_Config - Main instance.
+	 */
+	public static function instance() {
+		if ( is_null( self::$_instance ) ) {
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
+	}
+
+	public function init() {
+		add_filter( 'query_vars', array( $this, 'set_lang_var' ) );
+		add_filter( 'option_home', array( $this, 'set_home_url' ), 0 );
+		add_action( 'change_locale', array( $this, 'change_locale' ), 0 );
+		add_action( 'after_setup_theme', array( $this, 'setup_lang_query' ), 0 );
+		//add_action( 'after_setup_theme', array( $this, 'set_settings' ), 0 );
+		$this->set_locale();
+	}
+
 
 	public function get_options() {
 		if ( ! $this->options ) {
-			$this->options = get_option( 'qtn_languages' );
+			$this->options = get_option( 'wpm_languages' );
 		}
 
 		return $this->options;
@@ -98,7 +128,7 @@ class QtN_Config {
 
 	public function get_default_locale() {
 		if ( ! $this->default_locale ) {
-			$this->default_locale = get_option( 'WPLANG' ) ?  get_option( 'WPLANG' ) : 'en_US';
+			$this->default_locale = get_option( 'WPLANG' ) ? get_option( 'WPLANG' ) : 'en_US';
 		}
 
 		return $this->default_locale;
@@ -120,17 +150,18 @@ class QtN_Config {
 			$default_locale = $this->get_default_locale();
 			if ( isset( $_GET['lang'] ) ) {
 				$languages = $this->get_languages();
-				$lang = qtn_clean( $_GET['lang'] );
+				$lang      = wpm_clean( $_GET['lang'] );
 				if ( ! in_array( $lang, $languages ) ) {
-					$lang           = $languages[ $default_locale ];
+					$lang = $languages[ $default_locale ];
 				}
-				qtn_setcookie( 'language', $lang, time() + MONTH_IN_SECONDS );
+				wpm_setcookie( 'language', $lang, time() + MONTH_IN_SECONDS );
 			}
 
 			if ( ! isset( $_COOKIE['language'] ) ) {
-				qtn_setcookie( 'language', $default_locale, time() + MONTH_IN_SECONDS );
+				wpm_setcookie( 'language', $default_locale, time() + MONTH_IN_SECONDS );
+				$this->user_language = $this->languages[ $default_locale ];
 			} else {
-				$this->user_language = qtn_clean( $_COOKIE['language'] );
+				$this->user_language = wpm_clean( $_COOKIE['language'] );
 			}
 
 		} else {
@@ -142,7 +173,7 @@ class QtN_Config {
 		}
 
 		if ( isset( $_GET['lang'] ) ) {
-			$this->user_language = qtn_clean( $_GET['lang'] );
+			$this->user_language = wpm_clean( $_GET['lang'] );
 		}
 	}
 
@@ -167,10 +198,6 @@ class QtN_Config {
 				}
 				break;
 			}
-		}
-
-		if ( ! $this->user_language ) {
-			$this->user_language = $this->languages[ $default_locale ];
 		}
 	}
 
@@ -199,8 +226,7 @@ class QtN_Config {
 						'page',
 						'post',
 						'attachment',
-						'nav_menu_item',
-						'revision'
+						'nav_menu_item'
 					),
 					'post_fields' => array(
 						'_wp_attachment_image_alt'
@@ -209,22 +235,66 @@ class QtN_Config {
 						'category',
 						'post_tag'
 					),
+					'tax_fields' => array(),
 					'admin_pages' => array(
+						'upload',
 						'nav-menus',
 						'options-general',
-						'widgets',
-						'settings_page_media-taxonomies'
+						'widgets'
 					),
 					'options'     => array(
 						'blogname',
 						'blogdescription'
-					)
+					),
+					'widgets' => array()
 				);
 
-				$this->settings = apply_filters( 'qtn_settings', $settings );
+				$this->settings = apply_filters( 'wpm_settings', $settings );
 			}
 		}
 
 		return $this->settings;
+	}
+
+
+	public function setup_lang_query() {
+		$user_language = $this->get_user_language();
+		set_query_var( 'lang', $user_language );
+		add_filter( 'request', function ( $query_vars ) {
+			$query_vars['lang'] = get_query_var( 'lang' );
+
+			return $query_vars;
+		} );
+	}
+
+
+	public function change_locale( $new_locale ) {
+		global $locale;
+		$locale = $new_locale;
+	}
+
+
+	public function set_home_url( $value ) {
+		if ( ( is_admin() && ! defined( 'DOING_AJAX' ) ) || defined( 'REST_REQUEST' ) ) {
+			return $value;
+		}
+
+		//TODO set cookie for ajax
+
+		$locale         = get_locale();
+		$languages      = $this->get_languages();
+		$default_locale = $this->get_default_locale();
+		if ( $languages[ $locale ] != $languages[ $default_locale ] ) {
+			$value .= '/' . $languages[ $locale ];
+		}
+
+		return $value;
+	}
+
+
+	public function set_lang_var( $public_query_vars ) {
+		$public_query_vars[] = 'lang';
+
+		return $public_query_vars;
 	}
 }

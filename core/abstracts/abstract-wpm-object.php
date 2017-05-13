@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-abstract class QtN_Object {
+abstract class WPM_Object {
 
 	public $object_type;
 	public $object_table;
@@ -12,7 +12,7 @@ abstract class QtN_Object {
 	public function get_meta_field( $value, $object_id, $meta_key ) {
 		global $wpdb;
 
-		$settings = qtn_get_settings();
+		$settings = wpm_get_settings();
 
 		if ( ! in_array( $meta_key, $settings[ $this->object_type . '_fields' ] ) ) {
 			return $value;
@@ -21,7 +21,7 @@ abstract class QtN_Object {
 		$column    = sanitize_key( $this->object_type . '_id' );
 		$id_column = 'user' == $this->object_type ? 'umeta_id' : 'meta_id';
 
-		$meta_values = wp_cache_get( $object_id . '_' . $meta_key, $this->object_type . '_qtn_meta' );
+		$meta_values = wp_cache_get( $object_id . '_' . $meta_key, $this->object_type . '_wpm_meta' );
 		$values      = array();
 
 		if ( ! $meta_values ) {
@@ -30,7 +30,7 @@ abstract class QtN_Object {
 				"SELECT {$id_column}, meta_value FROM {$wpdb->{$this->object_table}} WHERE meta_key = %s AND {$column} = %d;",
 				$meta_key, $object_id ), ARRAY_A );
 
-			wp_cache_set( $object_id . '_' . $meta_key, $meta_values, $this->object_type . '_qtn_meta' );
+			wp_cache_set( $object_id . '_' . $meta_key, $meta_values, $this->object_type . '_wpm_meta' );
 		}
 
 		if ( $meta_values ) {
@@ -38,8 +38,8 @@ abstract class QtN_Object {
 			$meta_values = maybe_unserialize( $meta_values );
 
 			foreach ( $meta_values as $meta_field ) {
-				if ( qtn_is_ml_value( $meta_field['meta_value'] ) ) {
-					$value = qtn_translate_value( $meta_field['meta_value'] );
+				if ( wpm_is_ml_value( $meta_field['meta_value'] ) ) {
+					$value = wpm_translate_value( $meta_field['meta_value'] );
 				} else {
 					$value = $meta_field['meta_value'];
 				}
@@ -58,7 +58,7 @@ abstract class QtN_Object {
 	public function update_meta_field( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
 		global $wpdb;
 
-		$settings = qtn_get_settings();
+		$settings = wpm_get_settings();
 
 		if ( ! in_array( $meta_key, $settings[ $this->object_type . '_fields' ] ) ) {
 			return $check;
@@ -70,7 +70,7 @@ abstract class QtN_Object {
 
 		if ( empty( $prev_value ) ) {
 
-			if ( qtn_is_ml_value( $meta_value ) ) {
+			if ( wpm_is_ml_value( $meta_value ) ) {
 				$old_value  = array();
 				$old_results = $wpdb->get_results( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->{$this->object_table}} WHERE meta_key = %s AND {$column} = %d;", $meta_key, $object_id ), ARRAY_A );
 				if ( $old_results ) {
@@ -92,12 +92,12 @@ abstract class QtN_Object {
 			return add_metadata( $this->object_type, $object_id, $meta_key, $meta_value );
 		}
 
-		if ( ! qtn_is_ml_value( $meta_value ) ) {
+		if ( ! wpm_is_ml_value( $meta_value ) ) {
 			$old_value = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->{$this->object_table}} WHERE meta_key = %s AND {$column} = %d LIMIT 1;", $meta_key, $object_id ) );
 			$old_value = maybe_unserialize( $old_value );
-			$old_value = qtn_value_to_ml_array( $old_value );
-			$meta_value = qtn_set_language_value( $old_value, $meta_value );
-			$meta_value = qtn_ml_value_to_string( $meta_value );
+			$old_value = wpm_value_to_ml_array( $old_value );
+			$meta_value = wpm_set_language_value( $old_value, $meta_value );
+			$meta_value = wpm_ml_value_to_string( $meta_value );
 		}
 
 		$meta_value = maybe_serialize( $meta_value );
@@ -106,7 +106,7 @@ abstract class QtN_Object {
 
 		if ( ! empty( $prev_value ) ) {
 
-			if ( ! qtn_is_ml_value( $prev_value ) ) {
+			if ( ! wpm_is_ml_value( $prev_value ) ) {
 				$like       = '%' . $wpdb->esc_like( esc_sql( $prev_value ) ) . '%';
 				$prev_value = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->{$this->object_table}} WHERE meta_key = %s AND {$column} = %d AND meta_value LIKE '%s' LIMIT 1", $meta_key, $object_id, $like ) );
 			}
@@ -120,7 +120,7 @@ abstract class QtN_Object {
 			return false;
 		}
 
-		wp_cache_delete( $object_id . '_' . $meta_key, $this->object_type . '_qtn_meta' );
+		wp_cache_delete( $object_id . '_' . $meta_key, $this->object_type . '_wpm_meta' );
 
 		return true;
 	}

@@ -4,23 +4,23 @@
  *
  * @author   VaLeXaR
  * @category Admin
- * @package  qTranslateNext/Admin
+ * @package  WPMPlugin/Admin
  */
 
-namespace QtNext\Core\Admin;
+namespace WPM\Core\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
+if ( ! class_exists( 'WPM_Admin_Posts' ) ) :
 
 	/**
 	 * WC_Admin_Post_Types Class.
 	 *
 	 * Handles the edit posts views and some functionality on the edit post screen for WC post types.
 	 */
-	class QtN_Admin_Posts {
+	class WPM_Admin_Posts {
 
 		/**
 		 * Constructor.
@@ -28,8 +28,8 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 		public function __construct() {
 			add_action( 'edit_form_top', array( $this, 'translate_post' ), 0 );
 			add_action( 'admin_init', array( $this, 'init' ) );
-			add_filter( 'wp_insert_post_data', array( $this, 'save_post' ), 0, 2 );
-			add_filter( 'wp_insert_attachment_data', array( $this, 'save_post' ), 0, 2 );
+			add_filter( 'wp_insert_post_data', array( $this, 'save_post' ), 99, 2 );
+			add_filter( 'wp_insert_attachment_data', array( $this, 'save_post' ), 99, 2 );
 			add_filter( 'get_sample_permalink', array( $this, 'translate_post_link' ), 0 );
 			add_filter( 'preview_post_link', array( $this, 'translate_post_link' ), 0 );
 		}
@@ -37,7 +37,7 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 
 		public function init() {
 
-			$settings = qtn_get_settings();
+			$settings = wpm_get_settings();
 
 			foreach ( $settings['post_types'] as $post_type ) {
 
@@ -56,13 +56,13 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 
 		public function translate_post() {
 			global $post;
-			$post = qtn_translate_object( $post );
+			$post = wpm_translate_object( $post );
 			get_permalink();
 		}
 
 
 		public function save_post( $data, $postarr ) {
-			$settings = qtn_get_settings();
+			$settings = wpm_get_settings();
 
 			if ( ! in_array( $data['post_type'], $settings['post_types'] ) ) {
 				return $data;
@@ -79,7 +79,7 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 				}
 			}
 
-			$post_id = isset( $data['ID'] ) ? qtn_clean( $data['ID'] ) : ( isset( $postarr['ID'] ) ? qtn_clean( $postarr['ID'] ) : 0 );
+			$post_id = isset( $data['ID'] ) ? wpm_clean( $data['ID'] ) : ( isset( $postarr['ID'] ) ? wpm_clean( $postarr['ID'] ) : 0 );
 
 			if ( ! $post_id ) {
 				return $data;
@@ -90,14 +90,14 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 					case 'post_title':
 					case 'post_content':
 					case 'post_excerpt':
-						if ( qtn_is_ml_value( $content ) ) {
+						if ( wpm_is_ml_value( $content ) ) {
 							break;
 						}
 
 						$old_value    = get_post_field( $key, $post_id, 'edit' );
-						$strings      = qtn_value_to_ml_array( $old_value );
-						$value        = qtn_set_language_value( $strings, $data[ $key ] );
-						$data[ $key ] = qtn_ml_value_to_string( $value );
+						$strings      = wpm_value_to_ml_array( $old_value );
+						$value        = wpm_set_language_value( $strings, $data[ $key ] );
+						$data[ $key ] = wpm_ml_value_to_string( $value );
 						break;
 				}
 			}
@@ -113,11 +113,11 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 				}
 			}
 
-			$languages      = qtn_get_languages();
-			$default_locale = qtn_get_default_locale();
+			$languages      = wpm_get_languages();
+			$default_locale = wpm_get_default_locale();
 
 			if ( empty( $data['post_name'] ) ) {
-				$data['post_name'] = sanitize_title( qtn_translate_value( $data['post_title'], $languages[ $default_locale ] ) );
+				$data['post_name'] = sanitize_title( wpm_translate_value( $data['post_title'], $languages[ $default_locale ] ) );
 			}
 
 			return $data;
@@ -146,7 +146,7 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 			}
 
 			$columns =
-				array_slice( $columns, 0, $i + 1 ) + array( 'languages' => __( 'Languages', 'qtranslate-next' ) ) + array_slice( $columns, $i + 1 );
+				array_slice( $columns, 0, $i + 1 ) + array( 'languages' => __( 'Languages', 'wpm' ) ) + array_slice( $columns, $i + 1 );
 
 			return $columns;
 		}
@@ -160,16 +160,16 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 
 			if ( 'languages' == $column ) {
 
-				$post      = qtn_untranslate_post( get_post() );
+				$post      = wpm_untranslate_post( get_post() );
 				$output    = array();
 				$text      = $post->post_title . $post->post_content;
-				$strings   = qtn_value_to_ml_array( $text );
-				$options   = qtn_get_options();
-				$languages = qtn_get_languages();
+				$strings   = wpm_value_to_ml_array( $text );
+				$options   = wpm_get_options();
+				$languages = wpm_get_languages();
 
 				foreach ( $languages as $locale => $language ) {
 					if ( isset( $strings[ $language ] ) && ! empty( $strings[ $language ] ) ) {
-						$output[] = '<img src="' . QN()->flag_dir() . $options[ $locale ]['flag'] . '.png" alt="' . $options[ $locale ]['name'] . '" title="' . $options[ $locale ]['name'] . '">';
+						$output[] = '<img src="' . WPM()->flag_dir() . $options[ $locale ]['flag'] . '.png" alt="' . $options[ $locale ]['name'] . '" title="' . $options[ $locale ]['name'] . '">';
 					}
 				}
 
@@ -181,14 +181,13 @@ if ( ! class_exists( 'QtN_Admin_Posts' ) ) :
 
 
 		public function translate_post_link( $link ) {
-			$languages = qtn_get_languages();
-			$lang = isset( $_GET['edit_lang'] ) ? qtn_clean( $_GET['edit_lang'] ) : qtn_clean( $_COOKIE['edit_language'] );
-			if ( in_array( $lang, $languages ) && $lang != $languages[ qtn_get_default_locale() ] ) {
+			$languages = wpm_get_languages();
+			$lang = wpm_get_edit_lang();
+			if ( in_array( $lang, $languages ) && $lang != $languages[ wpm_get_default_locale() ] ) {
 				if ( is_array( $link ) ) {
 					$link[0] = str_replace( home_url(), home_url( '/' . $lang ), $link[0] );
 				} else {
 					$link = str_replace( home_url(), home_url( '/' . $lang ), $link );
-
 				}
 			}
 

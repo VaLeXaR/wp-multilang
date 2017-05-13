@@ -4,19 +4,19 @@
  *
  * @author   VaLeXaR
  * @category Admin
- * @package  qTranslateNext/Classes
+ * @package  WPMPlugin/Classes
  */
 
-namespace QtNext\Core;
+namespace WPM\Core;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * QtN_Install Class.
+ * WPM_Install Class.
  */
-class QtN_Install {
+class WPM_Install {
 
 	/**
 	 * Hook in tabs.
@@ -26,12 +26,12 @@ class QtN_Install {
 	}
 
 	/**
-	 * Check qTranslateNext version and run the updater is required.
+	 * Check WPMPlugin version and run the updater is required.
 	 *
 	 * This check is done on all requests and runs if he versions do not match.
 	 */
 	public static function check_version() {
-		if ( get_option( 'qtranslate_next_version' ) !== QN()->version ) {
+		if ( get_option( 'wpm_version' ) !== WPM()->version ) {
 			self::install();
 		}
 	}
@@ -64,15 +64,15 @@ class QtN_Install {
 		$wpdb->query( $wpdb->prepare( $sql, $wpdb->esc_like( '_transient_' ) . '%', $wpdb->esc_like( '_transient_timeout_' ) . '%', time() ) );
 
 		// Trigger action
-		do_action( 'qtranslate_next_installed' );
+		do_action( 'wpm_installed' );
 	}
 
 	/**
 	 * Update GP version to current.
 	 */
 	private static function update_gp_version() {
-		delete_option( 'qtranslate_next_version' );
-		add_option( 'qtranslate_next_version', QN()->version );
+		delete_option( 'wpm_version' );
+		add_option( 'wpm_version', WPM()->version );
 	}
 
 	/**
@@ -81,8 +81,8 @@ class QtN_Install {
 	 * @param string $version
 	 */
 	public static function update_db_version( $version = null ) {
-		delete_option( 'qtranslate_next_db_version' );
-		add_option( 'qtranslate_next_db_version', is_null( $version ) ? QN()->version : $version );
+		delete_option( 'wpm_db_version' );
+		add_option( 'wpm_db_version', is_null( $version ) ? WPM()->version : $version );
 	}
 
 	/**
@@ -92,7 +92,7 @@ class QtN_Install {
 	 */
 	private static function create_options() {
 
-		$config = new QtN_Config();
+		$config = WPM_Config::instance();
 		$languages = array();
 		$installed_languages = $config->get_installed_languages();
 		$translations = $config->get_translations();
@@ -106,6 +106,6 @@ class QtN_Install {
 			);
 		}
 
-		add_option( 'qtn_languages', $languages, '', 'yes' );
+		add_option( 'wpm_languages', $languages, '', 'yes' );
 	}
 }

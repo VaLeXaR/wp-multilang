@@ -1,12 +1,12 @@
 <?php
 
-namespace QtNext\Core;
+namespace WPM\Core;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-class QtN_Options {
+class WPM_Options {
 
 	public function __construct() {
 		add_action( 'init', array( $this, 'init' ) );
@@ -14,10 +14,10 @@ class QtN_Options {
 
 	public function init() {
 
-		$settings = qtn_get_settings();
+		$settings = wpm_get_settings();
 
 		foreach ( $settings['options'] as $option ) {
-			add_filter( "option_{$option}", 'qtn_translate_value', 0 );
+			add_filter( "option_{$option}", 'wpm_translate_value', 0 );
 		}
 	}
 }

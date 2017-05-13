@@ -9,7 +9,7 @@ module.exports = function( grunt ) {
 
 		addtextdomain: {
 			options: {
-				textdomain: 'qtranslate-next',
+				textdomain: 'wpm',
 			},
 			target: {
 				files: {
@@ -30,8 +30,8 @@ module.exports = function( grunt ) {
 			target: {
 				options: {
 					domainPath: '/languages',
-					mainFile: 'qtranslate-next.php',
-					potFilename: 'qtranslate-next.pot',
+					mainFile: 'wpm.php',
+					potFilename: 'wpm.pot',
 					potHeaders: {
 						poedit: true,
 						'x-poedit-keywordslist': true

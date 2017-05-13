@@ -1,5 +1,5 @@
 <?php
-namespace QtNext\Core\Libraries;
+namespace WPM\Core\Libraries;
 
 /**
  * Get paths for assets

@@ -1,30 +1,30 @@
 <?php
 
-namespace QtNext\Core;
+namespace WPM\Core;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
 /**
- * qTranslateNext QtN_AJAX.
+ * WPMPlugin WPM_AJAX.
  *
  * AJAX Event Handler.
  *
- * @class    QtN_AJAX
+ * @class    WPM_AJAX
  * @version  1.0.0
- * @package  qTranslateNext/Classes
+ * @package  WPMPlugin/Classes
  * @category Class
  * @author   VaLeXaR
  */
-class QtN_AJAX {
+class WPM_AJAX {
 
 	/**
 	 * Hook in ajax handlers.
 	 */
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'define_ajax' ), 0 );
-		add_action( 'template_redirect', array( __CLASS__, 'do_qtn_ajax' ), 0 );
+		add_action( 'template_redirect', array( __CLASS__, 'do_wpm_ajax' ), 0 );
 		self::add_ajax_events();
 	}
 
@@ -36,14 +36,14 @@ class QtN_AJAX {
 	 * @return string
 	 */
 	public static function get_endpoint( $request = '' ) {
-		return esc_url_raw( add_query_arg( 'qtn-ajax', $request ) );
+		return esc_url_raw( add_query_arg( 'wpm-ajax', $request ) );
 	}
 
 	/**
 	 * Set WC AJAX constant and headers.
 	 */
 	public static function define_ajax() {
-		if ( ! empty( $_GET['qtn-ajax'] ) ) {
+		if ( ! empty( $_GET['wpm-ajax'] ) ) {
 			if ( ! defined( 'DOING_AJAX' ) ) {
 				define( 'DOING_AJAX', true );
 			}
@@ -61,7 +61,7 @@ class QtN_AJAX {
 	/**
 	 * Send headers for GP Ajax Requests
 	 */
-	private static function qtn_ajax_headers() {
+	private static function wpm_ajax_headers() {
 		send_origin_headers();
 		@header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
 		@header( 'X-Robots-Tag: noindex' );
@@ -73,16 +73,16 @@ class QtN_AJAX {
 	/**
 	 * Check for GP Ajax request and fire action.
 	 */
-	public static function do_qtn_ajax() {
+	public static function do_wpm_ajax() {
 		global $wp_query;
 
-		if ( ! empty( $_GET['qtn-ajax'] ) ) {
-			$wp_query->set( 'qtn-ajax', sanitize_text_field( $_GET['qtn-ajax'] ) );
+		if ( ! empty( $_GET['wpm-ajax'] ) ) {
+			$wp_query->set( 'wpm-ajax', sanitize_text_field( $_GET['wpm-ajax'] ) );
 		}
 
-		if ( $action = $wp_query->get( 'qtn-ajax' ) ) {
-			self::qtn_ajax_headers();
-			do_action( 'qtn_ajax_' . sanitize_text_field( $action ) );
+		if ( $action = $wp_query->get( 'wpm-ajax' ) ) {
+			self::wpm_ajax_headers();
+			do_action( 'wpm_ajax_' . sanitize_text_field( $action ) );
 			die();
 		}
 	}
@@ -96,13 +96,13 @@ class QtN_AJAX {
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
-			add_action( 'wp_ajax_qtranslate_next_' . $ajax_event, array( __CLASS__, $ajax_event ) );
+			add_action( 'wp_ajax_wpm_' . $ajax_event, array( __CLASS__, $ajax_event ) );
 
 			if ( $nopriv ) {
-				add_action( 'wp_ajax_nopriv_qtranslate_next_' . $ajax_event, array( __CLASS__, $ajax_event ) );
+				add_action( 'wp_ajax_nopriv_wpm_' . $ajax_event, array( __CLASS__, $ajax_event ) );
 
 				// GP AJAX can be used for frontend ajax requests
-				add_action( 'qtn_ajax_' . $ajax_event, array( __CLASS__, $ajax_event ) );
+				add_action( 'wpm_ajax_' . $ajax_event, array( __CLASS__, $ajax_event ) );
 			}
 		}
 	}

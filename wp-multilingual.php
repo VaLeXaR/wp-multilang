@@ -1,20 +1,20 @@
 <?php
 /**
- * Plugin Name:     qTranslate-Next
+ * Plugin Name:     WP Multilingual
  * Plugin URI:      PLUGIN SITE HERE
  * Description:     PLUGIN DESCRIPTION HERE
  * Author:          Valentyn Riaboshtan
  * Author URI:      YOUR SITE HERE
- * Text Domain:     qtranslate-next
+ * Text Domain:     wpm
  * Domain Path:     /languages
  * Version:         1.0.0
  *
- * @package  Qtranslate_Next
+ * @package  WP_Multilingual
  * @category Core
  * @author   Valentyn Riaboshtan
  */
 
-use QtNext\Core;
+use WPM\Core;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -32,18 +32,18 @@ if ( WP_DEBUG ) {
 }
 
 
-if ( ! class_exists( 'Qtranslate_Next' ) ) :
+if ( ! class_exists( 'WP_Multilingual' ) ) :
 
 	/**
-	 * Main Qtranslate_Next Class.
+	 * Main WPM Class.
 	 *
-	 * @class   QtranslateNext
+	 * @class   WPM
 	 * @version 1.0.0
 	 */
-	final class Qtranslate_Next {
+	final class WP_Multilingual {
 
 		/**
-		 * QtranslateNext version.
+		 * WPM Plugin version.
 		 *
 		 * @var string
 		 */
@@ -52,26 +52,25 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 		/**
 		 * The single instance of the class.
 		 *
-		 * @var Qtranslate_Next
-		 * @since 2.1
+		 * @var WP_Multilingual
 		 */
 		protected static $_instance = null;
 
 		/**
 		 * Order factory instance.
 		 *
-		 * @var Core\QtN_Config
+		 * @var Core\WPM_Config
 		 */
 		public $config = null;
 
 		/**
-		 * Main Qtranslate_Next Instance.
+		 * Main WP_Multilingual Instance.
 		 *
 		 * Ensures only one instance of WooCommerce is loaded or can be loaded.
 		 *
 		 * @static
-		 * @see   QN()
-		 * @return Qtranslate_Next - Main instance.
+		 * @see   WPM()
+		 * @return WP_Multilingual - Main instance.
 		 */
 		public static function instance() {
 			if ( is_null( self::$_instance ) ) {
@@ -86,7 +85,7 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 		 * @since 2.1
 		 */
 		public function __clone() {
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woocommerce' ), '2.1' );
+			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wpm' ), '2.1' );
 		}
 
 		/**
@@ -94,7 +93,7 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 		 * @since 2.1
 		 */
 		public function __wakeup() {
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woocommerce' ), '2.1' );
+			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wpm' ), '2.1' );
 		}
 
 		/**
@@ -105,7 +104,7 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 			$this->includes();
 			$this->init_hooks();
 
-			do_action( 'qtn_loaded' );
+			do_action( 'wpm_loaded' );
 		}
 
 		/**
@@ -113,7 +112,7 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 		 * @since  2.3
 		 */
 		private function init_hooks() {
-			register_activation_hook( __FILE__, array( 'QtNext\Core\QtN_Install', 'install' ) );
+			register_activation_hook( __FILE__, array( 'WPM\Core\WPM_Install', 'install' ) );
 			add_action( 'init', array( $this, 'init' ), 0 );
 		}
 
@@ -164,34 +163,14 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 		 * Include required core files used in admin and on the frontend.
 		 */
 		public function includes() {
-			include_once( 'core/qtn-core-functions.php' );
-			include_once( 'core/qtn-core-hooks.php' );
+			include_once( 'core/wpm-core-functions.php' );
 //			include_once( 'core/wc-widget-functions.php' );
-			$this->config = new Core\QtN_Config();
-			$this->config->set_locale();
-			Core\QtN_AJAX::init();
-
-			include_once( 'core/abstracts/abstract-qtn-object.php' );
-			new Core\QtN_Posts();
-			new Core\QtN_Taxonomies();
-			new Core\QtN_Options();
-//			new Core\QtN_Widgets();
-
-			if ( $this->is_request( 'admin' ) ) {
-				new Core\Admin\QtN_Admin;
-			}
+			include_once( 'core/abstracts/abstract-wpm-object.php' );
 
 			if ( $this->is_request( 'frontend' ) ) {
-				$this->frontend_includes();
+				include_once( 'core/wpm-template-hooks.php' );
+//			    include_once( 'core/class-wc-frontend-scripts.php' );               // Frontend Scripts
 			}
-		}
-
-		/**
-		 * Include required frontend files.
-		 */
-		public function frontend_includes() {
-			include_once( 'core/qtn-template-hooks.php' );
-//			include_once( 'core/class-wc-frontend-scripts.php' );               // Frontend Scripts
 		}
 
 		/**
@@ -199,13 +178,25 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 		 */
 		public function init() {
 			// Before init action.
-			do_action( 'before_qtn_init' );
+			do_action( 'before_wpm_init' );
+
+			Core\WPM_Config::instance()->init();
 
 			// Set up localisation.
 			$this->load_plugin_textdomain();
 
+			Core\WPM_AJAX::init();
+			new Core\WPM_Posts();
+			new Core\WPM_Taxonomies();
+			new Core\WPM_Options();
+			new Core\WPM_Widgets();
+
+			if ( $this->is_request( 'admin' ) ) {
+				new Core\Admin\WPM_Admin;
+			}
+
 			// Init action.
-			do_action( 'qtn_init' );
+			do_action( 'wpm_init' );
 		}
 
 		/**
@@ -214,7 +205,7 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 		 * Note: the first-loaded translation file overrides any following ones if the same translation is present.
 		 */
 		public function load_plugin_textdomain() {
-			load_plugin_textdomain( 'qtranslate-next', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' );
+			load_plugin_textdomain( 'wpm', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' );
 		}
 
 		/**
@@ -260,8 +251,8 @@ if ( ! class_exists( 'Qtranslate_Next' ) ) :
 
 endif;
 
-function QN() {
-	return Qtranslate_Next::instance();
+function WPM() {
+	return WP_Multilingual::instance();
 }
 
-QN();
+WPM();

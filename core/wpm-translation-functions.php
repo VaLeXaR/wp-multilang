@@ -4,10 +4,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-function qtn_translate_url( $url, $new_locale = '' ) {
+function wpm_translate_url( $url, $new_locale = '' ) {
 
 	$locale    = get_locale();
-	$languages = qtn_get_languages();
+	$languages = wpm_get_languages();
 
 	if ( $new_locale ) {
 		if ( ( $new_locale == $locale ) || ! isset( $languages[ $new_locale ] ) ) {
@@ -27,9 +27,9 @@ function qtn_translate_url( $url, $new_locale = '' ) {
 	return $url;
 }
 
-function qtn_translate_string( $string, $locale = '' ) {
+function wpm_translate_string( $string, $locale = '' ) {
 
-	$strings = qtn_string_to_ml_array( $string );
+	$strings = wpm_string_to_ml_array( $string );
 
 	if ( ! is_array( $strings ) ) {
 		return $string;
@@ -39,7 +39,7 @@ function qtn_translate_string( $string, $locale = '' ) {
 		return $string;
 	}
 
-	$languages = qtn_get_languages();
+	$languages = wpm_get_languages();
 
 	if ( $locale ) {
 		if ( isset( $strings[ $languages[ $locale ] ] ) ) {
@@ -49,13 +49,9 @@ function qtn_translate_string( $string, $locale = '' ) {
 		}
 	}
 
-	if ( is_admin() ) {
-		$lang = isset( $_GET['edit_lang'] ) ? qtn_clean( $_GET['edit_lang'] ) : qtn_clean( $_COOKIE['edit_language'] );
-	} else {
-		$lang = $languages[ get_locale() ];
-	}
+	$lang = wpm_get_edit_lang();
 
-	$default_locale = qtn_get_default_locale();
+	$default_locale = wpm_get_default_locale();
 
 	if ( isset( $strings[ $lang ] ) ) {
 		return $strings[ $lang ];
@@ -66,23 +62,23 @@ function qtn_translate_string( $string, $locale = '' ) {
 	}
 }
 
-function qtn_translate_value( $value, $locale = '' ) {
+function wpm_translate_value( $value, $locale = '' ) {
 	if ( is_array( $value ) ) {
 		$result = array();
 		foreach ( $value as $k => $item ) {
-			$result[ $k ] = qtn_translate_value( $item, $locale );
+			$result[ $k ] = wpm_translate_value( $item, $locale );
 		}
 
 		return $result;
 	} elseif ( is_string( $value ) ) {
-		return qtn_translate_string( $value, $locale );
+		return wpm_translate_string( $value, $locale );
 	} else {
 		return $value;
 	}
 }
 
 
-function qtn_string_to_ml_array( $string ) {
+function wpm_string_to_ml_array( $string ) {
 
 	if ( ! is_string( $string ) ) {
 		return $string;
@@ -99,7 +95,7 @@ function qtn_string_to_ml_array( $string ) {
 
 	$result = array();
 
-	$languages = qtn_get_languages();
+	$languages = wpm_get_languages();
 
 	foreach ( $languages as $language ) {
 		$result[ $language ] = '';
@@ -145,32 +141,35 @@ function qtn_string_to_ml_array( $string ) {
 }
 
 
-function qtn_value_to_ml_array( $value ) {
+function wpm_value_to_ml_array( $value ) {
 	if ( is_array( $value ) ) {
 		$result = array();
 		foreach ( $value as $k => $item ) {
-			$result[ $k ] = qtn_value_to_ml_array( $item );
+			$result[ $k ] = wpm_value_to_ml_array( $item );
 		}
 
 		return $result;
 	} elseif ( is_string( $value ) ) {
-		return qtn_string_to_ml_array( $value );
+		return wpm_string_to_ml_array( $value );
 	} else {
 		return $value;
 	}
 }
 
-function qtn_ml_array_to_string( $strings ) {
+function wpm_ml_array_to_string( $strings ) {
 
 	$string = '';
 
-	if ( ! is_array( $strings ) || ! qtn_is_ml_array( $strings ) ) {
+	if ( ! is_array( $strings ) || ! wpm_is_ml_array( $strings ) ) {
 		return $string;
 	}
 
-	$languages = qtn_get_languages();
+	$languages = wpm_get_languages();
 	foreach ( $strings as $key => $value ) {
-		if ( in_array( $key, $languages ) && ! empty( $value ) && ! qtn_is_ml_string( $value) ) {
+		if ( in_array( $key, $languages ) && ! empty( $value ) ) {
+			if ( wpm_is_ml_string( $value ) ) {
+				$string = wpm_translate_string( $string );
+			}
 			$string .= '[:' . $key . ']' . trim( $value );
 		}
 	}
@@ -185,15 +184,15 @@ function qtn_ml_array_to_string( $strings ) {
 }
 
 
-function qtn_ml_value_to_string( $value ) {
+function wpm_ml_value_to_string( $value ) {
 
 	if ( is_array( $value ) ) {
-		if ( qtn_is_ml_array( $value ) ) {
-			return qtn_ml_array_to_string( $value );
+		if ( wpm_is_ml_array( $value ) ) {
+			return wpm_ml_array_to_string( $value );
 		} else {
 			$result = array();
 			foreach ( $value as $key => $item ) {
-				$result[ $key ] = qtn_ml_value_to_string( $item );
+				$result[ $key ] = wpm_ml_value_to_string( $item );
 			}
 
 			return $result;
@@ -203,9 +202,15 @@ function qtn_ml_value_to_string( $value ) {
 	}
 }
 
-function qtn_set_language_value( $localize_array, $value, $locale = '' ) {
-	$languages = qtn_get_languages();
-	$lang      = isset( $_POST['lang'] ) ? qtn_clean( $_POST['lang'] ) : $languages[ get_locale() ];
+
+//TODO add filter for value
+function wpm_set_language_value( $localize_array, $value, $locale = '' ) {
+	$languages = wpm_get_languages();
+	$lang      = wpm_get_edit_lang();
+
+	if ( isset( $_POST['lang'] ) && in_array( $_POST['lang'], $languages ) ) {
+		$lang = wpm_clean( $_POST['lang'] );
+	}
 
 	if ( $locale && isset( $languages[ $locale ] ) ) {
 		$lang = $languages[ $locale ];
@@ -213,11 +218,11 @@ function qtn_set_language_value( $localize_array, $value, $locale = '' ) {
 
 	if ( is_array( $value ) ) {
 		foreach ( $value as $key => $item ) {
-			$localize_array[ $key ] = qtn_set_language_value( $localize_array[ $key ], $value[ $key ], $locale );
+			$localize_array[ $key ] = wpm_set_language_value( $localize_array[ $key ], $value[ $key ], $locale );
 		}
 	} else {
 		if ( is_string( $value ) ) {
-			if ( qtn_is_ml_array( $localize_array ) ) {
+			if ( wpm_is_ml_array( $localize_array ) ) {
 				$localize_array[ $lang ] = $value;
 			} else {
 				$result = array();
@@ -235,7 +240,7 @@ function qtn_set_language_value( $localize_array, $value, $locale = '' ) {
 	return $localize_array;
 }
 
-function qtn_translate_object( $object, $locale = '' ) {
+function wpm_translate_object( $object, $locale = '' ) {
 
 	if ( $object instanceof WP_Post || $object instanceof WP_Term ) {
 
@@ -247,10 +252,10 @@ function qtn_translate_object( $object, $locale = '' ) {
 				case 'name':
 				case 'title':
 				case 'description':
-					$object->$key = qtn_translate_string( $content, $locale );
+					$object->$key = wpm_translate_string( $content, $locale );
 					break;
 				case 'post_content':
-					$object->$key = qtn_translate_value( $content, $locale );
+					$object->$key = wpm_translate_value( $content, $locale );
 					break;
 			}
 		}
@@ -259,7 +264,7 @@ function qtn_translate_object( $object, $locale = '' ) {
 	return $object;
 }
 
-function qtn_untranslate_post( $post ) {
+function wpm_untranslate_post( $post ) {
 
 	if ( $post instanceof WP_Post ) {
 
@@ -279,13 +284,13 @@ function qtn_untranslate_post( $post ) {
 	return $post;
 }
 
-function qtn_is_ml_array( $array ) {
+function wpm_is_ml_array( $array ) {
 
 	if ( ! is_array( $array ) ) {
 		return false;
 	}
 
-	$languages = qtn_get_languages();
+	$languages = wpm_get_languages();
 
 	foreach ( $array as $key => $item ) {
 		if ( ! in_array( $key, $languages ) ) {
@@ -296,13 +301,13 @@ function qtn_is_ml_array( $array ) {
 	return true;
 }
 
-function qtn_is_ml_string( $string ) {
+function wpm_is_ml_string( $string ) {
 
 	if ( ! is_string( $string ) ) {
 		return false;
 	}
 
-	$strings = qtn_string_to_ml_array( $string );
+	$strings = wpm_string_to_ml_array( $string );
 
 	if ( is_array( $strings ) && ! empty( $strings ) ) {
 		return true;
@@ -311,16 +316,16 @@ function qtn_is_ml_string( $string ) {
 	return false;
 }
 
-function qtn_is_ml_value( $value ) {
+function wpm_is_ml_value( $value ) {
 
 	if ( is_array( $value ) ) {
-		$result = array_filter( $value, 'qtn_is_ml_array' );
+		$result = array_filter( $value, 'wpm_is_ml_array' );
 		if ( $result ) {
 			return true;
 		}
 
 		return false;
 	} else {
-		return qtn_is_ml_string( $value );
+		return wpm_is_ml_string( $value );
 	}
 }

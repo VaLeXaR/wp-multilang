@@ -32,7 +32,7 @@ function icl_xml2array($contents, $get_attributes=1) {
         //This command will extract these variables into the foreach scope
         // tag(string), type(string), level(int), attributes(array).
         extract($data);//We could use the array by itself, but this cooler.
-		//TODO [WPML 3.2] stop using extract($data)
+		//TODO [WPM 3.2] stop using extract($data)
 
         $result = '';
         if($get_attributes) {//The second argument of the function decides this.
@@ -43,7 +43,7 @@ function icl_xml2array($contents, $get_attributes=1) {
             if(isset($attributes)) {
                 foreach($attributes as $attr => $val) {
                     if($get_attributes == 1) $result['attr'][$attr] = $val; //Set all the attributes in a array called 'attr'
-					//TODO: [WPML 3.2] should we change the key name to 'wpml_attr'? Someone may use the tagname 'attr'. Same goes for 'value' too */
+					//TODO: [WPM 3.2] should we change the key name to 'wpm_attr'? Someone may use the tagname 'attr'. Same goes for 'value' too */
                 }
             }
         } elseif(isset($value)) {
@@ -88,7 +88,7 @@ function icl_xml2array($contents, $get_attributes=1) {
     }
 
     return($xml_array);
-} 
+}
 
 endif;
 

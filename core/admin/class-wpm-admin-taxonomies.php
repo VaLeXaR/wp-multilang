@@ -4,23 +4,23 @@
  *
  * @author   VaLeXaR
  * @category Admin
- * @package  qTranslateNext/Admin
+ * @package  WPMPlugin/Admin
  */
 
-namespace QtNext\Core\Admin;
+namespace WPM\Core\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-if ( ! class_exists( 'QtN_Admin_Taxonomies' ) ) :
+if ( ! class_exists( 'WPM_Admin_Taxonomies' ) ) :
 
 	/**
-	 * QtN_Admin_Taxonomies Class.
+	 * WPM_Admin_Taxonomies Class.
 	 *
 	 * Handles the edit posts views and some functionality on the edit post screen for WC post types.
 	 */
-	class QtN_Admin_Taxonomies {
+	class WPM_Admin_Taxonomies {
 
 		private $description = array();
 
@@ -30,13 +30,13 @@ if ( ! class_exists( 'QtN_Admin_Taxonomies' ) ) :
 		public function __construct() {
 			add_action( 'admin_init', array( $this, 'init' ) );
 			add_filter( 'pre_insert_term', array( $this, 'pre_insert_term' ), 0, 2 );
-			add_filter( 'wp_update_term_data', array( $this, 'save_term' ), 0, 4 );
+			add_filter( 'wp_update_term_data', array( $this, 'save_term' ), 99, 4 );
 			add_action( 'edited_term_taxonomy', array( $this, 'update_description' ), 0, 2 );
 		}
 
 
 		public function init() {
-			$settings = qtn_get_settings();
+			$settings = wpm_get_settings();
 
 			foreach ( $settings['taxonomies'] as $taxonomy ) {
 				add_filter( "manage_edit-{$taxonomy}_columns", array( $this, 'language_columns' ) );
@@ -49,16 +49,16 @@ if ( ! class_exists( 'QtN_Admin_Taxonomies' ) ) :
 			global $wpdb;
 
 			$to_locale = '';
-			$languages = array_flip( qtn_get_languages() );
-			if ( isset( $_POST['lang'] ) && isset( $languages[ qtn_clean( $_POST['lang'] ) ] ) ) {
-				$to_locale = $languages[ qtn_clean( $_POST['lang'] ) ];
+			$languages = array_flip( wpm_get_languages() );
+			if ( isset( $_POST['lang'] ) && isset( $languages[ wpm_clean( $_POST['lang'] ) ] ) ) {
+				$to_locale = $languages[ wpm_clean( $_POST['lang'] ) ];
 			}
 
 			$like    = '%' . $wpdb->esc_like( esc_sql( $term ) ) . '%';
 			$results = $wpdb->get_results( $wpdb->prepare( "SELECT t.name AS `name` FROM {$wpdb->terms} AS t INNER JOIN {$wpdb->term_taxonomy} AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy = '%s' AND `name` LIKE '%s'", $taxonomy, $like ) );
 
 			foreach ( $results as $result ) {
-				$ml_term = qtn_translate_string( $result->name, $to_locale );
+				$ml_term = wpm_translate_string( $result->name, $to_locale );
 				if ( $ml_term == $term ) {
 					return '';
 				}
@@ -69,23 +69,23 @@ if ( ! class_exists( 'QtN_Admin_Taxonomies' ) ) :
 
 
 		public function save_term( $data, $term_id, $taxonomy, $args ) {
-			$settings = qtn_get_settings();
+			$settings = wpm_get_settings();
 
 			if ( ! in_array( $taxonomy, $settings['taxonomies'] ) ) {
 				return $data;
 			}
 
-			if ( qtn_is_ml_value( $data['name'] ) ) {
+			if ( wpm_is_ml_value( $data['name'] ) ) {
 				return $data;
 			}
 
-			remove_filter( 'get_term', 'qtn_translate_object', 0 );
+			remove_filter( 'get_term', 'wpm_translate_object', 0 );
 			$old_name        = get_term_field( 'name', $term_id );
 			$old_description = get_term_field( 'description', $term_id );
-			add_filter( 'get_term', 'qtn_translate_object', 0 );
-			$strings      = qtn_value_to_ml_array( $old_name );
-			$value        = qtn_set_language_value( $strings, $data['name'] );
-			$data['name'] = qtn_ml_value_to_string( $value );
+			add_filter( 'get_term', 'wpm_translate_object', 0 );
+			$strings      = wpm_value_to_ml_array( $old_name );
+			$value        = wpm_set_language_value( $strings, $data['name'] );
+			$data['name'] = wpm_ml_value_to_string( $value );
 
 			$this->description = array(
 				'old' => $old_description,
@@ -98,7 +98,7 @@ if ( ! class_exists( 'QtN_Admin_Taxonomies' ) ) :
 
 		public function update_description( $tt_id, $taxonomy ) {
 			global $wpdb;
-			$settings = qtn_get_settings();
+			$settings = wpm_get_settings();
 			if ( ! in_array( $taxonomy, $settings['taxonomies'] ) ) {
 				return;
 			}
@@ -109,14 +109,14 @@ if ( ! class_exists( 'QtN_Admin_Taxonomies' ) ) :
 
 			$value = $this->description['new'];
 
-			if ( qtn_is_ml_value( $value ) ) {
+			if ( wpm_is_ml_value( $value ) ) {
 				return;
 			}
 
 			$old_value   = $this->description['old'];
-			$strings     = qtn_value_to_ml_array( $old_value );
-			$value       = qtn_set_language_value( $strings, $value );
-			$description = qtn_ml_value_to_string( $value );
+			$strings     = wpm_value_to_ml_array( $old_value );
+			$value       = wpm_set_language_value( $strings, $value );
+			$description = wpm_ml_value_to_string( $value );
 
 			$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_taxonomy_id' => $tt_id ) );
 		}
@@ -144,7 +144,7 @@ if ( ! class_exists( 'QtN_Admin_Taxonomies' ) ) :
 			}
 
 			$columns =
-				array_slice( $columns, 0, $i + 1 ) + array( 'languages' => __( 'Languages', 'qtranslate-next' ) ) + array_slice( $columns, $i + 1 );
+				array_slice( $columns, 0, $i + 1 ) + array( 'languages' => __( 'Languages', 'wpm' ) ) + array_slice( $columns, $i + 1 );
 
 			return $columns;
 		}
@@ -157,18 +157,18 @@ if ( ! class_exists( 'QtN_Admin_Taxonomies' ) ) :
 		public function render_language_column( $columns, $column, $term_id ) {
 
 			if ( 'languages' == $column ) {
-				remove_filter( 'get_term', 'qtn_translate_object', 0 );
+				remove_filter( 'get_term', 'wpm_translate_object', 0 );
 				$term = get_term( $term_id );
-				add_filter( 'get_term', 'qtn_translate_object', 0 );
+				add_filter( 'get_term', 'wpm_translate_object', 0 );
 				$output  = array();
 				$text    = $term->name . $term->description;
-				$strings = qtn_value_to_ml_array( $text );
-				$options = qtn_get_options();
-				$languages = qtn_get_languages();
+				$strings = wpm_value_to_ml_array( $text );
+				$options = wpm_get_options();
+				$languages = wpm_get_languages();
 
 				foreach ( $languages as $locale => $language ) {
 					if ( isset( $strings[ $language ] ) && ! empty( $strings[ $language ] ) ) {
-						$output[] = '<img src="' . QN()->flag_dir() . $options[ $locale ]['flag'] . '.png" alt="' . $options[ $locale ]['name'] . '" title="' . $options[ $locale ]['name'] . '">';
+						$output[] = '<img src="' . WPM()->flag_dir() . $options[ $locale ]['flag'] . '.png" alt="' . $options[ $locale ]['name'] . '" title="' . $options[ $locale ]['name'] . '">';
 					}
 				}
 

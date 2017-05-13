@@ -4,22 +4,17 @@
  *
  * @author   VaLeXaR
  * @category Admin
- * @package  qTranslateNext/Admin
+ * @package  WPMPlugin/Admin
  * @version  1.0.0
  */
 
-namespace QtNext\Core\Admin;
+namespace WPM\Core\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'QtN_Admin_Menus' ) ) :
-
-/**
- * QtN_Admin_Menus Class.
- */
-class QtN_Admin_Menus {
+class WPM_Admin_Menus {
 
 	/**
 	 * Hook in tabs.
@@ -37,19 +32,19 @@ class QtN_Admin_Menus {
 		}
 
 		$locale = get_locale();
-		$languages = qtn_get_languages();
+		$languages = wpm_get_languages();
 
 		if ( count( $languages ) <= 1 ) {
 			return false;
 		}
 
-		$options = qtn_get_options();
+		$options = wpm_get_options();
 
 		$wp_admin_bar->add_menu( array(
-			'id'     => 'qtn-language-switcher',
+			'id'     => 'wpm-language-switcher',
 			'parent' => 'top-secondary',
 			'title'  => '<span class="ab-icon">' .
-			            '<img src="' . QN()->flag_dir() . $options[$locale]['flag'] . '.png' . '"/>' .
+			            '<img src="' . WPM()->flag_dir() . $options[$locale]['flag'] . '.png' . '"/>' .
 			            '</span><span class="ab-label">' .
 			            $options[$locale]['name'] .
 			            '</span>',
@@ -64,9 +59,9 @@ class QtN_Admin_Menus {
 			}
 
 			$wp_admin_bar->add_menu( array(
-				'parent' => 'qtn-language-switcher',
-				'id'     => 'qtn-language-' . $language,
-				'title'  => '<img src="' . QN()->flag_dir() . $options[$key]['flag'] . '.png' . '" />' .
+				'parent' => 'wpm-language-switcher',
+				'id'     => 'wpm-language-' . $language,
+				'title'  => '<img src="' . WPM()->flag_dir() . $options[$key]['flag'] . '.png' . '" />' .
 				            '&nbsp;&nbsp;' .
 				            $options[ $key ]['name'],
 				'href'   => add_query_arg( 'lang', $language, $current_url ),
@@ -74,5 +69,3 @@ class QtN_Admin_Menus {
 		}
 	}
 }
-
-endif;

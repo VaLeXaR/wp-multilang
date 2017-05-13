@@ -1,12 +1,12 @@
 <?php
 /**
- * qTranslateNext Formatting
+ * WPMPlugin Formatting
  *
  * Functions for formatting data.
  *
  * @author        VaLeXaR
  * @category      Core
- * @package       qTranslateNext/Functions
+ * @package       WPMPlugin/Functions
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -21,9 +21,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return string|array
  */
-function qtn_clean( $var ) {
+function wpm_clean( $var ) {
 	if ( is_array( $var ) ) {
-		return array_map( 'qtn_clean', $var );
+		return array_map( 'wpm_clean', $var );
 	} else {
 		return is_scalar( $var ) ? sanitize_text_field( $var ) : $var;
 	}
@@ -37,13 +37,13 @@ function qtn_clean( $var ) {
  *
  * @return array
  */
-function qtn_array_overlay( $a1, $a2 ) {
+function wpm_array_overlay( $a1, $a2 ) {
 	foreach ( $a1 as $k => $v ) {
 		if ( ! array_key_exists( $k, $a2 ) ) {
 			continue;
 		}
 		if ( is_array( $v ) && is_array( $a2[ $k ] ) ) {
-			$a1[ $k ] = qtn_array_overlay( $v, $a2[ $k ] );
+			$a1[ $k ] = wpm_array_overlay( $v, $a2[ $k ] );
 		} else {
 			$a1[ $k ] = $a2[ $k ];
 		}
@@ -61,7 +61,7 @@ function qtn_array_overlay( $a1, $a2 ) {
  *
  * @return string
  */
-function qtn_trim_string( $string, $chars = 200, $suffix = '...' ) {
+function wpm_trim_string( $string, $chars = 200, $suffix = '...' ) {
 	if ( strlen( $string ) > $chars ) {
 		$string = mb_substr( $string, 0, ( $chars - mb_strlen( $suffix ) ) ) . $suffix;
 	}
@@ -76,6 +76,6 @@ function qtn_trim_string( $string, $chars = 200, $suffix = '...' ) {
  *
  * @return string
  */
-function qtn_sanitize_term_text_based( $term ) {
+function wpm_sanitize_term_text_based( $term ) {
 	return trim( wp_unslash( strip_tags( $term ) ) );
 }

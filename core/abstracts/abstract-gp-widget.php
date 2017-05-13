@@ -7,9 +7,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Abstract Widget Class
  *
- * @author   qTranslateNext
+ * @author   WPMPlugin
  * @category Widgets
- * @package  qTranslateNext/Abstracts
+ * @package  WP_Multilngual/Abstracts
  * @extends  WP_Widget
  */
 
@@ -75,7 +75,7 @@ abstract class GP_Widget extends WP_Widget {
 	 */
 	public function get_cached_widget( $args ) {
 
-		$cache = wp_cache_get( apply_filters( 'qtranslate_next_cached_widget_id', $this->widget_id ), 'widget' );
+		$cache = wp_cache_get( apply_filters( 'wpm_cached_widget_id', $this->widget_id ), 'widget' );
 
 		if ( ! is_array( $cache ) ) {
 			$cache = array();
@@ -97,7 +97,7 @@ abstract class GP_Widget extends WP_Widget {
 	 * @return string the content that was cached
 	 */
 	public function cache_widget( $args, $content ) {
-		wp_cache_set( apply_filters( 'qtranslate_next_cached_widget_id', $this->widget_id ), array( $args['widget_id'] => $content ), 'widget' );
+		wp_cache_set( apply_filters( 'wpm_cached_widget_id', $this->widget_id ), array( $args['widget_id'] => $content ), 'widget' );
 
 		return $content;
 	}
@@ -106,7 +106,7 @@ abstract class GP_Widget extends WP_Widget {
 	 * Flush the cache.
 	 */
 	public function flush_widget_cache() {
-		wp_cache_delete( apply_filters( 'qtranslate_next_cached_widget_id', $this->widget_id ), 'widget' );
+		wp_cache_delete( apply_filters( 'wpm_cached_widget_id', $this->widget_id ), 'widget' );
 	}
 
 	/**
@@ -182,7 +182,7 @@ abstract class GP_Widget extends WP_Widget {
 			/**
 			 * Sanitize the value of a setting.
 			 */
-			$instance[ $key ] = apply_filters( 'qtranslate_next_widget_settings_sanitize_option', $instance[ $key ], $new_instance, $key, $setting );
+			$instance[ $key ] = apply_filters( 'wpm_widget_settings_sanitize_option', $instance[ $key ], $new_instance, $key, $setting );
 		}
 
 		$this->flush_widget_cache();
@@ -263,7 +263,7 @@ abstract class GP_Widget extends WP_Widget {
 
 				// Default: run an action
 				default :
-					do_action( 'qtranslate_next_widget_field_' . $setting['type'], $key, $value, $setting, $instance );
+					do_action( 'wpm_widget_field_' . $setting['type'], $key, $value, $setting, $instance );
 				break;
 			}
 		}
