@@ -1,0 +1,30 @@
+{
+  "post_types": {
+    "page": {},
+    "post": {},
+    "attachment": {},
+    "nav_menu_item": {
+      "attr_title": {},
+      "title": {}
+    }
+  },
+  "post_fields": {
+    "_wp_attachment_image_alt": {}
+  },
+  "taxonomies": [
+    "category",
+    "post_tag"
+  ],
+  "taxonomy_fields": {},
+  "admin_pages": [
+    "upload",
+    "nav-menus",
+    "options-general",
+    "widgets"
+  ],
+  "options": {
+    "blogname": {},
+    "blogdescription": {}
+  },
+  "widgets": {}
+}

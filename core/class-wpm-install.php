@@ -42,11 +42,12 @@ class WPM_Install {
 	public static function install() {
 		global $wpdb;
 
-		if ( ! defined( 'QTN_INSTALLING' ) ) {
-			define( 'QTN_INSTALLING', true );
+		if ( ! defined( 'WPM_INSTALLING' ) ) {
+			define( 'WPM_INSTALLING', true );
 		}
 
 		self::create_options();
+		WPM_Config::load_config_run();
 		self::update_gp_version();
 
 		/*
@@ -76,23 +77,13 @@ class WPM_Install {
 	}
 
 	/**
-	 * Update DB version to current.
-	 *
-	 * @param string $version
-	 */
-	public static function update_db_version( $version = null ) {
-		delete_option( 'wpm_db_version' );
-		add_option( 'wpm_db_version', is_null( $version ) ? WPM()->version : $version );
-	}
-
-	/**
 	 * Default options.
 	 *
 	 * Sets up the default options used on the settings page.
 	 */
 	private static function create_options() {
 
-		$config = WPM_Config::instance();
+		$config = WPM_Setup::instance();
 		$languages = array();
 		$installed_languages = $config->get_installed_languages();
 		$translations = $config->get_translations();

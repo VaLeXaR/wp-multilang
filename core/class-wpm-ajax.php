@@ -47,8 +47,8 @@ class WPM_AJAX {
 			if ( ! defined( 'DOING_AJAX' ) ) {
 				define( 'DOING_AJAX', true );
 			}
-			if ( ! defined( 'QTN_DOING_AJAX' ) ) {
-				define( 'QTN_DOING_AJAX', true );
+			if ( ! defined( 'WPM_DOING_AJAX' ) ) {
+				define( 'WPM_DOING_AJAX', true );
 			}
 			// Turn off display_errors during AJAX events to prevent malformed JSON
 			if ( ! WP_DEBUG || ( WP_DEBUG && ! WP_DEBUG_DISPLAY ) ) {

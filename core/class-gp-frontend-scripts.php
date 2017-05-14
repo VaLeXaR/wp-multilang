@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * QTN_Frontend_Scripts Class.
+ * WPM_Frontend_Scripts Class.
  */
 class WPM_Frontend_Scripts {
 
@@ -57,7 +57,7 @@ class WPM_Frontend_Scripts {
 			/*'game-portal-general' => array(
 				'src'     => wpm_asset_path( 'css/main.css' ),
 				'deps'    => '',
-				'version' => QTN_VERSION,
+				'version' => WPM_VERSION,
 				'media'   => 'all'
 			),*/
 		);
@@ -77,7 +77,7 @@ class WPM_Frontend_Scripts {
 	 * @param  string   $version
 	 * @param  boolean  $in_footer
 	 */
-	private static function register_script( $handle, $path, $deps = array( 'jquery' ), $version = QTN_VERSION, $in_footer = true ) {
+	private static function register_script( $handle, $path, $deps = array( 'jquery' ), $version = WPM_VERSION, $in_footer = true ) {
 		self::$scripts[] = $handle;
 		wp_register_script( $handle, $path, $deps, $version, $in_footer );
 	}
@@ -94,7 +94,7 @@ class WPM_Frontend_Scripts {
 	 * @param  string   $version
 	 * @param  boolean  $in_footer
 	 */
-	private static function enqueue_script( $handle, $path = '', $deps = array( 'jquery' ), $version = QTN_VERSION, $in_footer = true ) {
+	private static function enqueue_script( $handle, $path = '', $deps = array( 'jquery' ), $version = WPM_VERSION, $in_footer = true ) {
 		if ( ! in_array( $handle, self::$scripts ) && $path ) {
 			self::register_script( $handle, $path, $deps, $version, $in_footer );
 		}
@@ -113,7 +113,7 @@ class WPM_Frontend_Scripts {
 	 * @param  string   $version
 	 * @param  string   $media
 	 */
-	private static function register_style( $handle, $path, $deps = array(), $version = QTN_VERSION, $media = 'all' ) {
+	private static function register_style( $handle, $path, $deps = array(), $version = WPM_VERSION, $media = 'all' ) {
 		self::$styles[] = $handle;
 		wp_register_style( $handle, $path, $deps, $version, $media );
 	}
@@ -130,7 +130,7 @@ class WPM_Frontend_Scripts {
 	 * @param  string   $version
 	 * @param  string   $media
 	 */
-	private static function enqueue_style( $handle, $path = '', $deps = array(), $version = QTN_VERSION, $media = 'all' ) {
+	private static function enqueue_style( $handle, $path = '', $deps = array(), $version = WPM_VERSION, $media = 'all' ) {
 		if ( ! in_array( $handle, self::$styles ) && $path ) {
 			self::register_style( $handle, $path, $deps, $version, $media );
 		}
@@ -214,7 +214,7 @@ class WPM_Frontend_Scripts {
 
 				/*$default = array(
 					'ajax_url'       => WPM()->ajax_url(),
-					'gp_ajax_url'    => QTN_AJAX::get_endpoint( "%%endpoint%%" ),
+					'gp_ajax_url'    => WPM_AJAX::get_endpoint( "%%endpoint%%" ),
 					'html_templates' => array(
 						'modals' => gp_get_template_html( 'jquery-templates/modals.tpl' ),
 					)

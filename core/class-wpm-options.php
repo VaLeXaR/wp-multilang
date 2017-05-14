@@ -14,10 +14,10 @@ class WPM_Options {
 
 	public function init() {
 
-		$settings = wpm_get_settings();
+		$config = wpm_get_config();
 
-		foreach ( $settings['options'] as $option ) {
-			add_filter( "option_{$option}", 'wpm_translate_value', 0 );
+		foreach ( $config['options'] as $key => $option ) {
+			add_filter( "option_{$key}", 'wpm_translate_value', 0 );
 		}
 	}
 }

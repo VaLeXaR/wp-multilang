@@ -6,5 +6,7 @@ dist
 node_modules
 npm-debug.log
 yarn-error.log
-vendor
+vendor/*
 .idea
+!vendor/autoload.php
+!core/vendor/

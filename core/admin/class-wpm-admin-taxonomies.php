@@ -36,9 +36,9 @@ if ( ! class_exists( 'WPM_Admin_Taxonomies' ) ) :
 
 
 		public function init() {
-			$settings = wpm_get_settings();
+			$config = wpm_get_config();
 
-			foreach ( $settings['taxonomies'] as $taxonomy ) {
+			foreach ( $config['taxonomies'] as $taxonomy ) {
 				add_filter( "manage_edit-{$taxonomy}_columns", array( $this, 'language_columns' ) );
 				add_filter( "manage_{$taxonomy}_custom_column", array( $this, 'render_language_column' ), 0, 3 );
 			}
@@ -69,9 +69,9 @@ if ( ! class_exists( 'WPM_Admin_Taxonomies' ) ) :
 
 
 		public function save_term( $data, $term_id, $taxonomy, $args ) {
-			$settings = wpm_get_settings();
+			$config = wpm_get_config();
 
-			if ( ! in_array( $taxonomy, $settings['taxonomies'] ) ) {
+			if ( ! in_array( $taxonomy, $config['taxonomies'] ) ) {
 				return $data;
 			}
 
@@ -84,7 +84,7 @@ if ( ! class_exists( 'WPM_Admin_Taxonomies' ) ) :
 			$old_description = get_term_field( 'description', $term_id );
 			add_filter( 'get_term', 'wpm_translate_object', 0 );
 			$strings      = wpm_value_to_ml_array( $old_name );
-			$value        = wpm_set_language_value( $strings, $data['name'] );
+			$value        = wpm_set_language_value( $strings, $data['name'], array() );
 			$data['name'] = wpm_ml_value_to_string( $value );
 
 			$this->description = array(
@@ -98,8 +98,8 @@ if ( ! class_exists( 'WPM_Admin_Taxonomies' ) ) :
 
 		public function update_description( $tt_id, $taxonomy ) {
 			global $wpdb;
-			$settings = wpm_get_settings();
-			if ( ! in_array( $taxonomy, $settings['taxonomies'] ) ) {
+			$config = wpm_get_config();
+			if ( ! in_array( $taxonomy, $config['taxonomies'] ) ) {
 				return;
 			}
 
@@ -115,7 +115,7 @@ if ( ! class_exists( 'WPM_Admin_Taxonomies' ) ) :
 
 			$old_value   = $this->description['old'];
 			$strings     = wpm_value_to_ml_array( $old_value );
-			$value       = wpm_set_language_value( $strings, $value );
+			$value       = wpm_set_language_value( $strings, $value, array() );
 			$description = wpm_ml_value_to_string( $value );
 
 			$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_taxonomy_id' => $tt_id ) );

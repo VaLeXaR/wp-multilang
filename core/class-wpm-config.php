@@ -1,300 +1,192 @@
 <?php
-/**
- *
- * @class   WPM_Config
- */
 
 namespace WPM\Core;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 class WPM_Config {
 
-	/**
-	 * Order factory instance.
-	 *
-	 * @var string
-	 */
-	public $default_locale = '';
+	public $config_files = array();
+	public $active_plugins = array();
+	static $config = array();
 
-	/**
-	 * Order factory instance.
-	 *
-	 * @var array
-	 */
-	public $languages = array();
+	static function load_config_run() {
+		self::load_core_configs();
+//		$this->load_plugins_config();
+//		$this->load_theme_config();
+		self::parse_config_files();
+		update_option( 'wpm_config', self::$config );
+	}
 
-	/**
-	 * Order factory instance.
-	 *
-	 * @var array
-	 */
-	public $options = array();
 
-	/**
-	 * Order factory instance.
-	 *
-	 * @var array
-	 */
-	public $installed_languages = array();
-
-	/**
-	 * Order factory instance.
-	 *
-	 * @var string
-	 */
-	public $user_language = '';
-
-	/**
-	 * Order factory instance.
-	 *
-	 * @var array
-	 */
-	public $translations = array();
-
-	/**
-	 * Order factory instance.
-	 *
-	 * @var array
-	 */
-	public $settings = array();
-
-	/**
-	 * The single instance of the class.
-	 *
-	 * @var WPM_Config
-	 */
-	protected static $_instance = null;
-
-	/**
-	 * Main WPM_Config Instance.
-	 *
-	 * @static
-	 * @return WPM_Config - Main instance.
-	 */
-	public static function instance() {
-		if ( is_null( self::$_instance ) ) {
-			self::$_instance = new self();
+	public function load_core_configs() {
+		$config_path = ( dirname( WPM_PLUGIN_FILE ) . '/configs/' );
+		foreach ( glob( $config_path . '*.json' ) as $config_file ) {
+			$this->config_files[ pathinfo( $config_file, PATHINFO_DIRNAME ) ] = $config_file;
 		}
-
-		return self::$_instance;
 	}
 
-	public function init() {
-		add_filter( 'query_vars', array( $this, 'set_lang_var' ) );
-		add_filter( 'option_home', array( $this, 'set_home_url' ), 0 );
-		add_action( 'change_locale', array( $this, 'change_locale' ), 0 );
-		add_action( 'after_setup_theme', array( $this, 'setup_lang_query' ), 0 );
-		//add_action( 'after_setup_theme', array( $this, 'set_settings' ), 0 );
-		$this->set_locale();
-	}
-
-
-	public function get_options() {
-		if ( ! $this->options ) {
-			$this->options = get_option( 'wpm_languages' );
-		}
-
-		return $this->options;
-	}
-
-
-	public function get_installed_languages() {
-		if ( ! $this->installed_languages ) {
-			$this->installed_languages = array_merge( array( 'en_US' ), get_available_languages() );
-		}
-
-		return $this->installed_languages;
-	}
-
-
-	public function get_languages() {
-		if ( ! $this->languages ) {
-
-			$options = $this->get_options();
-
-			foreach ( $options as $locale => $language ) {
-				if ( $language['enable'] ) {
-					$this->languages[ $locale ] = $language['slug'];
+	public function load_plugins_config() {
+		if ( is_multisite() ) {
+			// Get multi site plugins
+			$plugins = get_site_option( 'active_sitewide_plugins' );
+			if ( ! empty( $plugins ) ) {
+				foreach ( $plugins as $p => $dummy ) {
+					if ( ! $this->check_on_config_file( $p ) ) {
+						continue;
+					}
+					$plugin_slug = dirname( $p );
+					$config_file = WP_PLUGIN_DIR . '/' . $plugin_slug . '/wpm-config.json';
+					if ( trim( $plugin_slug, '\/.' ) && file_exists( $config_file ) ) {
+						$this->config_files[] = $config_file;
+					}
 				}
 			}
 		}
 
-		return $this->languages;
-	}
-
-
-	public function get_default_locale() {
-		if ( ! $this->default_locale ) {
-			$this->default_locale = get_option( 'WPLANG' ) ? get_option( 'WPLANG' ) : 'en_US';
-		}
-
-		return $this->default_locale;
-	}
-
-
-	public function get_user_language() {
-		if ( ! $this->user_language ) {
-			$this->set_user_language();
-		}
-
-		return $this->user_language;
-	}
-
-
-	public function set_user_language() {
-
-		if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
-			$default_locale = $this->get_default_locale();
-			if ( isset( $_GET['lang'] ) ) {
-				$languages = $this->get_languages();
-				$lang      = wpm_clean( $_GET['lang'] );
-				if ( ! in_array( $lang, $languages ) ) {
-					$lang = $languages[ $default_locale ];
+		// Get single site or current blog active plugins
+		$plugins = get_option( 'active_plugins' );
+		if ( ! empty( $plugins ) ) {
+			foreach ( $plugins as $p ) {
+				if ( ! $this->check_on_config_file( $p ) ) {
+					continue;
 				}
-				wpm_setcookie( 'language', $lang, time() + MONTH_IN_SECONDS );
-			}
 
-			if ( ! isset( $_COOKIE['language'] ) ) {
-				wpm_setcookie( 'language', $default_locale, time() + MONTH_IN_SECONDS );
-				$this->user_language = $this->languages[ $default_locale ];
-			} else {
-				$this->user_language = wpm_clean( $_COOKIE['language'] );
+				$plugin_slug = dirname( $p );
+				$config_file = WP_PLUGIN_DIR . '/' . $plugin_slug . '/wpm-config.json';
+				if ( trim( $plugin_slug, '\/.' ) && file_exists( $config_file ) ) {
+					$this->config_files[] = $config_file;
+				}
 			}
+		}
 
+		// Get the must-use plugins
+		$mu_plugins = wp_get_mu_plugins();
+
+		if ( ! empty( $mu_plugins ) ) {
+			foreach ( $mu_plugins as $mup ) {
+				if ( ! $this->check_on_config_file( $mup ) ) {
+					continue;
+				}
+
+				$plugin_dir_name  = dirname( $mup );
+				$plugin_base_name = basename( $mup, ".php" );
+				$plugin_sub_dir   = $plugin_dir_name . '/' . $plugin_base_name;
+				if ( file_exists( $plugin_sub_dir . '/wpm-config.json' ) ) {
+					$config_file          = $plugin_sub_dir . '/wpm-config.json';
+					$this->config_files[] = $config_file;
+				}
+			}
+		}
+	}
+
+	public function check_on_config_file( $name ) {
+
+		if ( empty( $this->active_plugins ) ) {
+			if ( ! function_exists( 'get_plugins' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/plugin.php';
+			}
+			$this->active_plugins = get_plugins();
+		}
+		$config_index_file_data = maybe_unserialize( get_option( 'wpm_config_index' ) );
+		$config_files_arr       = maybe_unserialize( get_option( 'wpm_config_files_arr' ) );
+
+		if ( ! $config_index_file_data || ! $config_files_arr ) {
+			return true;
+		}
+
+		if ( isset( $this->active_plugins[ $name ] ) ) {
+			$plugin_info      = $this->active_plugins[ $name ];
+			$plugin_slug      = dirname( $name );
+			$name             = $plugin_info['Name'];
+			$config_data      = $config_index_file_data->plugins;
+			$config_files_arr = $config_files_arr->plugins;
+			$config_file      = WP_PLUGIN_DIR . '/' . $plugin_slug . '/wpm-config.json';
+			$type             = 'plugin';
 		} else {
-			$path = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
-
-			if ( preg_match( '!^/([a-z]{2})(/|$)!i', $path, $match ) ) {
-				$this->user_language = $match[1];
-			}
+			$config_data      = $config_index_file_data->themes;
+			$config_files_arr = $config_files_arr->themes;
+			$config_file      = get_template_directory() . '/wpm-config.json';
+			$type             = 'theme';
 		}
 
-		if ( isset( $_GET['lang'] ) ) {
-			$this->user_language = wpm_clean( $_GET['lang'] );
-		}
-	}
+		foreach ( $config_data as $item ) {
+			if ( $name == $item->name && isset( $config_files_arr[ $item->name ] ) ) {
+				if ( $item->override_local || ! file_exists( $config_file ) ) {
+					end( $this->config_files );
+					$key                                            = key( $this->config_files ) + 1;
+					$this->config_files[ $key ]                     = new \stdClass();
+					$this->config_files[ $key ]->config             = json_decode( $config_files_arr[ $item->name ], true );
+					$this->config_files[ $key ]->type               = $type;
+					$this->config_files[ $key ]->admin_text_context = basename( dirname( $config_file ) );
 
-
-	public function set_locale() {
-		global $locale;
-
-		require_once( ABSPATH . 'wp-includes/pluggable.php' );
-
-		$language       = $this->get_languages();
-		$default_locale = $this->get_default_locale();
-
-		foreach ( $language as $key => $value ) {
-
-			$user_language = $this->get_user_language();
-
-			if ( ( $value == $user_language ) ) {
-				$locale = $key;
-				if ( $locale == $default_locale && ! is_admin() && ! isset( $_GET['lang'] ) ) {
-					wp_redirect( home_url( str_replace( '/' . $user_language . '/', '/', $_SERVER['REQUEST_URI'] ) ), 301 );
-					exit;
+					return false;
+				} else {
+					return true;
 				}
-				break;
+			}
+		}
+
+		return true;
+
+	}
+
+	public function load_theme_config() {
+		$theme_data = wp_get_theme();
+		if ( ! $this->check_on_config_file( $theme_data->get( 'Name' ) ) ) {
+			return $this->config_files;
+		}
+
+		$parent_theme = $theme_data->parent_theme;
+		if ( $parent_theme && ! $this->check_on_config_file( $parent_theme ) ) {
+			return $this->config_files;
+		}
+
+		if ( get_template_directory() != get_stylesheet_directory() ) {
+			$config_file = get_stylesheet_directory() . '/wpm-config.json';
+			if ( file_exists( $config_file ) ) {
+				$this->config_files[] = $config_file;
+			}
+		}
+
+		$config_file = get_template_directory() . '/wpm-config.json';
+		if ( file_exists( $config_file ) ) {
+			$this->config_files[] = $config_file;
+		}
+	}
+
+	public function get_theme_config_file() {
+		if ( get_template_directory() != get_stylesheet_directory() ) {
+			$config_file = get_stylesheet_directory() . '/wpm-config.json';
+			if ( file_exists( $config_file ) ) {
+				return $config_file;
+			}
+		}
+
+		$config_file = get_template_directory() . '/wpm-config.json';
+		if ( file_exists( $config_file ) ) {
+			return $config_file;
+		}
+
+		return false;
+	}
+
+	public function parse_config_files() {
+		if ( ! empty( $this->config_files ) ) {
+			foreach ( $this->config_files as $file ) {
+				$config       = is_object( $file ) ? $file->config : json_decode( file_get_contents( $file ), true );
+				self::$config = array_merge_recursive( self::$config, $config );
 			}
 		}
 	}
 
 
-	public function get_translations() {
-
-		if ( ! $this->translations ) {
-			require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
-			$available_translations          = wp_get_available_translations();
-			$available_translations['en_US'] = array(
-				'native_name' => 'English (US)',
-				'iso'         => array( 'en' )
-			);
-
-			$this->translations = $available_translations;
-		}
-
-		return $this->translations;
-	}
-
-	public function get_settings() {
-		if ( ! $this->settings ) {
-			if ( ! $this->settings ) {
-				$settings = array(
-					'post_types'  => array(
-						'page',
-						'post',
-						'attachment',
-						'nav_menu_item'
-					),
-					'post_fields' => array(
-						'_wp_attachment_image_alt'
-					),
-					'taxonomies'  => array(
-						'category',
-						'post_tag'
-					),
-					'tax_fields' => array(),
-					'admin_pages' => array(
-						'upload',
-						'nav-menus',
-						'options-general',
-						'widgets'
-					),
-					'options'     => array(
-						'blogname',
-						'blogdescription'
-					),
-					'widgets' => array()
-				);
-
-				$this->settings = apply_filters( 'wpm_settings', $settings );
+	public function get_active_plugins() {
+		$active_plugin_names = array();
+		foreach ( get_plugins() as $plugin_file => $plugin_data ) {
+			if ( is_plugin_active( $plugin_file ) ) {
+				$active_plugin_names[ pathinfo( $plugin_file, PATHINFO_DIRNAME ) ] = $plugin_data;
 			}
 		}
 
-		return $this->settings;
-	}
-
-
-	public function setup_lang_query() {
-		$user_language = $this->get_user_language();
-		set_query_var( 'lang', $user_language );
-		add_filter( 'request', function ( $query_vars ) {
-			$query_vars['lang'] = get_query_var( 'lang' );
-
-			return $query_vars;
-		} );
-	}
-
-
-	public function change_locale( $new_locale ) {
-		global $locale;
-		$locale = $new_locale;
-	}
-
-
-	public function set_home_url( $value ) {
-		if ( ( is_admin() && ! defined( 'DOING_AJAX' ) ) || defined( 'REST_REQUEST' ) ) {
-			return $value;
-		}
-
-		//TODO set cookie for ajax
-
-		$locale         = get_locale();
-		$languages      = $this->get_languages();
-		$default_locale = $this->get_default_locale();
-		if ( $languages[ $locale ] != $languages[ $default_locale ] ) {
-			$value .= '/' . $languages[ $locale ];
-		}
-
-		return $value;
-	}
-
-
-	public function set_lang_var( $public_query_vars ) {
-		$public_query_vars[] = 'lang';
-
-		return $public_query_vars;
+		return $active_plugin_names;
 	}
 }

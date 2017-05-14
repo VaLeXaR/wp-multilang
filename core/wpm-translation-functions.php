@@ -203,8 +203,7 @@ function wpm_ml_value_to_string( $value ) {
 }
 
 
-//TODO add filter for value
-function wpm_set_language_value( $localize_array, $value, $locale = '' ) {
+function wpm_set_language_value( $localize_array, $value, $config = null, $locale = '' ) {
 	$languages = wpm_get_languages();
 	$lang      = wpm_get_edit_lang();
 
@@ -216,12 +215,17 @@ function wpm_set_language_value( $localize_array, $value, $locale = '' ) {
 		$lang = $languages[ $locale ];
 	}
 
-	if ( is_array( $value ) ) {
+	if ( is_array( $value ) && ! is_null( $config ) ) {
 		foreach ( $value as $key => $item ) {
-			$localize_array[ $key ] = wpm_set_language_value( $localize_array[ $key ], $value[ $key ], $locale );
+			if ( isset( $config['wpm_each'] ) ) {
+				$config = $config['wpm_each'];
+			} else {
+				$config = ( isset( $config[ $key ] ) ? $config[ $key ] : null );
+			}
+			$localize_array[ $key ] = wpm_set_language_value( $localize_array[ $key ], $value[ $key ], $config, $locale );
 		}
 	} else {
-		if ( is_string( $value ) ) {
+		if ( ! is_null( $config ) ) {
 			if ( wpm_is_ml_array( $localize_array ) ) {
 				$localize_array[ $lang ] = $value;
 			} else {
@@ -273,8 +277,6 @@ function wpm_untranslate_post( $post ) {
 				case 'post_title':
 				case 'post_content':
 				case 'post_excerpt':
-				case 'title':
-				case 'attr_title':
 					$post->$key = get_post_field( $key, $post->ID, 'edit' );
 					break;
 			}

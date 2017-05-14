@@ -37,9 +37,9 @@ if ( ! class_exists( 'WPM_Admin_Posts' ) ) :
 
 		public function init() {
 
-			$settings = wpm_get_settings();
+			$options = wpm_get_config();
 
-			foreach ( $settings['post_types'] as $post_type ) {
+			foreach ( $options['post_types'] as $post_type => $options ) {
 
 				if ( 'attachment' == $post_type ) {
 					add_filter( "manage_media_columns", array( $this, 'language_columns' ) );
@@ -62,9 +62,9 @@ if ( ! class_exists( 'WPM_Admin_Posts' ) ) :
 
 
 		public function save_post( $data, $postarr ) {
-			$settings = wpm_get_settings();
+			$settings = wpm_get_config();
 
-			if ( ! in_array( $data['post_type'], $settings['post_types'] ) ) {
+			if ( ! isset( $settings['post_types'][ $data['post_type'] ] ) ) {
 				return $data;
 			}
 
@@ -85,20 +85,27 @@ if ( ! class_exists( 'WPM_Admin_Posts' ) ) :
 				return $data;
 			}
 
-			foreach ( $data as $key => $content ) {
-				switch ( $key ) {
-					case 'post_title':
-					case 'post_content':
-					case 'post_excerpt':
-						if ( wpm_is_ml_value( $content ) ) {
-							break;
-						}
+			$post_config    = $settings['post_types'][ $data['post_type'] ];
+			$default_fields = array(
+				'post_title'   => array(),
+				'post_excerpt' => array(),
+				'post_content' => array()
+			);
 
-						$old_value    = get_post_field( $key, $post_id, 'edit' );
-						$strings      = wpm_value_to_ml_array( $old_value );
-						$value        = wpm_set_language_value( $strings, $data[ $key ] );
-						$data[ $key ] = wpm_ml_value_to_string( $value );
+			$post_config = apply_filters( 'wpm_post_type_config', $post_config, $data['post_type'] );
+			$post_config = array_merge_recursive( $default_fields, $post_config );
+
+			foreach ( $data as $key => $content ) {
+				if ( isset( $post_config[ $key ] ) ) {
+					if ( wpm_is_ml_value( $content ) ) {
 						break;
+					}
+
+					$post_field_config = apply_filters( 'wpm_post_field_config', $post_config[ $key ], $key, $content );
+					$old_value         = get_post_field( $key, $post_id, 'edit' );
+					$strings           = wpm_value_to_ml_array( $old_value );
+					$value             = wpm_set_language_value( $strings, $data[ $key ], $post_field_config );
+					$data[ $key ]      = wpm_ml_value_to_string( $value );
 				}
 			}
 
@@ -182,7 +189,7 @@ if ( ! class_exists( 'WPM_Admin_Posts' ) ) :
 
 		public function translate_post_link( $link ) {
 			$languages = wpm_get_languages();
-			$lang = wpm_get_edit_lang();
+			$lang      = wpm_get_edit_lang();
 			if ( in_array( $lang, $languages ) && $lang != $languages[ wpm_get_default_locale() ] ) {
 				if ( is_array( $link ) ) {
 					$link[0] = str_replace( home_url(), home_url( '/' . $lang ), $link[0] );

@@ -12,7 +12,7 @@ abstract class WPM_Object {
 	public function get_meta_field( $value, $object_id, $meta_key ) {
 		global $wpdb;
 
-		$settings = wpm_get_settings();
+		$settings = wpm_get_config();
 
 		if ( ! in_array( $meta_key, $settings[ $this->object_type . '_fields' ] ) ) {
 			return $value;
@@ -58,20 +58,22 @@ abstract class WPM_Object {
 	public function update_meta_field( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
 		global $wpdb;
 
-		$settings = wpm_get_settings();
+		$config = wpm_get_config();
 
-		if ( ! in_array( $meta_key, $settings[ $this->object_type . '_fields' ] ) ) {
+		if ( ! isset( $config[ $this->object_type . '_fields' ][ $meta_key ] ) ) {
 			return $check;
 		}
 
-		$table     = $wpdb->{$this->object_table};
-		$column    = sanitize_key( $this->object_type . '_id' );
-		$id_column = 'user' == $this->object_type ? 'umeta_id' : 'meta_id';
+		$meta_config = $config[ $this->object_type . '_fields' ][ $meta_key ];
+		$meta_config = apply_filters( 'wpm_meta_config', $meta_config, $meta_key, $meta_value, $object_id );
+		$table       = $wpdb->{$this->object_table};
+		$column      = sanitize_key( $this->object_type . '_id' );
+		$id_column   = 'user' == $this->object_type ? 'umeta_id' : 'meta_id';
 
 		if ( empty( $prev_value ) ) {
 
 			if ( wpm_is_ml_value( $meta_value ) ) {
-				$old_value  = array();
+				$old_value   = array();
 				$old_results = $wpdb->get_results( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->{$this->object_table}} WHERE meta_key = %s AND {$column} = %d;", $meta_key, $object_id ), ARRAY_A );
 				if ( $old_results ) {
 					$old_value[0] = maybe_unserialize( $old_results[0]['meta_value'] );
@@ -93,10 +95,10 @@ abstract class WPM_Object {
 		}
 
 		if ( ! wpm_is_ml_value( $meta_value ) ) {
-			$old_value = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->{$this->object_table}} WHERE meta_key = %s AND {$column} = %d LIMIT 1;", $meta_key, $object_id ) );
-			$old_value = maybe_unserialize( $old_value );
-			$old_value = wpm_value_to_ml_array( $old_value );
-			$meta_value = wpm_set_language_value( $old_value, $meta_value );
+			$old_value  = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->{$this->object_table}} WHERE meta_key = %s AND {$column} = %d LIMIT 1;", $meta_key, $object_id ) );
+			$old_value  = maybe_unserialize( $old_value );
+			$old_value  = wpm_value_to_ml_array( $old_value );
+			$meta_value = wpm_set_language_value( $old_value, $meta_value, $meta_config );
 			$meta_value = wpm_ml_value_to_string( $meta_value );
 		}
 

@@ -27,6 +27,17 @@ class WPM_Admin_Widgets {
 			return $value;
 		}
 
+		$widget_name    = substr( $option, 6 );
+		$config         = wpm_get_config();
+		$default_fields = array(
+			'title' => array(),
+			'text'  => array()
+		);
+
+		if ( isset( $config['widgets'][ $widget_name ] ) ) {
+			$widget_config = array_merge_recursive( $default_fields, $config['widgets'][ $widget_name ] );
+		}
+
 		foreach ( $value as $key => &$widget ) {
 
 			if ( ( '_multiwidget' == $key ) || ! isset( $old_value[ $key ] ) ) {
@@ -34,13 +45,10 @@ class WPM_Admin_Widgets {
 			}
 
 			foreach ( $widget as $_key => $_value ) {
-				switch ( $_key ) {
-					case 'title':
-					case 'text':
-						$strings                = wpm_value_to_ml_array( $old_value[ $key ][ $_key ] );
-						$new_value              = wpm_set_language_value( $strings, $_value );
-						$value[ $key ][ $_key ] = wpm_ml_value_to_string( $new_value );
-						break;
+				if ( isset( $widget_config[ $_key ] ) ) {
+					$strings                = wpm_value_to_ml_array( $old_value[ $key ][ $_key ] );
+					$new_value              = wpm_set_language_value( $strings, $_value, $widget_config[ $_key ] );
+					$value[ $key ][ $_key ] = wpm_ml_value_to_string( $new_value );
 				}
 			}
 		}

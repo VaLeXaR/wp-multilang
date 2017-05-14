@@ -39,8 +39,8 @@ if ( ! class_exists( 'WPM_Admin_Assets' ) ) :
 			$jquery_version = isset( $wp_scripts->registered['jquery-ui-core']->ver ) ? $wp_scripts->registered['jquery-ui-core']->ver : '1.11.4';
 
 			// Register admin styles
-			//		wp_register_style( 'wpm_language_switcher', wpm_asset_path('css/menu.css'), array(), QTN_VERSION );
-			//		wp_register_style( 'game_portal_admin', wpm_asset_path('css/admin.css'), array(), QTN_VERSION );
+			//		wp_register_style( 'wpm_language_switcher', wpm_asset_path('css/menu.css'), array(), WPM_VERSION );
+			//		wp_register_style( 'game_portal_admin', wpm_asset_path('css/admin.css'), array(), WPM_VERSION );
 			//		wp_register_style( 'jquery-ui-style', '//code.jquery.com/ui/' . $jquery_version . '/themes/smoothness/jquery-ui.min.css', array(), $jquery_version );
 
 			// Sitewide menu CSS
@@ -63,25 +63,25 @@ if ( ! class_exists( 'WPM_Admin_Assets' ) ) :
 			$screen    = get_current_screen();
 			$screen_id = $screen ? $screen->id : '';
 			$suffix    = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-			$settings  = wpm_get_settings();
+			$config  = wpm_get_config();
 
 			// Register scripts
 			wp_register_script( 'wpm_language_switcher', wpm_asset_path( 'scripts/language-switcher' . $suffix . '.js' ), array(
 				'jquery',
 				'underscore'
-			), QTN_VERSION );
+			), WPM_VERSION );
 
-			foreach ( $settings['admin_pages'] as $page_id ) {
+			foreach ( $config['admin_pages'] as $page_id ) {
 				if ( $screen_id == $page_id ) {
 					$this->set_language_switcher();
 				}
 			}
 
-			if ( in_array( $screen->post_type, $settings['post_types'] ) ) {
+			if ( isset( $config['post_types'][ $screen->post_type ] ) ) {
 				$this->set_language_switcher();
 			}
 
-			if ( in_array( $screen->taxonomy, $settings['taxonomies'] ) ) {
+			if ( isset( $config['taxonomies'][ $screen->taxonomy ] ) ) {
 				$this->set_language_switcher();
 			}
 		}

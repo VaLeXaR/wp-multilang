@@ -120,9 +120,9 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 		 * Define WC Constants.
 		 */
 		private function define_constants() {
-			$this->define( 'QTN_PLUGIN_FILE', __FILE__ );
-			$this->define( 'QTN_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
-			$this->define( 'QTN_VERSION', $this->version );
+			$this->define( 'WPM_PLUGIN_FILE', __FILE__ );
+			$this->define( 'WPM_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+			$this->define( 'WPM_VERSION', $this->version );
 		}
 
 		/**
@@ -180,7 +180,7 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 			// Before init action.
 			do_action( 'before_wpm_init' );
 
-			Core\WPM_Config::instance()->init();
+			Core\WPM_Setup::instance();
 
 			// Set up localisation.
 			$this->load_plugin_textdomain();
@@ -256,3 +256,9 @@ function WPM() {
 }
 
 WPM();
+
+//add_action('init', function(){
+//	$config = new Core\WPM_Config();
+//	d($config->get_active_plugins());
+//	die();
+//});
