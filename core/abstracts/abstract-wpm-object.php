@@ -12,9 +12,21 @@ abstract class WPM_Object {
 	public function get_meta_field( $value, $object_id, $meta_key ) {
 		global $wpdb;
 
+		if ( ! $meta_key ) {
+
+			$meta_cache = wp_cache_get( $object_id, $this->object_type . '_meta' );
+
+			if ( ! $meta_cache ) {
+				$meta_cache = update_meta_cache( $this->object_type, array( $object_id ) );
+				$meta_cache = $meta_cache[ $object_id ];
+			}
+
+			return wpm_translate_value( $meta_cache );
+		}
+
 		$config = wpm_get_config();
 
-		if ( ! isset( $config[ $this->object_type . '_fields' ][$meta_key] ) ) {
+		if ( ! isset( $config[ $this->object_type . '_fields' ][ $meta_key ] ) ) {
 			return $value;
 		}
 

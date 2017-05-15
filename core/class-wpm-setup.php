@@ -276,7 +276,7 @@ class WPM_Setup {
 
 
 	private function load_vendor() {
-		$vendor_path = ( dirname( WPM_PLUGIN_FILE ) . '/configs/core/vendor/' );
+		$vendor_path = ( dirname( WPM_PLUGIN_FILE ) . '/core/vendor/' );
 		foreach ( glob( $vendor_path . '*.php' ) as $vendor_file ) {
 			require_once( $vendor_file );
 		}

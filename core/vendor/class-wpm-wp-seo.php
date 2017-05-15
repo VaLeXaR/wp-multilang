@@ -12,6 +12,10 @@ if ( defined( 'WPSEO_VERSION' ) ) {
 
 		public function __construct() {
 			add_filter( 'wpm_option_wpseo_titles_config', array( $this, 'set_posts_config' ) );
+			add_filter( 'wpseo_title', 'wpm_translate_string', 0 );
+			add_filter( 'wpseo_metadesc', 'wpm_translate_string', 0 );
+			add_filter( 'wpseo_metakey', 'wpm_translate_string', 0 );
+			add_filter( 'wpseo_metakeywords', 'wpm_translate_string', 0 );
 		}
 
 

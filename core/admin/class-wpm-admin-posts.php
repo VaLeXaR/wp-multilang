@@ -26,7 +26,8 @@ if ( ! class_exists( 'WPM_Admin_Posts' ) ) :
 		 * Constructor.
 		 */
 		public function __construct() {
-			add_action( 'edit_form_top', array( $this, 'translate_post' ), 0 );
+//			add_action( 'edit_form_top', array( $this, 'translate_post' ), 0 );
+			add_action( 'dbx_post_advanced', array( $this, 'translate_post' ), 0 );
 			add_action( 'admin_init', array( $this, 'init' ) );
 			add_filter( 'wp_insert_post_data', array( $this, 'save_post' ), 99, 2 );
 			add_filter( 'wp_insert_attachment_data', array( $this, 'save_post' ), 99, 2 );
@@ -57,7 +58,6 @@ if ( ! class_exists( 'WPM_Admin_Posts' ) ) :
 		public function translate_post() {
 			global $post;
 			$post = wpm_translate_object( $post );
-			get_permalink();
 		}
 
 

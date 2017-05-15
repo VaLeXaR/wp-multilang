@@ -31,14 +31,3 @@ class WPM_Posts extends \WPM_Object {
 		return array_map( 'wpm_translate_object', $posts );
 	}
 }
-
-
-//apply_filters( 'wpseo_title', wpseo_replace_vars( $this->get_title( $item->ID, $item->post_type ), $item ) )
-//apply_filters( 'wpseo_metadesc', wpseo_replace_vars( $this->get_meta_description( $item->ID, $item->post_type ), $item ) )
-// apply_filters( 'wpseo_post_content_for_recalculation', $content, $item )
-//apply_filters( 'wpseo_do_meta_box_field_' . $key, $content, $meta_value, $esc_form_key, $meta_field_def, $key )
-//apply_filters( 'wpseo_term_description_for_recalculation', $description, $item )
-//apply_filters( 'wpseo_metakey', trim( $keywords ) );
-//apply_filters( 'wpseo_metakeywords', trim( $keywords ) )
-//apply_filters( 'wpseo_metadesc', trim( $metadesc ) )
-//apply_filters( 'wpseo_sanitize_tax_meta_' . $key, $clean[ $key ], ( isset( $meta_data[ $key ] ) ? $meta_data[ $key ] : null ), ( isset( $old_meta[ $key ] ) ? $old_meta[ $key ] : null ) )
