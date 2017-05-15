@@ -37,9 +37,9 @@ if ( ! class_exists( 'WPM_Admin_Posts' ) ) :
 
 		public function init() {
 
-			$options = wpm_get_config();
+			$config = wpm_get_config();
 
-			foreach ( $options['post_types'] as $post_type => $options ) {
+			foreach ( $config['post_types'] as $post_type => $post_config ) {
 
 				if ( 'attachment' == $post_type ) {
 					add_filter( "manage_media_columns", array( $this, 'language_columns' ) );
@@ -62,9 +62,9 @@ if ( ! class_exists( 'WPM_Admin_Posts' ) ) :
 
 
 		public function save_post( $data, $postarr ) {
-			$settings = wpm_get_config();
+			$config = wpm_get_config();
 
-			if ( ! isset( $settings['post_types'][ $data['post_type'] ] ) ) {
+			if ( ! isset( $config['post_types'][ $data['post_type'] ] ) ) {
 				return $data;
 			}
 
@@ -85,15 +85,15 @@ if ( ! class_exists( 'WPM_Admin_Posts' ) ) :
 				return $data;
 			}
 
-			$post_config    = $settings['post_types'][ $data['post_type'] ];
+			$post_config    = $config['post_types'][ $data['post_type'] ];
 			$default_fields = array(
 				'post_title'   => array(),
 				'post_excerpt' => array(),
 				'post_content' => array()
 			);
 
-			$post_config = apply_filters( 'wpm_post_type_config', $post_config, $data['post_type'] );
-			$post_config = array_merge_recursive( $default_fields, $post_config );
+			$post_config = wpm_array_merge_recursive( $default_fields, $post_config );
+			$post_config = apply_filters( "wpm_post_{$data['post_type']}_config", $post_config );
 
 			foreach ( $data as $key => $content ) {
 				if ( isset( $post_config[ $key ] ) ) {

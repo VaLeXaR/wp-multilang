@@ -7,15 +7,10 @@
     "_yoast_wpseo_focuskw": {}
   },
   "admin_pages": [
-    "toplevel_page_wpseo_dashboard",
     "seo_page_wpseo_titles",
     "seo_page_wpseo_advanced"
   ],
   "options": {
-    "wpseo": {
-      "website_name" : {},
-      "alternate_website_name" : {}
-    },
     "wpseo_titles": {
       "title-home-wpseo" : {},
       "metadesc-home-wpseo" : {},

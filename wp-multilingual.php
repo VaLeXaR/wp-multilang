@@ -21,7 +21,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once __DIR__ . '/lib/autoloader.php';
-require_once __DIR__ . '/vendor/autoload.php';
+
+if (file_exists( __DIR__ . '/vendor/autoload.php')) {
+	require_once __DIR__ . '/vendor/autoload.php';
+}
+
 
 if ( WP_DEBUG ) {
 	if ( class_exists( 'Kint' ) ) {
@@ -256,9 +260,3 @@ function WPM() {
 }
 
 WPM();
-
-//add_action('init', function(){
-//	$config = new Core\WPM_Config();
-//	d($config->get_active_plugins());
-//	die();
-//});

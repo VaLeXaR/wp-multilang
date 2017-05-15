@@ -12,9 +12,9 @@ abstract class WPM_Object {
 	public function get_meta_field( $value, $object_id, $meta_key ) {
 		global $wpdb;
 
-		$settings = wpm_get_config();
+		$config = wpm_get_config();
 
-		if ( ! in_array( $meta_key, $settings[ $this->object_type . '_fields' ] ) ) {
+		if ( ! isset( $config[ $this->object_type . '_fields' ][$meta_key] ) ) {
 			return $value;
 		}
 
@@ -64,8 +64,7 @@ abstract class WPM_Object {
 			return $check;
 		}
 
-		$meta_config = $config[ $this->object_type . '_fields' ][ $meta_key ];
-		$meta_config = apply_filters( 'wpm_meta_config', $meta_config, $meta_key, $meta_value, $object_id );
+		$meta_config = apply_filters( "wpm_meta_{$meta_key}_config", $config[ $this->object_type . '_fields' ][ $meta_key ], $meta_value, $object_id );
 		$table       = $wpdb->{$this->object_table};
 		$column      = sanitize_key( $this->object_type . '_id' );
 		$id_column   = 'user' == $this->object_type ? 'umeta_id' : 'meta_id';
@@ -118,6 +117,7 @@ abstract class WPM_Object {
 		}
 
 		$result = $wpdb->update( $table, $data, $where );
+
 		if ( ! $result ) {
 			return false;
 		}

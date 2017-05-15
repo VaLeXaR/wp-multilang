@@ -37,19 +37,22 @@ function wpm_clean( $var ) {
  *
  * @return array
  */
-function wpm_array_overlay( $a1, $a2 ) {
-	foreach ( $a1 as $k => $v ) {
-		if ( ! array_key_exists( $k, $a2 ) ) {
-			continue;
-		}
-		if ( is_array( $v ) && is_array( $a2[ $k ] ) ) {
-			$a1[ $k ] = wpm_array_overlay( $v, $a2[ $k ] );
+function wpm_array_merge_recursive( array & $array1, array & $array2 ) {
+	$merged = $array1;
+
+	foreach ( $array2 as $key => & $value ) {
+		if ( is_array( $value ) && isset( $merged[ $key ] ) && is_array( $merged[ $key ] ) ) {
+			$merged[ $key ] = wpm_array_merge_recursive( $merged[ $key ], $value );
+		} else if ( is_numeric( $key ) ) {
+			if ( ! in_array( $value, $merged ) ) {
+				$merged[] = $value;
+			}
 		} else {
-			$a1[ $k ] = $a2[ $k ];
+			$merged[ $key ] = $value;
 		}
 	}
 
-	return $a1;
+	return $merged;
 }
 
 /**

@@ -83,10 +83,16 @@ class WPM_Install {
 	 */
 	private static function create_options() {
 
-		$config = WPM_Setup::instance();
 		$languages = array();
-		$installed_languages = $config->get_installed_languages();
-		$translations = $config->get_translations();
+		$installed_languages = array_merge( array( 'en_US' ), get_available_languages() );
+		require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
+		$available_translations          = wp_get_available_translations();
+		$available_translations['en_US'] = array(
+			'native_name' => 'English (US)',
+			'iso'         => array( 'en' )
+		);
+
+		$translations = $available_translations;
 
 		foreach ($installed_languages as $language ) {
 			$languages[ $language ] = array(

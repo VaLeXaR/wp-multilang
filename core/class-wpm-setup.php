@@ -187,6 +187,7 @@ class WPM_Setup {
 
 
 	public function set_locale() {
+		global $locale;
 
 		require_once( ABSPATH . 'wp-includes/pluggable.php' );
 
@@ -196,7 +197,7 @@ class WPM_Setup {
 		foreach ( $language as $key => $value ) {
 			$user_language = $this->get_user_language();
 			if ( ( $value == $user_language ) ) {
-				switch_to_locale( $key );
+				$locale = $key;
 				if ( $key == $default_locale && ! is_admin() && ! isset( $_GET['lang'] ) ) {
 					wp_redirect( home_url( str_replace( '/' . $user_language . '/', '/', $_SERVER['REQUEST_URI'] ) ), 301 );
 					exit;

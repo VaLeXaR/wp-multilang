@@ -28,11 +28,11 @@ class WPM_Admin_Options {
 		}
 
 		$config        = wpm_get_config();
-		$option_config = apply_filters( 'wpm_option_config', $config['options'][ $option ], $option, $value );
+		$option_config = apply_filters( "wpm_option_{$option}_config", $config['options'][ $option ], $value );
 		remove_filter( "option_{$option}", 'wpm_translate_value', 0 );
 		$old_value = get_option( $option );
 		add_filter( "option_{$option}", 'wpm_translate_value', 0 );
-		$strings   = wpm_value_to_ml_array( $old_value );
+		$strings   = wpm_value_to_ml_array( $old_value, $option_config );
 		$new_value = wpm_set_language_value( $strings, $value, $option_config );
 		$new_value = wpm_ml_value_to_string( $new_value );
 

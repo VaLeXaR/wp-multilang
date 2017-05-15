@@ -284,7 +284,7 @@ class WPM_Frontend_Scripts {
 					);
 				}
 
-				return array_merge_recursive( $default, $data );*/
+				return array_replace_recursive( $default, $data );*/
 				break;
 		}
 
