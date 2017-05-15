@@ -11,10 +11,10 @@
   "post_fields": {
     "_wp_attachment_image_alt": {}
   },
-  "taxonomies": [
-    "category",
-    "post_tag"
-  ],
+  "taxonomies": {
+    "category" : {},
+    "post_tag" : {}
+  },
   "taxonomy_fields": {},
   "admin_pages": [
     "upload",

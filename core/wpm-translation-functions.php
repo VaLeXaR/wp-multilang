@@ -160,7 +160,7 @@ function wpm_ml_array_to_string( $strings ) {
 
 	$string = '';
 
-	if ( ! is_array( $strings ) || ! wpm_is_ml_array( $strings ) ) {
+	if ( ! wpm_is_ml_array( $strings ) ) {
 		return $string;
 	}
 
@@ -222,7 +222,10 @@ function wpm_set_language_value( $localize_array, $value, $config = null, $local
 			} else {
 				$config_key = ( isset( $config[ $key ] ) ? $config[ $key ] : null );
 			}
-			$localize_array[ $key ] = wpm_set_language_value( $localize_array[ $key ], $value[ $key ], $config_key, $locale );
+
+			if ( isset( $localize_array[ $key ] ) && isset( $value[ $key ] ) ) {
+				$localize_array[ $key ] = wpm_set_language_value( $localize_array[ $key ], $value[ $key ], $config_key, $locale );
+			}
 		}
 	} else {
 		if ( ! is_null( $config ) && ! is_bool( $value ) ) {
@@ -259,7 +262,7 @@ function wpm_translate_object( $object, $locale = '' ) {
 					$object->$key = wpm_translate_string( $content, $locale );
 					break;
 				case 'post_content':
-					$object->$key = wpm_translate_value( maybe_unserialize( $content), $locale );
+					$object->$key = maybe_serialize( wpm_translate_value( maybe_unserialize( $content ), $locale ) );
 					break;
 			}
 		}
@@ -295,7 +298,7 @@ function wpm_is_ml_array( $array ) {
 	$languages = wpm_get_languages();
 
 	foreach ( $array as $key => $item ) {
-		if ( ! in_array( $key, $languages ) ) {
+		if ( ! is_string( $key ) || ! in_array( $key, $languages ) ) {
 			return false;
 		}
 	}
@@ -322,7 +325,7 @@ function wpm_is_ml_value( $value ) {
 
 	if ( is_array( $value ) && ! empty( $value ) ) {
 		$result = array();
-		foreach ($value as $item ) {
+		foreach ( $value as $item ) {
 			$result[] = wpm_is_ml_value( $item );
 		}
 

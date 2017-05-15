@@ -85,6 +85,7 @@ if ( ! class_exists( 'WPM_Admin_Posts' ) ) :
 			}
 
 			$post_config    = $config['post_types'][ $data['post_type'] ];
+
 			$default_fields = array(
 				'post_title'   => array(),
 				'post_excerpt' => array(),
@@ -100,7 +101,8 @@ if ( ! class_exists( 'WPM_Admin_Posts' ) ) :
 						break;
 					}
 
-					$post_field_config = apply_filters( "wpm_post_field_{$key}_config", $post_config[ $key ], $content );
+					$post_field_config = apply_filters( "wpm_post_{$data['post_type']}_field_{$key}_config", $post_config[ $key ], $content );
+					$post_field_config = apply_filters( "wpm_post_field_{$key}_config", $post_field_config, $content );
 					$old_value         = get_post_field( $key, $post_id, 'edit' );
 					$strings           = wpm_value_to_ml_array( $old_value );
 					$value             = wpm_set_language_value( $strings, $data[ $key ], $post_field_config );

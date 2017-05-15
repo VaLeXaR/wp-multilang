@@ -38,7 +38,7 @@ if ( ! class_exists( 'WPM_Admin_Taxonomies' ) ) :
 		public function init() {
 			$config = wpm_get_config();
 
-			foreach ( $config['taxonomies'] as $taxonomy ) {
+			foreach ( $config['taxonomies'] as $taxonomy => $config ) {
 				add_filter( "manage_edit-{$taxonomy}_columns", array( $this, 'language_columns' ) );
 				add_filter( "manage_{$taxonomy}_custom_column", array( $this, 'render_language_column' ), 0, 3 );
 			}
@@ -71,7 +71,7 @@ if ( ! class_exists( 'WPM_Admin_Taxonomies' ) ) :
 		public function save_term( $data, $term_id, $taxonomy, $args ) {
 			$config = wpm_get_config();
 
-			if ( ! in_array( $taxonomy, $config['taxonomies'] ) ) {
+			if ( ! isset( $config['taxonomies'][ $taxonomy ] ) ) {
 				return $data;
 			}
 
@@ -98,8 +98,11 @@ if ( ! class_exists( 'WPM_Admin_Taxonomies' ) ) :
 
 		public function update_description( $tt_id, $taxonomy ) {
 			global $wpdb;
+
 			$config = wpm_get_config();
-			if ( ! in_array( $taxonomy, $config['taxonomies'] ) ) {
+			$tax_config = $config['taxonomies'][ $taxonomy ];
+
+			if ( ! isset( $tax_config ) ) {
 				return;
 			}
 
@@ -115,7 +118,7 @@ if ( ! class_exists( 'WPM_Admin_Taxonomies' ) ) :
 
 			$old_value   = $this->description['old'];
 			$strings     = wpm_value_to_ml_array( $old_value );
-			$value       = wpm_set_language_value( $strings, $value, array() );
+			$value       = wpm_set_language_value( $strings, $value, $tax_config );
 			$description = wpm_ml_value_to_string( $value );
 
 			$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_taxonomy_id' => $tt_id ) );
@@ -160,10 +163,10 @@ if ( ! class_exists( 'WPM_Admin_Taxonomies' ) ) :
 				remove_filter( 'get_term', 'wpm_translate_object', 0 );
 				$term = get_term( $term_id );
 				add_filter( 'get_term', 'wpm_translate_object', 0 );
-				$output  = array();
-				$text    = $term->name . $term->description;
-				$strings = wpm_value_to_ml_array( $text );
-				$options = wpm_get_options();
+				$output    = array();
+				$text      = $term->name . $term->description;
+				$strings   = wpm_value_to_ml_array( $text );
+				$options   = wpm_get_options();
 				$languages = wpm_get_languages();
 
 				foreach ( $languages as $locale => $language ) {

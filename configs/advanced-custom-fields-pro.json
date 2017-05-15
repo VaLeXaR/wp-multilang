@@ -1,14 +1,8 @@
 {
   "post_types": {
-    "acf-field-group": {},
-    "acf-field": {
-      "post_content" : {
-        "instructions" : {},
-        "default_value" : {},
-        "placeholder" : {},
-        "prepend" : {},
-        "append" : {}
-      }
+    "acf-field-group": {
+      "post_content" : null,
+      "post_excerpt" : null
     }
   }
 }
