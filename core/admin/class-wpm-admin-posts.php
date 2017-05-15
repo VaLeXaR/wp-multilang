@@ -26,7 +26,6 @@ if ( ! class_exists( 'WPM_Admin_Posts' ) ) :
 		 * Constructor.
 		 */
 		public function __construct() {
-//			add_action( 'edit_form_top', array( $this, 'translate_post' ), 0 );
 			add_action( 'dbx_post_advanced', array( $this, 'translate_post' ), 0 );
 			add_action( 'admin_init', array( $this, 'init' ) );
 			add_filter( 'wp_insert_post_data', array( $this, 'save_post' ), 99, 2 );
@@ -101,7 +100,7 @@ if ( ! class_exists( 'WPM_Admin_Posts' ) ) :
 						break;
 					}
 
-					$post_field_config = apply_filters( 'wpm_post_field_config', $post_config[ $key ], $key, $content );
+					$post_field_config = apply_filters( "wpm_post_field_{$key}_config", $post_config[ $key ], $content );
 					$old_value         = get_post_field( $key, $post_id, 'edit' );
 					$strings           = wpm_value_to_ml_array( $old_value );
 					$value             = wpm_set_language_value( $strings, $data[ $key ], $post_field_config );
