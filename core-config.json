@@ -15,7 +15,7 @@
     "category" : {},
     "post_tag" : {}
   },
-  "taxonomy_fields": {},
+  "term_fields": {},
   "admin_pages": [
     "upload",
     "nav-menus",

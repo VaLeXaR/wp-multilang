@@ -260,3 +260,5 @@ function WPM() {
 }
 
 WPM();
+
+//Core\WPM_Config::load_config_run();

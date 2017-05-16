@@ -24,9 +24,11 @@ abstract class WPM_Object {
 			return wpm_translate_value( $meta_cache );
 		}
 
-		$config = wpm_get_config();
+		$config               = wpm_get_config();
+		$object_fields_config = $config[ $this->object_type . '_fields' ];
+		$object_fields_config = apply_filters( "wpm_{$this->object_type}_meta_config", $object_fields_config );
 
-		if ( ! isset( $config[ $this->object_type . '_fields' ][ $meta_key ] ) ) {
+		if ( ! isset( $object_fields_config[ $meta_key ] ) ) {
 			return $value;
 		}
 
@@ -70,13 +72,16 @@ abstract class WPM_Object {
 	public function update_meta_field( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
 		global $wpdb;
 
-		$config = wpm_get_config();
+		$config               = wpm_get_config();
+		$object_fields_config = $config[ $this->object_type . '_fields' ];
+		$object_fields_config = apply_filters( "wpm_{$this->object_type}_meta_config", $object_fields_config );
 
-		if ( ! isset( $config[ $this->object_type . '_fields' ][ $meta_key ] ) ) {
+		if ( ! isset( $object_fields_config[ $meta_key ] ) ) {
 			return $check;
 		}
 
-		$meta_config = apply_filters( "wpm_meta_{$meta_key}_config", $config[ $this->object_type . '_fields' ][ $meta_key ], $meta_value, $object_id );
+		$meta_config = apply_filters( "wpm_{$meta_key}_meta_config", $object_fields_config[ $meta_key ], $meta_value, $object_id );
+		$meta_config = apply_filters( "wpm_{$this->object_type}_meta_{$meta_key}_config", $meta_config, $meta_value, $object_id );
 		$table       = $wpdb->{$this->object_table};
 		$column      = sanitize_key( $this->object_type . '_id' );
 		$id_column   = 'user' == $this->object_type ? 'umeta_id' : 'meta_id';

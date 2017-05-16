@@ -63,7 +63,7 @@ if ( ! class_exists( 'WPM_Admin_Assets' ) ) :
 			$screen    = get_current_screen();
 			$screen_id = $screen ? $screen->id : '';
 			$suffix    = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-			$config  = wpm_get_config();
+			$config    = wpm_get_config();
 
 			// Register scripts
 			wp_register_script( 'wpm_language_switcher', wpm_asset_path( 'scripts/language-switcher' . $suffix . '.js' ), array(
@@ -77,11 +77,17 @@ if ( ! class_exists( 'WPM_Admin_Assets' ) ) :
 				}
 			}
 
-			if ( isset( $config['post_types'][ $screen->post_type ] ) ) {
+			$posts_config = $config['post_types'];
+			$posts_config = apply_filters( "wpm_posts_config", $posts_config );
+
+			if ( isset( $posts_config[ $screen->post_type ] ) && ! is_null( $posts_config [ $screen->post_type ] ) ) {
 				$this->set_language_switcher();
 			}
 
-			if ( isset( $config['taxonomies'][ $screen->taxonomy ] ) ) {
+			$taxonomies_config = $config['taxonomies'];
+			$taxonomies_config = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
+
+			if ( isset( $taxonomies_config[ $screen->taxonomy ] ) && ! is_null( $taxonomies_config[ $screen->taxonomy ] ) ) {
 				$this->set_language_switcher();
 			}
 		}

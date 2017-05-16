@@ -63,7 +63,10 @@ if ( ! class_exists( 'WPM_Admin_Posts' ) ) :
 		public function save_post( $data, $postarr ) {
 			$config = wpm_get_config();
 
-			if ( ! isset( $config['post_types'][ $data['post_type'] ] ) ) {
+			$posts_config = $config['post_types'];
+			$posts_config = apply_filters( "wpm_posts_config", $posts_config );
+
+			if ( ! isset( $posts_config[ $data['post_type'] ] ) ) {
 				return $data;
 			}
 
@@ -84,7 +87,7 @@ if ( ! class_exists( 'WPM_Admin_Posts' ) ) :
 				return $data;
 			}
 
-			$post_config    = $config['post_types'][ $data['post_type'] ];
+			$post_config = $posts_config[ $data['post_type'] ];
 
 			$default_fields = array(
 				'post_title'   => array(),

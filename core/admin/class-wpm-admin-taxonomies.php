@@ -71,7 +71,10 @@ if ( ! class_exists( 'WPM_Admin_Taxonomies' ) ) :
 		public function save_term( $data, $term_id, $taxonomy, $args ) {
 			$config = wpm_get_config();
 
-			if ( ! isset( $config['taxonomies'][ $taxonomy ] ) ) {
+			$taxonomies_config = $config['taxonomies'];
+			$taxonomies_config = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
+
+			if ( ! isset( $taxonomies_config[ $taxonomy ] ) ) {
 				return $data;
 			}
 
@@ -99,7 +102,7 @@ if ( ! class_exists( 'WPM_Admin_Taxonomies' ) ) :
 		public function update_description( $tt_id, $taxonomy ) {
 			global $wpdb;
 
-			$config = wpm_get_config();
+			$config     = wpm_get_config();
 			$tax_config = $config['taxonomies'][ $taxonomy ];
 
 			if ( ! isset( $tax_config ) ) {

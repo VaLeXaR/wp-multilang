@@ -11,14 +11,16 @@ if ( class_exists( 'acf' ) ) {
 	class WPM_Acf {
 
 		public function __construct() {
-			add_filter( "acf/load_field", 'wpm_translate_value' );
-			add_filter( "acf/translate_field_group", 'wpm_translate_string' );
-			add_filter( "acf/update_field", array( $this, 'save_field' ) );
-			add_filter( "acf/update_field/type=text", array( $this, 'save_text_field' ) );
-			add_filter( "acf/update_field/type=textarea", array( $this, 'save_text_field' ) );
-			add_filter( "acf/update_field/type=wysiwyg", array( $this, 'save_text_field' ) );
-			add_filter( "acf/update_field/type=select", array( $this, 'save_select_field' ) );
-			add_filter( "acf/update_field/type=checkbox", array( $this, 'save_select_field' ) );
+			add_filter( "acf/load_field", 'wpm_translate_value', 0 );
+			add_filter( "acf/translate_field_group", 'wpm_translate_string', 0 );
+			add_filter( "acf/update_field", array( $this, 'save_field' ), 99 );
+			add_filter( "acf/update_field/type=text", array( $this, 'save_text_field' ), 99 );
+			add_filter( "acf/update_field/type=textarea", array( $this, 'save_text_field' ), 99 );
+			add_filter( "acf/update_field/type=wysiwyg", array( $this, 'save_text_field' ), 99 );
+			add_filter( "acf/load_value", 'wpm_translate_value', 0 );
+			add_filter( "acf/update_value/type=text", __NAMESPACE__ . '\WPM_Acf::save_value', 99, 3 );
+			add_filter( "acf/update_value/type=textarea",  __NAMESPACE__ . '\WPM_Acf::save_value', 99, 3 );
+			add_filter( "acf/update_value/type=wysiwyg",  __NAMESPACE__ . '\WPM_Acf::save_value', 99, 3 );
 		}
 
 
@@ -32,15 +34,12 @@ if ( class_exists( 'acf' ) ) {
 			$default_config = array(
 				'label'        => array(),
 				'placeholder'  => array(),
-				'prepend'      => array(),
-				'append'       => array(),
 				'instructions' => array()
 			);
 
 			$new_field = wpm_set_language_value( $old_field, $field, $default_config );
 			$field     = wpm_array_merge_recursive( $field, $new_field );
 			$field     = wpm_ml_value_to_string( $field );
-			var_error_log( $field );
 
 			return $field;
 		}
@@ -64,58 +63,18 @@ if ( class_exists( 'acf' ) ) {
 		}
 
 
-		public function save_select_field( $field ) {
+		static public function save_value( $value, $post_id, $field ) {
+			remove_filter( 'acf/load_value', 'wpm_translate_value', 0 );
+			$old_value = get_field( $field['name'], $post_id );
+			add_filter( "acf/load_value", 'wpm_translate_value', 0 );
+			$old_value = wpm_value_to_ml_array( $old_value );
+			$new_value = wpm_set_language_value( $old_value, $value, array() );
+			$new_value = wpm_ml_value_to_string( $new_value );
 
-			$old_field = maybe_unserialize( get_post_field( 'post_content', $field['ID'] ) );
-			$old_field = wpm_value_to_ml_array( $old_field );
-
-			$default_config = array(
-				'choices' => array(),
-				'default_value' => array()
-			);
-
-			$field     = wpm_value_to_ml_array( $field );
-			$new_field = wpm_set_language_value( $old_field, $field, $default_config );
-			$field     = wpm_array_merge_recursive( $field, $new_field );
-			$field     = wpm_ml_value_to_string( $field );
-
-			return $field;
+			return $new_value;
 		}
 	}
 
 	new WPM_Acf();
 
 }
-
-//$field = apply_filters( "acf/update_field", $field);
-//$field = apply_filters( "acf/update_field/type={$field['type']}", $field );
-//$field = apply_filters( "acf/update_field/name={$field['name']}", $field );
-//$field = apply_filters( "acf/update_field/key={$field['key']}", $field );
-//$field = apply_filters( "acf/translate_field", $field );
-//$field = apply_filters( "acf/translate_field/type={$field['type']}", $field );
-//$fields = apply_filters('acf/get_fields', $fields, $parent);
-//$field = apply_filters( "acf/load_field", $field);
-//$field = apply_filters( "acf/load_field/type={$field['type']}", $field );
-//$field = apply_filters( "acf/load_field/name={$field['name']}", $field );
-//$field = apply_filters( "acf/load_field/key={$field['key']}", $field );
-//$sub_field = apply_filters( "acf/get_sub_field", $sub_field, $selector, $field );
-//$sub_field = apply_filters( "acf/get_sub_field/type={$field['type']}", $sub_field, $selector, $field );
-//$post_id = apply_filters('acf/pre_save_post', $post_id, $GLOBALS['acf_form']);
-//$value = apply_filters( "acf/load_value", $value, $post_id, $field );
-//$value = apply_filters( "acf/load_value/type={$field['type']}", $value, $post_id, $field );
-//$value = apply_filters( "acf/load_value/name={$field['_name']}", $value, $post_id, $field );
-//$value = apply_filters( "acf/load_value/key={$field['key']}", $value, $post_id, $field );
-//$value = apply_filters( "acf/format_value", $value, $post_id, $field );
-//$value = apply_filters( "acf/format_value/type={$field['type']}", $value, $post_id, $field );
-//$value = apply_filters( "acf/format_value/name={$field['_name']}", $value, $post_id, $field );
-//$value = apply_filters( "acf/format_value/key={$field['key']}", $value, $post_id, $field );
-//$value = apply_filters( "acf/update_value", $value, $post_id, $field );
-//$value = apply_filters( "acf/update_value/type={$field['type']}", $value, $post_id, $field );
-//$value = apply_filters( "acf/update_value/name={$field['name']}", $value, $post_id, $field );
-//$value = apply_filters( "acf/update_value/key={$field['key']}", $value, $post_id, $field );
-//$value = apply_filters( "acf/preview_value", $value, $post_id, $field );
-//$value = apply_filters( "acf/preview_value/type={$field['type']}", $value, $post_id, $field );
-//$value = apply_filters( "acf/preview_value/name={$field['_name']}", $value, $post_id, $field );
-//$value = apply_filters( "acf/preview_value/key={$field['key']}", $value, $post_id, $field );
-//$field_group = apply_filters('acf/get_field_group', $field_group);
-//$label = apply_filters("acf/get_field_label", $label, $field);
