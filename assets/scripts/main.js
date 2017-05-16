@@ -28,5 +28,13 @@
       });
     });
 
+    $("#wpm-languages tbody").sortable({
+      handle: 'td:first-child'
+    });
+
+   /* $('.wpm-flags').on('change', function(){
+      $(this).value();
+    });*/
+
   });
 }(jQuery));

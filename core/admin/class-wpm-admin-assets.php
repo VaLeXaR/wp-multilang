@@ -50,7 +50,7 @@ if ( ! class_exists( 'WPM_Admin_Assets' ) ) :
 
 			// Register scripts
 			wp_register_script( 'wpm_main', wpm_asset_path( 'scripts/main' . $suffix . '.js' ), array(
-				'jquery'
+				'jquery-ui-sortable'
 			), WPM_VERSION );
 			wp_register_script( 'wpm_language_switcher', wpm_asset_path( 'scripts/language-switcher' . $suffix . '.js' ), array(
 				'jquery',
@@ -62,6 +62,7 @@ if ( ! class_exists( 'WPM_Admin_Assets' ) ) :
 			), WPM_VERSION );
 
 			if ( 'customize' == $screen_id ) {
+				wp_enqueue_style( 'wpm_language_switcher' );
 				wp_enqueue_script( 'wpm_language_switcher_customizer' );
 				$params = array(
 					'switcher' => gp_get_template_html( 'language-switcher-customizer.tpl' )

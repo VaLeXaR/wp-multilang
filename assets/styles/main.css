@@ -42,6 +42,25 @@ table.wpm-languages {
   text-align: center; }
   table.wpm-languages th {
     text-align: center; }
+  table.wpm-languages tbody tr > td:first-child {
+    cursor: move; }
+  table.wpm-languages .ui-sortable-helper {
+    background-color: #fff;
+    display: flex; }
+  table.wpm-languages .wpm-lang-order {
+    width: 6%; }
+  table.wpm-languages .wpm-lang-status {
+    width: 6%; }
+  table.wpm-languages .wpm-lang-locale {
+    width: 10%; }
+  table.wpm-languages .wpm-lang-slug {
+    width: 22%; }
+  table.wpm-languages .wpm-lang-name {
+    width: 22%; }
+  table.wpm-languages .wpm-lang-flag {
+    width: 22%; }
+  table.wpm-languages .wpm-lang-delete {
+    width: 10%; }
 
 .wp-core-ui .button-link.delete-language {
   color: #dd0e11; }

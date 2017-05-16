@@ -4,6 +4,46 @@ table.wpm-languages {
   th {
     text-align: center;
   }
+
+  tbody {
+
+    tr > td:first-child {
+      cursor: move;
+    }
+  }
+
+  .ui-sortable-helper {
+    background-color: $white;
+    display: flex;
+  }
+
+  .wpm-lang-order {
+    width: 6%;
+  }
+
+  .wpm-lang-status {
+    width: 6%;
+  }
+
+  .wpm-lang-locale {
+    width: 10%;
+  }
+
+  .wpm-lang-slug {
+    width: 22%;
+  }
+
+  .wpm-lang-name {
+    width: 22%;
+  }
+
+  .wpm-lang-flag {
+    width: 22%;
+  }
+
+  .wpm-lang-delete {
+    width: 10%;
+  }
 }
 
 .wp-core-ui .button-link.delete-language {

@@ -129,9 +129,9 @@ class WPM_Setup {
 				if ( ! in_array( $language, $this->languages ) ) {
 					$this->languages[ $language ] = current( $translations[ $language ]['iso'] );
 					$options[ $language ]         = array(
-						'name' => $translations[ $language ]['native_name'],
-						'slug' => current( $translations[ $language ]['iso'] ),
-						'flag' => current( $translations[ $language ]['iso'] ),
+						'name'   => $translations[ $language ]['native_name'],
+						'slug'   => current( $translations[ $language ]['iso'] ),
+						'flag'   => current( $translations[ $language ]['iso'] ),
 						'enable' => 1
 					);
 				}
@@ -203,31 +203,29 @@ class WPM_Setup {
 		if ( isset( $_GET['lang'] ) ) {
 			$this->user_language = wpm_clean( $_GET['lang'] );
 		}
-
-		if ( ! $this->user_language ) {
-			$this->user_language = $languages[ $default_locale ];
-		}
 	}
 
 
 	public function set_locale() {
-		global $locale;
-
 		require_once( ABSPATH . 'wp-includes/pluggable.php' );
 
-		$language       = $this->get_languages();
+		$languages      = $this->get_languages();
 		$default_locale = $this->get_default_locale();
 
-		foreach ( $language as $key => $value ) {
+		foreach ( $languages as $key => $value ) {
 			$user_language = $this->get_user_language();
 			if ( ( $value == $user_language ) ) {
-				$locale = $key;
+				switch_to_locale( $key );
 				if ( $key == $default_locale && ! is_admin() && ! isset( $_GET['lang'] ) ) {
 					wp_redirect( home_url( str_replace( '/' . $user_language . '/', '/', $_SERVER['REQUEST_URI'] ) ), 301 );
 					exit;
 				}
 				break;
 			}
+		}
+
+		if ( ! $this->user_language ) {
+			$this->user_language = $languages[ get_locale() ];
 		}
 	}
 
