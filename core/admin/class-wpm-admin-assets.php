@@ -36,22 +36,14 @@ if ( ! class_exists( 'WPM_Admin_Assets' ) ) :
 
 			$screen         = get_current_screen();
 			$screen_id      = $screen ? $screen->id : '';
-			$jquery_version = isset( $wp_scripts->registered['jquery-ui-core']->ver ) ? $wp_scripts->registered['jquery-ui-core']->ver : '1.11.4';
 
 			// Register admin styles
-			//		wp_register_style( 'wpm_language_switcher', wpm_asset_path('css/menu.css'), array(), WPM_VERSION );
-			//		wp_register_style( 'game_portal_admin', wpm_asset_path('css/admin.css'), array(), WPM_VERSION );
-			//		wp_register_style( 'jquery-ui-style', '//code.jquery.com/ui/' . $jquery_version . '/themes/smoothness/jquery-ui.min.css', array(), $jquery_version );
-
-			// Sitewide menu CSS
-			//		wp_enqueue_style( 'game_portal_admin_menu' );
+			wp_register_style( 'wpm_language_switcher', wpm_asset_path( 'styles/main.css' ), array(), WPM_VERSION );
 
 			// Admin styles for GP pages only
-			//		if ( in_array( $screen_id, gp_get_screen_ids() ) ) {
-			//			wp_enqueue_style( 'game_portal_admin' );
-			//			wp_enqueue_style( 'jquery-ui-style' );
-			//			wp_enqueue_style( 'wp-color-picker' );
-			//		}
+			if ( 'customize' == $screen_id ) {
+				wp_enqueue_style( 'wpm_language_switcher' );
+			}
 		}
 
 
@@ -70,12 +62,26 @@ if ( ! class_exists( 'WPM_Admin_Assets' ) ) :
 				'jquery',
 				'underscore'
 			), WPM_VERSION );
+			wp_register_script( 'wpm_language_switcher_customizer', wpm_asset_path( 'scripts/customizer' . $suffix . '.js' ), array(
+				'jquery',
+				'underscore'
+			), WPM_VERSION );
+
+			if ( 'customize' == $screen_id ) {
+				wp_enqueue_script( 'wpm_language_switcher_customizer' );
+				$params = array(
+					'switcher' => gp_get_template_html( 'language-switcher-customizer.tpl' )
+				);
+				wp_localize_script( 'wpm_language_switcher_customizer', 'wpm_params', $params );
+			}
 
 			foreach ( $config['admin_pages'] as $page_id ) {
 				if ( $screen_id == $page_id ) {
 					$this->set_language_switcher();
 				}
 			}
+
+			//customize
 
 			$posts_config = $config['post_types'];
 			$posts_config = apply_filters( "wpm_posts_config", $posts_config );

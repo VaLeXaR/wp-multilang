@@ -1,0 +1,41 @@
+.wpm-language-switcher {
+  background-color: #eee;
+  left: 48px;
+  position: absolute; }
+  .wpm-language-switcher * {
+    box-sizing: border-box; }
+  .wpm-language-switcher:hover .lang-dropdown {
+    display: block; }
+  .wpm-language-switcher .lang-dropdown {
+    display: none; }
+  .wpm-language-switcher .lang-main {
+    padding-left: 15px;
+    padding-right: 15px; }
+    .wpm-language-switcher .lang-main img {
+      position: relative;
+      top: 1px; }
+    .wpm-language-switcher .lang-main:hover {
+      background-color: #fff;
+      border-bottom: 0;
+      border-left: 0;
+      border-right: 0;
+      border-style: solid;
+      border-top-color: #0073aa;
+      border-top-width: 4px;
+      line-height: 41px; }
+      .wpm-language-switcher .lang-main:hover img {
+        top: -1px; }
+
+.lang-dropdown ul {
+  margin-bottom: 0;
+  margin-top: 0; }
+.lang-dropdown li {
+  margin-bottom: 0; }
+  .lang-dropdown li a {
+    display: block;
+    padding-left: 15px;
+    padding-right: 15px; }
+    .lang-dropdown li a:hover {
+      background-color: #fff; }
+
+/*# sourceMappingURL=main.css.map */
