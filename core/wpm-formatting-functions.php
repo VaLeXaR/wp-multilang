@@ -82,3 +82,19 @@ function wpm_trim_string( $string, $chars = 200, $suffix = '...' ) {
 function wpm_sanitize_term_text_based( $term ) {
 	return trim( wp_unslash( strip_tags( $term ) ) );
 }
+
+
+function wpm_array_diff_recursive( $array1, $array2 ) {
+	$result = array();
+	foreach ( $array1 as $key => $val ) {
+		if ( isset( $array2[ $key ] ) ) {
+			if ( is_array( $val ) && $array2[ $key ] ) {
+				$result[ $key ] = wpm_array_diff_recursive( $val, $array2[ $key ] );
+			}
+		} else {
+			$result[ $key ] = $val;
+		}
+	}
+
+	return $result;
+}
