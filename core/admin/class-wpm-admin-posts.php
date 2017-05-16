@@ -30,7 +30,6 @@ if ( ! class_exists( 'WPM_Admin_Posts' ) ) :
 			add_action( 'admin_init', array( $this, 'init' ) );
 			add_filter( 'wp_insert_post_data', array( $this, 'save_post' ), 99, 2 );
 			add_filter( 'wp_insert_attachment_data', array( $this, 'save_post' ), 99, 2 );
-			add_filter( 'get_sample_permalink', array( $this, 'translate_post_link' ), 0 );
 			add_filter( 'preview_post_link', array( $this, 'translate_post_link' ), 0 );
 		}
 
@@ -195,11 +194,7 @@ if ( ! class_exists( 'WPM_Admin_Posts' ) ) :
 			$languages = wpm_get_languages();
 			$lang      = wpm_get_edit_lang();
 			if ( in_array( $lang, $languages ) && $lang != $languages[ wpm_get_default_locale() ] ) {
-				if ( is_array( $link ) ) {
-					$link[0] = str_replace( home_url(), home_url( '/' . $lang ), $link[0] );
-				} else {
-					$link = str_replace( home_url(), home_url( '/' . $lang ), $link );
-				}
+				$link = str_replace( home_url(), home_url( '/' . $lang ), $link );
 			}
 
 			return $link;

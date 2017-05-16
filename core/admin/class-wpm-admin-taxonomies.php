@@ -102,10 +102,11 @@ if ( ! class_exists( 'WPM_Admin_Taxonomies' ) ) :
 		public function update_description( $tt_id, $taxonomy ) {
 			global $wpdb;
 
-			$config     = wpm_get_config();
-			$tax_config = $config['taxonomies'][ $taxonomy ];
+			$config            = wpm_get_config();
+			$taxonomies_config = $config['taxonomies'];
+			$taxonomies_config = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
 
-			if ( ! isset( $tax_config ) ) {
+			if ( ! isset( $taxonomies_config[ $taxonomy ] ) ) {
 				return;
 			}
 
@@ -119,10 +120,11 @@ if ( ! class_exists( 'WPM_Admin_Taxonomies' ) ) :
 				return;
 			}
 
-			$old_value   = $this->description['old'];
-			$strings     = wpm_value_to_ml_array( $old_value );
-			$value       = wpm_set_language_value( $strings, $value, $tax_config );
-			$description = wpm_ml_value_to_string( $value );
+			$taxonomy_config = $taxonomies_config[ $taxonomy ];
+			$old_value       = $this->description['old'];
+			$strings         = wpm_value_to_ml_array( $old_value );
+			$value           = wpm_set_language_value( $strings, $value, $taxonomy_config );
+			$description     = wpm_ml_value_to_string( $value );
 
 			$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_taxonomy_id' => $tt_id ) );
 		}

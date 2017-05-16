@@ -12,7 +12,6 @@ class WPM_Taxonomies extends \WPM_Object {
 	public $object_table = 'termmeta';
 
 	public function __construct() {
-
 		add_filter( 'get_term', 'wpm_translate_object', 0 );
 		add_filter( 'get_terms', array($this, 'filter_terms'), 0 );
 		add_filter( "get_{$this->object_type}_metadata", array( $this, 'get_meta_field' ), 0, 3 );

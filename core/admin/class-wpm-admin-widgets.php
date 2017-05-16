@@ -34,10 +34,10 @@ class WPM_Admin_Widgets {
 			'text'  => array()
 		);
 
-		$widget_config = wpm_array_merge_recursive( $default_fields, $config['widgets'][ $widget_name ] );
+		$widget_config = $default_fields;
 
 		if ( isset( $config['widgets'][ $widget_name ] ) ) {
-			$widget_config = wpm_array_merge_recursive( $default_fields, $config['widgets'][ $widget_name ] );
+			$widget_config = wpm_array_merge_recursive( $widget_config, $config['widgets'][ $widget_name ] );
 		}
 
 		$widget_config = apply_filters( "wpm_widget_{$widget_name}_config", $widget_config, $value);
