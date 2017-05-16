@@ -31,12 +31,12 @@ function wpm_translate_string( $string, $locale = '' ) {
 
 	$strings = wpm_string_to_ml_array( $string );
 
-	if ( ! is_array( $strings ) ) {
+	if ( ! is_array( $strings ) || empty( $strings ) ) {
 		return $string;
 	}
 
-	if ( empty( $strings ) ) {
-		return $string;
+	if ( ! wpm_is_ml_array( $strings ) ) {
+		return $strings;
 	}
 
 	$languages = wpm_get_languages();

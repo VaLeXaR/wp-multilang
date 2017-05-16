@@ -92,7 +92,7 @@ class WPM_AJAX {
 	 */
 	public static function add_ajax_events() {
 		$ajax_events = array(
-			'level_ordering'        => false,
+			'delete_lang' => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -105,5 +105,62 @@ class WPM_AJAX {
 				add_action( 'wpm_ajax_' . $ajax_event, array( __CLASS__, $ajax_event ) );
 			}
 		}
+	}
+
+
+	public static function delete_lang() {
+
+		check_ajax_referer( 'delete-lang', 'security' );
+
+		$locale = wpm_clean( $_POST['locale'] );
+		$options = wpm_get_options();
+
+		if ( ! isset( $options[ $locale ] ) || ( $locale == get_locale() ) || ( $locale == wpm_get_default_locale() ) ) {
+			return;
+		}
+
+		unset( $options[ $locale ] );
+		update_option( 'wpm_languages', $options );
+		$files_delete = array();
+		$installed_plugin_translations = wp_get_installed_translations( 'plugins' );
+
+		foreach ( $installed_plugin_translations as $plugin => $translation ) {
+			if ( isset( $translation[ $locale ] ) ) {
+				$files_delete[] = WP_LANG_DIR . '/plugins/' . $plugin . '-' . $locale . '.mo';
+				$files_delete[] = WP_LANG_DIR . '/plugins/' . $plugin . '-' . $locale . '.po';
+			}
+		}
+
+		$installed_themes_translations = wp_get_installed_translations( 'themes' );
+
+		foreach ( $installed_themes_translations as $theme => $translation ) {
+			if ( isset( $translation[ $locale ] ) ) {
+				$files_delete[] = WP_LANG_DIR . '/themes/' . $theme . '-' . $locale . '.mo';
+				$files_delete[] = WP_LANG_DIR . '/themes/' . $theme . '-' . $locale . '.po';
+			}
+		}
+
+		$installed_core_translations = wp_get_installed_translations( 'core' );
+
+		foreach ( $installed_core_translations as $wp_file => $translation ) {
+			if ( isset( $translation[ $locale ] ) ) {
+				$files_delete[] = WP_LANG_DIR . '/' . $wp_file . '-' . $locale . '.mo';
+				$files_delete[] = WP_LANG_DIR . '/' . $wp_file . '-' . $locale . '.po';
+			}
+		}
+
+		if ( file_exists( WP_LANG_DIR . '/' . $locale . '.mo' ) ) {
+			$files_delete[] = WP_LANG_DIR . '/' . $locale . '.mo';
+		}
+
+		if ( file_exists( WP_LANG_DIR . '/' . $locale . '.po' ) ) {
+			$files_delete[] = WP_LANG_DIR . '/' . $locale . '.po';
+		}
+
+		foreach ( $files_delete as $file ) {
+			@unlink( $file );
+		}
+
+		die();
 	}
 }

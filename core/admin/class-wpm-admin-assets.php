@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! class_exists( 'WPM_Admin_Assets' ) ) :
 
 	/**
-	 * WC_Admin_Assets Class.
+	 * WPM_Admin_Assets Class.
 	 */
 	class WPM_Admin_Assets {
 
@@ -32,18 +32,9 @@ if ( ! class_exists( 'WPM_Admin_Assets' ) ) :
 		 * Enqueue styles.
 		 */
 		public function admin_styles() {
-			global $wp_scripts;
-
-			$screen         = get_current_screen();
-			$screen_id      = $screen ? $screen->id : '';
 
 			// Register admin styles
 			wp_register_style( 'wpm_language_switcher', wpm_asset_path( 'styles/main.css' ), array(), WPM_VERSION );
-
-			// Admin styles for GP pages only
-			if ( 'customize' == $screen_id ) {
-				wp_enqueue_style( 'wpm_language_switcher' );
-			}
 		}
 
 
@@ -58,6 +49,9 @@ if ( ! class_exists( 'WPM_Admin_Assets' ) ) :
 			$config    = wpm_get_config();
 
 			// Register scripts
+			wp_register_script( 'wpm_main', wpm_asset_path( 'scripts/main' . $suffix . '.js' ), array(
+				'jquery'
+			), WPM_VERSION );
 			wp_register_script( 'wpm_language_switcher', wpm_asset_path( 'scripts/language-switcher' . $suffix . '.js' ), array(
 				'jquery',
 				'underscore'
@@ -81,8 +75,6 @@ if ( ! class_exists( 'WPM_Admin_Assets' ) ) :
 				}
 			}
 
-			//customize
-
 			$posts_config = $config['post_types'];
 			$posts_config = apply_filters( "wpm_posts_config", $posts_config );
 
@@ -96,10 +88,23 @@ if ( ! class_exists( 'WPM_Admin_Assets' ) ) :
 			if ( isset( $taxonomies_config[ $screen->taxonomy ] ) && ! is_null( $taxonomies_config[ $screen->taxonomy ] ) ) {
 				$this->set_language_switcher();
 			}
+
+			if ( 'options-general' == $screen_id ) {
+				wp_enqueue_script( 'wpm_main' );
+
+				$params = array(
+					'plugin_url'        => WPM()->plugin_url(),
+					'ajax_url'          => admin_url( 'admin-ajax.php' ),
+					'delete_lang_nonce' => wp_create_nonce( 'delete-lang' ),
+				);
+
+				wp_localize_script( 'wpm_main', 'wpm_main_params', $params );
+			}
 		}
 
 
 		public function set_language_switcher() {
+			wp_enqueue_style( 'wpm_language_switcher' );
 			wp_enqueue_script( 'wpm_language_switcher' );
 			$params = array(
 				'switcher' => gp_get_template_html( 'language-switcher.tpl' )

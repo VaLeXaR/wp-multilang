@@ -121,11 +121,19 @@ class WPM_Setup {
 	public function get_languages() {
 		if ( ! $this->languages ) {
 
-			$options = $this->get_options();
+			$options             = $this->get_options();
+			$installed_languages = $this->get_installed_languages();
+			$translations        = $this->get_translations();
 
 			foreach ( $options as $locale => $language ) {
 				if ( $language['enable'] ) {
 					$this->languages[ $locale ] = $language['slug'];
+				}
+			}
+
+			foreach ( $installed_languages as $language ) {
+				if ( ! in_array( $language, $this->languages ) ) {
+					$this->languages[ $language ] = current( $translations[ $language ]['iso'] );
 				}
 			}
 		}
@@ -154,11 +162,12 @@ class WPM_Setup {
 
 	public function set_user_language() {
 
+		$languages      = $this->get_languages();
+		$default_locale = $this->get_default_locale();
+
 		if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
-			$default_locale = $this->get_default_locale();
 			if ( isset( $_GET['lang'] ) ) {
-				$languages = $this->get_languages();
-				$lang      = wpm_clean( $_GET['lang'] );
+				$lang = wpm_clean( $_GET['lang'] );
 				if ( ! in_array( $lang, $languages ) ) {
 					$lang = $languages[ $default_locale ];
 				}
@@ -182,6 +191,10 @@ class WPM_Setup {
 
 		if ( isset( $_GET['lang'] ) ) {
 			$this->user_language = wpm_clean( $_GET['lang'] );
+		}
+
+		if ( ! $this->user_language ) {
+			$this->user_language = $languages[ $default_locale ];
 		}
 	}
 

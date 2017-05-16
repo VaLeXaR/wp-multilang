@@ -93,7 +93,7 @@ if ( ! class_exists( 'WPM_Admin_Settings' ) ) :
 				sort( $flags );
 			}
 			?>
-			<table class="widefat">
+			<table id="wpm-languages" class="wpm-languages widefat">
 				<thead>
 				<tr>
 					<th><?php esc_attr_e( 'Enable', 'wpm' ); ?></th>
@@ -110,9 +110,12 @@ if ( ! class_exists( 'WPM_Admin_Settings' ) ) :
 						continue;
 					} ?>
 					<tr>
-						<td><input name="wpm_languages[<?php echo $key; ?>][enable]" type="checkbox"
+						<td><input type="hidden" name="wpm_languages[<?php echo $key; ?>][enable]" value="1">
+							<input name="wpm_languages[<?php echo $key; ?>][enable]" type="checkbox"
 						           value="1"<?php checked( $language['enable'] ); ?>
-						           title="<?php esc_attr_e( 'Enable', 'wpm' ); ?>"></td>
+						           title="<?php esc_attr_e( 'Enable', 'wpm' ); ?>"<?php if ( $key == wpm_get_default_locale() ) { ?> disabled="disabled"<?php } ?>>
+							<?php if ( $key == wpm_get_default_locale() ) { ?><input type="hidden" name="wpm_languages[<?php echo $key; ?>][enable]" value="1"><?php } ?>
+						</td>
 						<td>
 							<?php if ( in_array( $key, $installed_languages ) ) { ?>
 								<?php esc_attr_e( $key ); ?>
@@ -148,6 +151,10 @@ if ( ! class_exists( 'WPM_Admin_Settings' ) ) :
 						<td>
 							<?php if ( 'en_US' == $key ) { ?>
 								Built-in
+							<?php } elseif ( $key == get_locale() ) { ?>
+								Current
+							<?php } elseif ( $key == wpm_get_default_locale() ) { ?>
+								Default
 							<?php } else { ?>
 								<button type="button" class="button button-link delete-language"
 								        data-locale="<?php echo $key; ?>"><?php esc_attr_e( 'Delete', 'wpm' ); ?></button>
@@ -191,7 +198,7 @@ if ( ! class_exists( 'WPM_Admin_Settings' ) ) :
 				}
 
 				$languages[ $locale ] = array(
-					'enable' => isset( $_POST['wpm_languages'][ $key ]['enable'] ) ? 1 : 0,
+					'enable' => $_POST['wpm_languages'][ $key ]['enable'] ? 1 : 0,
 					'slug'   => wpm_clean( $item['slug'] ),
 					'name'   => wpm_clean( $item['name'] ),
 					'flag'   => wpm_clean( $item['flag'] )

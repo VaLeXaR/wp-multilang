@@ -38,4 +38,15 @@
     .lang-dropdown li a:hover {
       background-color: #fff; }
 
+table.wpm-languages {
+  text-align: center; }
+  table.wpm-languages th {
+    text-align: center; }
+
+.wp-core-ui .button-link.delete-language {
+  color: #dd0e11; }
+
+#languages {
+  width: 100px; }
+
 /*# sourceMappingURL=main.css.map */
