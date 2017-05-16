@@ -35,7 +35,7 @@ function wpm_language_switcher( $args = array(), $echo = true ) {
 			<?php foreach ( $languages as $key => $language ) { ?>
 				<li<?php if ( $key == $locale ) { ?> class="active"<?php } ?>>
 					<a href="<?php echo wpm_translate_url( $current_url, $key ); ?>">
-						<?php if ( $args['flag'] ) { ?>
+						<?php if ( $args['flag'] && ( $options[ $key ]['flag'] ) ) { ?>
 							<img src="<?php echo WPM()->flag_dir() . $options[ $key ]['flag'] . '.png'; ?>"
 							     alt="<?php echo $options[ $key ]['name']; ?>">
 						<?php } ?>

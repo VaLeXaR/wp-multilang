@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @extends  WP_Widget
  */
 
-abstract class GP_Widget extends WP_Widget {
+abstract class WPM_Widget extends WP_Widget {
 
 	/**
 	 * CSS class.

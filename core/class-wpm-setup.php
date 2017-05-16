@@ -125,6 +125,12 @@ class WPM_Setup {
 			$installed_languages = $this->get_installed_languages();
 			$translations        = $this->get_translations();
 
+			foreach ( $options as $locale => $language ) {
+				if ( $language['enable'] ) {
+					$this->languages[ $locale ] = $language['slug'];
+				}
+			}
+
 			foreach ( $installed_languages as $language ) {
 				if ( ! in_array( $language, $this->languages ) ) {
 					$this->languages[ $language ] = current( $translations[ $language ]['iso'] );
@@ -134,12 +140,6 @@ class WPM_Setup {
 						'flag'   => current( $translations[ $language ]['iso'] ),
 						'enable' => 1
 					);
-				}
-			}
-
-			foreach ( $options as $locale => $language ) {
-				if ( $language['enable'] ) {
-					$this->languages[ $locale ] = $language['slug'];
 				}
 			}
 
