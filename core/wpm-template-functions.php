@@ -15,10 +15,10 @@ function wpm_language_switcher( $args = array(), $echo = true ) {
 	global $wp;
 	$default = array(
 		'type' => 'list',
-		'flag' => true,
-		'text' => true
+		'flag' => 1,
+		'name' => 1
 	);
-	$args = array_merge( $args, $default);
+	$args = array_merge( $default, $args );
 
 	$languages = wpm_get_languages();
 
@@ -39,7 +39,7 @@ function wpm_language_switcher( $args = array(), $echo = true ) {
 							<img src="<?php echo WPM()->flag_dir() . $options[ $key ]['flag'] . '.png'; ?>"
 							     alt="<?php echo $options[ $key ]['name']; ?>">
 						<?php } ?>
-						<?php if ( $args['text'] ) { ?>
+						<?php if ( $args['name'] ) { ?>
 							<span><?php echo $options[ $key ]['name']; ?></span>
 						<?php } ?>
 					</a>

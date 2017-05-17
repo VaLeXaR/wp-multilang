@@ -168,7 +168,7 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 		 */
 		public function includes() {
 			include_once( 'core/wpm-core-functions.php' );
-//			include_once( 'core/wc-widget-functions.php' );
+			include_once( 'core/wpm-widget-functions.php' );
 			include_once( 'core/abstracts/abstract-wpm-object.php' );
 
 			if ( $this->is_request( 'frontend' ) ) {

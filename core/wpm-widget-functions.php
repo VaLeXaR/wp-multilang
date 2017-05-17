@@ -14,12 +14,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Include widget classes.
-include_once( 'abstracts/abstract-gp-widget.php' );
+include_once( 'abstracts/abstract-wpm-widget.php' );
 
 /**
  * Register Widgets.
  */
-function gp_register_widgets() {
-	register_widget( 'GP\Widgets\GP_Widget_Popular_Games' );
+function wpm_register_widgets() {
+	register_widget( 'WPM\Core\Widgets\WPM_Widget_Language_Switcher' );
 }
-add_action( 'widgets_init', 'gp_register_widgets' );
+add_action( 'widgets_init', 'wpm_register_widgets' );

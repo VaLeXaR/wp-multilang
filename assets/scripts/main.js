@@ -36,16 +36,16 @@
     });
 
     $('.wpm-flags').on('change', function () {
-
-      if ($(this).val() ) {
-        var flag = wpm_main_params.plugin_url + '/flags/' + $(this).val() + '.png';
-        if ($(this).next().length) {
-          $(this).next().attr('src', flag);
+      var select = $(this);
+      if (select.val()) {
+        var flag = wpm_main_params.plugin_url + '/flags/' + select.val() + '.png';
+        if (select.next().length) {
+          select.next().attr('src', flag);
         } else {
-          $(this).before().html('<img src="' + flag + '">');
+          select.parent().append('<img src="' + flag + '">');
         }
       } else {
-        $(this).next().remove();
+        select.next().remove();
       }
     });
 
