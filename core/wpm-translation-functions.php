@@ -4,25 +4,59 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-function wpm_translate_url( $url, $new_locale = '' ) {
+function wpm_translate_url( $url, $language = '' ) {
 
-	$locale    = get_locale();
-	$languages = wpm_get_languages();
+	$locale         = get_locale();
+	$default_locale = wpm_get_default_locale();
+	$languages      = wpm_get_languages();
 
-	if ( $new_locale ) {
-		if ( ( $new_locale == $locale ) || ! isset( $languages[ $new_locale ] ) ) {
+	if ( $language ) {
+		if ( ( $language == $languages[ $locale ] ) || ! in_array( $language, $languages ) ) {
 			return $url;
 		}
-		switch_to_locale( $new_locale );
 	}
 
-	$path = parse_url( $url, PHP_URL_PATH );
+	$url_lang = '';
+
+	$path_url = parse_url( $url, PHP_URL_PATH );
+	$path = $path_url ? $path_url : '/';
+
 	if ( preg_match( '!^/([a-z]{2})(/|$)!i', $path, $match ) ) {
-		$path = str_replace( $match[1], '/', $path );
+		$url_lang = $match[1];
 	}
 
-	$url = home_url( $path );
-	switch_to_locale( $locale );
+	$new_path = '';
+
+	if ( $language ) {
+
+		if ( ! $url_lang && ( $language == $languages[ $default_locale ] ) ) {
+			return $url;
+		} elseif ( $url_lang && ( $language == $languages[ $default_locale ] ) ) {
+			$new_path = str_replace( '/' . $url_lang . '/', '/', $path );
+		} elseif ( $url_lang && ( $language != $languages[ $default_locale ] ) ) {
+			$new_path = str_replace( '/' . $url_lang . '/', '/' . $language . '/', $path );
+		} elseif ( ! $url_lang && ( $path != $languages[ $default_locale ] ) ) {
+			$new_path = '/' . $language . $path;
+		}
+	} else {
+		if ( ! $url_lang && ( $locale == $default_locale ) ) {
+			return $url;
+		} elseif ( ! $url_lang && ( $locale != $default_locale ) ) {
+			$new_path = '/' . $languages[ $locale ] . $path;
+		} elseif ( $url_lang && ( $locale == $default_locale ) ) {
+			$new_path = str_replace( '/' . $url_lang . '/', '/', $path );
+		} elseif ( $url_lang && ( $locale != $default_locale ) ) {
+			$new_path = str_replace( '/' . $url_lang . '/', '/' . $languages[ $locale ] . '/', $path );
+		}
+	}
+
+	if ( $new_path ) {
+		if ($path == '/') {
+			$url .= $new_path;
+		} else {
+			$url = str_replace( $path, $new_path, $url );
+		}
+	}
 
 	return $url;
 }

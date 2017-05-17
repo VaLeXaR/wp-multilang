@@ -173,7 +173,7 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 
 			if ( $this->is_request( 'frontend' ) ) {
 				include_once( 'core/wpm-template-hooks.php' );
-//			    include_once( 'core/class-wc-frontend-scripts.php' );               // Frontend Scripts
+			    Core\WPM_Frontend_Scripts::init();               // Frontend Scripts
 			}
 		}
 

@@ -12,13 +12,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  *   ‘id’ – id of widget, which is used as a distinctive string to create CSS entities.
  */
 function wpm_language_switcher( $args = array(), $echo = true ) {
-	global $wp;
 	$default = array(
 		'type' => 'list',
-		'flag' => 1,
-		'name' => 1
+		'show' => 'both'
 	);
-	$args = array_merge( $default, $args );
+	$args    = array_merge( $default, $args );
 
 	$languages = wpm_get_languages();
 
@@ -26,32 +24,34 @@ function wpm_language_switcher( $args = array(), $echo = true ) {
 		return '';
 	}
 
-	$options = wpm_get_options();
-	$current_url = home_url( $wp->request );
-	$locale = get_locale();
+	$options     = wpm_get_options();
+	$current_url = $_SERVER['REQUEST_URI'];
+	$locale      = get_locale();
 	ob_start();
-	if ('list' == $args['type']) { ?>
+	if ( 'list' == $args['type'] ) { ?>
 		<ul class="wpm-language-switcher switcher-<?php echo $args['type']; ?>">
 			<?php foreach ( $languages as $key => $language ) { ?>
 				<li<?php if ( $key == $locale ) { ?> class="active"<?php } ?>>
-					<a href="<?php echo wpm_translate_url( $current_url, $key ); ?>">
-						<?php if ( $args['flag'] && ( $options[ $key ]['flag'] ) ) { ?>
+					<a href="<?php echo wpm_translate_url( $current_url, $language ); ?>">
+						<?php if ( ( ( $args['show'] == 'flag' ) || ( $args['show'] == 'both' ) ) && ( $options[ $key ]['flag'] ) ) { ?>
 							<img src="<?php echo WPM()->flag_dir() . $options[ $key ]['flag'] . '.png'; ?>"
 							     alt="<?php echo $options[ $key ]['name']; ?>">
 						<?php } ?>
-						<?php if ( $args['name'] ) { ?>
+						<?php if ( ( $args['show'] == 'name' ) || ( $args['show'] == 'both' ) ) { ?>
 							<span><?php echo $options[ $key ]['name']; ?></span>
 						<?php } ?>
 					</a>
 				</li>
 			<?php } ?>
 		</ul>
-		<? }
+	<? }
 
-	if ('dropdown' == $args['type'] ) { ?>
-		<select class="wpm-language-switcher switcher-<?php echo $args['type']; ?>" onchange="location = this.value;" title="<?php esc_html_e( __('Language Switcher', 'wpm')); ?>">
-			<?php foreach ($languages as $key => $language) { ?>
-				<option value="<?php echo wpm_translate_url( $current_url, $key ); ?>"<?php if ( $key == $locale ) { ?> selected="selected"<?php } ?>>
+	if ( 'dropdown' == $args['type'] ) { ?>
+		<select class="wpm-language-switcher switcher-<?php echo $args['type']; ?>" onchange="location = this.value;"
+		        title="<?php esc_html_e( __( 'Language Switcher', 'wpm' ) ); ?>">
+			<?php foreach ( $languages as $key => $language ) { ?>
+				<option
+					value="<?php echo wpm_translate_url( $current_url, $language ); ?>"<?php if ( $key == $locale ) { ?> selected="selected"<?php } ?>>
 					<?php echo $options[ $key ]['name']; ?>
 				</option>
 			<?php } ?>

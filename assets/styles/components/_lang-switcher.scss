@@ -1,66 +1,25 @@
 .wpm-language-switcher {
-  background-color: $bg-color;
-  left: 48px;
-  position: absolute;
+  list-style: none;
+  margin-bottom: 0;
+  padding-left: 0;
 
-  * {
-    box-sizing: border-box;
-  }
-
-  &:hover {
-    .lang-dropdown {
-      display: block;
-    }
-  }
-
-  .lang-dropdown {
-    display: none;
-  }
-
-  .lang-main {
-    padding-left: 15px;
-    padding-right: 15px;
-
-    img {
-      position: relative;
-      top: 1px;
-    }
+  a {
+    color: lighten($black, 20%);
 
     &:hover {
-      background-color: $hover-color;
-      border-bottom: 0;
-      border-left: 0;
-      border-right: 0;
-      border-style: solid;
-      border-top-color: $brand-primary;
-      border-top-width: 4px;
-      line-height: 41px;
+      color: $black;
+    }
 
-      img {
-        top: -1px;
-      }
+    img {
+      display: inline-block;
+      margin-right: 3px;
     }
   }
-}
 
-.lang-dropdown {
-
-  ul {
-    margin-bottom: 0;
-    margin-top: 0;
-  }
-
-  li {
-    margin-bottom: 0;
+  .active {
 
     a {
-      display: block;
-      padding-left: 15px;
-      padding-right: 15px;
-
-      &:hover {
-        background-color: $hover-color;
-      }
+      color: $black;
     }
   }
 }

@@ -19,15 +19,15 @@ class WPM_Widget_Language_Switcher extends \WPM_Widget {
 				'std'   => __( 'Languages', 'wpm' ),
 				'label' => __( 'Title', 'wpm' )
 			),
-			'flags' => array(
-				'type'  => 'checkbox',
-				'std'   => 1,
-				'label' => __( 'Enable Flags', 'wpm' )
-			),
-			'name'  => array(
-				'type'  => 'checkbox',
-				'std'   => 1,
-				'label' => __( 'Enable Names', 'wpm' )
+			'show'  => array(
+				'type'    => 'select',
+				'std'     => 'both',
+				'options' => array(
+					'both'     => __( 'Both', 'wpm' ),
+					'flag'     => __( 'Flag', 'wpm' ),
+					'name' => __( 'Name', 'wpm' ),
+				),
+				'label'   => __( 'Show', 'wpm' )
 			),
 			'type'  => array(
 				'type'    => 'select',

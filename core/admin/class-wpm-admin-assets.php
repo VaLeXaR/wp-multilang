@@ -34,7 +34,7 @@ if ( ! class_exists( 'WPM_Admin_Assets' ) ) :
 		public function admin_styles() {
 
 			// Register admin styles
-			wp_register_style( 'wpm_language_switcher', wpm_asset_path( 'styles/main.css' ), array(), WPM_VERSION );
+			wp_register_style( 'wpm_language_switcher', wpm_asset_path( 'styles/admin/admin.css' ), array(), WPM_VERSION );
 		}
 
 
