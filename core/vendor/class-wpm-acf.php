@@ -17,7 +17,9 @@ if ( class_exists( 'acf' ) ) {
 			add_filter( "acf/update_field/type=text", array( $this, 'save_text_field' ), 99 );
 			add_filter( "acf/update_field/type=textarea", array( $this, 'save_text_field' ), 99 );
 			add_filter( "acf/update_field/type=wysiwyg", array( $this, 'save_text_field' ), 99 );
-			add_filter( "acf/load_value", 'wpm_translate_value', 0 );
+			add_filter( "acf/load_value/type=text", 'wpm_translate_value', 0 );
+			add_filter( "acf/load_value/type=textarea", 'wpm_translate_value', 0 );
+			add_filter( "acf/load_value/type=wysiwyg", 'wpm_translate_value', 0 );
 			add_filter( "acf/update_value/type=text", __NAMESPACE__ . '\WPM_Acf::save_value', 99, 3 );
 			add_filter( "acf/update_value/type=textarea", __NAMESPACE__ . '\WPM_Acf::save_value', 99, 3 );
 			add_filter( "acf/update_value/type=wysiwyg", __NAMESPACE__ . '\WPM_Acf::save_value', 99, 3 );
@@ -26,12 +28,6 @@ if ( class_exists( 'acf' ) ) {
 
 
 		public function add_config( $config ) {
-
-			$config['post_types']['acf'] = array(
-				"post_content" => null,
-				"post_excerpt" => null
-			);
-
 			$config['post_types']['acf-field-group'] = array(
 				"post_content" => null,
 				"post_excerpt" => null
@@ -43,18 +39,15 @@ if ( class_exists( 'acf' ) ) {
 
 		public function save_field( $field ) {
 
-			$old_field          = maybe_unserialize( get_post_field( 'post_content', $field['ID'] ) );
+			$old_field = maybe_unserialize( get_post_field( 'post_content', $field['ID'] ) );
 
-			if ( ! is_array( $old_field ) ) {
+			if ( ! $old_field ) {
 				return $field;
 			}
 
 			$old_field          = wpm_value_to_ml_array( $old_field );
-
-			if ( isset($field['ID'] ) ) {
-				$field_name         = get_post_field( 'post_title', $field['ID'] );
-				$old_field['label'] = wpm_value_to_ml_array( $field_name );
-			}
+			$field_name         = get_post_field( 'post_title', $field['ID'] );
+			$old_field['label'] = wpm_value_to_ml_array( $field_name );
 
 			$default_config = array(
 				'label'        => array(),
@@ -74,7 +67,7 @@ if ( class_exists( 'acf' ) ) {
 
 			$old_field = maybe_unserialize( get_post_field( 'post_content', $field['ID'] ) );
 
-			if ( ! is_array( $old_field ) ) {
+			if ( ! $old_field ) {
 				return $field;
 			}
 
