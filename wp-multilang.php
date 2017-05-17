@@ -279,3 +279,8 @@ function WPM() {
 WPM();
 
 //Core\WPM_Config::load_config_run();
+
+
+add_action('init', function(){
+	d(get_post_field( 'field_591c5f0891ba7', 122));
+});

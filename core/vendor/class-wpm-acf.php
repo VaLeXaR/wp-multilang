@@ -26,6 +26,12 @@ if ( class_exists( 'acf' ) ) {
 
 
 		public function add_config( $config ) {
+
+			$config['post_types']['acf'] = array(
+				"post_content" => null,
+				"post_excerpt" => null
+			);
+
 			$config['post_types']['acf-field-group'] = array(
 				"post_content" => null,
 				"post_excerpt" => null
@@ -38,9 +44,17 @@ if ( class_exists( 'acf' ) ) {
 		public function save_field( $field ) {
 
 			$old_field          = maybe_unserialize( get_post_field( 'post_content', $field['ID'] ) );
+
+			if ( ! is_array( $old_field ) ) {
+				return $field;
+			}
+
 			$old_field          = wpm_value_to_ml_array( $old_field );
-			$field_name         = get_post_field( 'post_title', $field['ID'] );
-			$old_field['label'] = wpm_value_to_ml_array( $field_name );
+
+			if ( isset($field['ID'] ) ) {
+				$field_name         = get_post_field( 'post_title', $field['ID'] );
+				$old_field['label'] = wpm_value_to_ml_array( $field_name );
+			}
 
 			$default_config = array(
 				'label'        => array(),
@@ -59,6 +73,11 @@ if ( class_exists( 'acf' ) ) {
 		public function save_text_field( $field ) {
 
 			$old_field = maybe_unserialize( get_post_field( 'post_content', $field['ID'] ) );
+
+			if ( ! is_array( $old_field ) ) {
+				return $field;
+			}
+
 			$old_field = wpm_value_to_ml_array( $old_field );
 
 			$default_config = array(
