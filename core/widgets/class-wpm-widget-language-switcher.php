@@ -11,7 +11,7 @@ class WPM_Widget_Language_Switcher extends \WPM_Widget {
 	public function __construct() {
 		$this->widget_cssclass    = 'wpm widget_language_switcher';
 		$this->widget_description = '';
-		$this->widget_id          = 'wpm_widget_language_switcher';
+		$this->widget_id          = 'wpm_language_switcher';
 		$this->widget_name        = __( 'Language Switcher', 'wpm' );
 		$this->settings           = array(
 			'title' => array(

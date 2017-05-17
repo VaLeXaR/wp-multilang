@@ -19,8 +19,19 @@ if ( class_exists( 'acf' ) ) {
 			add_filter( "acf/update_field/type=wysiwyg", array( $this, 'save_text_field' ), 99 );
 			add_filter( "acf/load_value", 'wpm_translate_value', 0 );
 			add_filter( "acf/update_value/type=text", __NAMESPACE__ . '\WPM_Acf::save_value', 99, 3 );
-			add_filter( "acf/update_value/type=textarea",  __NAMESPACE__ . '\WPM_Acf::save_value', 99, 3 );
-			add_filter( "acf/update_value/type=wysiwyg",  __NAMESPACE__ . '\WPM_Acf::save_value', 99, 3 );
+			add_filter( "acf/update_value/type=textarea", __NAMESPACE__ . '\WPM_Acf::save_value', 99, 3 );
+			add_filter( "acf/update_value/type=wysiwyg", __NAMESPACE__ . '\WPM_Acf::save_value', 99, 3 );
+			add_filter( 'wpm_load_config', array( $this, 'add_config' ) );
+		}
+
+
+		public function add_config( $config ) {
+			$config['post_types']['acf-field-group'] = array(
+				"post_content" => null,
+				"post_excerpt" => null
+			);
+
+			return $config;
 		}
 
 

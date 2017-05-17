@@ -1,8 +1,0 @@
-{
-  "post_types": {
-    "acf-field-group": {
-      "post_content" : null,
-      "post_excerpt" : null
-    }
-  }
-}
