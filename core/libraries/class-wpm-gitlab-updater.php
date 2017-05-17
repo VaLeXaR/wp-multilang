@@ -1,8 +1,8 @@
 <?php
 
-namespace GP\Libraries;
+namespace WPM\Core\Libraries;
 
-class GP_Gitlab_Updater {
+class WPM_Gitlab_Updater {
 
 	private $api_version = 4;
 

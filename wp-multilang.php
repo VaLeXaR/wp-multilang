@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:     WP Multilingual
+ * Plugin Name:     WP Multilang
  * Plugin URI:      PLUGIN SITE HERE
  * Description:     PLUGIN DESCRIPTION HERE
  * Author:          Valentyn Riaboshtan
@@ -9,7 +9,7 @@
  * Domain Path:     /languages
  * Version:         1.0.0
  *
- * @package  WP_Multilingual
+ * @package  WP_Multilang
  * @category Core
  * @author   Valentyn Riaboshtan
  */
@@ -39,12 +39,12 @@ if ( WP_DEBUG ) {
 if ( ! class_exists( 'WP_Multilingual' ) ) :
 
 	/**
-	 * Main WPM Class.
+	 * Main WP Multilang.
 	 *
 	 * @class   WPM
 	 * @version 1.0.0
 	 */
-	final class WP_Multilingual {
+	final class WP_Multilang {
 
 		/**
 		 * WPM Plugin version.
@@ -56,7 +56,7 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 		/**
 		 * The single instance of the class.
 		 *
-		 * @var WP_Multilingual
+		 * @var WP_Multilang
 		 */
 		protected static $_instance = null;
 
@@ -68,13 +68,13 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 		public $config = null;
 
 		/**
-		 * Main WP_Multilingual Instance.
+		 * Main WP_Multilang Instance.
 		 *
 		 * Ensures only one instance of WooCommerce is loaded or can be loaded.
 		 *
 		 * @static
 		 * @see   WPM()
-		 * @return WP_Multilingual - Main instance.
+		 * @return WP_Multilang - Main instance.
 		 */
 		public static function instance() {
 			if ( is_null( self::$_instance ) ) {
@@ -256,7 +256,7 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 endif;
 
 function WPM() {
-	return WP_Multilingual::instance();
+	return WP_Multilang::instance();
 }
 
 WPM();
