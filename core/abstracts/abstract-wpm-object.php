@@ -49,9 +49,8 @@ abstract class WPM_Object {
 
 		if ( $meta_values ) {
 
-			$meta_values = maybe_unserialize( $meta_values );
-
 			foreach ( $meta_values as $meta_field ) {
+				$meta_field['meta_value'] = maybe_unserialize( $meta_field['meta_value'] );
 				if ( wpm_is_ml_value( $meta_field['meta_value'] ) ) {
 					$value = wpm_translate_value( $meta_field['meta_value'] );
 				} else {
