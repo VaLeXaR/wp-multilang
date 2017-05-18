@@ -1,7 +1,7 @@
 <?php
 
 if ( class_exists( 'Kint' ) ) {
-	Kint::$enabled_mode = true;
+	Kint::$enabled_mode        = true;
 	Kint_Renderer_Rich::$theme = 'aante-light.css';
 }
 
@@ -53,7 +53,7 @@ function list_hooks( $filter = false ) {
 function var_error_log( $args = array() ) {
 	$args = func_get_args();
 	ob_start();                    // start buffer capture
-	call_user_func_array("var_dump", $args);
+	call_user_func_array( "var_dump", $args );
 	$contents = ob_get_contents(); // put the buffer into a variable
 	ob_end_clean();                // end capture
 	error_log( $contents );        // log contents of the result of var_dump( $object )
