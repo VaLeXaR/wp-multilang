@@ -10,6 +10,8 @@ if ( class_exists( 'acf' ) ) {
 
 	class WPM_Acf {
 
+		private $pro = false;
+
 		public function __construct() {
 			add_filter( "acf/load_field", 'wpm_translate_value', 0 );
 			add_filter( "acf/translate_field_group", 'wpm_translate_string', 0 );
@@ -23,7 +25,17 @@ if ( class_exists( 'acf' ) ) {
 			add_filter( "acf/update_value/type=text", __NAMESPACE__ . '\WPM_Acf::save_value', 99, 3 );
 			add_filter( "acf/update_value/type=textarea", __NAMESPACE__ . '\WPM_Acf::save_value', 99, 3 );
 			add_filter( "acf/update_value/type=wysiwyg", __NAMESPACE__ . '\WPM_Acf::save_value', 99, 3 );
-			add_filter( 'wpm_load_config', array( $this, 'add_config' ) );
+			add_filter( 'wpm_posts_acf-field-group_config', array( $this, 'add_config' ) );
+			add_action( 'init', array( $this, 'check_pro' ) );
+		}
+
+
+		public function check_pro() {
+			$post_types = get_post_types( '', 'names' );
+
+			if ( in_array( 'acf-field-group', $post_types ) ) {
+				$this->pro = true;
+			}
 		}
 
 
@@ -38,6 +50,10 @@ if ( class_exists( 'acf' ) ) {
 
 
 		public function save_field( $field ) {
+
+			if ( ! $this->pro ) {
+				return false;
+			}
 
 			$old_field = maybe_unserialize( get_post_field( 'post_content', $field['ID'] ) );
 
@@ -64,6 +80,10 @@ if ( class_exists( 'acf' ) ) {
 
 
 		public function save_text_field( $field ) {
+
+			if ( ! $this->pro ) {
+				return $field;
+			}
 
 			$old_field = maybe_unserialize( get_post_field( 'post_content', $field['ID'] ) );
 

@@ -64,6 +64,7 @@ if ( ! class_exists( 'WPM_Admin_Posts' ) ) :
 
 			$posts_config = $config['post_types'];
 			$posts_config = apply_filters( "wpm_posts_config", $posts_config );
+			$posts_config = apply_filters( "wpm_posts_{$data['post_type']}_config", $posts_config );
 
 			if ( ! isset( $posts_config[ $data['post_type'] ] ) ) {
 				return $data;
@@ -95,7 +96,6 @@ if ( ! class_exists( 'WPM_Admin_Posts' ) ) :
 			);
 
 			$post_config = wpm_array_merge_recursive( $default_fields, $post_config );
-			$post_config = apply_filters( "wpm_post_{$data['post_type']}_config", $post_config );
 
 			foreach ( $data as $key => $content ) {
 				if ( isset( $post_config[ $key ] ) ) {
