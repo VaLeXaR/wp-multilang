@@ -50,7 +50,7 @@ class WPM_Admin_Menus {
 			            '</span>',
 		) );
 
-		$current_url = home_url( $_SERVER['REQUEST_URI'] );
+		$current_url = wpm_get_current_url();
 
 		foreach ( $languages as $key => $language ) {
 

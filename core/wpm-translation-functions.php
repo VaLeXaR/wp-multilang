@@ -19,7 +19,7 @@ function wpm_translate_url( $url, $language = '' ) {
 	$url_lang = '';
 
 	$path_url = parse_url( $url, PHP_URL_PATH );
-	$path = $path_url ? $path_url : '/';
+	$path     = $path_url ? $path_url : '/';
 
 	if ( preg_match( '!^/([a-z]{2})(/|$)!i', $path, $match ) ) {
 		$url_lang = $match[1];
@@ -51,8 +51,8 @@ function wpm_translate_url( $url, $language = '' ) {
 	}
 
 	if ( $new_path ) {
-		if ($path == '/') {
-			$url .= $new_path;
+		if ( $path == '/' ) {
+			$url .= substr( $new_path, 1 );
 		} else {
 			$url = str_replace( $path, $new_path, $url );
 		}
@@ -61,7 +61,7 @@ function wpm_translate_url( $url, $language = '' ) {
 	return $url;
 }
 
-function wpm_translate_string( $string, $locale = '' ) {
+function wpm_translate_string( $string, $lang = '' ) {
 
 	$strings = wpm_string_to_ml_array( $string );
 
@@ -75,20 +75,20 @@ function wpm_translate_string( $string, $locale = '' ) {
 
 	$languages = wpm_get_languages();
 
-	if ( $locale ) {
-		if ( isset( $strings[ $languages[ $locale ] ] ) ) {
-			return $strings[ $languages[ $locale ] ];
+	if ( $lang ) {
+		if ( in_array( $lang, $strings ) ) {
+			return $strings[ $lang ];
 		} else {
 			return '';
 		}
 	}
 
-	$lang = wpm_get_edit_lang();
+	$edit_lang = wpm_get_edit_lang();
 
 	$default_locale = wpm_get_default_locale();
 
-	if ( isset( $strings[ $lang ] ) ) {
-		return $strings[ $lang ];
+	if ( isset( $strings[ $edit_lang ] ) ) {
+		return $strings[ $edit_lang ];
 	} elseif ( isset( $strings[ $languages[ $default_locale ] ] ) ) {
 		return $strings[ $languages[ $default_locale ] ];
 	} else {
@@ -96,16 +96,16 @@ function wpm_translate_string( $string, $locale = '' ) {
 	}
 }
 
-function wpm_translate_value( $value, $locale = '' ) {
+function wpm_translate_value( $value, $lang = '' ) {
 	if ( is_array( $value ) ) {
 		$result = array();
 		foreach ( $value as $k => $item ) {
-			$result[ $k ] = wpm_translate_value( $item, $locale );
+			$result[ $k ] = wpm_translate_value( $item, $lang );
 		}
 
 		return $result;
 	} elseif ( is_string( $value ) ) {
-		return wpm_translate_string( $value, $locale );
+		return wpm_translate_string( $value, $lang );
 	} else {
 		return $value;
 	}
@@ -237,16 +237,15 @@ function wpm_ml_value_to_string( $value ) {
 }
 
 
-function wpm_set_language_value( $localize_array, $value, $config = null, $locale = '' ) {
+function wpm_set_language_value( $localize_array, $value, $config = null, $lang = '' ) {
 	$languages = wpm_get_languages();
-	$lang      = wpm_get_edit_lang();
 
-	if ( isset( $_POST['lang'] ) && in_array( $_POST['lang'], $languages ) ) {
+	if ( ! $lang && isset( $_POST['lang'] ) && in_array( $_POST['lang'], $languages ) ) {
 		$lang = wpm_clean( $_POST['lang'] );
 	}
 
-	if ( $locale && isset( $languages[ $locale ] ) ) {
-		$lang = $languages[ $locale ];
+	if ( ! $lang || ! in_array( $lang, $languages ) ) {
+		$lang = wpm_get_edit_lang();
 	}
 
 	if ( is_array( $value ) && ! is_null( $config ) ) {
@@ -258,7 +257,7 @@ function wpm_set_language_value( $localize_array, $value, $config = null, $local
 			}
 
 			if ( isset( $localize_array[ $key ] ) && isset( $value[ $key ] ) ) {
-				$localize_array[ $key ] = wpm_set_language_value( $localize_array[ $key ], $value[ $key ], $config_key, $locale );
+				$localize_array[ $key ] = wpm_set_language_value( $localize_array[ $key ], $value[ $key ], $config_key, $lang );
 			}
 		}
 	} else {
@@ -281,7 +280,7 @@ function wpm_set_language_value( $localize_array, $value, $config = null, $local
 	return $localize_array;
 }
 
-function wpm_translate_object( $object, $locale = '' ) {
+function wpm_translate_object( $object, $lang = '' ) {
 
 	if ( $object instanceof WP_Post || $object instanceof WP_Term ) {
 
@@ -293,10 +292,10 @@ function wpm_translate_object( $object, $locale = '' ) {
 				case 'name':
 				case 'title':
 				case 'description':
-					$object->$key = wpm_translate_string( $content, $locale );
+					$object->$key = wpm_translate_string( $content, $lang );
 					break;
 				case 'post_content':
-					$object->$key = maybe_serialize( wpm_translate_value( maybe_unserialize( $content ), $locale ) );
+					$object->$key = maybe_serialize( wpm_translate_value( maybe_unserialize( $content ), $lang ) );
 					break;
 			}
 		}

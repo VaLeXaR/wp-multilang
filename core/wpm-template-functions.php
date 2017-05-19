@@ -25,7 +25,7 @@ function wpm_language_switcher( $args = array(), $echo = true ) {
 	}
 
 	$options     = wpm_get_options();
-	$current_url = $_SERVER['REQUEST_URI'];
+	$current_url = wpm_get_current_url();
 	$locale      = get_locale();
 	ob_start();
 	if ( 'list' == $args['type'] ) { ?>

@@ -1,10 +1,9 @@
 <?php
 /**
  * Plugin Name:     WP Multilang
- * Plugin URI:      PLUGIN SITE HERE
- * Description:     PLUGIN DESCRIPTION HERE
+ * Plugin URI:      https://gitlab.com/valexar/wp-multilang
+ * Description:     Multilingual plugin for WordPress
  * Author:          Valentyn Riaboshtan
- * Author URI:      YOUR SITE HERE
  * Text Domain:     wpm
  * Domain Path:     /languages
  * Version:         1.0.0

@@ -12,7 +12,7 @@ if ( defined( 'WPSEO_VERSION' ) ) {
 
 		public function __construct() {
 			add_filter( 'wpm_option_wpseo_titles_config', array( $this, 'set_posts_config' ) );
-			add_filter( 'wpseo_title', array( $this, 'translate_title' ), 0 );
+			add_filter( 'wpseo_title', 'wpm_translate_string', 0 );
 		}
 
 
@@ -43,18 +43,6 @@ if ( defined( 'WPSEO_VERSION' ) ) {
 			}
 
 			return $config;
-		}
-
-
-		public function translate_title( $title ) {
-			$yseo_options      = get_option( 'wpseo_titles' );
-			$separator_options = \WPSEO_Option_Titles::get_instance()->get_separator_options();
-			$separator         = ' ' . $separator_options[ $yseo_options['separator'] ] . ' ';
-			$titles_part       = explode( $separator, $title );
-			$titles_part       = wpm_translate_value( $titles_part );
-			$title             = implode( $separator, $titles_part );
-
-			return $title;
 		}
 	}
 
