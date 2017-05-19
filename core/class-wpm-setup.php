@@ -123,7 +123,6 @@ class WPM_Setup {
 
 			$options             = $this->get_options();
 			$installed_languages = $this->get_installed_languages();
-			$translations        = $this->get_translations();
 
 			foreach ( $options as $locale => $language ) {
 				if ( $language['enable'] ) {
@@ -133,6 +132,7 @@ class WPM_Setup {
 
 			foreach ( $installed_languages as $language ) {
 				if ( ! in_array( $language, $this->languages ) ) {
+					$translations                 = $this->get_translations();
 					$this->languages[ $language ] = current( $translations[ $language ]['iso'] );
 					$options[ $language ]         = array(
 						'name'   => $translations[ $language ]['native_name'],
@@ -248,7 +248,7 @@ class WPM_Setup {
 
 	public function get_config() {
 		if ( ! $this->config ) {
-			$config = get_option( 'wpm_config' );
+			$config       = get_option( 'wpm_config' );
 			$this->config = apply_filters( 'wpm_load_config', $config );
 		}
 
