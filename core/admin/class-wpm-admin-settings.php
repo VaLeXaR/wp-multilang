@@ -47,6 +47,13 @@ if ( ! class_exists( 'WPM_Admin_Settings' ) ) :
 				'sanitize_callback' => array( $this, 'save_options' ),
 				'show_in_rest'      => true,
 			) );
+
+			register_setting( 'general', 'wpm_uninstall_translations', array(
+				'type'              => 'integer',
+				'group'             => 'general',
+				'description'       => __('Delete translations when uninstalling plugin', 'wpm'),
+				'show_in_rest'      => true,
+			) );
 		}
 
 
@@ -160,6 +167,25 @@ if ( ! class_exists( 'WPM_Admin_Settings' ) ) :
 				</tr>
 				</tfoot>
 			</table>
+
+			<table class="form-table">
+				<tr>
+					<th scope="row"><?php _e( 'Uninstalling', 'wpm' ); ?></th>
+					<td>
+						<fieldset>
+							<legend class="screen-reader-text">
+								<span><?php _e( 'Uninstalling', 'wpm' ); ?></span>
+							</legend>
+							<label for="wpm_uninstall_translations">
+								<input type="hidden" name="wpm_uninstall_translations" value="0">
+								<input name="wpm_uninstall_translations" type="checkbox" id="wpm_uninstall_translations" value="1"<?php checked( get_option( 'wpm_uninstall_translations' ) ); ?>>
+								<?php _e( 'Delete translations when uninstalling plugin', 'wpm' ); ?>
+							</label>
+						</fieldset>
+					</td>
+				</tr>
+			</table>
+
 			<?php
 		}
 

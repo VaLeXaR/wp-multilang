@@ -121,6 +121,7 @@ if ( ! class_exists( 'WPM_Admin_Taxonomies' ) ) :
 			}
 
 			$taxonomy_config = $taxonomies_config[ $taxonomy ];
+			$taxonomy_config = apply_filters( "wpm_taxonomy_{$taxonomy}_config", $taxonomy_config );
 			$old_value       = $this->description['old'];
 			$strings         = wpm_value_to_ml_array( $old_value );
 			$value           = wpm_set_language_value( $strings, $value, $taxonomy_config );

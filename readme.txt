@@ -1,14 +1,14 @@
-=== WP Multilingual ===
-Contributors: (this should be a list of wordpress.org userid's)
+=== WP Multilang ===
+Contributors: VaLeXaR
 Donate link: http://example.com/
-Tags: comments, spam
-Requires at least: 3.7
+Tags: localization, multilanguage, multilingual, translation
+Requires at least: 4.7
 Tested up to: 4.7.5
-Stable tag: 0.1.0
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
+Multilingual plugin for WordPress.
 
 == Description ==
 
@@ -38,10 +38,6 @@ that lacks those changes -- as long as the trunk's `readme.txt` points to the co
 you put the stable version, in order to eliminate any doubt.
 
 == Installation ==
-
-This section describes how to install the plugin and get it working.
-
-e.g.
 
 1. Upload `plugin-name.php` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress

@@ -15,7 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Include core functions (available in both admin and frontend).
 include( 'libraries/mbstring.php' );
-include( 'libraries/xml2array.php' );
 include( 'wpm-formatting-functions.php' );
 include( 'wpm-language-functions.php' );
 include( 'wpm-translation-functions.php' );
