@@ -116,7 +116,6 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 		 */
 		private function init_hooks() {
 			register_activation_hook( __FILE__, array( 'WPM\Core\WPM_Install', 'install' ) );
-			add_action( 'after_setup_theme', array( $this, 'setup_environment' ) );
 			add_action( 'init', array( $this, 'init' ), 0 );
 		}
 
@@ -210,22 +209,6 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 		 */
 		public function load_plugin_textdomain() {
 			load_plugin_textdomain( 'wpm', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' );
-		}
-
-		/**
-		 * Ensure theme and server variable compatibility and setup image sizes.
-		 */
-		public function setup_environment() {
-			$this->add_git_updater();
-		}
-
-
-		private function add_git_updater() {
-			$updater = new WPM\Core\Libraries\WPM_Gitlab_Updater( WPM_PLUGIN_FILE );
-			$updater->set_username( 'valexar' );
-			$updater->set_repository( 'wp-multilang' );
-			$updater->authorize( 'A6wFqZyptzesjy6PETj2' );
-			$updater->initialize();
 		}
 
 		/**
