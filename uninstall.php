@@ -97,8 +97,10 @@ if ( $uninstall_translations ) {
 
 				foreach ( $item_config as $option => $option_config ) {
 					$result = $wpdb->get_row( $wpdb->prepare( "SELECT option_id, option_value FROM {$wpdb->options} WHERE option_name = '%s';", esc_sql( $option ) ) );
-					$option_value = maybe_serialize( wpm_translate_value( maybe_unserialize( $result->option_value ), $lang ) );
-					$wpdb->update( $wpdb->options, compact( 'option_value' ), array( 'option_id' => $result->option_id ) );
+					if ( $result ) {
+						$option_value = maybe_serialize( wpm_translate_value( maybe_unserialize( $result->option_value ), $lang ) );
+						$wpdb->update( $wpdb->options, compact( 'option_value' ), array( 'option_id' => $result->option_id ) );
+					}
 				}
 
 				break;
