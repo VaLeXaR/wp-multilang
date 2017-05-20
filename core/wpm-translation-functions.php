@@ -76,7 +76,7 @@ function wpm_translate_string( $string, $lang = '' ) {
 	$languages = wpm_get_languages();
 
 	if ( $lang ) {
-		if ( in_array( $lang, $strings ) ) {
+		if ( isset( $strings[ $lang ] ) ) {
 			return $strings[ $lang ];
 		} else {
 			return '';

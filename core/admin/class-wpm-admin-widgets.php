@@ -19,9 +19,7 @@ class WPM_Admin_Widgets {
 			return $value;
 		}
 
-		remove_filter( "option_{$option}", 'wpm_translate_value', 0 );
 		$old_value = get_option( $option );
-		add_filter( "option_{$option}", 'wpm_translate_value', 0 );
 
 		if ( ! $old_value ) {
 			return $value;
