@@ -256,9 +256,11 @@ function wpm_set_language_value( $localize_array, $value, $config = null, $lang 
 				$config_key = ( isset( $config[ $key ] ) ? $config[ $key ] : null );
 			}
 
-			if ( isset( $localize_array[ $key ] ) && isset( $value[ $key ] ) ) {
-				$localize_array[ $key ] = wpm_set_language_value( $localize_array[ $key ], $value[ $key ], $config_key, $lang );
+			if ( ! isset( $localize_array[ $key ] ) ) {
+				$localize_array[ $key ] = array();
 			}
+
+			$localize_array[ $key ] = wpm_set_language_value( $localize_array[ $key ], $value[ $key ], $config_key, $lang );
 		}
 	} else {
 		if ( ! is_null( $config ) && ! is_bool( $value ) ) {
