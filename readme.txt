@@ -1,7 +1,7 @@
 === WP Multilang ===
 Contributors: VaLeXaR
 Donate link: http://example.com/
-Tags: localization, multilanguage, multilingual, translation
+Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.7.5
 Stable tag: 1.0.0

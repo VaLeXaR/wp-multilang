@@ -1,5 +1,5 @@
 {
-  "name": "valexar/wpm",
+  "name": "valexar/wp-multilang",
   "description": "Multilingual plugin for WordPress.",
   "type": "wordpress-plugin",
   "license": "GPL2",
@@ -11,7 +11,11 @@
   ],
   "minimum-stability": "stable",
   "keywords": [
-    "wordpress"
+    "wordpress",
+    "multilingual",
+    "multilang",
+    "languages",
+    "translation"
   ],
   "require": {
     "php": ">=5.6.4"
