@@ -106,6 +106,8 @@ abstract class WPM_Object {
 
 		$meta_ids = $wpdb->get_col( $wpdb->prepare( "SELECT $id_column FROM $table WHERE meta_key = %s AND $column = %d", $meta_key, $object_id ) );
 		if ( empty( $meta_ids ) ) {
+			$meta_value = wpm_set_language_value( '', $meta_value, $meta_config );
+			$meta_value = wpm_ml_value_to_string( $meta_value );
 			return add_metadata( $this->object_type, $object_id, $meta_key, $meta_value );
 		}
 
