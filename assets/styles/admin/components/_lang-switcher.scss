@@ -1,7 +1,11 @@
 .wpm-language-switcher {
-  background-color: $bg-color;
   left: 48px;
-  position: absolute;
+  padding-right: 0;
+  text-align: center;
+
+  &:before {
+    display: none;
+  }
 
   * {
     box-sizing: border-box;
@@ -18,32 +22,17 @@
   }
 
   .lang-main {
-    padding-left: 15px;
-    padding-right: 15px;
+    line-height: 41px;
 
     img {
       position: relative;
-      top: 1px;
-    }
-
-    &:hover {
-      background-color: $hover-color;
-      border-bottom: 0;
-      border-left: 0;
-      border-right: 0;
-      border-style: solid;
-      border-top-color: $brand-primary;
-      border-top-width: 4px;
-      line-height: 41px;
-
-      img {
-        top: -1px;
-      }
+      top: -1px;
     }
   }
 }
 
 .lang-dropdown {
+  background-color: $white;
 
   ul {
     margin-bottom: 0;
@@ -55,8 +44,6 @@
 
     a {
       display: block;
-      padding-left: 15px;
-      padding-right: 15px;
 
       &:hover {
         background-color: $hover-color;

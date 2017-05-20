@@ -52,6 +52,18 @@ if ( ! class_exists( 'WPM_Admin_Assets' ) ) :
 			wp_register_script( 'wpm_main', wpm_asset_path( 'scripts/main' . $suffix . '.js' ), array(
 				'jquery-ui-sortable'
 			), WPM_VERSION );
+
+			$main_params = array(
+				'plugin_url'        => WPM()->plugin_url(),
+				'ajax_url'          => admin_url( 'admin-ajax.php' ),
+				'delete_lang_nonce' => wp_create_nonce( 'delete-lang' ),
+				'confirm_question'  => __( 'Are you sure you want to delete this language?', 'wpm' ),
+				'languages'         => array_values( wpm_get_languages() ),
+				'default_language'  => wpm_get_languages()[ wpm_get_default_locale() ],
+				'edit_lang'         => wpm_get_edit_lang()
+			);
+			wp_localize_script( 'wpm_main', 'wpm_params', $main_params );
+
 			wp_register_script( 'wpm_language_switcher', wpm_asset_path( 'scripts/language-switcher' . $suffix . '.js' ), array(
 				'jquery',
 				'underscore'
@@ -60,6 +72,8 @@ if ( ! class_exists( 'WPM_Admin_Assets' ) ) :
 				'jquery',
 				'underscore'
 			), WPM_VERSION );
+			wp_register_script( 'wpm_translator', wpm_asset_path( 'scripts/translator' . $suffix . '.js' ), array( 'jquery' ), WPM_VERSION );
+			wp_enqueue_script( 'wpm_translator' );
 
 			if ( 'customize' == $screen_id ) {
 				wp_enqueue_style( 'wpm_language_switcher' );
@@ -75,6 +89,8 @@ if ( ! class_exists( 'WPM_Admin_Assets' ) ) :
 					$this->set_language_switcher();
 				}
 			}
+
+
 
 			$posts_config = $config['post_types'];
 			$posts_config = apply_filters( "wpm_posts_config", $posts_config );
@@ -92,15 +108,6 @@ if ( ! class_exists( 'WPM_Admin_Assets' ) ) :
 
 			if ( 'options-general' == $screen_id ) {
 				wp_enqueue_script( 'wpm_main' );
-
-				$params = array(
-					'plugin_url'        => WPM()->plugin_url(),
-					'ajax_url'          => admin_url( 'admin-ajax.php' ),
-					'delete_lang_nonce' => wp_create_nonce( 'delete-lang' ),
-					'confirm_question'  => __( 'Are you sure you want to delete this language?', 'wpm' )
-				);
-
-				wp_localize_script( 'wpm_main', 'wpm_main_params', $params );
 			}
 		}
 

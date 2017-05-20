@@ -7,7 +7,7 @@ if ( count( $languages ) <= 1 ) {
 }
 $options = wpm_get_options();
 ?>
-<div id="wpm-language-switcher" class="wpm-language-switcher">
+<div id="wpm-language-switcher" class="wpm-language-switcher customize-controls-close">
   <div class="lang-main">
     <?php if ( $options[ $locales[ $lang ] ]['flag'] ) { ?>
       <img src="<?php echo WPM()->flag_dir() . $options[ $locales[ $lang ] ]['flag'] . '.png'; ?>">
