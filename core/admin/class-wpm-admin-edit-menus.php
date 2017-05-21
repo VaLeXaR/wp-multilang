@@ -26,6 +26,17 @@ if ( ! class_exists( 'WPM_Admin_Edit_Menus' ) ) :
 		 */
 		public function __construct() {
 			add_filter( 'wp_setup_nav_menu_item', array( $this, 'translate_menu_item' ), ( 'POST' == $_SERVER['REQUEST_METHOD'] ? 99 : 0 ) );
+			add_filter( 'customize_nav_menu_available_items', array( $this, 'filter_menus' ), 0);
+			add_filter( 'customize_nav_menu_searched_items', array( $this, 'filter_menus' ), 0);
+		}
+
+
+		public function filter_menus( $items ) {
+			foreach ($items as &$item) {
+				$item['title'] = wpm_translate_string( $item['title']);
+			}
+
+			return $items;
 		}
 
 

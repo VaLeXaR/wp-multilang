@@ -22,14 +22,6 @@ String.prototype.xsplit = function (_regEx) {
   return arr;
 };
 
-Object.prototype.isEmpty = function() {
-  for(var key in this) {
-    if(this.hasOwnProperty(key))
-      return false;
-  }
-  return true;
-};
-
 var wpm_translator = {
 
   string_to_ml_array: function (text) {
@@ -37,16 +29,19 @@ var wpm_translator = {
     var split_regex = /(<!--:[a-z]{2}-->|<!--:-->|\[:[a-z]{2}\]|\[:\]|\{:[a-z]{2}\}|\{:\})/gi;
     var blocks = text.xsplit(split_regex);
 
-    if (typeof strings !== 'object' || blocks.isEmpty())
+    if (typeof blocks !== 'object' || !Object.keys(blocks).length)
       return text;
 
-    if (blocks.length === 1) {
+    if (Object.keys(blocks).length === 1) {
       return blocks[0];
     }
 
-    var results = new Object;
-    for ( var language in wpm_params.languages) {
-      results[language] = '';
+    var results = {},
+      languages = wpm_translator_params.languages,
+      j = languages.length;
+
+    while (j--){
+      results[languages[j]] = '';
     }
 
     var clang_regex = /<!--:([a-z]{2})-->/gi;
@@ -80,14 +75,14 @@ var wpm_translator = {
         continue;
       }
       if (lang) {
-        if (typeof(results[lang])==='undefined') {
-          results[lang] = b;
+        if (typeof(results[lang]) !== 'undefined') {
+          results[lang] += b;
         }
         lang = false;
       }
     }
 
-    for ( var result in results) {
+    for (var result in results) {
       if (!results[result].length) {
         delete results[result];
       }
@@ -97,28 +92,35 @@ var wpm_translator = {
   },
 
 
-  translate_string: function(string, lang){
+  translate_string: function (string, lang) {
 
     var strings = wpm_translator.string_to_ml_array(string);
 
-    if ( typeof strings !== 'object' || strings.isEmpty() ) {
+    // console.log(Object.keys(strings).length, strings);
+
+    if (typeof strings !== 'object' || !Object.keys(strings).length) {
       return string;
     }
 
+    var languages = wpm_translator_params.languages;
 
+    if (lang) {
+      if (typeof(languages[lang]) !== 'undefined') {
+        return strings[lang];
+      } else {
+        return '';
+      }
+    }
+
+    var edit_lang = wpm_translator_params.edit_lang,
+      default_language = wpm_translator_params.default_language;
+
+    if ( typeof(strings[edit_lang]) !== 'undefined' ) {
+      return strings[ edit_lang ];
+    } else if ( typeof(strings[default_language]) !== 'undefined' ) {
+      return strings[ default_language ];
+    } else {
+      return string;
+    }
   }
-
-
 };
-
-
-(function ($) {
-  "use strict";
-
-  $(function () {
-
-    var text = '[:en]vdvdfvdfv[:uk]dfvdfvdfv[:]';
-    wpm_translator.translate_string(text);
-
-  });
-}(jQuery));
