@@ -77,7 +77,7 @@ if ( ! class_exists( 'WPM_Admin_Assets' ) ) :
 				'default_language'  => wpm_get_languages()[ wpm_get_default_locale() ],
 				'language'         => wpm_get_language()
 			);
-//			wp_localize_script( 'wpm_translator', 'wpm_translator_params', $translator_params );
+			wp_localize_script( 'wpm_translator', 'wpm_translator_params', $translator_params );
 
 			if ( 'customize' == $screen_id ) {
 //				wp_enqueue_script( 'wpm_translator' );
@@ -123,7 +123,7 @@ if ( ! class_exists( 'WPM_Admin_Assets' ) ) :
 			$params = array(
 				'switcher' => gp_get_template_html( 'language-switcher.tpl' )
 			);
-			wp_localize_script( 'wpm_language_switcher', 'wpm_params', $params );
+			wp_localize_script( 'wpm_language_switcher', 'wpm_language_switcher_params', $params );
 		}
 	}
 
