@@ -217,7 +217,6 @@ class WPM_Setup {
 
 
 	public function set_locale() {
-		require_once( ABSPATH . 'wp-includes/pluggable.php' );
 
 		if ( ! did_action( 'before_wpm_init' ) ) {
 			return;
