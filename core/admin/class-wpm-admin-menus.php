@@ -64,7 +64,7 @@ class WPM_Admin_Menus {
 				'title'  => '<img src="' . WPM()->flag_dir() . $options[$key]['flag'] . '.png' . '" />' .
 				            '&nbsp;&nbsp;' .
 				            $options[ $key ]['name'],
-				'href'   => add_query_arg( 'lang', $language, $current_url ),
+				'href'   => add_query_arg( 'admin_lang', $language, $current_url ),
 			) );
 		}
 	}

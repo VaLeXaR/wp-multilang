@@ -192,7 +192,7 @@ if ( ! class_exists( 'WPM_Admin_Posts' ) ) :
 
 		public function translate_post_link( $link ) {
 			$languages = wpm_get_languages();
-			$lang      = wpm_get_edit_lang();
+			$lang      = wpm_get_language();
 			if ( in_array( $lang, $languages ) && $lang != $languages[ wpm_get_default_locale() ] ) {
 				$link = str_replace( home_url(), home_url( '/' . $lang ), $link );
 			}

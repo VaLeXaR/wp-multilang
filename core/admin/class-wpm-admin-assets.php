@@ -75,7 +75,7 @@ if ( ! class_exists( 'WPM_Admin_Assets' ) ) :
 			$translator_params = array(
 				'languages'         => array_values( wpm_get_languages() ),
 				'default_language'  => wpm_get_languages()[ wpm_get_default_locale() ],
-				'edit_lang'         => wpm_get_edit_lang()
+				'language'         => wpm_get_language()
 			);
 //			wp_localize_script( 'wpm_translator', 'wpm_translator_params', $translator_params );
 

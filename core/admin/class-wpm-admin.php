@@ -42,6 +42,7 @@ class WPM_Admin {
 	 * Include any classes we need within admin.
 	 */
 	public function init() {
+		new WPM_Admin_Menus();
 		new WPM_Admin_Posts();
 		new WPM_Admin_Taxonomies();
 		new WPM_Admin_Settings();
@@ -57,8 +58,13 @@ class WPM_Admin {
 
 
 	public function set_edit_lang() {
+
 		if ( isset( $_GET['edit_lang'] ) || ! isset( $_COOKIE['edit_language'] ) ) {
-			wpm_setcookie( 'edit_language', wpm_get_edit_lang(), time() + MONTH_IN_SECONDS );
+			wpm_setcookie( 'edit_language', wpm_get_language(), time() + MONTH_IN_SECONDS );
+		}
+
+		if ( isset( $_GET['admin_lang'] ) || ! isset( $_COOKIE['admin_language'] ) ) {
+			wpm_setcookie( 'admin_language', wpm_get_language(), time() + MONTH_IN_SECONDS );
 		}
 	}
 }

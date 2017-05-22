@@ -1,7 +1,7 @@
 <?php
 $languages = wpm_get_languages();
 $locales = array_flip($languages);
-$lang = wpm_get_edit_lang();
+$lang = wpm_get_language();
 if ( count( $languages ) <= 1 ) {
   return;
 }

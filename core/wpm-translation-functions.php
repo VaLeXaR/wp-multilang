@@ -83,12 +83,12 @@ function wpm_translate_string( $string, $lang = '' ) {
 		}
 	}
 
-	$edit_lang = wpm_get_edit_lang();
+	$lang = wpm_get_language();
 
 	$default_locale = wpm_get_default_locale();
 
-	if ( isset( $strings[ $edit_lang ] ) ) {
-		return $strings[ $edit_lang ];
+	if ( isset( $strings[ $lang ] ) ) {
+		return $strings[ $lang ];
 	} elseif ( isset( $strings[ $languages[ $default_locale ] ] ) ) {
 		return $strings[ $languages[ $default_locale ] ];
 	} else {
@@ -245,7 +245,7 @@ function wpm_set_language_value( $localize_array, $value, $config = null, $lang 
 	}
 
 	if ( ! $lang || ! in_array( $lang, $languages ) ) {
-		$lang = wpm_get_edit_lang();
+		$lang = wpm_get_language();
 	}
 
 	if ( is_array( $value ) && ! is_null( $config ) ) {

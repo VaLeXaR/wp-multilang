@@ -40,17 +40,11 @@ function wpm_get_translations() {
 	return WPM_Setup::instance()->get_translations();
 }
 
-
-function wpm_installed_languages() {
-	return WPM_Setup::instance()->get_installed_languages();
-}
-
-function wpm_get_edit_lang() {
-	$languages = wpm_get_languages();
+function wpm_get_language() {
 	if ( is_admin() ) {
-		$lang = isset( $_GET['edit_lang'] ) ? wpm_clean( $_GET['edit_lang'] ) : ( isset( $_COOKIE['edit_language'] ) ? wpm_clean( $_COOKIE['edit_language'] ) : $languages[ get_locale() ] );
+		$lang = isset( $_GET['edit_lang'] ) ? wpm_clean( $_GET['edit_lang'] ) : ( isset( $_COOKIE['edit_language'] ) ? wpm_clean( $_COOKIE['edit_language'] ) : wpm_get_user_language() );
 	} else {
-		$lang = $languages[ get_locale() ];
+		$lang = wpm_get_user_language();
 	}
 
 	return $lang;

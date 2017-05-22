@@ -173,35 +173,47 @@ class WPM_Setup {
 
 	public function set_user_language() {
 
-		$languages      = $this->get_languages();
-		$default_locale = $this->get_default_locale();
+		if ( ! is_admin() || ! defined( 'REST_REQUEST' ) ) {
 
-		if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
-			if ( isset( $_GET['lang'] ) ) {
-				$lang = wpm_clean( $_GET['lang'] );
-				if ( ! in_array( $lang, $languages ) ) {
-					$lang = $languages[ $default_locale ];
-				}
-				wpm_setcookie( 'language', $lang, time() + MONTH_IN_SECONDS );
-			}
-
-			if ( ! isset( $_COOKIE['language'] ) ) {
-				wpm_setcookie( 'language', $default_locale, time() + MONTH_IN_SECONDS );
-				$this->user_language = $this->languages[ $default_locale ];
-			} else {
-				$this->user_language = wpm_clean( $_COOKIE['language'] );
-			}
-
-		} else {
 			$path = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
 
 			if ( preg_match( '!^/([a-z]{2})(/|$)!i', $path, $match ) ) {
 				$this->user_language = $match[1];
+			} elseif ( ! defined( 'REST_REQUEST' ) && ! isset( $_COOKIE['language'] ) ) {
+				$redirect_to_browser_language = apply_filters( 'wpm_redirect_to_browser_language', true );
+				if ( $redirect_to_browser_language ) {
+					$browser_language = $this->get_browser_language();
+
+					if ( ! $this->user_language && $browser_language != $this->user_language ) {
+
+						if ( $this->user_language ) {
+							$home_url = home_url() . '/' . $this->user_language;
+						} else {
+							$home_url = home_url();
+						}
+
+						$url = str_replace( $home_url, home_url() . '/' . $browser_language, wpm_get_current_url() );
+						wp_redirect( $url, 301 );
+						exit;
+					}
+				}
 			}
 		}
 
+		$languages      = $this->get_languages();
+		$default_locale = $this->get_default_locale();
+
+		if ( is_admin() ) {
+			$this->user_language = $lang = isset( $_GET['admin_lang'] ) ? wpm_clean( $_GET['admin_lang'] ) : ( isset( $_COOKIE['admin_language'] ) ? wpm_clean( $_COOKIE['admin_language'] ) : $languages[ $default_locale ] );
+		}
+
 		if ( isset( $_GET['lang'] ) ) {
-			$this->user_language = wpm_clean( $_GET['lang'] );
+			$lang = wpm_clean( $_GET['lang'] );
+			if ( ! in_array( $lang, $languages ) ) {
+				$lang = $languages[ $default_locale ];
+			}
+			wpm_setcookie( 'language', $lang, time() + MONTH_IN_SECONDS );
+			$this->user_language = $lang;
 		}
 	}
 
@@ -229,7 +241,13 @@ class WPM_Setup {
 		}
 
 		if ( ! $this->user_language ) {
-			$this->user_language = $languages[ get_locale() ];
+
+			if ( ! isset( $_COOKIE['language'] ) ) {
+				wpm_setcookie( 'language', $default_locale, time() + MONTH_IN_SECONDS );
+				$this->user_language = $this->languages[ $default_locale ];
+			} else {
+				$this->user_language = wpm_clean( $_COOKIE['language'] );
+			}
 		}
 	}
 
@@ -278,17 +296,11 @@ class WPM_Setup {
 
 
 	public function set_home_url( $value ) {
-		if ( ( is_admin() && ! defined( 'DOING_AJAX' ) ) || defined( 'REST_REQUEST' ) ) {
-			return $value;
-		}
-
-		//TODO set cookie for ajax?
-
-		$locale         = get_locale();
+		$language       = $this->get_user_language();
 		$languages      = $this->get_languages();
 		$default_locale = $this->get_default_locale();
-		if ( $languages[ $locale ] != $languages[ $default_locale ] ) {
-			$value .= '/' . $languages[ $locale ];
+		if ( $language != $languages[ $default_locale ] ) {
+			$value .= '/' . $language;
 		}
 
 		return $value;
@@ -307,5 +319,40 @@ class WPM_Setup {
 		foreach ( glob( $vendor_path . '*.php' ) as $vendor_file ) {
 			require_once( $vendor_file );
 		}
+	}
+
+
+	private function get_browser_language() {
+		if ( ! isset( $_SERVER["HTTP_ACCEPT_LANGUAGE"] ) ) {
+			return null;
+		}
+
+		if ( ! preg_match_all( "#([^;,]+)(;[^,0-9]*([0-9\.]+)[^,]*)?#i", $_SERVER["HTTP_ACCEPT_LANGUAGE"], $matches, PREG_SET_ORDER ) ) {
+			return null;
+		}
+
+		$prefered_languages = array();
+		$priority           = 1.0;
+
+		foreach ( $matches as $match ) {
+			if ( ! isset( $match[3] ) ) {
+				$pr       = $priority;
+				$priority -= 0.001;
+			} else {
+				$pr = floatval( $match[3] );
+			}
+			$prefered_languages[ str_replace( '-', '_', $match[1]) ] = $pr;
+		}
+		arsort( $prefered_languages, SORT_NUMERIC );
+
+		$languages = $this->get_languages();
+
+		foreach ( $prefered_languages as $language => $priority ) {
+			if ( in_array( $language, $languages ) || isset( $languages[ $language ] ) ) {
+				return $language;
+			}
+		}
+
+		return null;
 	}
 }
