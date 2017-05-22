@@ -204,16 +204,14 @@ class WPM_Setup {
 		$default_locale = $this->get_default_locale();
 
 		if ( is_admin() ) {
-			$this->user_language = $lang = isset( $_GET['admin_lang'] ) ? wpm_clean( $_GET['admin_lang'] ) : ( isset( $_COOKIE['admin_language'] ) ? wpm_clean( $_COOKIE['admin_language'] ) : $languages[ $default_locale ] );
+			$this->user_language = isset( $_GET['admin_lang'] ) ? wpm_clean( $_GET['admin_lang'] ) : ( isset( $_COOKIE['admin_language'] ) ? wpm_clean( $_COOKIE['admin_language'] ) : $languages[ $default_locale ] );
 		}
 
 		if ( isset( $_GET['lang'] ) ) {
 			$lang = wpm_clean( $_GET['lang'] );
-			if ( ! in_array( $lang, $languages ) ) {
-				$lang = $languages[ $default_locale ];
+			if ( in_array( $lang, $languages ) ) {
+				$this->user_language = $lang;
 			}
-			wpm_setcookie( 'language', $lang, time() + MONTH_IN_SECONDS );
-			$this->user_language = $lang;
 		}
 	}
 
@@ -241,13 +239,10 @@ class WPM_Setup {
 		}
 
 		if ( ! $this->user_language ) {
-
-			if ( ! isset( $_COOKIE['language'] ) ) {
-				wpm_setcookie( 'language', $default_locale, time() + MONTH_IN_SECONDS );
-				$this->user_language = $this->languages[ $default_locale ];
-			} else {
-				$this->user_language = wpm_clean( $_COOKIE['language'] );
-			}
+			wpm_setcookie( 'language', $languages[ $default_locale ], time() + MONTH_IN_SECONDS );
+			$this->user_language = $languages[ $default_locale ];
+		} else {
+			wpm_setcookie( 'language', $this->user_language, time() + MONTH_IN_SECONDS );
 		}
 	}
 
