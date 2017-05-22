@@ -1,16 +1,18 @@
-Contributors: VaLeXaR
-Tags: localization, multilanguage, multilingual, translation, multilang
-Requires at least: 4.7
-Tested up to: 4.7.5
-Stable tag: 1.0.0
-License: GPLv2 or later
+#WP Multilang
+
+Contributors: VaLeXaR   
+Tags: localization, multilanguage, multilingual, translation, multilang   
+Requires at least: 4.7   
+Tested up to: 4.7.5   
+Stable tag: 1.0.0   
+License: GPLv2 or later   
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Multilingual plugin for WordPress.
 
-== Description ==
+##== Description ==
 
-English
+####English
 
 **WP Multilang** is a multilingual plugin for WordPress.
 
@@ -30,11 +32,11 @@ Sample configurations can be viewed in a configuration file in the folder config
 
 It has filters for dynamic application configuration translation add languages.
 
-To disable translation set `null` into the desired configuration.
-For example, you must turn off translation for a post type `post`.
+To disable translation set `null` into the desired configuration.   
+For example, you must turn off translation for a post type `post`.   
 There are two ways:
-
-1. After json.
+   
+1. After json.   
     Create the root of the subject, or the roots of its plugin file wpm-config.json with:
     ```
     {
@@ -44,7 +46,7 @@ There are two ways:
     }
     ```
 
-2. Through the filter.
+2. Through the filter.   
     Add in functions.php
     ```php
     add_filter ( 'wpm_posts_post_config', '__return_null');
@@ -69,7 +71,7 @@ Available features for translation:
 ```php
 wpm_translate_url ($url, $language = ''); // translate url
 wpm_translate_string ($string, $language = ''); // translate multilingual string
-wpm_translate_value ($value, $language = ''); // translate multidimensional array with multilingual strings
+wpm_translate_value ($value, $language = ''); // translate multidimensional array with multilingual strings   
 ```
 Standard translates all record types, taxonomies, custom fields. Even if you turn off translation for a particular type of account, you will only see its translation.
 
@@ -83,8 +85,8 @@ Translation uses the following syntax:
 ```
 Supports syntax qTranslate-X, WPGlobus, etc.
 
-Compatible with REST-API.
-Supports transfer the required translation through option `lang` in the GET request to REST.
+Compatible with REST-API.   
+Supports transfer the required translation through option `lang` in the GET request to REST.   
 Has the ability to keep recording the target language through the transmission parameter `lang` in the POST request.
 
 Compatible with multisite not tested.
@@ -120,8 +122,8 @@ Features of the plugin **WP Multilang**:
 Наприклад, потрібно вимкнути переклад для типу запису `post`.
 
 Для цього є два шляхи:
-
-1. Через json.
+   
+1. Через json.   
     Створіть у корені своєї теми, або у корені свого плаґіна файл wpm-config.json з такими даними:
     ```
     {
@@ -130,7 +132,7 @@ Features of the plugin **WP Multilang**:
       }
     }
     ```
-2. Через фільтр.
+2. Через фільтр.   
     Додайте у functions.php
     ```
     add_filter('wpm_posts_post_config', '__return_null');
@@ -147,7 +149,7 @@ Features of the plugin **WP Multilang**:
 Підтримує очищення бази даних від перекладів при видаленні плаґіна.
 
 Ідеально підходить для розробників.
-
+   
 Для виводу перемикача мов додайте код у тему
 ```php
 <?php if ( function_exists( 'wpm_language_switcher' ) ) wpm_language_switcher(); ?>
@@ -170,8 +172,8 @@ wpm_translate_value( $value, $language = '' ); // translate multidimensional arr
 ```
 Підтримує синтаксису qTranslate-X, WPGlobus та подібних.
 
-*Сумісний з REST-API.*
-Підтримує передачу потрібного перекладу через параметр `lang` у GET запиті до REST.
+*Сумісний з REST-API.*   
+Підтримує передачу потрібного перекладу через параметр `lang` у GET запиті до REST.   
 Має можливість зберігати запис потрібною мовою через передачу параметру `lang` у POST запиті.
 
 Сумісність з багатосайтовістю не тестувалася.
@@ -183,23 +185,23 @@ wpm_translate_value( $value, $language = '' ); // translate multidimensional arr
 * Підтримка перекладів багаторівневих масивів налаштувань.
 * Без дублювання записів
 
-== Installation ==
+##== Installation ==
 
 1. Donload the archive
 2. Unzip to the `/wp-content/plugins/` directory
 3. Activate the plugin through the 'Plugins' menu in WordPress
 
-== Screenshots ==
+##== Screenshots ==
 
-![alt Settings Page](assets/screenshots/screenshot-1.png)
-![alt Post list page](assets/screenshots/screenshot-2.png)
-![alt Post edit page](assets/screenshots/screenshot-5.png)
-![alt Taxonomy list page](assets/screenshots/screenshot-3.png)
-![alt Taxonomy edit page](assets/screenshots/screenshot-4.png)
-
-
-== Changelog ==
+![alt Settings Page](assets/screenshots/screenshot-1.png)   
+![alt Post list page](assets/screenshots/screenshot-2.png)   
+![alt Post edit page](assets/screenshots/screenshot-5.png)   
+![alt Taxonomy list page](assets/screenshots/screenshot-3.png)   
+![alt Taxonomy edit page](assets/screenshots/screenshot-4.png)   
 
 
-= 1.0 =
+##== Changelog ==
+
+
+###= 1.0 =
 * Release of plugin

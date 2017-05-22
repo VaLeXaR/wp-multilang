@@ -36,11 +36,15 @@ if ( ! class_exists( 'WPM_Admin_Taxonomies' ) ) :
 
 
 		public function init() {
-			$config = wpm_get_config();
+			$config            = wpm_get_config();
+			$taxonomies_config = apply_filters( 'wpm_taxonomies_config', $config['taxonomies'] );
 
-			foreach ( $config['taxonomies'] as $taxonomy => $config ) {
-				add_filter( "manage_edit-{$taxonomy}_columns", array( $this, 'language_columns' ) );
-				add_filter( "manage_{$taxonomy}_custom_column", array( $this, 'render_language_column' ), 0, 3 );
+			foreach ( $taxonomies_config as $taxonomy => $config ) {
+				$taxonomy_config = apply_filters( "wpm_taxonomy_{$taxonomy}_config", $config );
+				if ( ! is_null( $taxonomy_config ) ) {
+					add_filter( "manage_edit-{$taxonomy}_columns", array( $this, 'language_columns' ) );
+					add_filter( "manage_{$taxonomy}_custom_column", array( $this, 'render_language_column' ), 0, 3 );
+				}
 			}
 		}
 
@@ -82,12 +86,14 @@ if ( ! class_exists( 'WPM_Admin_Taxonomies' ) ) :
 				return $data;
 			}
 
+			$taxonomy_config = $taxonomies_config[ $taxonomy ];
+			$taxonomy_config = apply_filters( "wpm_taxonomy_{$taxonomy}_config", $taxonomy_config );
 			remove_filter( 'get_term', 'wpm_translate_object', 0 );
 			$old_name        = get_term_field( 'name', $term_id );
 			$old_description = get_term_field( 'description', $term_id );
 			add_filter( 'get_term', 'wpm_translate_object', 0 );
 			$strings      = wpm_value_to_ml_array( $old_name );
-			$value        = wpm_set_language_value( $strings, $data['name'], array() );
+			$value        = wpm_set_language_value( $strings, $data['name'], $taxonomy_config );
 			$data['name'] = wpm_ml_value_to_string( $value );
 
 			$this->description = array(

@@ -61,7 +61,7 @@ function wpm_translate_url( $url, $language = '' ) {
 	return $url;
 }
 
-function wpm_translate_string( $string, $lang = '' ) {
+function wpm_translate_string( $string, $language = '' ) {
 
 	$strings = wpm_string_to_ml_array( $string );
 
@@ -73,21 +73,21 @@ function wpm_translate_string( $string, $lang = '' ) {
 		return $strings;
 	}
 
-	if ( $lang ) {
-		if ( isset( $strings[ $lang ] ) ) {
-			return $strings[ $lang ];
+	if ( $language ) {
+		if ( isset( $strings[ $language ] ) ) {
+			return $strings[ $language ];
 		} else {
 			return '';
 		}
 	}
 
-	$lang = wpm_get_language();
+	$language = wpm_get_language();
 
 	$languages = wpm_get_languages();
 	$default_locale = wpm_get_default_locale();
 
-	if ( isset( $strings[ $lang ] ) ) {
-		return $strings[ $lang ];
+	if ( isset( $strings[ $language ] ) ) {
+		return $strings[ $language ];
 	} elseif ( isset( $strings[ $languages[ $default_locale ] ] ) ) {
 		return $strings[ $languages[ $default_locale ] ];
 	} else {
@@ -95,16 +95,16 @@ function wpm_translate_string( $string, $lang = '' ) {
 	}
 }
 
-function wpm_translate_value( $value, $lang = '' ) {
+function wpm_translate_value( $value, $language = '' ) {
 	if ( is_array( $value ) ) {
 		$result = array();
 		foreach ( $value as $k => $item ) {
-			$result[ $k ] = wpm_translate_value( $item, $lang );
+			$result[ $k ] = wpm_translate_value( $item, $language );
 		}
 
 		return $result;
 	} elseif ( is_string( $value ) ) {
-		return wpm_translate_string( $value, $lang );
+		return wpm_translate_string( $value, $language );
 	} else {
 		return $value;
 	}

@@ -42,7 +42,6 @@ if ( $uninstall_translations ) {
 
 				foreach ( $posts_config as $post_type => $post_config ) {
 
-					$posts_config = apply_filters( "wpm_posts_{$post_type}_config", $post_config );
 					$results      = $wpdb->get_results( $wpdb->prepare( "SELECT ID, post_content, post_title, post_excerpt FROM {$wpdb->posts} WHERE post_type = '%s';", esc_sql( $post_type ) ) );
 
 					foreach ( $results as $result ) {

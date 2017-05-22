@@ -73,8 +73,8 @@ if ( ! class_exists( 'WPM_Admin_Assets' ) ) :
 			wp_register_script( 'wpm_translator', wpm_asset_path( 'scripts/translator' . $suffix . '.js' ), array( 'jquery' ), WPM_VERSION );
 
 			$translator_params = array(
-				'languages'         => array_values( wpm_get_languages() ),
-				'default_language'  => wpm_get_languages()[ wpm_get_default_locale() ],
+				'languages'        => array_values( wpm_get_languages() ),
+				'default_language' => wpm_get_languages()[ wpm_get_default_locale() ],
 				'language'         => wpm_get_language()
 			);
 			wp_localize_script( 'wpm_translator', 'wpm_translator_params', $translator_params );
@@ -96,16 +96,17 @@ if ( ! class_exists( 'WPM_Admin_Assets' ) ) :
 			}
 
 
-
-			$posts_config = $config['post_types'];
-			$posts_config = apply_filters( "wpm_posts_config", $posts_config );
+			$posts_config                       = $config['post_types'];
+			$posts_config                       = apply_filters( "wpm_posts_config", $posts_config );
+			$posts_config[ $screen->post_type ] = apply_filters( "wpm_posts_{$screen->post_type}_config", isset( $posts_config[ $screen->post_type ] ) ? $posts_config[ $screen->post_type ] : null );
 
 			if ( isset( $posts_config[ $screen->post_type ] ) && ! is_null( $posts_config [ $screen->post_type ] ) ) {
 				$this->set_language_switcher();
 			}
 
-			$taxonomies_config = $config['taxonomies'];
-			$taxonomies_config = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
+			$taxonomies_config                      = $config['taxonomies'];
+			$taxonomies_config                      = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
+			$taxonomies_config[ $screen->taxonomy ] = apply_filters( "wpm_taxonomy_{$screen->taxonomy}_config", isset( $taxonomies_config[ $screen->taxonomy ] ) ? $taxonomies_config[ $screen->taxonomy ] : null );
 
 			if ( isset( $taxonomies_config[ $screen->taxonomy ] ) && ! is_null( $taxonomies_config[ $screen->taxonomy ] ) ) {
 				$this->set_language_switcher();
