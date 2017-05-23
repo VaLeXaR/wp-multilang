@@ -1,13 +1,24 @@
 <?php
-
+/**
+ * Language switcher widget for frontend
+ */
 namespace WPM\Core\Widgets;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * @class WPM_Widget_Language_Switcher
+ * @package WPM\Core\Widgets
+ * @category Class
+ * @author   VaLeXaR
+ */
 class WPM_Widget_Language_Switcher extends \WPM_Widget {
 
+	/**
+	 * WPM_Widget_Language_Switcher constructor.
+	 */
 	public function __construct() {
 		$this->widget_cssclass    = 'wpm widget_language_switcher';
 		$this->widget_description = '';
@@ -42,7 +53,12 @@ class WPM_Widget_Language_Switcher extends \WPM_Widget {
 		parent::__construct();
 	}
 
-
+	/**
+	 * Display language switcher
+	 *
+	 * @param array $args
+	 * @param array $instance
+	 */
 	public function widget( $args, $instance ) {
 
 		if ( $this->get_cached_widget( $args ) ) {

@@ -3,8 +3,7 @@
  * Handle frontend scripts
  *
  * @class       WPM_Frontend_Scripts
- * @version     2.3.0
- * @package     WPMPlugin/Classes/
+ * @package     WPM/Classes/
  * @category    Class
  * @author      VaLeXaR
  */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Class for capability with Advanced Custom Fields Plugin
+ */
 
 namespace WPM\Core\Vendor;
 
@@ -8,10 +11,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( class_exists( 'acf' ) ) {
 
+	/**
+	 * @class    WPM_Acf
+	 * @package  WPM\Core\Vendor
+	 * @category Class
+	 * @author   VaLeXaR
+	 */
 	class WPM_Acf {
 
+		/**
+		 * Flag ACF is Pro or not
+		 *
+		 * @var bool
+		 */
 		private $pro = false;
 
+		/**
+		 * WPM_Acf constructor.
+		 */
 		public function __construct() {
 			add_filter( "acf/load_field", 'wpm_translate_value', 0 );
 			add_filter( "acf/translate_field_group", 'wpm_translate_string', 0 );
@@ -29,7 +46,9 @@ if ( class_exists( 'acf' ) ) {
 			add_action( 'init', array( $this, 'check_pro' ) );
 		}
 
-
+		/**
+		 * Check Pro version
+		 */
 		public function check_pro() {
 			$post_types = get_post_types( '', 'names' );
 
@@ -39,6 +58,13 @@ if ( class_exists( 'acf' ) ) {
 		}
 
 
+		/**
+		 * Add config for 'acf-field-group' post types
+		 *
+		 * @param $config
+		 *
+		 * @return mixed
+		 */
 		public function add_config( $config ) {
 			$config['post_types']['acf-field-group'] = array(
 				"post_content" => null,
@@ -49,6 +75,13 @@ if ( class_exists( 'acf' ) ) {
 		}
 
 
+		/**
+		 * Save field object with translation. Only Pro.
+		 *
+		 * @param $field
+		 *
+		 * @return array|bool|string
+		 */
 		public function save_field( $field ) {
 
 			if ( ! $this->pro ) {
@@ -78,7 +111,13 @@ if ( class_exists( 'acf' ) ) {
 			return $field;
 		}
 
-
+		/**
+		 * Save params for text field object. Only Pro.
+		 *
+		 * @param $field
+		 *
+		 * @return array|mixed|string
+		 */
 		public function save_text_field( $field ) {
 
 			if ( ! $this->pro ) {
@@ -106,6 +145,15 @@ if ( class_exists( 'acf' ) ) {
 		}
 
 
+		/**
+		 * Save value with translation
+		 *
+		 * @param $value
+		 * @param $post_id
+		 * @param $field
+		 *
+		 * @return array|bool|string
+		 */
 		static public function save_value( $value, $post_id, $field ) {
 			remove_filter( 'acf/load_value', 'wpm_translate_value', 0 );
 			$old_value = get_field( $field['name'], $post_id );

@@ -8,7 +8,7 @@
  * Domain Path:     /languages
  * Version:         1.0.0
  *
- * @package  WP_Multilang
+ * @package  WPM
  * @category Core
  * @author   Valentyn Riaboshtan
  */
@@ -25,20 +25,10 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	require_once __DIR__ . '/vendor/autoload.php';
 }
 
-
-if ( WP_DEBUG ) {
-	if ( class_exists( 'Kint' ) ) {
-		Kint::$enabled_mode = false;
-	}
-
-	require_once 'debug.php';
-}
-
-
 if ( ! class_exists( 'WP_Multilingual' ) ) :
 
 	/**
-	 * Main WP Multilang.
+	 * Main WP_Multilang.
 	 *
 	 * @class   WPM
 	 * @version 1.0.0
@@ -46,7 +36,7 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 	final class WP_Multilang {
 
 		/**
-		 * WPM Plugin version.
+		 * WP Multilang version.
 		 *
 		 * @var string
 		 */
@@ -60,16 +50,9 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 		protected static $_instance = null;
 
 		/**
-		 * Order factory instance.
-		 *
-		 * @var Core\WPM_Config
-		 */
-		public $config = null;
-
-		/**
 		 * Main WP_Multilang Instance.
 		 *
-		 * Ensures only one instance of WooCommerce is loaded or can be loaded.
+		 * Ensures only one instance of WP Multilang is loaded or can be loaded.
 		 *
 		 * @static
 		 * @see   WPM()
@@ -100,7 +83,7 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 		}
 
 		/**
-		 * WooCommerce Constructor.
+		 * Multilang Constructor.
 		 */
 		public function __construct() {
 			$this->define_constants();
@@ -120,7 +103,7 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 		}
 
 		/**
-		 * Define WC Constants.
+		 * Define WPM Constants.
 		 */
 		private function define_constants() {
 			$this->define( 'WPM_PLUGIN_FILE', __FILE__ );
@@ -172,12 +155,12 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 
 			if ( $this->is_request( 'frontend' ) ) {
 				include_once( 'core/wpm-template-hooks.php' );
-			    Core\WPM_Frontend_Scripts::init();               // Frontend Scripts
+				Core\WPM_Frontend_Scripts::init();               // Frontend Scripts
 			}
 		}
 
 		/**
-		 * Init WooCommerce when WordPress Initialises.
+		 * Init Multilang when WordPress Initialises.
 		 */
 		public function init() {
 			// Before init action.
@@ -228,7 +211,7 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 		}
 
 		/**
-		 * Get the plugin path.
+		 * Get the templates path.
 		 * @return string
 		 */
 		public function template_path() {
@@ -236,7 +219,7 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 		}
 
 		/**
-		 * Get the plugin path.
+		 * Get the flags path.
 		 * @return string
 		 */
 		public function flag_dir() {

@@ -1,11 +1,4 @@
 <?php
-/**
- * Installation related functions and actions.
- *
- * @author   VaLeXaR
- * @category Admin
- * @package  WPMPlugin/Classes
- */
 
 namespace WPM\Core;
 
@@ -14,7 +7,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * WPM_Install Class.
+ * Installation related functions and actions.
+ *
+ * @author   VaLeXaR
+ * @category Admin
+ * @package  WPMPlugin/Classes
  */
 class WPM_Install {
 
@@ -26,7 +23,7 @@ class WPM_Install {
 	}
 
 	/**
-	 * Check WPMPlugin version and run the updater is required.
+	 * Check WPM version and run the updater is required.
 	 *
 	 * This check is done on all requests and runs if he versions do not match.
 	 */
@@ -37,7 +34,7 @@ class WPM_Install {
 	}
 
 	/**
-	 * Install GP.
+	 * Install WPM.
 	 */
 	public static function install() {
 		global $wpdb;
@@ -69,7 +66,7 @@ class WPM_Install {
 	}
 
 	/**
-	 * Update GP version to current.
+	 * Update WPM version to current.
 	 */
 	private static function update_gp_version() {
 		delete_option( 'wpm_version' );
@@ -83,7 +80,7 @@ class WPM_Install {
 	 */
 	private static function create_options() {
 
-		$languages = array();
+		$languages           = array();
 		$installed_languages = array_merge( array( 'en_US' ), get_available_languages() );
 		require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
 		$available_translations          = wp_get_available_translations();
@@ -94,11 +91,11 @@ class WPM_Install {
 
 		$translations = $available_translations;
 
-		foreach ($installed_languages as $language ) {
+		foreach ( $installed_languages as $language ) {
 			$languages[ $language ] = array(
-				'name' => $translations[ $language ]['native_name'],
-				'slug' => current( $translations[ $language ]['iso'] ),
-				'flag' => current( $translations[ $language ]['iso'] ),
+				'name'   => $translations[ $language ]['native_name'],
+				'slug'   => current( $translations[ $language ]['iso'] ),
+				'flag'   => current( $translations[ $language ]['iso'] ),
 				'enable' => 1
 			);
 		}

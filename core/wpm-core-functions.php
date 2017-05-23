@@ -6,7 +6,7 @@
  *
  * @author        VaLeXaR
  * @category      Core
- * @package       WPMPlugin/Functions
+ * @package       WPM/Functions
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -14,13 +14,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Include core functions (available in both admin and frontend).
-include( 'libraries/mbstring.php' );
 include( 'wpm-formatting-functions.php' );
 include( 'wpm-language-functions.php' );
 include( 'wpm-translation-functions.php' );
 include( 'wpm-template-functions.php' );
 
-
+/**
+ * Load html files
+ *
+ * @param $path
+ *
+ * @return bool|string
+ */
 function gp_get_template_html( $path ) {
 	ob_start();
 
@@ -36,7 +41,13 @@ function gp_get_template_html( $path ) {
 	return ob_get_clean();
 }
 
-
+/**
+ * Load assets
+ *
+ * @param $filename
+ *
+ * @return string
+ */
 function wpm_asset_path( $filename ) {
 	$dist_path = str_replace( array( 'http:', 'https:' ), '', WPM()->plugin_url() ) . '/assets/';
 	$directory = dirname( $filename ) . '/';

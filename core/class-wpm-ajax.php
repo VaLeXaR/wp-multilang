@@ -7,13 +7,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * WPMPlugin WPM_AJAX.
+ * WP_Multilang WPM_AJAX.
  *
  * AJAX Event Handler.
  *
  * @class    WPM_AJAX
- * @version  1.0.0
- * @package  WPMPlugin/Classes
+ * @package  WPM/Classes
  * @category Class
  * @author   VaLeXaR
  */
@@ -29,7 +28,7 @@ class WPM_AJAX {
 	}
 
 	/**
-	 * Get GP Ajax Endpoint.
+	 * Get WPM Ajax Endpoint.
 	 *
 	 * @param  string $request Optional
 	 *
@@ -40,7 +39,7 @@ class WPM_AJAX {
 	}
 
 	/**
-	 * Set WC AJAX constant and headers.
+	 * Set WPM AJAX constant and headers.
 	 */
 	public static function define_ajax() {
 		if ( ! empty( $_GET['wpm-ajax'] ) ) {
@@ -59,7 +58,7 @@ class WPM_AJAX {
 	}
 
 	/**
-	 * Send headers for GP Ajax Requests
+	 * Send headers for WPM Ajax Requests
 	 */
 	private static function wpm_ajax_headers() {
 		send_origin_headers();
@@ -71,7 +70,7 @@ class WPM_AJAX {
 	}
 
 	/**
-	 * Check for GP Ajax request and fire action.
+	 * Check for WPM Ajax request and fire action.
 	 */
 	public static function do_wpm_ajax() {
 		global $wp_query;
@@ -107,12 +106,14 @@ class WPM_AJAX {
 		}
 	}
 
-
+	/**
+	 * Remove installed language files and option
+	 */
 	public static function delete_lang() {
 
 		check_ajax_referer( 'delete-lang', 'security' );
 
-		$locale = wpm_clean( $_POST['locale'] );
+		$locale  = wpm_clean( $_POST['locale'] );
 		$options = wpm_get_options();
 
 		if ( ! isset( $options[ $locale ] ) || ( $locale == get_locale() ) || ( $locale == wpm_get_default_locale() ) ) {
@@ -121,7 +122,7 @@ class WPM_AJAX {
 
 		unset( $options[ $locale ] );
 		update_option( 'wpm_languages', $options );
-		$files_delete = array();
+		$files_delete                  = array();
 		$installed_plugin_translations = wp_get_installed_translations( 'plugins' );
 
 		foreach ( $installed_plugin_translations as $plugin => $translation ) {
@@ -161,6 +162,6 @@ class WPM_AJAX {
 			@unlink( $file );
 		}
 
-		die();
+		wp_die();
 	}
 }

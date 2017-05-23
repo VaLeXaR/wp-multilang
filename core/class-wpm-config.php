@@ -2,12 +2,27 @@
 
 namespace WPM\Core;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
+}
+
+/**
+ * Set configs
+ *
+ * Class WPM_Config
+ * @package  WPM\Core
+ * @category Class
+ * @author   VaLeXaR
+ */
 class WPM_Config {
 
 	static $config_files = array();
 	static $active_plugins = array();
 	static $config = array();
 
+	/**
+	 * Run parsing configs
+	 */
 	static public function load_config_run() {
 		self::load_plugins_config();
 		self::load_core_configs();
@@ -16,7 +31,9 @@ class WPM_Config {
 		update_option( 'wpm_config', self::$config );
 	}
 
-
+	/**
+	 * Load configs from plugins
+	 */
 	static public function load_plugins_config() {
 
 		$plugins = get_option( 'active_plugins' );
@@ -47,7 +64,10 @@ class WPM_Config {
 		}
 	}
 
-
+	/**
+	 * Load configs from WPM
+	 * @return array
+	 */
 	static public function load_core_configs() {
 		$config_path = dirname( WPM_PLUGIN_FILE ) . '/configs/';
 		foreach ( glob( $config_path . '*.json' ) as $config_file ) {
@@ -60,6 +80,9 @@ class WPM_Config {
 		return self::$config_files;
 	}
 
+	/**
+	 * Load configs from current theme
+	 */
 	static public function load_theme_config() {
 
 		$config_file = get_template_directory() . '/wpm-config.json';
@@ -75,6 +98,9 @@ class WPM_Config {
 		}
 	}
 
+	/**
+	 * Parsing config files to config array
+	 */
 	static public function parse_config_files() {
 		$core_config = dirname( WPM_PLUGIN_FILE ) . '/core-config.json';
 		array_unshift( self::$config_files, $core_config );

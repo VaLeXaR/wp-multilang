@@ -4,8 +4,7 @@
  *
  * @author   VaLeXaR
  * @category Admin
- * @package  WPMPlugin/Admin
- * @version  1.0.0
+ * @package  WPM/Core/Admin
  */
 
 namespace WPM\Core\Admin;
@@ -17,12 +16,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WPM_Admin_Menus {
 
 	/**
-	 * Hook in tabs.
+	 * WPM_Admin_Menus constructor.
 	 */
 	public function __construct() {
 		add_action( 'admin_bar_menu', array( $this, 'admin_bar_menu' ) );
 	}
 
+	/**
+	 * Add language switcher to admin
+	 *
+	 * @param \WP_Admin_Bar $wp_admin_bar
+	 *
+	 * @return bool
+	 */
 	public function admin_bar_menu( \WP_Admin_Bar $wp_admin_bar ) {
 
 		$user_id = get_current_user_id();

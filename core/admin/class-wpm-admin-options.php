@@ -1,4 +1,11 @@
 <?php
+/**
+ * Save options with translate
+ *
+ * @class WPM_Admin_Options
+ * @package  WPM\Core\Admin
+ * @author   VaLeXaR
+ */
 
 namespace WPM\Core\Admin;
 
@@ -6,13 +13,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
+/**
+ * Class WPM_Admin_Options
+ */
 class WPM_Admin_Options {
 
+	/**
+	 * WPM_Admin_Options constructor.
+	 */
 	public function __construct() {
 		$this->init();
 
 	}
 
+	/**
+	 * Add filters for options in config
+	 */
 	public function init() {
 		$config = wpm_get_config();
 		foreach ( $config['options'] as $option => $option_config ) {
@@ -21,6 +37,15 @@ class WPM_Admin_Options {
 	}
 
 
+	/**
+	 * Update options with translate
+	 *
+	 * @param $value
+	 * @param $old_value
+	 * @param $option
+	 *
+	 * @return array|bool|mixed|string
+	 */
 	public function wpm_update_option( $value, $old_value, $option ) {
 
 		if ( wpm_is_ml_value( $value ) ) {

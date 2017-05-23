@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Class for capability with Yoast Seo Plugin
+ */
 namespace WPM\Core\Vendor;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -7,15 +9,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( defined( 'WPSEO_VERSION' ) ) {
-
+	/**
+	 * @class WPM_Yoast_Seo
+	 * @package WPM\Core\Vendor
+	 * @category Class
+	 * @author   VaLeXaR
+	 */
 	class WPM_Yoast_Seo {
 
+		/**
+		 * WPM_Yoast_Seo constructor.
+		 */
 		public function __construct() {
 			add_filter( 'wpm_option_wpseo_titles_config', array( $this, 'set_posts_config' ) );
 			add_filter( 'wpseo_title', 'wpm_translate_string', 0 );
 		}
 
-
+		/**
+		 * Add dynamically title setting for post types
+		 *
+		 * @param $config
+		 *
+		 * @return array
+		 */
 		public function set_posts_config( $config ) {
 
 			$post_types = get_post_types();

@@ -6,11 +6,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
+/**
+ * Class WPM_Posts
+ * @package  WPM\Core
+ * @author   VaLeXaR
+ */
 class WPM_Posts extends \WPM_Object {
 
+	/**
+	 * Object name
+	 * @var string
+	 */
 	public $object_type = 'post';
+
+	/**
+	 * Table name for meta
+	 * @var string
+	 */
 	public $object_table = 'postmeta';
 
+
+	/**
+	 * WPM_Posts constructor.
+	 */
 	public function __construct() {
 		add_filter( 'get_pages', array( $this, 'filter_posts' ), 0, 2 );
 		add_filter( 'posts_results', array( $this, 'filter_posts' ), 0, 2 );
@@ -22,11 +40,21 @@ class WPM_Posts extends \WPM_Object {
 	}
 
 
+	/**
+	 * Translate all posts
+	 *
+	 * @param $posts
+	 *
+	 * @return array
+	 */
 	public function filter_posts( $posts ) {
 		return array_map( 'wpm_translate_object', $posts );
 	}
 
 
+	/**
+	 * Translate queried object in global $wp_query
+	 */
 	public function translate_queried_object() {
 		global $wp_query;
 		if ( is_singular() ) {

@@ -4,11 +4,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
+/**
+ * Class WPM_Object
+ */
 abstract class WPM_Object {
 
+	/**
+	 * Object type
+	 * @var
+	 */
 	public $object_type;
+
+	/**
+	 * Object meta table
+	 * @var
+	 */
 	public $object_table;
 
+
+	/**
+	 * Translate meta
+	 *
+	 * @param $value
+	 * @param $object_id
+	 * @param $meta_key
+	 *
+	 * @return array|mixed|null|string
+	 */
 	public function get_meta_field( $value, $object_id, $meta_key ) {
 		global $wpdb;
 
@@ -68,6 +90,17 @@ abstract class WPM_Object {
 
 	}
 
+	/**
+	 * Save meta with translations
+	 *
+	 * @param $check
+	 * @param $object_id
+	 * @param $meta_key
+	 * @param $meta_value
+	 * @param $prev_value
+	 *
+	 * @return bool
+	 */
 	public function update_meta_field( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
 		global $wpdb;
 

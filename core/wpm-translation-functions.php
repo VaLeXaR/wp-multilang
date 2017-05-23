@@ -1,9 +1,25 @@
 <?php
-
+/**
+ * WPM Translation functions
+ *
+ * Functions for translation, set translations to multidimensional arrays.
+ *
+ * @author        VaLeXaR
+ * @category      Core
+ * @package       WPM/Functions
+ */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Translate url
+ *
+ * @param string $url
+ * @param string $language
+ *
+ * @return string
+ */
 function wpm_translate_url( $url, $language = '' ) {
 
 	$locale         = get_locale();
@@ -61,6 +77,14 @@ function wpm_translate_url( $url, $language = '' ) {
 	return $url;
 }
 
+/**
+ * Translate multilingual string
+ *
+ * @param string $string
+ * @param string $language
+ *
+ * @return array|mixed|string
+ */
 function wpm_translate_string( $string, $language = '' ) {
 
 	$strings = wpm_string_to_ml_array( $string );
@@ -83,7 +107,7 @@ function wpm_translate_string( $string, $language = '' ) {
 
 	$language = wpm_get_language();
 
-	$languages = wpm_get_languages();
+	$languages      = wpm_get_languages();
 	$default_locale = wpm_get_default_locale();
 
 	if ( isset( $strings[ $language ] ) ) {
@@ -95,6 +119,14 @@ function wpm_translate_string( $string, $language = '' ) {
 	}
 }
 
+/**
+ * Translate multidimensional array with multilingual strings
+ *
+ * @param        $value
+ * @param string $language
+ *
+ * @return array|mixed|string
+ */
 function wpm_translate_value( $value, $language = '' ) {
 	if ( is_array( $value ) ) {
 		$result = array();
@@ -110,7 +142,13 @@ function wpm_translate_value( $value, $language = '' ) {
 	}
 }
 
-
+/**
+ * Transform multilingual string to multilingual array
+ *
+ * @param $string
+ *
+ * @return array|mixed|string
+ */
 function wpm_string_to_ml_array( $string ) {
 
 	if ( ! is_string( $string ) ) {
@@ -173,7 +211,13 @@ function wpm_string_to_ml_array( $string ) {
 	return $result;
 }
 
-
+/**
+ * Transform multidimensional array with multilingual strings to multidimensional array with multilingual arrays
+ *
+ * @param $value
+ *
+ * @return array|mixed|string
+ */
 function wpm_value_to_ml_array( $value ) {
 	if ( is_array( $value ) ) {
 		$result = array();
@@ -189,6 +233,13 @@ function wpm_value_to_ml_array( $value ) {
 	}
 }
 
+/**
+ * Transform multilingual array to multilingual string
+ *
+ * @param $strings
+ *
+ * @return string
+ */
 function wpm_ml_array_to_string( $strings ) {
 
 	$string = '';
@@ -216,7 +267,13 @@ function wpm_ml_array_to_string( $strings ) {
 	return $string;
 }
 
-
+/**
+ * Transform multidimensional array with multilingual arrays to multidimensional array with multilingual strings
+ *
+ * @param $value
+ *
+ * @return array|string
+ */
 function wpm_ml_value_to_string( $value ) {
 
 	if ( is_array( $value ) ) {
@@ -235,7 +292,16 @@ function wpm_ml_value_to_string( $value ) {
 	}
 }
 
-
+/**
+ * Set new value to multidimensional array with multilingual arrays by config
+ *
+ * @param        $localize_array
+ * @param        $value
+ * @param null   $config
+ * @param string $lang
+ *
+ * @return array|bool
+ */
 function wpm_set_language_value( $localize_array, $value, $config = null, $lang = '' ) {
 	$languages = wpm_get_languages();
 
@@ -281,6 +347,15 @@ function wpm_set_language_value( $localize_array, $value, $config = null, $lang 
 	return $localize_array;
 }
 
+
+/**
+ * Translate WP object
+ *
+ * @param        $object
+ * @param string $lang
+ *
+ * @return mixed
+ */
 function wpm_translate_object( $object, $lang = '' ) {
 
 	if ( $object instanceof WP_Post || $object instanceof WP_Term ) {
@@ -305,6 +380,13 @@ function wpm_translate_object( $object, $lang = '' ) {
 	return $object;
 }
 
+/**
+ * Untranslate WP_Post object
+ *
+ * @param $post
+ *
+ * @return mixed
+ */
 function wpm_untranslate_post( $post ) {
 
 	if ( $post instanceof WP_Post ) {
@@ -323,6 +405,13 @@ function wpm_untranslate_post( $post ) {
 	return $post;
 }
 
+/**
+ * Check if array is multilingual
+ *
+ * @param $array
+ *
+ * @return bool
+ */
 function wpm_is_ml_array( $array ) {
 
 	if ( ! is_array( $array ) ) {
@@ -340,6 +429,13 @@ function wpm_is_ml_array( $array ) {
 	return true;
 }
 
+/**
+ * Check if string is multilingual
+ *
+ * @param $string
+ *
+ * @return bool
+ */
 function wpm_is_ml_string( $string ) {
 
 	if ( is_array( $string ) || is_bool( $string ) ) {
@@ -355,6 +451,13 @@ function wpm_is_ml_string( $string ) {
 	return false;
 }
 
+/**
+ * Check if value with multilingual strings
+ *
+ * @param $value
+ *
+ * @return bool
+ */
 function wpm_is_ml_value( $value ) {
 
 	if ( is_array( $value ) && ! empty( $value ) ) {

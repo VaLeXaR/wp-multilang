@@ -2,7 +2,7 @@
 /**
  * WP Multilang Uninstall
  *
- * Uninstalling WooCommerce deletes user roles, pages, tables, and options.
+ * Uninstalling  WP Multilang deletes translations and options.
  *
  * @author      VaLeXaR
  * @category    Core
@@ -42,7 +42,7 @@ if ( $uninstall_translations ) {
 
 				foreach ( $posts_config as $post_type => $post_config ) {
 
-					$results      = $wpdb->get_results( $wpdb->prepare( "SELECT ID, post_content, post_title, post_excerpt FROM {$wpdb->posts} WHERE post_type = '%s';", esc_sql( $post_type ) ) );
+					$results = $wpdb->get_results( $wpdb->prepare( "SELECT ID, post_content, post_title, post_excerpt FROM {$wpdb->posts} WHERE post_type = '%s';", esc_sql( $post_type ) ) );
 
 					foreach ( $results as $result ) {
 						$post_content = maybe_serialize( wpm_translate_value( maybe_unserialize( $result->post_content ), $lang ) );

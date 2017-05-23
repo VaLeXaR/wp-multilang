@@ -1,12 +1,12 @@
 <?php
 /**
- * WPMPlugin Formatting
+ * WPM Formatting
  *
  * Functions for formatting data.
  *
  * @author        VaLeXaR
  * @category      Core
- * @package       WPMPlugin/Functions
+ * @package       WPM/Functions
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -32,8 +32,8 @@ function wpm_clean( $var ) {
 /**
  * Merge two arrays.
  *
- * @param array $a1
- * @param array $a2
+ * @param array
+ * @param array
  *
  * @return array
  */
@@ -83,7 +83,14 @@ function wpm_sanitize_term_text_based( $term ) {
 	return trim( wp_unslash( strip_tags( $term ) ) );
 }
 
-
+/**
+ * Diff multidimensional array
+ *
+ * @param $array1
+ * @param $array2
+ *
+ * @return array
+ */
 function wpm_array_diff_recursive( $array1, $array2 ) {
 	$result = array();
 	foreach ( $array1 as $key => $val ) {

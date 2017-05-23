@@ -1,15 +1,24 @@
 <?php
-
+/**
+ * WPM Template functions
+ *
+ * Functions for using in template.
+ *
+ * @author        VaLeXaR
+ * @category      Core
+ * @package       WPM/Functions
+ */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
 /**
- * Language Select Code for non-Widget users
- * @args is a hash array of options, which accepts the following keys:
- *   ‘type’ – one of the values: ‘text’, ‘image’, ‘both’, ‘dropdown’ and ‘custom’, which match the choices on widget admin page.
- *   ‘format’ – needs to be provided if ‘type’ is ‘custom’. Read help text to this option on widget admin page.
- *   ‘id’ – id of widget, which is used as a distinctive string to create CSS entities.
+ * Display language switcher in templates
+ *
+ * @param array $args
+ * @param bool  $echo
+ *
+ * @return string
  */
 function wpm_language_switcher( $args = array(), $echo = true ) {
 	$default = array(

@@ -7,9 +7,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Abstract Widget Class
  *
- * @author   WPMPlugin
+ * @author   VaLeXaR
  * @category Widgets
- * @package  WP_Multilngual/Abstracts
+ * @package  WPM/Abstracts
  * @extends  WP_Widget
  */
 
@@ -195,6 +195,8 @@ abstract class WPM_Widget extends WP_Widget {
 	 *
 	 * @see   WP_Widget->form
 	 * @param array $instance
+	 *
+	 * @return null|string
 	 */
 	public function form( $instance ) {
 
