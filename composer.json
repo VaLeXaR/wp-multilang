@@ -15,7 +15,8 @@
     "multilingual",
     "multilang",
     "languages",
-    "translation"
+    "translation",
+    "multilanguage"
   ],
   "require": {
     "php": ">=5.6.4"
