@@ -97,6 +97,7 @@ Features of the plugin **WP Multilang**:
 * Support configuration files.
 * Support configuration for translate multidimensional arrays.
 * No dublicate posts
+* No subdomens for language version
 
 ####Українська
 
@@ -186,6 +187,7 @@ wpm_translate_value( $value, $language = '' ); // translate multidimensional arr
 * Підтримка файлів конфігурації.
 * Підтримка перекладів багаторівневих масивів налаштувань.
 * Без дублювання записів
+* Без субдоменів для мовних версій
 
 == Installation ==
 
