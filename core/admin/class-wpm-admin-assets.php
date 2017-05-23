@@ -85,7 +85,7 @@ class WPM_Admin_Assets {
 			$params = array(
 				'switcher' => gp_get_template_html( 'language-switcher-customizer.tpl' )
 			);
-			wp_localize_script( 'wpm_language_switcher_customizer', 'wpm_params', $params );
+			wp_localize_script( 'wpm_language_switcher_customizer', 'wpm_language_switcher_params', $params );
 		}
 
 		foreach ( $config['admin_pages'] as $page_id ) {

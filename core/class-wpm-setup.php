@@ -90,7 +90,7 @@ class WPM_Setup {
 	 */
 	public function __construct() {
 		add_filter( 'query_vars', array( $this, 'set_lang_var' ) );
-		add_filter( 'option_home', array( $this, 'set_home_url' ), 0 );
+		add_filter( 'option_home', array( $this, 'set_home_url' ), 99 );
 		add_action( 'change_locale', array( $this, 'change_locale' ), 0 );
 		add_action( 'after_setup_theme', array( $this, 'setup_lang_query' ), 0 );
 		add_action( 'after_switch_theme', __NAMESPACE__ . '\WPM_Config::load_config_run' );
