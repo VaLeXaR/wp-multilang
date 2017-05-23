@@ -1,18 +1,10 @@
-#WP Multilang
-
-Contributors: VaLeXaR   
-Tags: localization, multilanguage, multilingual, translation, multilang   
-Requires at least: 4.7   
-Tested up to: 4.7.5   
-Stable tag: 1.0.0   
-License: GPLv2 or later   
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+# WP Multilang
 
 Multilingual plugin for WordPress.
 
-##== Description ==
+## == Description ==
 
-####English
+#### English
 
 **WP Multilang** is a multilingual plugin for WordPress.
 
@@ -98,7 +90,7 @@ Features of the plugin **WP Multilang**:
 * Support configuration for translate multidimensional arrays.
 * No dublicate posts
 
-####Українська
+#### Українська
 
 **WP Multilang** це плаґін багатомовності для WordPress.
 
@@ -185,13 +177,13 @@ wpm_translate_value( $value, $language = '' ); // translate multidimensional arr
 * Підтримка перекладів багаторівневих масивів налаштувань.
 * Без дублювання записів
 
-##== Installation ==
+## == Installation ==
 
 1. Donload the archive
 2. Unzip to the `/wp-content/plugins/` directory
 3. Activate the plugin through the 'Plugins' menu in WordPress
 
-##== Screenshots ==
+## == Screenshots ==
 
 ![alt Settings Page](assets/screenshots/screenshot-1.png)   
 ![alt Post list page](assets/screenshots/screenshot-2.png)   
@@ -200,8 +192,8 @@ wpm_translate_value( $value, $language = '' ); // translate multidimensional arr
 ![alt Taxonomy edit page](assets/screenshots/screenshot-4.png)   
 
 
-##== Changelog ==
+## == Changelog ==
 
 
-###= 1.0 =
+### = 1.0 =
 * Release of plugin
