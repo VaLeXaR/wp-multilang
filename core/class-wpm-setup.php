@@ -216,16 +216,25 @@ class WPM_Setup {
 				$this->user_language = $match[1];
 			}
 
-			if ( ! defined( 'REST_REQUEST' ) && ! isset( $_COOKIE['wpm_was_here'] ) ) {
+			if ( ! isset( $_COOKIE['wpm_was_here'] ) ) {
+
 				wpm_setcookie( 'wpm_was_here', true, time() + YEAR_IN_SECONDS );
 				$redirect_to_browser_language = apply_filters( 'wpm_redirect_to_browser_language', true );
-				if ( $this->user_language && $redirect_to_browser_language ) {
+
+				if ( $redirect_to_browser_language ) {
+
 					$browser_language = $this->get_browser_language();
+
 					if ( $browser_language != $this->user_language ) {
+
 						$base_url   = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'];
 						$b_home_url = $base_url . '/' . $browser_language;
-						$home_url   = $base_url . '/' . $this->user_language;
-						$url = str_replace( $home_url, $b_home_url, wpm_get_current_url() );
+
+						if ( $this->user_language ) {
+							$base_url   = $base_url . '/' . $this->user_language;
+						}
+
+						$url = str_replace( $base_url, $b_home_url, wpm_get_current_url() );
 						wp_redirect( $url, 301 );
 						exit;
 					}
