@@ -434,7 +434,7 @@ class WPM_Setup {
 
 		foreach ( $prefered_languages as $language => $priority ) {
 			if ( in_array( $language, $languages ) || isset( $languages[ $language ] ) ) {
-				return $language;
+				return $languages[ $language ];
 			}
 		}
 
