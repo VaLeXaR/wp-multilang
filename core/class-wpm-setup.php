@@ -95,7 +95,7 @@ class WPM_Setup {
 		add_action( 'after_setup_theme', array( $this, 'setup_lang_query' ), 0 );
 		add_action( 'after_switch_theme', __NAMESPACE__ . '\WPM_Config::load_config_run' );
 		add_action( 'activated_plugin', __NAMESPACE__ . '\WPM_Config::load_config_run' );
-		add_action( 'upgrader_process_complete', __NAMESPACE__ . '\WPM_Config::load_config_run', 10 );
+		add_action( 'upgrader_process_complete', __NAMESPACE__ . '\WPM_Config::load_config_run' );
 		$this->init();
 	}
 

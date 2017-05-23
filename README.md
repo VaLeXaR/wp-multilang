@@ -22,6 +22,8 @@ Add in the root of your theme or plugin file `wpm-config.json` settings.
 
 Sample configurations can be viewed in a configuration file in the folder configs in the root plugin.
 
+Configuration is updated after switching threads off/on or update any plugins.
+
 It has filters for dynamic application configuration translation add languages.
 
 To disable translation set `null` into the desired configuration.   
@@ -107,6 +109,8 @@ Features of the plugin **WP Multilang**:
 Додайте у корінь своєї теми або плаґіна файл wpm-config.json з налаштуваннями.
 
 Приклади конфігурацій можна подивитися у файлах конфігурацій в теці configs у корені плаґіна.
+
+Конфігурація оновлюється після перемикання теми, вимкнення/увімкнення/оновлення будь-якого плаґіна.
 
 Має фільтри для динамічного застосування конфігурації перекладу, додавання мов.
 
