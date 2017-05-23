@@ -361,6 +361,11 @@ class WPM_Setup {
 	 * @return string
 	 */
 	public function set_home_url( $value ) {
+
+		if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
+			return $value;
+		}
+
 		$language       = $this->get_user_language();
 		$languages      = $this->get_languages();
 		$default_locale = $this->get_default_locale();
