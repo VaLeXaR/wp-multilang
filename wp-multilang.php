@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:     WP Multilang
- * Plugin URI:      https://gitlab.com/valexar/wp-multilang
+ * Plugin URI:      https://github.com/VaLeXaR/wp-multilang
  * Description:     Multilingual plugin for WordPress
  * Author:          Valentyn Riaboshtan
  * Text Domain:     wpm
