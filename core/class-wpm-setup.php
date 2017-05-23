@@ -214,21 +214,18 @@ class WPM_Setup {
 
 			if ( preg_match( '!^/([a-z]{2})(/|$)!i', $path, $match ) ) {
 				$this->user_language = $match[1];
-			} elseif ( ! defined( 'REST_REQUEST' ) && ! isset( $_COOKIE['wpm_first_time'] ) ) {
+			}
+
+			if ( ! defined( 'REST_REQUEST' ) && ! isset( $_COOKIE['wpm_was_here'] ) ) {
+				wpm_setcookie( 'wpm_was_here', true, time() + YEAR_IN_SECONDS );
 				$redirect_to_browser_language = apply_filters( 'wpm_redirect_to_browser_language', true );
-				if ( $redirect_to_browser_language ) {
+				if ( $this->user_language && $redirect_to_browser_language ) {
 					$browser_language = $this->get_browser_language();
-
 					if ( $browser_language != $this->user_language ) {
-
-						$home_url   = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'];
-						$b_home_url = $home_url . '/' . $browser_language;
-
-						if ( $this->user_language ) {
-							$home_url = $home_url . '/' . $this->user_language;
-						}
+						$base_url   = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'];
+						$b_home_url = $base_url . '/' . $browser_language;
+						$home_url   = $base_url . '/' . $this->user_language;
 						$url = str_replace( $home_url, $b_home_url, wpm_get_current_url() );
-						wpm_setcookie( 'wpm_first_time', true, time() + YEAR_IN_SECONDS );
 						wp_redirect( $url, 301 );
 						exit;
 					}
