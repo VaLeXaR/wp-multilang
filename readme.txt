@@ -117,4 +117,4 @@ Compatible with multisite not tested.
 == Changelog ==
 
 = 1.0 =
-* Release of plugin
+* Initial version.
