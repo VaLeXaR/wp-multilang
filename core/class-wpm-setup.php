@@ -155,7 +155,7 @@ class WPM_Setup {
 			}
 
 			foreach ( $installed_languages as $language ) {
-				if ( ! in_array( $language, $this->languages ) ) {
+				if ( ! isset( $this->languages[ $language ] ) && ! isset( $options[$language] ) ) {
 					$translations                 = $this->get_translations();
 					$this->languages[ $language ] = current( $translations[ $language ]['iso'] );
 					$options[ $language ]         = array(
@@ -208,7 +208,7 @@ class WPM_Setup {
 	 */
 	public function set_user_language() {
 
-		if ( ! is_admin() || ! defined( 'REST_REQUEST' ) ) {
+		if ( ! is_admin() && ! defined( 'REST_REQUEST' ) ) {
 
 			$path = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
 

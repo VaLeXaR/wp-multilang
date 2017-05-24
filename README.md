@@ -182,24 +182,3 @@ wpm_translate_value( $value, $language = '' ); // translate multidimensional arr
 * Підтримка перекладів багаторівневих масивів налаштувань.
 * Без дублювання записів
 * Без субдоменів для мовних версій
-
-## == Installation ==
-
-1. Donload the archive
-2. Unzip to the `/wp-content/plugins/` directory
-3. Activate the plugin through the 'Plugins' menu in WordPress
-
-## == Screenshots ==
-
-![alt Settings Page](assets/screenshots/screenshot-1.png)   
-![alt Post list page](assets/screenshots/screenshot-2.png)   
-![alt Post edit page](assets/screenshots/screenshot-5.png)   
-![alt Taxonomy list page](assets/screenshots/screenshot-3.png)   
-![alt Taxonomy edit page](assets/screenshots/screenshot-4.png)   
-
-
-## == Changelog ==
-
-
-### = 1.0 =
-* Release of plugin

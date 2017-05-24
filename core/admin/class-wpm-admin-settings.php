@@ -112,14 +112,12 @@ class WPM_Admin_Settings {
 				} ?>
 				<tr>
 					<td class="wpm-lang-order"><?php echo $i; ?></td>
-					<td class="wpm-lang-status"><input type="hidden" name="wpm_languages[<?php echo $key; ?>][enable]"
-					                                   value="1">
-						<input name="wpm_languages[<?php echo $key; ?>][enable]" type="checkbox"
-						       value="1"<?php checked( $language['enable'] ); ?>
-						       title="<?php esc_attr_e( 'Enable', 'wpm' ); ?>"<?php if ( $key == wpm_get_default_locale() ) { ?> disabled="disabled"<?php } ?>>
-						<?php if ( $key == wpm_get_default_locale() ) { ?><input type="hidden"
-						                                                         name="wpm_languages[<?php echo $key; ?>][enable]"
-						                                                         value="1"><?php } ?>
+					<td class="wpm-lang-status">
+						<input type="hidden" name="wpm_languages[<?php echo $key; ?>][enable]" value="0">
+						<input name="wpm_languages[<?php echo $key; ?>][enable]" type="checkbox" value="1"<?php checked( $language['enable'] ); ?> title="<?php esc_attr_e( 'Enable', 'wpm' ); ?>"<?php if ( $key == wpm_get_default_locale() ) { ?> disabled="disabled"<?php } ?>>
+						<?php if ( $key == wpm_get_default_locale() ) { ?>
+							<input type="hidden" name="wpm_languages[<?php echo $key; ?>][enable]" value="1">
+						<?php } ?>
 					</td>
 					<td class="wpm-lang-locale">
 						<?php if ( in_array( $key, $installed_languages ) ) { ?>
