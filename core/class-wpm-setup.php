@@ -208,7 +208,7 @@ class WPM_Setup {
 	 */
 	public function set_user_language() {
 
-		if ( ! is_admin() || ! defined( 'REST_REQUEST' ) ) {
+		if ( ! is_admin() && ! defined( 'REST_REQUEST' ) ) {
 
 			$path = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
 
