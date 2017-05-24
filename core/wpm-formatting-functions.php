@@ -96,7 +96,9 @@ function wpm_array_diff_recursive( $array1, $array2 ) {
 	foreach ( $array1 as $key => $val ) {
 		if ( isset( $array2[ $key ] ) ) {
 			if ( is_array( $val ) && $array2[ $key ] ) {
-				$result[ $key ] = wpm_array_diff_recursive( $val, $array2[ $key ] );
+				if ( wpm_array_diff_recursive( $val, $array2[ $key ] ) ) {
+					$result[ $key ] = wpm_array_diff_recursive( $val, $array2[ $key ] );
+				}
 			}
 		} else {
 			$result[ $key ] = $val;
