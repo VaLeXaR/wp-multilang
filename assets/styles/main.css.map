@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,sBAAuB;EACrB,UAAU,EAAE,IAAI;EAChB,aAAa,EAAE,CAAC;EAChB,YAAY,EAAE,CAAC;EAEf,wBAAE;IACA,KAAK,EAAE,OAAoB;IAE3B,8BAAQ;MACN,KAAK,ECNH,IAAI;IDSR,4BAAI;MACF,OAAO,EAAE,YAAY;MACrB,YAAY,EAAE,GAAG;EAMnB,gCAAE;IACA,KAAK,EClBH,IAAI",
+"sources": ["components/_lang-switcher.scss","common/_variables.scss"],
+"names": [],
+"file": "main.css"
+}

@@ -1,0 +1,78 @@
+{
+  "post_types": {
+    "product": {},
+    "product_variation": {}
+  },
+  "post_fields": {
+    "_button_text": {},
+    "_purchase_note": {},
+    "_variation_description": {}
+  },
+  "taxonomies": {
+    "product_cat" : {},
+    "product_tag" : {},
+    "product_shipping_class" : {}
+  },
+  "admin_pages": [
+    "woocommerce_page_wc-settings"
+  ],
+  "options": {
+    "woocommerce_shop_page_title": {},
+    "woocommerce_email_footer_text": {},
+    "woocommerce_demo_store_notice": {},
+    "woocommerce_price_thousand_sep": {},
+    "woocommerce_price_decimal_sep": {},
+    "woocommerce_price_display_suffix": {},
+    "woocommerce_email_from_name": {},
+    "woocommerce_new_order_settings": {
+      "subject" : {},
+      "heading" : {}
+    },
+    "woocommerce_customer_completed_order_settings": {
+      "subject" : {},
+      "heading" : {},
+      "subject_downloadable" : {},
+      "heading_downloadable" : {}
+    },
+    "woocommerce_customer_invoice_settings": {
+      "subject" : {},
+      "heading" : {},
+      "subject_paid" : {},
+      "heading_paid" : {}
+    },
+    "woocommerce_customer_new_account_settings": {
+      "subject" : {},
+      "heading" : {}
+    },
+    "woocommerce_customer_note_settings": {
+      "subject" : {},
+      "heading" : {}
+    },
+    "woocommerce_customer_reset_password_settings": {
+      "subject" : {},
+      "heading" : {}
+    },
+    "woocommerce_customer_processing_order_settings": {
+      "subject" : {},
+      "heading" : {}
+    },
+    "woocommerce_cancelled_order_settings": {
+      "subject" : {},
+      "heading" : {}
+    },
+    "woocommerce_failed_order_settings": {
+      "subject" : {},
+      "heading" : {}
+    },
+    "woocommerce_customer_on_hold_order_settings": {
+      "subject" : {},
+      "heading" : {}
+    },
+    "woocommerce_customer_refunded_order_settings": {
+      "subject_full" : {},
+      "heading_full" : {},
+      "subject_partial" : {},
+      "heading_partial" : {}
+    }
+  }
+}

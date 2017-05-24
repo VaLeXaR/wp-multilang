@@ -1,0 +1,53 @@
+.wpm-language-switcher {
+  left: 48px;
+  padding-right: 0;
+  text-align: center;
+
+  &:before {
+    display: none;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  &:hover {
+    .lang-dropdown {
+      display: block;
+    }
+  }
+
+  .lang-dropdown {
+    display: none;
+  }
+
+  .lang-main {
+    line-height: 41px;
+
+    img {
+      position: relative;
+      top: -1px;
+    }
+  }
+}
+
+.lang-dropdown {
+  background-color: $white;
+
+  ul {
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+
+  li {
+    margin-bottom: 0;
+
+    a {
+      display: block;
+
+      &:hover {
+        background-color: $hover-color;
+      }
+    }
+  }
+}

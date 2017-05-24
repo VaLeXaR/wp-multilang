@@ -1,0 +1,41 @@
+{
+  "post_fields": {
+    "_form": {},
+    "_mail": {
+      "body" : {},
+      "subject" : {}
+    },
+    "_mail_2": {
+      "body" : {},
+      "subject" : {}
+    },
+    "_messages": {
+      "mail_sent_ok" : {},
+      "mail_sent_ng" : {},
+      "validation_error" : {},
+      "spam" : {},
+      "accept_terms" : {},
+      "invalid_required" : {},
+      "invalid_too_long" : {},
+      "invalid_too_short" : {},
+      "invalid_date" : {},
+      "date_too_early" : {},
+      "date_too_late" : {},
+      "upload_failed" : {},
+      "upload_file_type_invalid" : {},
+      "upload_file_too_large" : {},
+      "upload_failed_php_error" : {},
+      "invalid_number" : {},
+      "number_too_small" : {},
+      "number_too_large" : {},
+      "quiz_answer_not_correct" : {},
+      "captcha_not_match" : {},
+      "invalid_email" : {},
+      "invalid_url" : {},
+      "invalid_tel" : {}
+    }
+  },
+  "admin_pages": [
+    "toplevel_page_wpcf7"
+  ]
+}
