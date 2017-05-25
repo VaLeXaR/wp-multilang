@@ -15,6 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @package  WPM/Classes
  * @category Class
  * @author   VaLeXaR
+ * @version  1.0.1
  */
 class WPM_AJAX {
 
@@ -121,7 +122,10 @@ class WPM_AJAX {
 		}
 
 		unset( $options[ $locale ] );
-		update_option( 'wpm_languages', $options );
+
+		global $wpdb;
+		$wpdb->update( $wpdb->options, array( 'option_value' => maybe_serialize( $options ) ), array( 'option_name' => 'wpm_languages' ) );
+
 		$files_delete                  = array();
 		$installed_plugin_translations = wp_get_installed_translations( 'plugins' );
 
