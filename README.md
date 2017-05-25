@@ -8,7 +8,7 @@ Multilingual plugin for WordPress.
 
 **WP Multilang** is a multilingual plugin for WordPress.
 
-Translations of text fields miltimedia files, menus, titles and text widgets.
+Translations of post types, taxonomies, meta fields, options, text fields in miltimedia files, menus, titles and text field in widgets.
 
 **WP Multilang** compatible out of the box with the plugin:
 * ACF, ACF Pro (ACF Pro supported in translating `object field`)
