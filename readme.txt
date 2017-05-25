@@ -116,9 +116,9 @@ Compatible with multisite not tested.
 
 == Changelog ==
 
-= 1.0 =
-* Initial version.
-
 = 1.0.1 =
 * fix update options when deleting language
 * fix set edit lang cookie
+
+= 1.0 =
+* Initial version.
