@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.7
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -116,9 +116,12 @@ Compatible with multisite not tested.
 
 == Changelog ==
 
-= 1.0 =
-* Initial version.
+= 1.0.2 =
+* fix save translation for enable languages without deleting translations for disable languages
 
 = 1.0.1 =
 * fix update options when deleting language
 * fix set edit lang cookie
+
+= 1.0 =
+* Initial version.

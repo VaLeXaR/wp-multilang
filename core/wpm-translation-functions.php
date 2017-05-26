@@ -7,6 +7,7 @@
  * @author        VaLeXaR
  * @category      Core
  * @package       WPM/Functions
+ * @version       1.0.2
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -166,7 +167,7 @@ function wpm_string_to_ml_array( $string ) {
 
 	$result = array();
 
-	$languages = wpm_get_languages();
+	$languages = wpm_get_all_languages();
 
 	foreach ( $languages as $language ) {
 		$result[ $language ] = '';
@@ -248,7 +249,7 @@ function wpm_ml_array_to_string( $strings ) {
 		return $string;
 	}
 
-	$languages = wpm_get_languages();
+	$languages = wpm_get_all_languages();
 	foreach ( $strings as $key => $value ) {
 		if ( in_array( $key, $languages ) && ! empty( $value ) ) {
 			if ( wpm_is_ml_string( $value ) ) {
@@ -418,7 +419,7 @@ function wpm_is_ml_array( $array ) {
 		return false;
 	}
 
-	$languages = wpm_get_languages();
+	$languages = wpm_get_all_languages();
 
 	foreach ( $array as $key => $item ) {
 		if ( ! is_string( $key ) || ! in_array( $key, $languages ) ) {

@@ -5,6 +5,7 @@
  * @author   VaLeXaR
  * @category Admin
  * @package  WPM/Core/Admin
+ * @version  1.0.2
  */
 
 namespace WPM\Core\Admin;
@@ -193,7 +194,7 @@ class WPM_Admin_Posts {
 			$text      = $post->post_title . $post->post_content;
 			$strings   = wpm_value_to_ml_array( $text );
 			$options   = wpm_get_options();
-			$languages = wpm_get_languages();
+			$languages = wpm_get_all_languages();
 
 			foreach ( $languages as $locale => $language ) {
 				if ( isset( $strings[ $language ] ) && ! empty( $strings[ $language ] ) ) {
