@@ -6,7 +6,7 @@
  * @author     VaLeXaR
  * @category   Admin
  * @package    WPM/Core/Admin
- * @version    1.0.1
+ * @version    1.1.2
  */
 
 namespace WPM\Core\Admin;
@@ -24,6 +24,7 @@ class WPM_Admin {
 	 * Constructor.
 	 */
 	public function __construct() {
+		add_action( 'init', array( $this, 'includes' ) );
 		add_action( 'admin_init', array( $this, 'buffer' ), 1 );
 		add_action( 'admin_init', array( $this, 'init' ), 1 );
 		add_action( 'admin_head', array( $this, 'set_edit_lang' ), 0 );
@@ -36,6 +37,13 @@ class WPM_Admin {
 	 */
 	public function buffer() {
 		ob_start();
+	}
+
+	/**
+	 * Include any classes we need within admin.
+	 */
+	public function includes() {
+		include_once( dirname( __FILE__ ) . '/wpm-admin-functions.php' );
 	}
 
 	/**
