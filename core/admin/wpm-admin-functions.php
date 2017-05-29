@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Translate response attachment
+ * use get_post
  *
  * @param $response
  *

@@ -33,7 +33,7 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 	 * Main WP_Multilang.
 	 *
 	 * @class   WPM
-	 * @version 1.1.1
+	 * @version 1.1.2
 	 */
 	final class WP_Multilang {
 
@@ -42,7 +42,7 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 		 *
 		 * @var string
 		 */
-		public $version = '1.1.1';
+		public $version = '1.1.2';
 
 		/**
 		 * The single instance of the class.
