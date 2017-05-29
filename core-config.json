@@ -26,5 +26,11 @@
     "blogname": {},
     "blogdescription": {}
   },
-  "widgets": {}
+  "widgets": {
+    "media_image": {
+      "caption": {},
+      "alt": {},
+      "image_title": {}
+    }
+  }
 }

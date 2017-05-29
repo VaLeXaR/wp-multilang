@@ -47,7 +47,7 @@ class WPM_Admin_Widgets {
 			return $value;
 		}
 
-		$widget_name    = substr( $option, 6 );
+		$widget_name    = substr( $option, 7 );
 		$config         = wpm_get_config();
 		$default_fields = array(
 			'title' => array(),
