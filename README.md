@@ -15,6 +15,7 @@ Translations of post types, taxonomies, meta fields, options, text fields in mil
 * WooCommerce
 * Yoast Seo
 * Contact Form 7
+* WPBakery Visual Composer
 
 Supports configuration via json.
 
