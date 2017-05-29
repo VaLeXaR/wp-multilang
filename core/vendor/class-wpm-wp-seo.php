@@ -2,6 +2,7 @@
 /**
  * Class for capability with Yoast Seo Plugin
  */
+
 namespace WPM\Core\Vendor;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -10,8 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( defined( 'WPSEO_VERSION' ) ) {
 	/**
-	 * @class WPM_Yoast_Seo
-	 * @package WPM\Core\Vendor
+	 * @class    WPM_Yoast_Seo
+	 * @package  WPM\Core\Vendor
 	 * @category Class
 	 * @author   VaLeXaR
 	 */
@@ -23,6 +24,7 @@ if ( defined( 'WPSEO_VERSION' ) ) {
 		public function __construct() {
 			add_filter( 'wpm_option_wpseo_titles_config', array( $this, 'set_posts_config' ) );
 			add_filter( 'wpseo_title', 'wpm_translate_string', 0 );
+			remove_filter( 'update_post_metadata', array( 'WPSEO_Meta', 'remove_meta_if_default' ), 10 );
 		}
 
 		/**
@@ -40,6 +42,7 @@ if ( defined( 'WPSEO_VERSION' ) ) {
 				$post_config = array(
 					"title-{$post_type}"              => array(),
 					"metadesc-{$post_type}"           => array(),
+					"metakey-{$post_type}"           => array(),
 					"title-ptarchive-{$post_type}"    => array(),
 					"metadesc-ptarchive-{$post_type}" => array(),
 				);

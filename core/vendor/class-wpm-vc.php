@@ -36,7 +36,7 @@ if ( defined( 'WPB_VC_VERSION' ) ) {
 		}
 
 		public function enqueue_js_frontend() {
-			wpm_enqueue_js("
+			wpm_enqueue_js( "
 				(function ( $ ) {
 					$( '#vc_vendor_wpm_langs_front' ).change( function () {
 						vc.closeActivePanel();
@@ -52,7 +52,7 @@ if ( defined( 'WPB_VC_VERSION' ) ) {
 					};
 				
 				})( window.jQuery );
-			");
+			" );
 		}
 
 		/**

@@ -2,9 +2,12 @@
   "post_fields": {
     "_yoast_wpseo_content_score": {},
     "_yoast_wpseo_title": {},
+    "_yoast_wpseo_bctitle": {},
     "_yoast_wpseo_metadesc": {},
-    "_yoast_wpseo_focuskw_text_input": {},
-    "_yoast_wpseo_focuskw": {}
+    "_yoast_wpseo_metakeywords": {},
+    "_yoast_wpseo_focuskw": {},
+    "_yoast_wpseo_opengraph-description": {},
+    "_yoast_wpseo_google-plus-description": {}
   },
   "admin_pages": [
     "seo_page_wpseo_titles",
@@ -14,8 +17,10 @@
     "wpseo_titles": {
       "title-home-wpseo" : {},
       "metadesc-home-wpseo" : {},
+      "metakey-home-wpseo" : {},
       "title-author-wpseo" : {},
       "metadesc-author-wpseo" : {},
+      "metakey-author-wpseo" : {},
       "title-archive-wpseo" : {},
       "metadesc-archive-wpseo" : {},
       "title-search-wpseo" : {},
@@ -23,6 +28,7 @@
     },
     "wpseo_internallinks": {
       "breadcrumbs-home" : {},
+      "breadcrumbs-prefix" : {},
       "breadcrumbs-archiveprefix" : {},
       "breadcrumbs-searchprefix" : {},
       "breadcrumbs-404crumb" : {}
@@ -30,10 +36,6 @@
     "wpseo_rss": {
       "rssbefore" : {},
       "rssafter" : {}
-    },
-    "wpseo_social": {
-      "og_frontpage_title" : {},
-      "og_frontpage_desc" : {}
     },
     "wpseo_taxonomy_meta" : {
       "wpm_each" : {

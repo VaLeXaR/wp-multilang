@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WPM_Setup
  * @package  WPM\Core
  * @author   VaLeXaR
+ * @version  1.1.1
  */
 class WPM_Setup {
 
@@ -96,6 +97,7 @@ class WPM_Setup {
 		add_action( 'after_switch_theme', __NAMESPACE__ . '\WPM_Config::load_config_run' );
 		add_action( 'activated_plugin', __NAMESPACE__ . '\WPM_Config::load_config_run' );
 		add_action( 'upgrader_process_complete', __NAMESPACE__ . '\WPM_Config::load_config_run' );
+		add_action( 'wpm_init', array( $this, 'load_vendor' ) );
 		$this->init();
 	}
 
@@ -105,7 +107,6 @@ class WPM_Setup {
 	 */
 	public function init() {
 		$this->set_locale();
-		$this->load_vendor();
 	}
 
 
@@ -155,7 +156,7 @@ class WPM_Setup {
 			}
 
 			foreach ( $installed_languages as $language ) {
-				if ( ! isset( $this->languages[ $language ] ) && ! isset( $options[$language] ) ) {
+				if ( ! isset( $this->languages[ $language ] ) && ! isset( $options[ $language ] ) ) {
 					$translations                 = $this->get_translations();
 					$this->languages[ $language ] = current( $translations[ $language ]['iso'] );
 					$options[ $language ]         = array(
@@ -231,7 +232,7 @@ class WPM_Setup {
 						$b_home_url = $base_url . '/' . $browser_language;
 
 						if ( $this->user_language ) {
-							$base_url   = $base_url . '/' . $this->user_language;
+							$base_url = $base_url . '/' . $this->user_language;
 						}
 
 						$url = str_replace( $base_url, $b_home_url, wpm_get_current_url() );
@@ -400,7 +401,7 @@ class WPM_Setup {
 	/**
 	 * Load vendor classes
 	 */
-	private function load_vendor() {
+	public function load_vendor() {
 		$vendor_path = ( dirname( WPM_PLUGIN_FILE ) . '/core/vendor/' );
 		foreach ( glob( $vendor_path . '*.php' ) as $vendor_file ) {
 			require_once( $vendor_file );
