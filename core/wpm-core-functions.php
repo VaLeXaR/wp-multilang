@@ -67,6 +67,21 @@ function wpm_asset_path( $filename ) {
 }
 
 /**
+ * Queue some JavaScript code to be output in the footer.
+ *
+ * @param string $code
+ */
+function wpm_enqueue_js( $code ) {
+	global $wc_queued_js;
+
+	if ( empty( $wc_queued_js ) ) {
+		$wc_queued_js = '';
+	}
+
+	$wc_queued_js .= "\n" . $code . "\n";
+}
+
+/**
  * Output any queued javascript code in the footer.
  */
 function wpm_print_js() {
@@ -78,7 +93,7 @@ function wpm_print_js() {
 		$wpm_queued_js = preg_replace( '/&#(x)?0*(?(1)27|39);?/i', "'", $wpm_queued_js );
 		$wpm_queued_js = str_replace( "\r", '', $wpm_queued_js );
 
-		$js = "<!-- WPMPlugin JavaScript -->\n<script type=\"text/javascript\">\njQuery(function($) { $wpm_queued_js });\n</script>\n";
+		$js = "<!-- WPM JavaScript -->\n<script type=\"text/javascript\">\njQuery(function($) { $wpm_queued_js });\n</script>\n";
 
 		/**
 		 * game_portal_queued_js filter.
