@@ -63,6 +63,7 @@ class WPM_Admin_Posts {
 
 	/**
 	 * Fix for translate post in edit post page
+	 * use get_post
 	 */
 	public function translate_post() {
 		global $post;

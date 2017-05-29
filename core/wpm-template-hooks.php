@@ -31,6 +31,7 @@ add_action( 'wp_head', 'wpm_set_meta_languages', 0 );
 
 /**
  * Fix for generation image.
+ * use get_post
  *
  * @param $html
  * @param $attr
