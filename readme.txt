@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.7
-Stable tag: 1.0.2
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -31,6 +31,7 @@ WP Multilang compatible out of the box with the plugin:
 * WooCommerce
 * Yoast Seo
 * Contact Form 7
+* WPBakery Visual Composer
 
 Supports configuration via json.
 
@@ -115,6 +116,10 @@ Compatible with multisite not tested.
 5. Post edit page
 
 == Changelog ==
+
+= 1.1.0 =
++ add support media_image widget from WP4.8
++ add support WPBakery Visual Composer
 
 = 1.0.2 =
 * fix save translation for enable languages without deleting translations for disable languages
