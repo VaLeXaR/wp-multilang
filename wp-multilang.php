@@ -70,7 +70,6 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 
 		/**
 		 * Cloning is forbidden.
-		 * @since 2.1
 		 */
 		public function __clone() {
 			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wpm' ), '2.1' );
@@ -78,7 +77,6 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 
 		/**
 		 * Unserializing instances of this class is forbidden.
-		 * @since 2.1
 		 */
 		public function __wakeup() {
 			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wpm' ), '2.1' );
@@ -97,7 +95,6 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 
 		/**
 		 * Hook into actions and filters.
-		 * @since  2.3
 		 */
 		private function init_hooks() {
 			register_activation_hook( __FILE__, array( 'WPM\Core\WPM_Install', 'install' ) );

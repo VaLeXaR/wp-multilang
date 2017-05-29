@@ -41,6 +41,7 @@ class WPM_Admin {
 
 	/**
 	 * Include any classes we need within admin.
+	 * @since 1.1.2
 	 */
 	public function includes() {
 		include_once( dirname( __FILE__ ) . '/wpm-admin-functions.php' );
