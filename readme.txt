@@ -31,6 +31,7 @@ WP Multilang compatible out of the box with the plugin:
 * WooCommerce
 * Yoast Seo
 * Contact Form 7
+* WPBakery Visual Composer
 
 Supports configuration via json.
 
@@ -118,6 +119,7 @@ Compatible with multisite not tested.
 
 = 1.1.0 =
 + add support media_image widget from WP4.8
++ add support WPBakery Visual Composer
 
 = 1.0.2 =
 * fix save translation for enable languages without deleting translations for disable languages
