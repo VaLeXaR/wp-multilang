@@ -17,7 +17,6 @@
     "woocommerce_page_wc-settings"
   ],
   "options": {
-    "woocommerce_shop_page_title": {},
     "woocommerce_email_footer_text": {},
     "woocommerce_demo_store_notice": {},
     "woocommerce_price_thousand_sep": {},

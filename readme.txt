@@ -117,6 +117,10 @@ Compatible with multisite not tested.
 
 == Changelog ==
 
+= 1.1.1 =
+* change load vendor action
+* fix saving empty meta for Yoast SEO
+
 = 1.1.0 =
 + add support media_image widget from WP4.8
 + add support WPBakery Visual Composer
