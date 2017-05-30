@@ -95,19 +95,23 @@ class WPM_Admin_Assets {
 		}
 
 
-		$posts_config                       = $config['post_types'];
-		$posts_config                       = apply_filters( "wpm_posts_config", $posts_config );
-		$posts_config[ $screen->post_type ] = apply_filters( "wpm_posts_{$screen->post_type}_config", isset( $posts_config[ $screen->post_type ] ) ? $posts_config[ $screen->post_type ] : null );
+		$posts_config = $config['post_types'];
+		$posts_config = apply_filters( "wpm_posts_config", $posts_config );
+		if ( ! is_null ( $screen ) ) {
+			$posts_config[ $screen->post_type ] = apply_filters( "wpm_posts_{$screen->post_type}_config", isset( $posts_config[ $screen->post_type ] ) ? $posts_config[ $screen->post_type ] : null );
+		}
 
-		if ( isset( $posts_config[ $screen->post_type ] ) && ! is_null( $posts_config [ $screen->post_type ] ) ) {
+		if (! is_null ( $screen ) && isset( $posts_config[ $screen->post_type ] ) &&  ! is_null( $posts_config [ $screen->post_type ] ) ) {
 			$this->set_language_switcher();
 		}
 
-		$taxonomies_config                      = $config['taxonomies'];
-		$taxonomies_config                      = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
-		$taxonomies_config[ $screen->taxonomy ] = apply_filters( "wpm_taxonomy_{$screen->taxonomy}_config", isset( $taxonomies_config[ $screen->taxonomy ] ) ? $taxonomies_config[ $screen->taxonomy ] : null );
+		$taxonomies_config = $config['taxonomies'];
+		$taxonomies_config = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
+		if ( ! is_null ( $screen ) ) {
+			$taxonomies_config[ $screen->taxonomy ] = apply_filters( "wpm_taxonomy_{$screen->taxonomy}_config", isset( $taxonomies_config[ $screen->taxonomy ] ) ? $taxonomies_config[ $screen->taxonomy ] : null );
+		}
 
-		if ( isset( $taxonomies_config[ $screen->taxonomy ] ) && ! is_null( $taxonomies_config[ $screen->taxonomy ] ) ) {
+		if (! is_null ( $screen ) && isset( $taxonomies_config[ $screen->taxonomy ] ) &&  ! is_null( $taxonomies_config[ $screen->taxonomy ] ) ) {
 			$this->set_language_switcher();
 		}
 
