@@ -90,10 +90,8 @@ class WPM_Admin_Assets {
 
 		$admin_pages_config = apply_filters( 'wpm_admin_pages', $config['admin_pages'] );
 
-		foreach ( $admin_pages_config as $page_id ) {
-			if ( $screen_id == $page_id ) {
-				$this->set_language_switcher();
-			}
+		if ( in_array( $screen_id, $admin_pages_config ) ) {
+			$this->set_language_switcher();
 		}
 
 

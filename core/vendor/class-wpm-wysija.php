@@ -55,8 +55,10 @@ if ( defined( 'WYSIJA' ) ) {
 			$old_config = wpm_value_to_ml_array( maybe_unserialize( base64_decode( get_option( 'wysija' ) ) ) );
 
 			foreach ( $this->translate_config as $key => $item_translate_config ) {
-				$new_value                            = wpm_set_language_value( $old_config[ $key ], $hook_settings_before_save['REQUEST']['wysija']['config'][ $key ], $item_translate_config );
-				$_REQUEST['wysija']['config'][ $key ] = wpm_ml_value_to_string( $new_value );
+				if ( isset( $old_config[ $key ] ) ) {
+					$new_value                            = wpm_set_language_value( $old_config[ $key ], $hook_settings_before_save['REQUEST']['wysija']['config'][ $key ], $item_translate_config );
+					$_REQUEST['wysija']['config'][ $key ] = wpm_ml_value_to_string( $new_value );
+				}
 			}
 
 			return $hook_settings_before_save1;
