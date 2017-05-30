@@ -13,10 +13,15 @@ if ( defined( 'WYSIJA' ) ) {
 
 	/**
 	 * Class WPM_Wysija
-	 * @since 1.1.2
+	 * @since 1.2.0
 	 */
 	class WPM_Wysija {
 
+		/**
+		 * Fields for multilanguage
+		 *
+		 * @var array
+		 */
 		public $translate_config = array(
 			'company_address'               => array(),
 			'commentform_linkname'          => array(),
@@ -32,10 +37,19 @@ if ( defined( 'WYSIJA' ) ) {
 		 */
 		public function __construct() {
 			add_filter( 'hook_settings_before_save', array( $this, 'save_settings' ), 10, 2 );
+			add_filter( 'wpm_admin_pages', array( $this, 'add_lang_switcher' ) );
 			$this->translate_settings();
 		}
 
 
+		/**
+		 * Save settings
+		 *
+		 * @param $hook_settings_before_save1
+		 * @param $hook_settings_before_save
+		 *
+		 * @return mixed
+		 */
 		public function save_settings( $hook_settings_before_save1, $hook_settings_before_save ) {
 
 			$old_config = wpm_value_to_ml_array( maybe_unserialize( base64_decode( get_option( 'wysija' ) ) ) );
@@ -49,6 +63,9 @@ if ( defined( 'WYSIJA' ) ) {
 		}
 
 
+		/**
+		 * Translate Wysija options;
+		 */
 		public function translate_settings() {
 			global $modelConf;
 			foreach ( $this->translate_config as $key => $item_translate_config ) {
@@ -56,6 +73,20 @@ if ( defined( 'WYSIJA' ) ) {
 					$modelConf->values[ $key ] = wpm_translate_value( $modelConf->values[ $key ] );
 				}
 			}
+		}
+
+
+		/**
+		 * Add Wysija settings page to config array for display language switcher
+		 *
+		 * @param $config
+		 *
+		 * @return array
+		 */
+		public function add_lang_switcher( $config ) {
+			$config[] = 'mailpoet_page_wysija_config';
+
+			return $config;
 		}
 	}
 
