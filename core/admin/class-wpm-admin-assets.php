@@ -83,7 +83,7 @@ class WPM_Admin_Assets {
 			wp_enqueue_style( 'wpm_language_switcher' );
 			wp_enqueue_script( 'wpm_language_switcher_customizer' );
 			$params = array(
-				'switcher' => gp_get_template_html( 'language-switcher-customizer.php' )
+				'switcher' => wpm_get_template_html( 'language-switcher-customizer.php' )
 			);
 			wp_localize_script( 'wpm_language_switcher_customizer', 'wpm_language_switcher_params', $params );
 		}
@@ -123,7 +123,7 @@ class WPM_Admin_Assets {
 		wp_enqueue_style( 'wpm_language_switcher' );
 		wp_enqueue_script( 'wpm_language_switcher' );
 		$params = array(
-			'switcher' => gp_get_template_html( 'language-switcher.php' )
+			'switcher' => wpm_get_template_html( 'language-switcher.php' )
 		);
 		wp_localize_script( 'wpm_language_switcher', 'wpm_language_switcher_params', $params );
 	}

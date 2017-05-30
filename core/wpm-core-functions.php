@@ -26,7 +26,7 @@ include( 'wpm-template-functions.php' );
  *
  * @return bool|string
  */
-function gp_get_template_html( $path ) {
+function wpm_get_template_html( $path ) {
 	ob_start();
 
 	$located = WPM()->template_path() . $path;

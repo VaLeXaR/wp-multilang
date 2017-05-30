@@ -16,6 +16,7 @@ if ( class_exists( 'acf' ) ) {
 	 * @package  WPM\Core\Vendor
 	 * @category Class
 	 * @author   VaLeXaR
+	 * @version  1.0.1
 	 */
 	class WPM_Acf {
 
@@ -136,7 +137,6 @@ if ( class_exists( 'acf' ) ) {
 				'default_value' => array()
 			);
 
-			$field     = wpm_value_to_ml_array( $field );
 			$new_field = wpm_set_language_value( $old_field, $field, $default_config );
 			$field     = wpm_array_merge_recursive( $field, $new_field );
 			$field     = wpm_ml_value_to_string( $field );

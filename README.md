@@ -60,7 +60,7 @@ Ideal for developers.
 
 For a switch as add code to this topic
 ```php
-<?php if ( function_exists ( 'wpm_language_switcher' ) ) wpm_language_switcher (); ?>
+if ( function_exists ( 'wpm_language_switcher' ) ) wpm_language_switcher ();
 ```
 Available features for translation:
 ```php
