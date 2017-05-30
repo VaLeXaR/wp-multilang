@@ -1,6 +1,6 @@
 <?php
 /**
- * Class for capability with Visual Composer
+ * Class for capability with MailPoet
  */
 
 namespace WPM\Core\Vendor;
