@@ -38,9 +38,7 @@ if ( defined( 'WYSIJA' ) ) {
 
 		public function save_settings( $hook_settings_before_save1, $hook_settings_before_save ) {
 
-			remove_filter( 'option_wysija', 'wpm_get_wysija_settings' );
 			$old_config = wpm_value_to_ml_array( maybe_unserialize( base64_decode( get_option( 'wysija' ) ) ) );
-			add_filter( 'option_wysija', 'wpm_get_wysija_settings' );
 
 			foreach ( $this->translate_config as $key => $item_translate_config ) {
 				$new_value                            = wpm_set_language_value( $old_config[ $key ], $hook_settings_before_save['REQUEST']['wysija']['config'][ $key ], $item_translate_config );
