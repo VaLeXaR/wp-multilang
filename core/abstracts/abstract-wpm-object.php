@@ -89,11 +89,6 @@ abstract class WPM_Object {
 			}
 		}
 
-//		if ($meta_key =='panels_data') {
-//			d( $values[0]['widgets']);
-//			die();
-//		}
-
 		if ( $values ) {
 			return $values;
 		}
