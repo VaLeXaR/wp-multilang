@@ -27,9 +27,9 @@ if ( defined( 'WYSIJA' ) ) {
 			'commentform_linkname'          => array(),
 			'viewinbrowser_linkname'        => array(),
 			'unsubscribe_linkname'          => array(),
+			'manage_subscriptions_linkname' => array(),
 			'confirm_email_title'           => array(),
-			'confirm_email_body'            => array(),
-			'manage_subscriptions_linkname' => array()
+			'confirm_email_body'            => array()
 		);
 
 		/**

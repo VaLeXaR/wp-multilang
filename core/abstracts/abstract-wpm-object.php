@@ -54,6 +54,13 @@ abstract class WPM_Object {
 			return $value;
 		}
 
+		$meta_config = apply_filters( "wpm_{$meta_key}_meta_config", $object_fields_config[ $meta_key ], $object_id );
+		$meta_config = apply_filters( "wpm_{$this->object_type}_meta_{$meta_key}_config", $meta_config, $object_id );
+
+		if ( is_null( $meta_config ) ) {
+			return $value;
+		}
+
 		$column    = sanitize_key( $this->object_type . '_id' );
 		$id_column = 'user' == $this->object_type ? 'umeta_id' : 'meta_id';
 
@@ -81,6 +88,11 @@ abstract class WPM_Object {
 				$values[] = $value;
 			}
 		}
+
+//		if ($meta_key =='panels_data') {
+//			d( $values[0]['widgets']);
+//			die();
+//		}
 
 		if ( $values ) {
 			return $values;
@@ -114,6 +126,11 @@ abstract class WPM_Object {
 
 		$meta_config = apply_filters( "wpm_{$meta_key}_meta_config", $object_fields_config[ $meta_key ], $meta_value, $object_id );
 		$meta_config = apply_filters( "wpm_{$this->object_type}_meta_{$meta_key}_config", $meta_config, $meta_value, $object_id );
+
+		if ( is_null( $meta_config ) ) {
+			return $check;
+		}
+
 		$table       = $wpdb->{$this->object_table};
 		$column      = sanitize_key( $this->object_type . '_id' );
 		$id_column   = 'user' == $this->object_type ? 'umeta_id' : 'meta_id';
