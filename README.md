@@ -16,6 +16,8 @@ Translations of post types, taxonomies, meta fields, options, text fields in mil
 * Yoast Seo
 * Contact Form 7
 * WPBakery Visual Composer
+* MailPoet (In part. Own form for each language. Settings is translated.)
+* Page Builder by SiteOrigin
 
 Supports configuration via json.
 

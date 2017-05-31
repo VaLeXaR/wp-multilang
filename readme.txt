@@ -33,6 +33,7 @@ WP Multilang compatible out of the box with the plugin:
 * Contact Form 7
 * WPBakery Visual Composer
 * MailPoet (In part. Own form for each language. Settings is translated.)
+* Page Builder by SiteOrigin
 
 Supports configuration via json.
 
