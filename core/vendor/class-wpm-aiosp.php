@@ -59,7 +59,23 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 			}
 
 			if ( in_array( $meta_key, $this->meta_fields ) ) {
-				return true;
+				global $wpdb;
+
+				$old_value = $wpdb->get_var( $wpdb->prepare(
+					"SELECT meta_value FROM {$wpdb->postmeta} WHERE meta_key = %s AND post_id = %d;",
+					$meta_key, $object_id ) );
+
+				if ($meta_key == '_aioseop_title') {
+					d($old_value, $_POST['aiosp_title']);
+					die();
+				}
+
+				// aiosp_title
+				// aiosp_description
+
+				if ( $old_value && $meta_value ) {
+					return update_post_meta( $object_id, $meta_key, $meta_value);
+				}
 			}
 
 			return $check;

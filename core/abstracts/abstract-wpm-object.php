@@ -150,11 +150,10 @@ abstract class WPM_Object {
 
 		$meta_ids = $wpdb->get_col( $wpdb->prepare( "SELECT $id_column FROM $table WHERE meta_key = %s AND $column = %d", $meta_key, $object_id ) );
 		if ( empty( $meta_ids ) ) {
-			$meta_value = wpm_set_language_value( array(), $meta_value, $meta_config );
-			$meta_value = wpm_ml_value_to_string( $meta_value );
-
 			return add_metadata( $this->object_type, $object_id, $meta_key, $meta_value );
 		}
+
+		$_meta_value = $meta_value;
 
 		if ( ! wpm_is_ml_value( $meta_value ) ) {
 			$old_value  = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->{$this->object_table}} WHERE meta_key = %s AND {$column} = %d LIMIT 1;", $meta_key, $object_id ) );
@@ -180,6 +179,37 @@ abstract class WPM_Object {
 			$where['meta_value'] = $prev_value;
 		}
 
+		foreach ( $meta_ids as $meta_id ) {
+			/**
+			 * Fires immediately before updating metadata of a specific type.
+			 *
+			 * The dynamic portion of the hook, `$meta_type`, refers to the meta
+			 * object type (comment, post, or user).
+			 *
+			 * @since 2.9.0
+			 *
+			 * @param int    $meta_id    ID of the metadata entry to update.
+			 * @param int    $object_id  Object ID.
+			 * @param string $meta_key   Meta key.
+			 * @param mixed  $meta_value Meta value.
+			 */
+			do_action( "update_{$meta_type}_meta", $meta_id, $object_id, $meta_key, $_meta_value );
+
+			if ( 'post' == $meta_type ) {
+				/**
+				 * Fires immediately before updating a post's metadata.
+				 *
+				 * @since 2.9.0
+				 *
+				 * @param int    $meta_id    ID of metadata entry to update.
+				 * @param int    $object_id  Object ID.
+				 * @param string $meta_key   Meta key.
+				 * @param mixed  $meta_value Meta value.
+				 */
+				do_action( 'update_postmeta', $meta_id, $object_id, $meta_key, $meta_value );
+			}
+		}
+
 		$result = $wpdb->update( $table, $data, $where );
 
 		if ( ! $result ) {
@@ -188,7 +218,117 @@ abstract class WPM_Object {
 
 		wp_cache_delete( $object_id . '_' . $meta_key, $this->object_type . '_wpm_meta' );
 
+		foreach ( $meta_ids as $meta_id ) {
+			/**
+			 * Fires immediately after updating metadata of a specific type.
+			 *
+			 * The dynamic portion of the hook, `$meta_type`, refers to the meta
+			 * object type (comment, post, or user).
+			 *
+			 * @since 2.9.0
+			 *
+			 * @param int    $meta_id    ID of updated metadata entry.
+			 * @param int    $object_id  Object ID.
+			 * @param string $meta_key   Meta key.
+			 * @param mixed  $meta_value Meta value.
+			 */
+			do_action( "updated_{$this->object_type}_meta", $meta_id, $object_id, $meta_key, $_meta_value );
+
+			if ( 'post' == $this->object_type ) {
+				/**
+				 * Fires immediately after updating a post's metadata.
+				 *
+				 * @since 2.9.0
+				 *
+				 * @param int    $meta_id    ID of updated metadata entry.
+				 * @param int    $object_id  Object ID.
+				 * @param string $meta_key   Meta key.
+				 * @param mixed  $meta_value Meta value.
+				 */
+				do_action( 'updated_postmeta', $meta_id, $object_id, $meta_key, $meta_value );
+			}
+		}
+
 		return true;
+	}
+
+
+	public function add_meta_field($check, $object_id, $meta_key, $meta_value, $unique) {
+		global $wpdb;
+
+		$config               = wpm_get_config();
+		$object_fields_config = $config[ $this->object_type . '_fields' ];
+		$object_fields_config = apply_filters( "wpm_{$this->object_type}_meta_config", $object_fields_config );
+
+		if ( ! isset( $object_fields_config[ $meta_key ] ) ) {
+			return $check;
+		}
+
+		$meta_config = apply_filters( "wpm_{$meta_key}_meta_config", $object_fields_config[ $meta_key ], $meta_value, $object_id );
+		$meta_config = apply_filters( "wpm_{$this->object_type}_meta_{$meta_key}_config", $meta_config, $meta_value, $object_id );
+
+		if ( is_null( $meta_config ) ) {
+			return $check;
+		}
+
+		$table     = $wpdb->{$this->object_table};
+		$column    = sanitize_key( $this->object_type . '_id' );
+
+		$meta_value = wpm_set_language_value( array(), $meta_value, $meta_config );
+		$meta_value = wpm_ml_value_to_string( $meta_value );
+
+		if ( $unique && $wpdb->get_var( $wpdb->prepare(
+				"SELECT COUNT(*) FROM $table WHERE meta_key = %s AND $column = %d",
+				$meta_key, $object_id ) ) )
+			return false;
+
+		$_meta_value = $meta_value;
+
+		$meta_value = maybe_serialize( $meta_value );
+
+		/**
+		 * Fires immediately before meta of a specific type is added.
+		 *
+		 * The dynamic portion of the hook, `$meta_type`, refers to the meta
+		 * object type (comment, post, or user).
+		 *
+		 * @since 3.1.0
+		 *
+		 * @param int    $object_id  Object ID.
+		 * @param string $meta_key   Meta key.
+		 * @param mixed  $meta_value Meta value.
+		 */
+		do_action( "add_{$this->object_type}_meta", $object_id, $meta_key, $_meta_value );
+
+		$result = $wpdb->insert( $table, array(
+			$column => $object_id,
+			'meta_key' => $meta_key,
+			'meta_value' => $meta_value
+		) );
+
+		if ( ! $result )
+			return false;
+
+		$mid = (int) $wpdb->insert_id;
+
+		wp_cache_delete($object_id, $this->object_type . '_meta');
+
+		/**
+		 * Fires immediately after meta of a specific type is added.
+		 *
+		 * The dynamic portion of the hook, `$meta_type`, refers to the meta
+		 * object type (comment, post, or user).
+		 *
+		 * @since 2.9.0
+		 *
+		 * @param int    $mid        The meta ID after successful update.
+		 * @param int    $object_id  Object ID.
+		 * @param string $meta_key   Meta key.
+		 * @param mixed  $meta_value Meta value.
+		 */
+		do_action( "added_{$this->object_type}_meta", $mid, $object_id, $meta_key, $_meta_value );
+
+		return $mid;
 	}
 
 }
