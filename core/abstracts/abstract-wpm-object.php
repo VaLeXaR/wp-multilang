@@ -193,9 +193,9 @@ abstract class WPM_Object {
 			 * @param string $meta_key   Meta key.
 			 * @param mixed  $meta_value Meta value.
 			 */
-			do_action( "update_{$meta_type}_meta", $meta_id, $object_id, $meta_key, $_meta_value );
+			do_action( "update_{$this->object_type}_meta", $meta_id, $object_id, $meta_key, $_meta_value );
 
-			if ( 'post' == $meta_type ) {
+			if ( 'post' == $this->object_type ) {
 				/**
 				 * Fires immediately before updating a post's metadata.
 				 *
@@ -253,7 +253,12 @@ abstract class WPM_Object {
 	}
 
 
-	public function add_meta_field($check, $object_id, $meta_key, $meta_value, $unique) {
+	public function add_meta_field( $check, $object_id, $meta_key, $meta_value, $unique ) {
+
+		if ( null !== $check ) {
+			return $check;
+		}
+
 		global $wpdb;
 
 		$config               = wpm_get_config();
@@ -271,16 +276,21 @@ abstract class WPM_Object {
 			return $check;
 		}
 
-		$table     = $wpdb->{$this->object_table};
-		$column    = sanitize_key( $this->object_type . '_id' );
+		$table  = $wpdb->{$this->object_table};
+		$column = sanitize_key( $this->object_type . '_id' );
 
-		$meta_value = wpm_set_language_value( array(), $meta_value, $meta_config );
-		$meta_value = wpm_ml_value_to_string( $meta_value );
+		if ( ! wpm_is_ml_value( $meta_value ) ) {
+			$meta_value = wpm_set_language_value( array(), $meta_value, $meta_config );
+			$meta_value = wpm_ml_value_to_string( $meta_value );
+		}
+
 
 		if ( $unique && $wpdb->get_var( $wpdb->prepare(
 				"SELECT COUNT(*) FROM $table WHERE meta_key = %s AND $column = %d",
-				$meta_key, $object_id ) ) )
+				$meta_key, $object_id ) )
+		) {
 			return false;
+		}
 
 		$_meta_value = $meta_value;
 
@@ -301,17 +311,18 @@ abstract class WPM_Object {
 		do_action( "add_{$this->object_type}_meta", $object_id, $meta_key, $_meta_value );
 
 		$result = $wpdb->insert( $table, array(
-			$column => $object_id,
-			'meta_key' => $meta_key,
+			$column      => $object_id,
+			'meta_key'   => $meta_key,
 			'meta_value' => $meta_value
 		) );
 
-		if ( ! $result )
+		if ( ! $result ) {
 			return false;
+		}
 
 		$mid = (int) $wpdb->insert_id;
 
-		wp_cache_delete($object_id, $this->object_type . '_meta');
+		wp_cache_delete( $object_id, $this->object_type . '_meta' );
 
 		/**
 		 * Fires immediately after meta of a specific type is added.
