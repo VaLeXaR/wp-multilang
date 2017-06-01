@@ -120,6 +120,9 @@ Compatible with multisite not tested.
 
 = 1.2.0 =
 + add support MailPoet
++ add support Page Builder by SiteOrigin
++ add filters for config
+* small fixes
 
 = 1.1.2 =
 * fix view image

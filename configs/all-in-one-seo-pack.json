@@ -1,0 +1,31 @@
+{
+  "post_fields": {
+    "_aioseop_title": {},
+    "_aioseop_description": {},
+    "_aioseop_keywords": {}
+  },
+  "admin_pages": [
+    "toplevel_page_all-in-one-seo-pack/aioseop_class"
+  ],
+  "options": {
+    "aioseop_options": {
+      "aiosp_home_title" : {},
+      "aiosp_home_description" : {},
+      "aiosp_home_keywords" : {},
+      "aiosp_home_page_title_format" : {},
+      "aiosp_category_title_format" : {},
+      "aiosp_archive_title_format" : {},
+      "aiosp_date_title_format" : {},
+      "aiosp_author_title_format" : {},
+      "aiosp_tag_title_format" : {},
+      "aiosp_search_title_format" : {},
+      "aiosp_description_format" : {},
+      "aiosp_404_title_format" : {},
+      "aiosp_paged_format" : {},
+      "aiosp_post_meta_tags" : {},
+      "aiosp_page_meta_tags" : {},
+      "aiosp_front_meta_tags" : {},
+      "aiosp_home_meta_tags" : {}
+    }
+  }
+}
