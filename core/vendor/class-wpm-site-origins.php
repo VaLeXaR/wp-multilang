@@ -13,7 +13,10 @@ if ( defined( 'SITEORIGIN_PANELS_VERSION' ) ) {
 
 	/**
 	 * Class WPM_Site_Origins
-	 * @since 1.2.0
+	 * @package  WPM\Core\Vendor
+	 * @category Vendor
+	 * @author   VaLeXaR
+	 * @since    1.2.0
 	 */
 	class WPM_Site_Origins {
 

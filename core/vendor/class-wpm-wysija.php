@@ -13,7 +13,10 @@ if ( defined( 'WYSIJA' ) ) {
 
 	/**
 	 * Class WPM_Wysija
-	 * @since 1.2.0
+	 * @package  WPM\Core\Vendor
+	 * @category Vendor
+	 * @author   VaLeXaR
+	 * @since    1.2.0
 	 */
 	class WPM_Wysija {
 

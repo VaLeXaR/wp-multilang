@@ -13,8 +13,9 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 	/**
 	 * @class    WPM_AIOSP
 	 * @package  WPM\Core\Vendor
-	 * @category Class
+	 * @category Vendor
 	 * @author   VaLeXaR
+	 * @since    1.2.0
 	 */
 	class WPM_AIOSP {
 
@@ -29,9 +30,10 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 		 */
 		public function __construct() {
 			add_filter( 'wpm_option_aioseop_options_config', array( $this, 'set_posts_config' ) );
-			add_filter( 'delete_post_metadata', array( $this, 'do_not_delete_old_fields' ), 10, 5 );
+			add_filter( 'delete_post_metadata', array( $this, 'save_old_fields' ), 10, 5 );
 			add_filter( 'add_post_metadata', array( $this, 'update_old_fields' ), 10, 5 );
 			add_filter( 'aioseop_title', 'wpm_translate_string', 0 );
+			add_action( 'wp_loaded', array( $this, 'translate_options' ) );
 		}
 
 		/**
@@ -52,8 +54,18 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 			return $config;
 		}
 
-
-		public function do_not_delete_old_fields( $check, $object_id, $meta_key, $meta_value, $delete_all ) {
+		/**
+		 * Save old translation before deleting
+		 *
+		 * @param $check
+		 * @param $object_id
+		 * @param $meta_key
+		 * @param $meta_value
+		 * @param $delete_all
+		 *
+		 * @return mixed
+		 */
+		public function save_old_fields( $check, $object_id, $meta_key, $meta_value, $delete_all ) {
 
 			if ( $delete_all ) {
 				return $check;
@@ -74,7 +86,17 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 			return $check;
 		}
 
-
+		/**
+		 * Add field with new and old translations
+		 *
+		 * @param $check
+		 * @param $object_id
+		 * @param $meta_key
+		 * @param $meta_value
+		 * @param $unique
+		 *
+		 * @return bool|int
+		 */
 		public function update_old_fields( $check, $object_id, $meta_key, $meta_value, $unique ) {
 
 			if ( isset( $this->meta_fields[ $meta_key ] ) && $this->meta_fields[ $meta_key ] ) {
@@ -105,6 +127,14 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 			}
 
 			return $check;
+		}
+
+		/**
+		 * Translate global $aioseop_options
+		 */
+		public function translate_options() {
+			global $aioseop_options;
+			$aioseop_options = wpm_translate_value( $aioseop_options );
 		}
 	}
 

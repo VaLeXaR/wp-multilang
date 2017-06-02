@@ -13,7 +13,7 @@ if ( defined( 'WPSEO_VERSION' ) ) {
 	/**
 	 * @class    WPM_Yoast_Seo
 	 * @package  WPM\Core\Vendor
-	 * @category Class
+	 * @category Vendor
 	 * @author   VaLeXaR
 	 */
 	class WPM_Yoast_Seo {
