@@ -28,46 +28,88 @@ if ( defined( 'NGG_PLUGIN' ) ) {
 			add_filter( 'wpm_admin_pages', array( $this, 'add_admin_pages' ) );
 			add_filter( 'ngg_manage_gallery_fields', array( $this, 'filter_fields' ), 11 );
 			add_filter( 'ngg_manage_images_row', array( $this, 'translate_gallery_object' ) );
-			add_action( 'ngg_image_updated', function($image){
-				d($image);
-			});
-			add_action( 'admin_init', function () {
+			add_action( 'admin_init', array( $this, 'save_gallery' ) );
+		}
 
-				if ( isset( $_POST['page'] ) && $_POST['page'] == 'manage-images' ) {
 
-					if ( isset ( $_POST['updatepictures'] ) ) {
+		public function save_gallery() {
 
-						$image_mapper = \C_Image_Mapper::get_instance();
+			if ( isset ( $_POST['update_album'] ) ) {
 
-						foreach ( $_POST['images'] as $pid => $image ) {
+				$fields = array( 'album_name' => 'name', 'album_desc' => 'albumdesc' );
+				$data   = array();
 
-							$data = array();
+				foreach ( $fields as $key => $field ) {
+					$data[ $key ] = $_POST[ $key ];
+				}
 
-							if ( isset( $data['description'] ) ) {
-								$data['description'] = stripslashes( $_POST['images'][ $pid ]['description'] );
-							}
-							if ( isset( $data['alttext'] ) ) {
-								$data['alttext'] = stripslashes( $_POST['images'][ $pid ]['alttext'] );
-							}
-
-							$old_image = $image_mapper->find( $pid );
-
-							// Update all fields
-							foreach ( $data as $key => $value ) {
-								$old_value               = wpm_value_to_ml_array( $old_image->$key );
-								$value                   = wpm_set_language_value( $old_value, $value, array() );
-								d($value);
-								$_POST['images'][ $pid ] = wpm_ml_value_to_string( $value );
-							}
-
-							d($_POST['images']);
-							die();
+				if ( $album = \C_Album_Mapper::get_instance()->find( wpm_clean( $_POST['act_album'] ) ) ) {
+					foreach ( $data as $key => $value ) {
+						if ( ! wpm_is_ml_string( $value ) ) {
+							$old_value     = wpm_value_to_ml_array( $album->{$fields[ $key ]} );
+							$value         = wpm_set_language_value( $old_value, $value, array() );
+							$_POST[ $key ] = wpm_ml_value_to_string( $value );
 						}
 					}
 				}
-			} );
-		}
+			}
 
+			if ( isset( $_POST['page'] ) && $_POST['page'] == 'manage-images' ) {
+
+				if ( isset ( $_POST['updatepictures'] ) ) {
+
+					check_admin_referer( 'ngg_updategallery' );
+
+					if ( ! isset ( $_GET['s'] ) ) {
+
+						$fields = array( 'title', 'galdesc' );
+						$data   = array();
+
+						foreach ( $fields as $field ) {
+							$data[ $field ] = $_POST[ $field ];
+						}
+
+						// Update the gallery
+						$mapper = \C_Gallery_Mapper::get_instance();
+						if ( $entity = $mapper->find( wpm_clean( $_GET['gid'] ) ) ) {
+							foreach ( $data as $key => $value ) {
+								if ( ! wpm_is_ml_string( $value ) ) {
+									$old_value     = wpm_value_to_ml_array( $entity->$key );
+									$value         = wpm_set_language_value( $old_value, $value, array() );
+									$_POST[ $key ] = wpm_ml_value_to_string( $value );
+								}
+							}
+						}
+					}
+
+					$image_mapper = \C_Image_Mapper::get_instance();
+
+					foreach ( $_POST['images'] as $pid => $image ) {
+
+						$data = array();
+
+						if ( isset( $image['description'] ) ) {
+							$data['description'] = stripslashes( $image['description'] );
+						}
+						if ( isset( $image['alttext'] ) ) {
+							$data['alttext'] = stripslashes( $image['alttext'] );
+						}
+
+						$old_image = $image_mapper->find( $pid );
+
+						// Update all fields
+						foreach ( $data as $key => $value ) {
+							if ( ! wpm_is_ml_string( $value ) ) {
+								$old_value                       = wpm_value_to_ml_array( $old_image->$key );
+								$value                           = wpm_set_language_value( $old_value, $value, array() );
+								$_POST['images'][ $pid ][ $key ] = wpm_ml_value_to_string( $value );
+							}
+						}
+					}
+				}
+			}
+
+		}
 
 		public function add_admin_pages( $pages_config ) {
 
