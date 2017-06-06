@@ -100,8 +100,6 @@ var wpm_translator = {
 
     var strings = wpm_translator.string_to_ml_array(string);
 
-    // console.log(Object.keys(strings).length, strings);
-
     if (typeof strings !== 'object' || !Object.keys(strings).length) {
       return string;
     }
