@@ -79,7 +79,6 @@ class WPM_Admin_Assets {
 		wp_localize_script( 'wpm_translator', 'wpm_translator_params', $translator_params );
 
 		if ( 'customize' == $screen_id ) {
-//				wp_enqueue_script( 'wpm_translator' );
 			wp_enqueue_style( 'wpm_language_switcher' );
 			wp_enqueue_script( 'wpm_language_switcher_customizer' );
 			$params = array(
@@ -93,7 +92,6 @@ class WPM_Admin_Assets {
 		if ( in_array( $screen_id, $admin_pages_config ) ) {
 			$this->set_language_switcher();
 		}
-
 
 		$posts_config = $config['post_types'];
 		$posts_config = apply_filters( "wpm_posts_config", $posts_config );
