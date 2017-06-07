@@ -276,7 +276,8 @@ function wpm_ml_array_to_string( $strings ) {
  */
 function wpm_ml_value_to_string( $value ) {
 
-	if ( is_array( $value ) ) {
+	if ( is_array( $value ) && ! empty( $value ) ) {
+
 		if ( wpm_is_ml_array( $value ) ) {
 			return wpm_ml_array_to_string( $value );
 		} else {
