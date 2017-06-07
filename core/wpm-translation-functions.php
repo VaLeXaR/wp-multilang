@@ -106,8 +106,7 @@ function wpm_translate_string( $string, $language = '' ) {
 		}
 	}
 
-	$language = wpm_get_language();
-
+	$language       = wpm_get_language();
 	$languages      = wpm_get_languages();
 	$default_locale = wpm_get_default_locale();
 
@@ -116,7 +115,7 @@ function wpm_translate_string( $string, $language = '' ) {
 	} elseif ( isset( $strings[ $languages[ $default_locale ] ] ) ) {
 		return $strings[ $languages[ $default_locale ] ];
 	} else {
-		return $string;
+		return '';
 	}
 }
 
