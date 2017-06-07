@@ -72,13 +72,13 @@ function wpm_asset_path( $filename ) {
  * @param string $code
  */
 function wpm_enqueue_js( $code ) {
-	global $wc_queued_js;
+	global $wpm_queued_js;
 
-	if ( empty( $wc_queued_js ) ) {
-		$wc_queued_js = '';
+	if ( empty( $wpm_queued_js ) ) {
+		$wpm_queued_js = '';
 	}
 
-	$wc_queued_js .= "\n" . $code . "\n";
+	$wpm_queued_js .= "\n" . $code . "\n";
 }
 
 /**

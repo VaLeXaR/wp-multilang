@@ -114,15 +114,15 @@ var wpm_translator = {
       }
     }
 
-    var edit_lang = wpm_translator_params.edit_lang,
+    var language = wpm_translator_params.language,
       default_language = wpm_translator_params.default_language;
 
-    if (typeof(strings[edit_lang]) !== 'undefined') {
-      return strings[edit_lang];
+    if (typeof(strings[language]) !== 'undefined') {
+      return strings[language];
     } else if (typeof(strings[default_language]) !== 'undefined') {
       return strings[default_language];
     } else {
-      return string;
+      return '';
     }
   }
 };
