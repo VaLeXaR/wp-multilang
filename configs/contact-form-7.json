@@ -1,4 +1,7 @@
 {
+  "post_types": {
+    "wpcf7_contact_form": {}
+  },
   "post_fields": {
     "_form": {},
     "_mail": {

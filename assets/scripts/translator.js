@@ -117,6 +117,8 @@ var wpm_translator = {
     var language = wpm_translator_params.language,
       default_language = wpm_translator_params.default_language;
 
+    console.log(strings, wpm_translator_params);
+
     if (typeof(strings[language]) !== 'undefined') {
       return strings[language];
     } else if (typeof(strings[default_language]) !== 'undefined') {
