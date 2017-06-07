@@ -24,13 +24,8 @@ if ( defined( 'MC4WP_VERSION' ) ) {
 		 * WPM_MailChimp_For_WP constructor.
 		 */
 		public function __construct() {
-//			add_action( 'admin_enqueue_scripts', array( $this, 'add_translator_script' ), 11 );
-//			add_filter( 'mc4wp_form_data', function ( $data, $form ) {
-//				d( $data, $form );
-//				die();
-//
-//				return $data;
-//			} );
+			add_action( 'admin_enqueue_scripts', array( $this, 'add_translator_script' ), 11 );
+			add_filter( 'mc4wp_form_content', 'wpm_translate_string' );
 			add_filter( "mc4wp_integration_checkbox_label", 'wpm_translate_string' );
 		}
 
@@ -42,11 +37,11 @@ if ( defined( 'MC4WP_VERSION' ) ) {
 			$screen    = get_current_screen();
 			$screen_id = $screen ? $screen->id : '';
 
-			if ( $screen_id == 'toplevel_page_wpcf7' && isset( $_GET['post'] ) ) {
+			if ( $screen_id == 'mailchimp-for-wp_page_mailchimp-for-wp-integrations' && isset( $_GET['integration'] ) ) {
 				wp_enqueue_script( 'wpm_translator' );
 				wpm_enqueue_js( "
 					(function ( $ ) {
-						$( '#title' ).each( function () {
+						$( '#mc4wp_checkbox_label' ).each( function () {
 							var text = wpm_translator.translate_string($(this).val());
 							$(this).val(text);
 						} );
