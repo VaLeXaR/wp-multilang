@@ -1,9 +1,4 @@
 {
-  "post_types": {
-    "mc4wp-form": {
-      "post_title": null
-    }
-  },
   "post_fields": {
     "text_subscribed": {},
     "text_invalid_email": {},
