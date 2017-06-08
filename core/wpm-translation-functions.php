@@ -36,6 +36,7 @@ function wpm_translate_url( $url, $language = '' ) {
 	$url_lang = '';
 
 	$path_url = parse_url( $url, PHP_URL_PATH );
+	$host = parse_url( $url, PHP_URL_HOST );
 	$path     = $path_url ? $path_url : '/';
 
 	if ( preg_match( '!^/([a-z]{2})(/|$)!i', $path, $match ) ) {
@@ -68,11 +69,7 @@ function wpm_translate_url( $url, $language = '' ) {
 	}
 
 	if ( $new_path ) {
-		if ( $path == '/' ) {
-			$url .= substr( $new_path, 1 );
-		} else {
-			$url = str_replace( $path, $new_path, $url );
-		}
+		$url = str_replace( $host . $path, $host . $new_path, $url );
 	}
 
 	return $url;
