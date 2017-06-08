@@ -24,7 +24,6 @@ if ( defined( 'NGG_PLUGIN' ) ) {
 		 * WPM_NGG constructor.
 		 */
 		public function __construct() {
-			add_filter( 'localization', 'wpm_translate_string' );
 			add_filter( 'wpm_admin_pages', array( $this, 'add_admin_pages' ) );
 			add_filter( 'ngg_manage_gallery_fields', array( $this, 'filter_fields' ), 11 );
 			add_filter( 'ngg_manage_images_row', array( $this, 'translate_gallery_object' ) );

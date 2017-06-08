@@ -76,3 +76,6 @@ function wpm_language_switcher( $args = array(), $echo = true ) {
 		return $content;
 	}
 }
+
+
+add_filter( 'localization', 'wpm_translate_string' );

@@ -1,6 +1,8 @@
 {
   "post_types": {
-    "mc4wp-form": {}
+    "mc4wp-form": {
+      "post_title": null
+    }
   },
   "post_fields": {
     "text_subscribed": {},
@@ -10,8 +12,7 @@
     "text_error": {},
     "text_unsubscribed": {},
     "text_not_subscribed": {},
-    "text_no_lists_selected": {},
-    "text_updated": {}
+    "text_no_lists_selected": {}
   },
   "admin_pages": [
     "mailchimp-for-wp_page_mailchimp-for-wp-integrations",

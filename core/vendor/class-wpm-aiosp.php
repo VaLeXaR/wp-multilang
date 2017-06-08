@@ -33,7 +33,6 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 			add_filter( 'delete_post_metadata', array( $this, 'save_old_fields' ), 10, 5 );
 			add_filter( 'add_post_metadata', array( $this, 'update_old_fields' ), 10, 5 );
 			add_action( 'wp_loaded', array( $this, 'translate_options' ) );
-			add_filter( 'localization', 'wpm_translate_string' );
 		}
 
 		/**

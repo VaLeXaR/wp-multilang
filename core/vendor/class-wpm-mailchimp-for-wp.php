@@ -48,6 +48,20 @@ if ( defined( 'MC4WP_VERSION' ) ) {
 					})( window.jQuery );
 				" );
 			}
+
+			if ( $screen_id == 'mailchimp-for-wp_page_mailchimp-for-wp-forms' && isset( $_GET['form_id'] ) ) {
+				wp_enqueue_script( 'wpm_translator' );
+				wpm_enqueue_js( "
+					(function ( $ ) {
+						$( '#mc4wp-form-content' ).each( function () {
+							var text = wpm_translator.translate_string($(this).val());
+							$(this).val(text);
+						} );
+						
+						console.log(window.mc4wp.forms.editor.refresh());
+					})( window.jQuery );
+				" );
+			}
 		}
 	}
 
