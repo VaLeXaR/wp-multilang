@@ -6,6 +6,5 @@ dist
 node_modules
 npm-debug.log
 yarn-error.log
-vendor
+/vendor
 .idea
-!core/vendor

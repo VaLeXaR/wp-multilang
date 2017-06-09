@@ -36,6 +36,7 @@ function wpm_translate_url( $url, $language = '' ) {
 	$url_lang = '';
 
 	$path_url = parse_url( $url, PHP_URL_PATH );
+	$host = parse_url( $url, PHP_URL_HOST );
 	$path     = $path_url ? $path_url : '/';
 
 	if ( preg_match( '!^/([a-z]{2})(/|$)!i', $path, $match ) ) {
@@ -68,11 +69,7 @@ function wpm_translate_url( $url, $language = '' ) {
 	}
 
 	if ( $new_path ) {
-		if ( $path == '/' ) {
-			$url .= substr( $new_path, 1 );
-		} else {
-			$url = str_replace( $path, $new_path, $url );
-		}
+		$url = str_replace( $host . $path, $host . $new_path, $url );
 	}
 
 	return $url;
@@ -106,8 +103,7 @@ function wpm_translate_string( $string, $language = '' ) {
 		}
 	}
 
-	$language = wpm_get_language();
-
+	$language       = wpm_get_language();
 	$languages      = wpm_get_languages();
 	$default_locale = wpm_get_default_locale();
 
@@ -116,7 +112,7 @@ function wpm_translate_string( $string, $language = '' ) {
 	} elseif ( isset( $strings[ $languages[ $default_locale ] ] ) ) {
 		return $strings[ $languages[ $default_locale ] ];
 	} else {
-		return $string;
+		return '';
 	}
 }
 
@@ -277,7 +273,8 @@ function wpm_ml_array_to_string( $strings ) {
  */
 function wpm_ml_value_to_string( $value ) {
 
-	if ( is_array( $value ) ) {
+	if ( is_array( $value ) && ! empty( $value ) ) {
+
 		if ( wpm_is_ml_array( $value ) ) {
 			return wpm_ml_array_to_string( $value );
 		} else {

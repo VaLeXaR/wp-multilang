@@ -26,7 +26,7 @@ include( 'wpm-template-functions.php' );
  *
  * @return bool|string
  */
-function gp_get_template_html( $path ) {
+function wpm_get_template_html( $path ) {
 	ob_start();
 
 	$located = WPM()->template_path() . $path;
@@ -72,13 +72,13 @@ function wpm_asset_path( $filename ) {
  * @param string $code
  */
 function wpm_enqueue_js( $code ) {
-	global $wc_queued_js;
+	global $wpm_queued_js;
 
-	if ( empty( $wc_queued_js ) ) {
-		$wc_queued_js = '';
+	if ( empty( $wpm_queued_js ) ) {
+		$wpm_queued_js = '';
 	}
 
-	$wc_queued_js .= "\n" . $code . "\n";
+	$wpm_queued_js .= "\n" . $code . "\n";
 }
 
 /**

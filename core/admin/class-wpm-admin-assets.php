@@ -79,35 +79,37 @@ class WPM_Admin_Assets {
 		wp_localize_script( 'wpm_translator', 'wpm_translator_params', $translator_params );
 
 		if ( 'customize' == $screen_id ) {
-//				wp_enqueue_script( 'wpm_translator' );
 			wp_enqueue_style( 'wpm_language_switcher' );
 			wp_enqueue_script( 'wpm_language_switcher_customizer' );
 			$params = array(
-				'switcher' => gp_get_template_html( 'language-switcher-customizer.php' )
+				'switcher' => wpm_get_template_html( 'language-switcher-customizer.php' )
 			);
 			wp_localize_script( 'wpm_language_switcher_customizer', 'wpm_language_switcher_params', $params );
 		}
 
-		foreach ( $config['admin_pages'] as $page_id ) {
-			if ( $screen_id == $page_id ) {
-				$this->set_language_switcher();
-			}
-		}
+		$admin_pages_config = apply_filters( 'wpm_admin_pages', $config['admin_pages'] );
 
-
-		$posts_config                       = $config['post_types'];
-		$posts_config                       = apply_filters( "wpm_posts_config", $posts_config );
-		$posts_config[ $screen->post_type ] = apply_filters( "wpm_posts_{$screen->post_type}_config", isset( $posts_config[ $screen->post_type ] ) ? $posts_config[ $screen->post_type ] : null );
-
-		if ( isset( $posts_config[ $screen->post_type ] ) && ! is_null( $posts_config [ $screen->post_type ] ) ) {
+		if ( in_array( $screen_id, $admin_pages_config ) ) {
 			$this->set_language_switcher();
 		}
 
-		$taxonomies_config                      = $config['taxonomies'];
-		$taxonomies_config                      = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
-		$taxonomies_config[ $screen->taxonomy ] = apply_filters( "wpm_taxonomy_{$screen->taxonomy}_config", isset( $taxonomies_config[ $screen->taxonomy ] ) ? $taxonomies_config[ $screen->taxonomy ] : null );
+		$posts_config = $config['post_types'];
+		$posts_config = apply_filters( "wpm_posts_config", $posts_config );
+		if ( ! is_null( $screen ) ) {
+			$posts_config[ $screen->post_type ] = apply_filters( "wpm_posts_{$screen->post_type}_config", isset( $posts_config[ $screen->post_type ] ) ? $posts_config[ $screen->post_type ] : null );
+		}
 
-		if ( isset( $taxonomies_config[ $screen->taxonomy ] ) && ! is_null( $taxonomies_config[ $screen->taxonomy ] ) ) {
+		if ( ! is_null( $screen ) && isset( $posts_config[ $screen->post_type ] ) && ! is_null( $posts_config [ $screen->post_type ] ) ) {
+			$this->set_language_switcher();
+		}
+
+		$taxonomies_config = $config['taxonomies'];
+		$taxonomies_config = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
+		if ( ! is_null( $screen ) ) {
+			$taxonomies_config[ $screen->taxonomy ] = apply_filters( "wpm_taxonomy_{$screen->taxonomy}_config", isset( $taxonomies_config[ $screen->taxonomy ] ) ? $taxonomies_config[ $screen->taxonomy ] : null );
+		}
+
+		if ( ! is_null( $screen ) && isset( $taxonomies_config[ $screen->taxonomy ] ) && ! is_null( $taxonomies_config[ $screen->taxonomy ] ) ) {
 			$this->set_language_switcher();
 		}
 
@@ -123,7 +125,7 @@ class WPM_Admin_Assets {
 		wp_enqueue_style( 'wpm_language_switcher' );
 		wp_enqueue_script( 'wpm_language_switcher' );
 		$params = array(
-			'switcher' => gp_get_template_html( 'language-switcher.php' )
+			'switcher' => wpm_get_template_html( 'language-switcher.php' )
 		);
 		wp_localize_script( 'wpm_language_switcher', 'wpm_language_switcher_params', $params );
 	}

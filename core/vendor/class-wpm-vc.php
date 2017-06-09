@@ -13,7 +13,10 @@ if ( defined( 'WPB_VC_VERSION' ) ) {
 
 	/**
 	 * Class WPM_VC
-	 * @since 1.1.0
+	 * @package  WPM\Core\Vendor
+	 * @category Vendor
+	 * @author   VaLeXaR
+	 * @since    1.1.0
 	 */
 	class WPM_VC {
 

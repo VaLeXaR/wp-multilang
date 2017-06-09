@@ -1,0 +1,13 @@
+{
+  "post_fields": {
+    "gmb_markers_group": {
+      "wpm_each": {
+        "title": {},
+        "description": {}
+      }
+    }
+  },
+  "admin_pages": [
+    "google_maps"
+  ]
+}

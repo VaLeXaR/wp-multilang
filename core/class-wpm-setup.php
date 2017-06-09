@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WPM_Setup
  * @package  WPM\Core
  * @author   VaLeXaR
- * @version  1.1.1
+ * @version  1.1.0
  */
 class WPM_Setup {
 
@@ -328,9 +328,9 @@ class WPM_Setup {
 	 */
 	public function get_config() {
 		if ( ! $this->config ) {
-			$config       = get_option( 'wpm_config' );
-			$this->config = apply_filters( 'wpm_load_config', $config );
+			$this->config = get_option( 'wpm_config' );
 		}
+		$this->config = apply_filters( 'wpm_load_config', $this->config );
 
 		return $this->config;
 	}

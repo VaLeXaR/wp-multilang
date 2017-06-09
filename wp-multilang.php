@@ -8,7 +8,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:     wpm
  * Domain Path:     /languages
- * Version:         1.1.2
+ * Version:         1.2.0
  *
  * @package  WPM
  * @category Core
@@ -33,7 +33,7 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 	 * Main WP_Multilang.
 	 *
 	 * @class   WPM
-	 * @version 1.1.2
+	 * @version 1.0.2
 	 */
 	final class WP_Multilang {
 
@@ -42,7 +42,7 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 		 *
 		 * @var string
 		 */
-		public $version = '1.1.2';
+		public $version = '1.2.0';
 
 		/**
 		 * The single instance of the class.
@@ -70,7 +70,6 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 
 		/**
 		 * Cloning is forbidden.
-		 * @since 2.1
 		 */
 		public function __clone() {
 			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wpm' ), '2.1' );
@@ -78,7 +77,6 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 
 		/**
 		 * Unserializing instances of this class is forbidden.
-		 * @since 2.1
 		 */
 		public function __wakeup() {
 			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wpm' ), '2.1' );
@@ -97,7 +95,6 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 
 		/**
 		 * Hook into actions and filters.
-		 * @since  2.3
 		 */
 		private function init_hooks() {
 			register_activation_hook( __FILE__, array( 'WPM\Core\WPM_Install', 'install' ) );

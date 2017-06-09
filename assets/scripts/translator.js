@@ -26,6 +26,10 @@ var wpm_translator = {
 
   string_to_ml_array: function (text) {
 
+    if( Object.prototype.toString.call(text) !== '[object String]' ) {
+      return text;
+    }
+
     var split_regex = /(<!--:[a-z]{2}-->|<!--:-->|\[:[a-z]{2}\]|\[:\]|\{:[a-z]{2}\}|\{:\})/gi;
     var blocks = text.xsplit(split_regex);
 
@@ -40,7 +44,7 @@ var wpm_translator = {
       languages = wpm_translator_params.languages,
       j = languages.length;
 
-    while (j--){
+    while (j--) {
       results[languages[j]] = '';
     }
 
@@ -96,8 +100,6 @@ var wpm_translator = {
 
     var strings = wpm_translator.string_to_ml_array(string);
 
-    // console.log(Object.keys(strings).length, strings);
-
     if (typeof strings !== 'object' || !Object.keys(strings).length) {
       return string;
     }
@@ -112,15 +114,15 @@ var wpm_translator = {
       }
     }
 
-    var edit_lang = wpm_translator_params.edit_lang,
+    var language = wpm_translator_params.language,
       default_language = wpm_translator_params.default_language;
 
-    if ( typeof(strings[edit_lang]) !== 'undefined' ) {
-      return strings[ edit_lang ];
-    } else if ( typeof(strings[default_language]) !== 'undefined' ) {
-      return strings[ default_language ];
+    if (typeof(strings[language]) !== 'undefined') {
+      return strings[language];
+    } else if (typeof(strings[default_language]) !== 'undefined') {
+      return strings[default_language];
     } else {
-      return string;
+      return '';
     }
   }
 };

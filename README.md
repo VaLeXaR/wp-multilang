@@ -16,6 +16,12 @@ Translations of post types, taxonomies, meta fields, options, text fields in mil
 * Yoast Seo
 * Contact Form 7
 * WPBakery Visual Composer
+* Page Builder by SiteOrigin
+* NextGEN Gallery
+* All in One SEO Pack
+* MailChimp for WordPress
+* Newsletter
+* Maps Builder
 
 Supports configuration via json.
 
@@ -60,7 +66,7 @@ Ideal for developers.
 
 For a switch as add code to this topic
 ```php
-<?php if ( function_exists ( 'wpm_language_switcher' ) ) wpm_language_switcher (); ?>
+if ( function_exists ( 'wpm_language_switcher' ) ) wpm_language_switcher ();
 ```
 Available features for translation:
 ```php

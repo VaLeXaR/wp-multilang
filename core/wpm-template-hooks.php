@@ -5,7 +5,7 @@
  * @author        VaLeXaR
  * @category      Core
  * @package       WPM/Hooks
- * @version       1.1.2
+ * @version       1.0.2
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly

@@ -1,0 +1,23 @@
+{
+  "post_fields": {
+    "text_subscribed": {},
+    "text_invalid_email": {},
+    "text_required_field_missing": {},
+    "text_already_subscribed": {},
+    "text_error": {},
+    "text_unsubscribed": {},
+    "text_not_subscribed": {},
+    "text_no_lists_selected": {}
+  },
+  "admin_pages": [
+    "mailchimp-for-wp_page_mailchimp-for-wp-integrations",
+    "mailchimp-for-wp_page_mailchimp-for-wp-forms"
+  ],
+  "options": {
+    "mc4wp_integrations": {
+      "wpm_each": {
+        "label": {}
+      }
+    }
+  }
+}

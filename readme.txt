@@ -3,8 +3,8 @@
 Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
-Tested up to: 4.7
-Stable tag: 1.1.2
+Tested up to: 4.8
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,12 @@ WP Multilang compatible out of the box with the plugin:
 * Yoast Seo
 * Contact Form 7
 * WPBakery Visual Composer
+* Page Builder by SiteOrigin
+* NextGEN Gallery
+* All in One SEO Pack
+* MailChimp for WordPress
+* Newsletter
+* Maps Builder
 
 Supports configuration via json.
 
@@ -48,22 +54,21 @@ For example, you must turn off translation for a post type `post`.
 There are two ways:
 
 1. After json.
-    Create the root of the subject, or the roots of its plugin file wpm-config.json with:
+    Create the root of the subject, or the roots of its plugin file `wpm-config.json` with:
+    `{
+       "post_types": {
+         "post": null
+       }
+     }`
 
-    {
-      "post_types": {
-        "post": null
-      }
-    }
 
 2. Through the filter.
     Add in functions.php
 
-    add_filter ( 'wpm_posts_post_config', '__return_null');
+    `add_filter ( 'wpm_posts_post_config', '__return_null');`
 
 To enable translation pass an empty array in php `array()` or empty object in json `{}`.
-Supports translation multilevel array of options, custom fields
-and post_content
+Supports translation multilevel array of options, custom fields and post_content.
 
 Since localization files nucleus. Supports the removal of established localizations. Has the ability to add your own localizations.
 
@@ -73,15 +78,15 @@ Supports clean database of translations when removing plugins.
 
 Ideal for developers.
 
-For a switch as add code to this topic
+For a switch as add code to your template
 
 `if ( function_exists ( 'wpm_language_switcher' ) ) wpm_language_switcher ();`
 
 Available features for translation:
 
-wpm_translate_url ($url, $language = ''); // translate url
-wpm_translate_string ($string, $language = ''); // translate multilingual string
-wpm_translate_value ($value, $language = ''); // translate multidimensional array with multilingual strings
+`wpm_translate_url ($url, $language = '');` - translate url
+`wpm_translate_string ($string, $language = '');` - translate multilingual string
+`wpm_translate_value ($value, $language = '');` - translate multidimensional array with multilingual strings
 
 Standard translates all record types, taxonomies, custom fields. Even if you turn off translation for a particular type of account, you will only see its translation.
 
@@ -91,7 +96,7 @@ Update translation occurs at PHP. Therefore plugin has high adaptability, compat
 
 Translation uses the following syntax:
 
-[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut[:]
+`[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut[:]`
 
 Supports syntax qTranslate-X, WPGlobus, etc.
 
@@ -116,6 +121,16 @@ Compatible with multisite not tested.
 5. Post edit page
 
 == Changelog ==
+
+= 1.2.0 =
++ add support Page Builder by SiteOrigin
++ add support NextGEN Gallery
++ add support All in One SEO Pack
++ add support MailChimp for WordPress
++ add support Newsletter
++ add support Maps Builder
++ add filters for config
+* small fixes
 
 = 1.1.2 =
 * fix view image

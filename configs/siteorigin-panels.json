@@ -1,0 +1,77 @@
+{
+  "post_fields": {
+    "panels_data": {
+      "widgets": {
+        "wpm_each": {
+          "title": {},
+          "sub_title": {},
+          "alt": {},
+          "text": {},
+          "label": {},
+          "markers": {
+            "marker_positions": {
+              "wpm_each": {
+                "info": {}
+              }
+            }
+          },
+          "attributes": {
+            "title": {}
+          },
+          "button": {
+            "text": {},
+            "attributes": {
+              "title": {}
+            }
+          },
+          "settings": {
+            "default_subject": {},
+            "subject_prefix": {},
+            "success_message": {},
+            "submit_text": {},
+            "required_field_indicator_message": {}
+          },
+          "fields": {
+            "wpm_each": {
+              "label": {},
+              "description": {},
+              "required": {
+                "missing_message": {}
+              }
+            }
+          },
+          "features": {
+            "wpm_each": {
+              "icon_title": {},
+              "title": {},
+              "text": {},
+              "more_text": {}
+            }
+          },
+          "frames": {
+            "wpm_each": {
+              "content": {}
+            }
+          },
+          "images": {
+            "wpm_each": {
+              "title": {}
+            }
+          },
+          "networks": {
+            "wpm_each": {
+              "icon_title": {}
+            }
+          },
+          "testimonials": {
+            "wpm_each": {
+              "name": {},
+              "location": {},
+              "text": {}
+            }
+          }
+        }
+      }
+    }
+  }
+}
