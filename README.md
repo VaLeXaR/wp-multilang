@@ -21,6 +21,7 @@ Translations of post types, taxonomies, meta fields, options, text fields in mil
 * All in One SEO Pack
 * MailChimp for WordPress
 * Newsletter
+* Maps Builder
 
 Supports configuration via json.
 

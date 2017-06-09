@@ -37,6 +37,7 @@ WP Multilang compatible out of the box with the plugin:
 * All in One SEO Pack
 * MailChimp for WordPress
 * Newsletter
+* Maps Builder
 
 Supports configuration via json.
 
@@ -127,6 +128,7 @@ Compatible with multisite not tested.
 + add support All in One SEO Pack
 + add support MailChimp for WordPress
 + add support Newsletter
++ add support Maps Builder
 + add filters for config
 * small fixes
 
