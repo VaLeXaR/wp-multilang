@@ -1,0 +1,72 @@
+{
+  "admin_pages": [
+    "newsletter_page_newsletter_subscription_options",
+    "admin_page_newsletter_wp_index",
+    "admin_page_newsletter_subscription_profile",
+    "admin_page_newsletter_subscription_unsubscription",
+    "admin_page_newsletter_subscription_lists",
+    "admin_page_newsletter_lock_index",
+    "admin_page_newsletter_subscription_forms",
+    "admin_page_newsletter_subscription_template",
+    "newsletter_page_newsletter_main_main",
+    "admin_page_newsletter_main_info"
+  ],
+  "options": {
+    "newsletter": {
+      "profile_text": {},
+      "profile_email_changed": {},
+      "profile_error": {},
+      "error_text": {},
+      "subscription_text": {},
+      "confirmation_text": {},
+      "confirmation_subject": {},
+      "confirmation_message": {},
+      "confirmed_text": {},
+      "confirmed_subject": {},
+      "confirmed_message": {},
+      "unsubscription_text": {},
+      "unsubscription_error_text": {},
+      "unsubscribed_text": {},
+      "unsubscribed_subject": {},
+      "unsubscribed_message": {},
+      "profile_saved": {}
+    },
+    "newsletter_profile": {
+      "email": {},
+      "email_error": {},
+      "name": {},
+      "name_error": {},
+      "surname": {},
+      "surname_error": {},
+      "sex": {},
+      "privacy": {},
+      "privacy_error": {},
+      "subscribe": {},
+      "save": {},
+      "title_female": {},
+      "title_male": {},
+      "title_none": {},
+      "sex_male": {},
+      "sex_female": {},
+      "sex_none": {},
+      "profile_error": {}
+    },
+    "newsletter_wp": {
+      "subscribe_label": {}
+    },
+    "newsletter_subscription_template": {
+      "template": {}
+    },
+    "newsletter_lock": {
+      "message": {}
+    },
+    "newsletter_main": {
+      "sender_name": {},
+      "header_title": {},
+      "header_sub": {},
+      "footer_title": {},
+      "footer_contact": {},
+      "footer_legal": {}
+    }
+  }
+}

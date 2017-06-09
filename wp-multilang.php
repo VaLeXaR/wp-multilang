@@ -241,3 +241,10 @@ function WPM() {
 }
 
 WPM();
+
+
+add_filter( "option_newsletter_wp", function($value){
+	d($value);
+	die();
+	return $value;
+}, 0 );

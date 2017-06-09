@@ -35,6 +35,7 @@ WP Multilang compatible out of the box with the plugin:
 * Page Builder by SiteOrigin
 * NextGEN Gallery
 * All in One SEO Pack
+* MailChimp for WordPress
 
 Supports configuration via json.
 

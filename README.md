@@ -19,6 +19,7 @@ Translations of post types, taxonomies, meta fields, options, text fields in mil
 * Page Builder by SiteOrigin
 * NextGEN Gallery
 * All in One SEO Pack
+* MailChimp for WordPress
 
 Supports configuration via json.
 

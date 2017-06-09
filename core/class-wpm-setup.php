@@ -328,9 +328,9 @@ class WPM_Setup {
 	 */
 	public function get_config() {
 		if ( ! $this->config ) {
-			$config       = get_option( 'wpm_config' );
-			$this->config = apply_filters( 'wpm_load_config', $config );
+			$this->config = get_option( 'wpm_config' );
 		}
+		$this->config = apply_filters( 'wpm_load_config', $this->config );
 
 		return $this->config;
 	}
