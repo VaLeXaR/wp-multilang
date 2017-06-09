@@ -36,6 +36,7 @@ WP Multilang compatible out of the box with the plugin:
 * NextGEN Gallery
 * All in One SEO Pack
 * MailChimp for WordPress
+* Newsletter
 
 Supports configuration via json.
 
@@ -124,6 +125,8 @@ Compatible with multisite not tested.
 + add support Page Builder by SiteOrigin
 + add support NextGEN Gallery
 + add support All in One SEO Pack
++ add support MailChimp for WordPress
++ add support Newsletter
 + add filters for config
 * small fixes
 

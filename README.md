@@ -20,6 +20,7 @@ Translations of post types, taxonomies, meta fields, options, text fields in mil
 * NextGEN Gallery
 * All in One SEO Pack
 * MailChimp for WordPress
+* Newsletter
 
 Supports configuration via json.
 
