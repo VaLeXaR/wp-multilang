@@ -22,6 +22,7 @@ Translations of post types, taxonomies, meta fields, options, text fields in mil
 * MailChimp for WordPress
 * Newsletter
 * Maps Builder
+* Max Mega Menu
 
 Supports configuration via json.
 
@@ -111,6 +112,14 @@ Features of the plugin **WP Multilang**:
 * WooCommerce
 * Yoast Seo
 * Contact Form 7
+* WPBakery Visual Composer
+* Page Builder by SiteOrigin
+* NextGEN Gallery
+* All in One SEO Pack
+* MailChimp for WordPress
+* Newsletter
+* Maps Builder
+* Max Mega Menu
 
 Підтримує налаштування через json.
 
