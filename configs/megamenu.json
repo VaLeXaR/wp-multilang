@@ -1,0 +1,15 @@
+{
+  "admin_pages": [
+    "mega-menu_page_maxmegamenu_theme_editor"
+  ],
+  "options": {
+    "megamenu_toggle_blocks": {
+      "wpm_each": {
+        "wpm_each": {
+          "closed_text": {},
+          "open_text": {}
+        }
+      }
+    }
+  }
+}
