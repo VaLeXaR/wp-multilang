@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.8
-Stable tag: 1.3.0
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,7 +38,6 @@ WP Multilang compatible out of the box with the plugin:
 * MailChimp for WordPress
 * Newsletter
 * Maps Builder
-* Max Mega Menu
 
 Supports configuration via json.
 
@@ -123,8 +122,8 @@ Compatible with multisite not tested.
 
 == Changelog ==
 
-= 1.3.0 =
-+ add support Max Mega Menu
+= 1.2.1 =
+* fix save ACF value
 
 = 1.2.0 =
 + add support Page Builder by SiteOrigin

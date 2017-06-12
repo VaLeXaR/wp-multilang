@@ -16,7 +16,7 @@ if ( class_exists( 'acf' ) ) {
 	 * @package  WPM\Core\Vendor
 	 * @category Vendor
 	 * @author   VaLeXaR
-	 * @version  1.0.1
+	 * @version  1.0.2
 	 */
 	class WPM_Acf {
 
@@ -40,9 +40,9 @@ if ( class_exists( 'acf' ) ) {
 			add_filter( "acf/load_value/type=text", 'wpm_translate_value', 0 );
 			add_filter( "acf/load_value/type=textarea", 'wpm_translate_value', 0 );
 			add_filter( "acf/load_value/type=wysiwyg", 'wpm_translate_value', 0 );
-			add_filter( "acf/update_value/type=text", __NAMESPACE__ . '\WPM_Acf::save_value', 99, 3 );
-			add_filter( "acf/update_value/type=textarea", __NAMESPACE__ . '\WPM_Acf::save_value', 99, 3 );
-			add_filter( "acf/update_value/type=wysiwyg", __NAMESPACE__ . '\WPM_Acf::save_value', 99, 3 );
+			add_filter( "acf/update_value/type=text", array( $this, 'save_value' ), 99, 3 );
+			add_filter( "acf/update_value/type=textarea", array( $this, 'save_value' ), 99, 3 );
+			add_filter( "acf/update_value/type=wysiwyg", array( $this, 'save_value' ), 99, 3 );
 			add_filter( 'wpm_posts_acf-field-group_config', array( $this, 'add_config' ) );
 			add_action( 'init', array( $this, 'check_pro' ) );
 		}
@@ -154,10 +154,10 @@ if ( class_exists( 'acf' ) ) {
 		 *
 		 * @return array|bool|string
 		 */
-		static public function save_value( $value, $post_id, $field ) {
-			remove_filter( 'acf/load_value', 'wpm_translate_value', 0 );
+		public function save_value( $value, $post_id, $field ) {
+			remove_filter( "acf/load_value/type={$field['type']}", 'wpm_translate_value', 0 );
 			$old_value = get_field( $field['name'], $post_id );
-			add_filter( "acf/load_value", 'wpm_translate_value', 0 );
+			add_filter( "acf/load_value/type={$field['type']}", 'wpm_translate_value', 0 );
 			$old_value = wpm_value_to_ml_array( $old_value );
 			$new_value = wpm_set_language_value( $old_value, $value, array() );
 			$new_value = wpm_ml_value_to_string( $new_value );
