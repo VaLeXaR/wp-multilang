@@ -8,7 +8,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:     wpm
  * Domain Path:     /languages
- * Version:         1.2.1
+ * Version:         1.3.0
  *
  * @package  WPM
  * @category Core
@@ -42,7 +42,7 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 		 *
 		 * @var string
 		 */
-		public $version = '1.2.1';
+		public $version = '1.3.0';
 
 		/**
 		 * The single instance of the class.
@@ -241,3 +241,10 @@ function WPM() {
 }
 
 WPM();
+
+//add_action( 'init', function(){
+//	global $wpdb;
+//	$data = base64_decode( $wpdb->get_var("SELECT params FROM {$wpdb->prefix}masterslider_sliders WHERE ID=1;"));
+//	d(json_decode( $data, true));
+//	die();
+//});
