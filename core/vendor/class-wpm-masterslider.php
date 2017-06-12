@@ -25,40 +25,77 @@ if ( defined( 'MSWP_AVERTA_VERSION' ) ) {
 		 */
 		public function __construct() {
 //			add_action( 'admin_enqueue_scripts', array( $this, 'add_translator_script' ), 11 );
-//			add_filter('masterslider_slide_info_shortcode', function($output, $args){
-//				s($output, $args);
-//				die();
-//				$content = wp_unslash( __( $content ) );
-//				$layer = str_replace( $content, wpm_translate_string( $content ), $layer);
-//				return $output;
-//			}, 10, 4);
+			add_action('wp_ajax_msp_panel_handler', function(){
 
-			add_action( 'masterslider_admin_add_panel_variables', function () {
-				global $wp_scripts;
-				$data        = $wp_scripts->get_data( 'jquery-core', 'data' );
-				$data_array  = explode( "\n", $data );
-				$slider_data = '';
-				foreach ( $data_array as $key => $item ) {
-					if ( strpos( $item, '__MSP_DATA' ) ) {
-						$slider_data = str_replace( 'var __MSP_DATA = ', '', substr( $item, 0, - 1 ) );
-						unset( $data_array[ $key ] );
-						break;
-					}
+				// verify nonce
+				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], "msp_panel") ) {
+					return;
 				}
-				if ( $slider_data ) {
-					$slider_data = json_decode( base64_decode( $slider_data ), true );
-					foreach ( $slider_data['MSPanel.Layer'] as $key => $layer ) {
-						$layer = json_decode( $layer, true );
-						if ( $layer['content'] ) {
-							$layer['content'] = wpm_translate_string( $layer['content'] );
-							$slider_data['MSPanel.Layer'][ $key ] = json_encode( $layer );
-						}
-					}
-					$data_array[] = 'var __MSP_DATA = "' . base64_encode( json_encode( $slider_data ) ) . '";';
-					$data         = implode( "\n", $data_array );
-					$wp_scripts->add_data( 'jquery-core', 'data', $data );
+
+				// ignore the request if the current user doesn't have sufficient permissions
+				if ( ! current_user_can( 'publish_masterslider' ) ) {
+					return;
 				}
-			} );
+
+				// Get the slider id
+				$slider_id 		= isset( $_REQUEST['slider_id'] ) ? $_REQUEST['slider_id'] : '';
+
+				if ( empty( $slider_id ) ) {
+					return;
+				}
+
+				// get panel data
+				$msp_data		= isset( $_REQUEST['msp_data']      ) ? $_REQUEST['msp_data']      : NULL;
+
+				// get parse and database tools
+				global $mspdb;
+
+
+				// store slider data in database
+				$old_slider = $mspdb->get_slider( $slider_id );
+
+//				s(json_decode( base64_decode( $msp_data), true), $old_slider);
+//				die();
+			}, 0);
+
+			add_action( 'masterslider_admin_add_panel_variables', array( $this, 'translate_slider' ) );
+		}
+
+
+		public function translate_slider() {
+			global $wp_scripts;
+
+			$data        = $wp_scripts->get_data( 'jquery-core', 'data' );
+			$data_array  = explode( "\n", $data );
+			$slider_data = '';
+
+			foreach ( $data_array as $key => $item ) {
+				if ( strpos( $item, '__MSP_DATA' ) ) {
+					$slider_data = str_replace( 'var __MSP_DATA = ', '', substr( $item, 0, - 1 ) );
+					unset( $data_array[ $key ] );
+					break;
+				}
+			}
+
+			if ( $slider_data ) {
+				$slider_data = json_decode( base64_decode( $slider_data ), true );
+
+				foreach ( $slider_data['MSPanel.Layer'] as $key => $layer ) {
+					$layer                                = json_decode( $layer, true );
+					$layer                                = wpm_translate_value( $layer );
+					$slider_data['MSPanel.Layer'][ $key ] = json_encode( $layer );
+				}
+
+				foreach ( $slider_data['MSPanel.Slide'] as $key => $slide ) {
+					$slide                                = json_decode( $slide, true );
+					$slide                                = wpm_translate_value( $slide );
+					$slider_data['MSPanel.Slide'][ $key ] = json_encode( $slide );
+				}
+
+				$data_array[] = 'var __MSP_DATA = "' . base64_encode( json_encode( $slider_data ) ) . '";';
+				$data         = implode( "\n", $data_array );
+				$wp_scripts->add_data( 'jquery-core', 'data', $data );
+			}
 		}
 
 
