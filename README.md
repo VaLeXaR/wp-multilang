@@ -120,6 +120,7 @@ Features of the plugin **WP Multilang**:
 * Newsletter
 * Maps Builder
 * Max Mega Menu
+* MasterSlider
 
 Підтримує налаштування через json.
 

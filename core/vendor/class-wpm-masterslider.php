@@ -1,6 +1,6 @@
 <?php
 /**
- * Class for capability with Contact Form 7
+ * Class for capability with MasterSlider
  */
 
 namespace WPM\Core\Vendor;
@@ -12,56 +12,101 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( defined( 'MSWP_AVERTA_VERSION' ) ) {
 
 	/**
-	 * Class WPM_CF7
+	 * Class WPM_Masterslider
 	 * @package  WPM\Core\Vendor
 	 * @category Vendor
 	 * @author   VaLeXaR
-	 * @since    1.2.0
+	 * @since    1.3.0
 	 */
 	class WPM_Masterslider {
 
 		/**
-		 * WPM_CF7 constructor.
+		 * WPM_Masterslider constructor.
 		 */
 		public function __construct() {
-//			add_action( 'admin_enqueue_scripts', array( $this, 'add_translator_script' ), 11 );
-			add_action('wp_ajax_msp_panel_handler', function(){
-
-				// verify nonce
-				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], "msp_panel") ) {
-					return;
-				}
-
-				// ignore the request if the current user doesn't have sufficient permissions
-				if ( ! current_user_can( 'publish_masterslider' ) ) {
-					return;
-				}
-
-				// Get the slider id
-				$slider_id 		= isset( $_REQUEST['slider_id'] ) ? $_REQUEST['slider_id'] : '';
-
-				if ( empty( $slider_id ) ) {
-					return;
-				}
-
-				// get panel data
-				$msp_data		= isset( $_REQUEST['msp_data']      ) ? $_REQUEST['msp_data']      : NULL;
-
-				// get parse and database tools
-				global $mspdb;
-
-
-				// store slider data in database
-				$old_slider = $mspdb->get_slider( $slider_id );
-
-//				s(json_decode( base64_decode( $msp_data), true), $old_slider);
-//				die();
-			}, 0);
-
+			add_action( 'wp_ajax_msp_panel_handler', array( $this, 'save_slider' ), 0 );
 			add_action( 'masterslider_admin_add_panel_variables', array( $this, 'translate_slider' ) );
+			add_filter( 'wpm_admin_pages', array( $this, 'add_language_switcher' ) );
 		}
 
 
+		/**
+		 * Save slider
+		 */
+		public function save_slider() {
+			// verify nonce
+			if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], "msp_panel" ) ) {
+				return;
+			}
+
+			// ignore the request if the current user doesn't have sufficient permissions
+			if ( ! current_user_can( 'publish_masterslider' ) ) {
+				return;
+			}
+
+			// Get the slider id
+			$slider_id = isset( $_REQUEST['slider_id'] ) ? $_REQUEST['slider_id'] : '';
+
+			if ( empty( $slider_id ) ) {
+				return;
+			}
+
+			// get panel data
+			$msp_data = isset( $_REQUEST['msp_data'] ) ? $_REQUEST['msp_data'] : null;
+
+			// get parse and database tools
+			global $mspdb;
+
+			// store slider data in database
+			$old_slider = $mspdb->get_slider( $slider_id );
+			$old_params = json_decode( base64_decode( $old_slider['params'] ), true );
+			$params     = json_decode( base64_decode( $msp_data ), true );
+
+			$slider_config = array(
+				'info'      => array(),
+				'bgAlt'     => array(),
+				'bgTitle'   => array(),
+				'linkTitle' => array()
+			);
+
+			foreach ( $params['MSPanel.Slide'] as $key => $slide ) {
+				$slide = json_decode( $slide, true );
+				foreach ( $old_params['MSPanel.Slide'] as $old_slide ) {
+					$old_slide = json_decode( $old_slide, true );
+					if ( $slide['id'] == $old_slide['id'] ) {
+						$strings   = wpm_value_to_ml_array( $old_slide );
+						$new_value = wpm_set_language_value( $strings, $slide, $slider_config );
+						$slide     = wpm_ml_value_to_string( $new_value );
+					}
+				}
+				$params['MSPanel.Slide'][ $key ] = json_encode( $slide );
+			}
+
+			$layer_config = array(
+				'title'   => array(),
+				'content' => array()
+			);
+
+			foreach ( $params['MSPanel.Layer'] as $key => $layer ) {
+				$layer = json_decode( $layer, true );
+				foreach ( $old_params['MSPanel.Layer'] as $old_layer ) {
+					$old_layer = json_decode( $old_layer, true );
+					if ( $layer['id'] == $old_layer['id'] ) {
+						$strings   = wpm_value_to_ml_array( $old_layer );
+						$new_value = wpm_set_language_value( $strings, $layer, $layer_config );
+						$layer     = wpm_ml_value_to_string( $new_value );
+					}
+				}
+				$params['MSPanel.Layer'][ $key ] = json_encode( $layer );
+			}
+
+			$_REQUEST['msp_data'] = base64_encode( json_encode( $params ) );
+		}
+
+
+		/**
+		 * Translate slider
+		 */
 		public function translate_slider() {
 			global $wp_scripts;
 
@@ -100,23 +145,20 @@ if ( defined( 'MSWP_AVERTA_VERSION' ) ) {
 
 
 		/**
-		 * Translate some field without PHP filters by javascript for displaying
+		 * Add language_switcher
+		 *
+		 * @param $config
+		 *
+		 * @return array
 		 */
-		public function add_translator_script() {
+		public function add_language_switcher( $config ) {
 			$screen    = get_current_screen();
 			$screen_id = $screen ? $screen->id : '';
-
-			if ( $screen_id == 'toplevel_page_wpcf7' && isset( $_GET['post'] ) ) {
-				wp_enqueue_script( 'wpm_translator' );
-				wpm_enqueue_js( "
-					(function ( $ ) {
-						$( '#title' ).each( function () {
-							var text = wpm_translator.translate_string($(this).val());
-							$(this).val(text);
-						} );
-					})( window.jQuery );
-				" );
+			if ( $screen_id == 'toplevel_page_masterslider' && isset( $_GET['slider_id'] ) ) {
+				$config[] = 'toplevel_page_masterslider';
 			}
+
+			return $config;
 		}
 	}
 

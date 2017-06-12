@@ -38,6 +38,7 @@ WP Multilang compatible out of the box with the plugin:
 * MailChimp for WordPress
 * Newsletter
 * Maps Builder
+* MasterSlider
 
 Supports configuration via json.
 
@@ -124,6 +125,7 @@ Compatible with multisite not tested.
 
 = 1.3.0 =
 + add support Max Mega Menu
++ add support MasterSlider
 
 = 1.2.1 =
 * fix save ACF value
