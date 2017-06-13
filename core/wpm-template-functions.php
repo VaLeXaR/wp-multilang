@@ -79,3 +79,4 @@ function wpm_language_switcher( $args = array(), $echo = true ) {
 
 
 add_filter( 'localization', 'wpm_translate_string' );
+add_filter( 'gettext', 'wpm_translate_string' );
