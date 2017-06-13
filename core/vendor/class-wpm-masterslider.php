@@ -62,42 +62,48 @@ if ( defined( 'MSWP_AVERTA_VERSION' ) ) {
 			$old_params = json_decode( base64_decode( $old_slider['params'] ), true );
 			$params     = json_decode( base64_decode( $msp_data ), true );
 
-			$slider_config = array(
-				'info'      => array(),
-				'bgAlt'     => array(),
-				'bgTitle'   => array(),
-				'linkTitle' => array()
-			);
+			if ( isset( $params['MSPanel.Slide'] ) ) {
 
-			foreach ( $params['MSPanel.Slide'] as $key => $slide ) {
-				$slide = json_decode( $slide, true );
-				foreach ( $old_params['MSPanel.Slide'] as $old_slide ) {
-					$old_slide = json_decode( $old_slide, true );
-					if ( $slide['id'] == $old_slide['id'] ) {
-						$strings   = wpm_value_to_ml_array( $old_slide );
-						$new_value = wpm_set_language_value( $strings, $slide, $slider_config );
-						$slide     = wpm_ml_value_to_string( $new_value );
+				$slider_config = array(
+					'info'      => array(),
+					'bgAlt'     => array(),
+					'bgTitle'   => array(),
+					'linkTitle' => array()
+				);
+
+				foreach ( $params['MSPanel.Slide'] as $key => $slide ) {
+					$slide = json_decode( $slide, true );
+					foreach ( $old_params['MSPanel.Slide'] as $old_slide ) {
+						$old_slide = json_decode( $old_slide, true );
+						if ( $slide['id'] == $old_slide['id'] ) {
+							$strings   = wpm_value_to_ml_array( $old_slide );
+							$new_value = wpm_set_language_value( $strings, $slide, $slider_config );
+							$slide     = wpm_ml_value_to_string( $new_value );
+						}
 					}
+					$params['MSPanel.Slide'][ $key ] = json_encode( $slide );
 				}
-				$params['MSPanel.Slide'][ $key ] = json_encode( $slide );
 			}
 
-			$layer_config = array(
-				'title'   => array(),
-				'content' => array()
-			);
+			if ( isset( $params['MSPanel.Layer'] ) ) {
 
-			foreach ( $params['MSPanel.Layer'] as $key => $layer ) {
-				$layer = json_decode( $layer, true );
-				foreach ( $old_params['MSPanel.Layer'] as $old_layer ) {
-					$old_layer = json_decode( $old_layer, true );
-					if ( $layer['id'] == $old_layer['id'] ) {
-						$strings   = wpm_value_to_ml_array( $old_layer );
-						$new_value = wpm_set_language_value( $strings, $layer, $layer_config );
-						$layer     = wpm_ml_value_to_string( $new_value );
+				$layer_config = array(
+					'title'   => array(),
+					'content' => array()
+				);
+
+				foreach ( $params['MSPanel.Layer'] as $key => $layer ) {
+					$layer = json_decode( $layer, true );
+					foreach ( $old_params['MSPanel.Layer'] as $old_layer ) {
+						$old_layer = json_decode( $old_layer, true );
+						if ( $layer['id'] == $old_layer['id'] ) {
+							$strings   = wpm_value_to_ml_array( $old_layer );
+							$new_value = wpm_set_language_value( $strings, $layer, $layer_config );
+							$layer     = wpm_ml_value_to_string( $new_value );
+						}
 					}
+					$params['MSPanel.Layer'][ $key ] = json_encode( $layer );
 				}
-				$params['MSPanel.Layer'][ $key ] = json_encode( $layer );
 			}
 
 			$_REQUEST['msp_data'] = base64_encode( json_encode( $params ) );
@@ -122,19 +128,23 @@ if ( defined( 'MSWP_AVERTA_VERSION' ) ) {
 				}
 			}
 
-			if ( $slider_data ) {
+			if ( $slider_data && $slider_data != 'null' ) {
 				$slider_data = json_decode( base64_decode( $slider_data ), true );
 
-				foreach ( $slider_data['MSPanel.Layer'] as $key => $layer ) {
-					$layer                                = json_decode( $layer, true );
-					$layer                                = wpm_translate_value( $layer );
-					$slider_data['MSPanel.Layer'][ $key ] = json_encode( $layer );
+				if ( isset( $slider_data['MSPanel.Slide'] ) ) {
+					foreach ( $slider_data['MSPanel.Slide'] as $key => $slide ) {
+						$slide                                = json_decode( $slide, true );
+						$slide                                = wpm_translate_value( $slide );
+						$slider_data['MSPanel.Slide'][ $key ] = json_encode( $slide );
+					}
 				}
 
-				foreach ( $slider_data['MSPanel.Slide'] as $key => $slide ) {
-					$slide                                = json_decode( $slide, true );
-					$slide                                = wpm_translate_value( $slide );
-					$slider_data['MSPanel.Slide'][ $key ] = json_encode( $slide );
+				if ( isset( $slider_data['MSPanel.Layer'] ) ) {
+					foreach ( $slider_data['MSPanel.Layer'] as $key => $layer ) {
+						$layer                                = json_decode( $layer, true );
+						$layer                                = wpm_translate_value( $layer );
+						$slider_data['MSPanel.Layer'][ $key ] = json_encode( $layer );
+					}
 				}
 
 				$data_array[] = 'var __MSP_DATA = "' . base64_encode( json_encode( $slider_data ) ) . '";';
