@@ -23,6 +23,7 @@ Translations of post types, taxonomies, meta fields, options, text fields in mil
 * Newsletter
 * Maps Builder
 * Max Mega Menu
+* MasterSlider
 
 Supports configuration via json.
 
