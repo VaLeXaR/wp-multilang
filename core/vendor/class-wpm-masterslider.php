@@ -73,12 +73,19 @@ if ( defined( 'MSWP_AVERTA_VERSION' ) ) {
 
 				foreach ( $params['MSPanel.Slide'] as $key => $slide ) {
 					$slide = json_decode( $slide, true );
-					foreach ( $old_params['MSPanel.Slide'] as $old_slide ) {
-						$old_slide = json_decode( $old_slide, true );
-						if ( $slide['id'] == $old_slide['id'] ) {
-							$strings   = wpm_value_to_ml_array( $old_slide );
-							$new_value = wpm_set_language_value( $strings, $slide, $slider_config );
-							$slide     = wpm_ml_value_to_string( $new_value );
+					if ( $old_params && is_array( $old_params ) && $old_params['MSPanel.Slide'] ) {
+						foreach ( $old_params['MSPanel.Slide'] as $old_slide ) {
+							$old_slide = json_decode( $old_slide, true );
+							if ( $slide['id'] == $old_slide['id'] ) {
+								$strings   = wpm_value_to_ml_array( $old_slide );
+								$new_value = wpm_set_language_value( $strings, $slide, $slider_config );
+								$slide     = wpm_ml_value_to_string( $new_value );
+							}
+						}
+					} else {
+						if ( ! wpm_is_ml_value( $slide ) ) {
+							$slide = wpm_set_language_value( array(), $slide, $slider_config );
+							$slide = wpm_ml_value_to_string( $slide );
 						}
 					}
 					$params['MSPanel.Slide'][ $key ] = json_encode( $slide );
@@ -94,12 +101,19 @@ if ( defined( 'MSWP_AVERTA_VERSION' ) ) {
 
 				foreach ( $params['MSPanel.Layer'] as $key => $layer ) {
 					$layer = json_decode( $layer, true );
-					foreach ( $old_params['MSPanel.Layer'] as $old_layer ) {
-						$old_layer = json_decode( $old_layer, true );
-						if ( $layer['id'] == $old_layer['id'] ) {
-							$strings   = wpm_value_to_ml_array( $old_layer );
-							$new_value = wpm_set_language_value( $strings, $layer, $layer_config );
-							$layer     = wpm_ml_value_to_string( $new_value );
+					if ( $old_params && is_array( $old_params ) && $old_params['MSPanel.Layer'] ) {
+						foreach ( $old_params['MSPanel.Layer'] as $old_layer ) {
+							$old_layer = json_decode( $old_layer, true );
+							if ( $layer['id'] == $old_layer['id'] ) {
+								$strings   = wpm_value_to_ml_array( $old_layer );
+								$new_value = wpm_set_language_value( $strings, $layer, $layer_config );
+								$layer     = wpm_ml_value_to_string( $new_value );
+							}
+						}
+					} else {
+						if ( ! wpm_is_ml_value( $layer ) ) {
+							$layer = wpm_set_language_value( array(), $layer, $layer_config );
+							$layer = wpm_ml_value_to_string( $layer );
 						}
 					}
 					$params['MSPanel.Layer'][ $key ] = json_encode( $layer );
