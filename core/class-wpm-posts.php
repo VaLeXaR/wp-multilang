@@ -34,6 +34,8 @@ class WPM_Posts extends \WPM_Object {
 		add_filter( 'posts_results', array( $this, 'filter_posts' ), 0, 2 );
 		add_filter( 'the_post', 'wpm_translate_object', 0 );
 		add_filter( 'the_title', 'wpm_translate_string', 0 );
+		add_filter( 'the_content', 'wpm_translate_string', 0 );
+		add_filter( 'the_excerpt', 'wpm_translate_string', 0 );
 		add_filter( "get_{$this->object_type}_metadata", array( $this, 'get_meta_field' ), 0, 3 );
 		add_filter( "update_{$this->object_type}_metadata", array( $this, 'update_meta_field' ), 99, 5 );
 		add_filter( "add_{$this->object_type}_metadata", array( $this, 'add_meta_field' ), 99, 5 );
