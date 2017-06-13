@@ -38,6 +38,7 @@ WP Multilang compatible out of the box with the plugin:
 * MailChimp for WordPress
 * Newsletter
 * Maps Builder
+* Max Mega Menu
 * MasterSlider
 
 Supports configuration via json.
