@@ -241,10 +241,3 @@ function WPM() {
 }
 
 WPM();
-
-//add_action( 'init', function(){
-//	global $wpdb;
-//	$data = base64_decode( $wpdb->get_var("SELECT params FROM {$wpdb->prefix}masterslider_sliders WHERE ID=1;"));
-//	d(json_decode( $data, true));
-//	die();
-//});
