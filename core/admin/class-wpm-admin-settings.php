@@ -15,6 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * WPM_Admin_Settings Class.
+ *
+ * @version 1.0.1
  */
 class WPM_Admin_Settings {
 
@@ -23,20 +25,12 @@ class WPM_Admin_Settings {
 	 */
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'add_section' ) );
-
 	}
 
 	/**
 	 * Add settings section to general options page
 	 */
 	public function add_section() {
-
-		add_settings_field(
-			'wpm_switch_locale',
-			'',
-			array( $this, 'switch_locale' ),
-			'general'
-		);
 
 		add_settings_section( 'wpm_options', __( 'Multilingual Settings', 'wpm' ), array(
 			$this,
@@ -61,20 +55,9 @@ class WPM_Admin_Settings {
 
 
 	/**
-	 * Fix for display default locale
-	 */
-	public function switch_locale() {
-		switch_to_locale( wpm_get_default_locale() );
-	}
-
-
-	/**
 	 * Display WPM options
 	 */
 	public function view_settings() {
-
-		$_languages = array_flip( wpm_get_languages() );
-		switch_to_locale( $_languages[ wpm_get_user_language() ] );
 
 		$options             = wpm_get_options();
 		$installed_languages = wpm_get_installed_languages();
@@ -182,6 +165,17 @@ class WPM_Admin_Settings {
 		</table>
 
 		<table class="form-table">
+			<tr>
+				<th scope="row"><label for="wpm_default_lang"><?php _e( 'Default site language', 'wpm' ); ?></label></th>
+				<td>
+					<select name="WPLANG" id="wpm_default_lang">
+						<?php foreach( $languages as $locale => $language ) { ?>
+							<?php if ( $locale == 'en_US' )  ?>
+							<option value="<?php echo ( $locale == 'en_US') ? '' : $locale ; ?>"<?php selected( $locale, wpm_get_default_locale() ); ?>><?php echo $language['name']; ?></option>
+						<?php } ?>
+					</select>
+				</td>
+			</tr>
 			<tr>
 				<th scope="row"><?php _e( 'Uninstalling', 'wpm' ); ?></th>
 				<td>
