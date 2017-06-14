@@ -14,7 +14,7 @@ Multilingual plugin for WordPress.
 
 WP Multilang is a multilingual plugin for WordPress.
 
-Translations of post types, taxonomies, meta fields, options, text fields in miltimedia files, menus, titles and text field in widgets.
+Translations of post types, taxonomies, meta fields, options, text fields in miltimedia files, menus, titles and text fields in widgets.
 
 Features of the plugin WP Multilang:
 
@@ -25,7 +25,7 @@ Features of the plugin WP Multilang:
 * No dublicate posts
 * No subdomens for language version
 
-WP Multilang compatible out of the box with the plugin:
+WP Multilang compatible with plugins:
 
 * ACF, ACF Pro (ACF Pro supported in translating `object field`)
 * WooCommerce
@@ -43,20 +43,20 @@ WP Multilang compatible out of the box with the plugin:
 
 Supports configuration via json.
 
-Add in the root of your theme or plugin file `wpm-config.json` settings.
+Add in the root of your theme or plugin file `wpm-config.json`.
 
-Sample configurations can be viewed in a configuration file in the folder configs in the root plugin.
+Sample configurations can be viewed in config files in folder 'configs' in root the plugin.
 
-Configuration is updated after switching threads off/on or update any plugins.
+Configuration is updated after switching theme, enable or update any plugins.
 
-It has filters for dynamic application configuration translation add languages.
+The plugin has filters for dynamic application configuration for translate.
 
-To disable translation set `null` into the desired configuration.
+For turn off translation, set `null` into the desired configuration.
 For example, you must turn off translation for a post type `post`.
 There are two ways:
 
-1. After json.
-    Create the root of the subject, or the roots of its plugin file `wpm-config.json` with:
+1. In json.
+    Create in root of a theme or a plugin file `wpm-config.json` with:
 
     `{
        "post_types": {
@@ -73,11 +73,11 @@ There are two ways:
 To enable translation pass an empty array in php `array()` or empty object in json `{}`.
 Supports translation multilevel array of options, custom fields and post_content.
 
-Since localization files nucleus. Supports the removal of established localizations. Has the ability to add your own localizations.
+Supports the removal of established localizations. Has the ability to add your own localizations.
 
 Supports translation via GET parameter. Add in the GET parameter `lang` code desired language.
 
-Supports clean database of translations when removing plugins.
+Supports clean database of translations when removing the plugin.
 
 Ideal for developers.
 
@@ -99,9 +99,9 @@ Available features for translation:
 `wpm_translate_string ($string, $language = '');` - translate multilingual string
 `wpm_translate_value ($value, $language = '');` - translate multidimensional array with multilingual strings
 
-Standard translates all record types, taxonomies, custom fields. Even if you turn off translation for a particular type of account, you will only see its translation.
+Standard translates all record types, taxonomies, custom fields. Even if you turn off translation for a particular post type, display only translated text.
 
-Supports automatically redirect to the user's browser language, if he went to the site for the first time.
+Supports automatically redirect to the user's browser language, if he visits for the first time.
 
 Update translation occurs at PHP. Therefore plugin has high adaptability, compatibility and easily integrates with other plugins. This is what distinguishes it among similar.
 
