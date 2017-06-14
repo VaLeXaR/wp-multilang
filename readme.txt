@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.8
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -57,6 +57,7 @@ There are two ways:
 
 1. After json.
     Create the root of the subject, or the roots of its plugin file `wpm-config.json` with:
+
     `{
        "post_types": {
          "post": null
@@ -83,6 +84,14 @@ Ideal for developers.
 For a switch as add code to your template
 
 `if ( function_exists ( 'wpm_language_switcher' ) ) wpm_language_switcher ();`
+
+Function accepts two parameters:
+
+$args - array
+  'type' - 'list', 'dropdown'. Default - 'list'.
+  'show' - 'flag', 'name', 'both'. Default - 'both'.
+
+$echo - bool
 
 Available features for translation:
 
@@ -123,6 +132,9 @@ Compatible with multisite not tested.
 5. Post edit page
 
 == Changelog ==
+
+= 1.3.1 =
+* fix many redirect for first load
 
 = 1.3.0 =
 + add support Max Mega Menu

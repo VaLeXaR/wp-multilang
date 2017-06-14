@@ -70,6 +70,15 @@ For a switch as add code to this topic
 ```php
 if ( function_exists ( 'wpm_language_switcher' ) ) wpm_language_switcher ();
 ```
+
+Function accepts two parameters:
+
+$args - array  
+  'type' - 'list', 'dropdown'. Default - 'list'.  
+  'show' - 'flag', 'name', 'both'. Default - 'both'.
+
+$echo - bool
+
 Available features for translation:
 ```php
 wpm_translate_url ($url, $language = ''); // translate url
@@ -169,6 +178,15 @@ Features of the plugin **WP Multilang**:
 ```php
 <?php if ( function_exists( 'wpm_language_switcher' ) ) wpm_language_switcher(); ?>
 ```
+
+Фукція приймає два параметри:
+
+$args - array  
+  'type' - 'list', 'dropdown'. Усталено - 'list'.  
+  'show' - 'flag', 'name', 'both'. Усталено - 'both'.
+
+$echo - bool
+
 Доступні функції для перекладу:
 ```php
 wpm_translate_url( $url, $language = '' ); // translate url
