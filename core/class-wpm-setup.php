@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WPM_Setup
  * @package  WPM\Core
  * @author   VaLeXaR
- * @version  1.1.0
+ * @version  1.1.1
  */
 class WPM_Setup {
 
@@ -209,6 +209,9 @@ class WPM_Setup {
 	 */
 	public function set_user_language() {
 
+		$languages      = $this->get_languages();
+		$default_locale = $this->get_default_locale();
+
 		if ( ! is_admin() && ! defined( 'REST_REQUEST' ) ) {
 
 			$path = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
@@ -229,7 +232,12 @@ class WPM_Setup {
 					if ( $browser_language != $this->user_language ) {
 
 						$base_url   = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'];
+
 						$b_home_url = $base_url . '/' . $browser_language;
+
+						if ( $browser_language == $languages[ $default_locale ] ) {
+							$b_home_url = $base_url;
+						}
 
 						if ( $this->user_language ) {
 							$base_url = $base_url . '/' . $this->user_language;
@@ -242,9 +250,6 @@ class WPM_Setup {
 				}
 			}
 		}
-
-		$languages      = $this->get_languages();
-		$default_locale = $this->get_default_locale();
 
 		if ( isset( $_GET['lang'] ) ) {
 			$lang = wpm_clean( $_GET['lang'] );
