@@ -244,7 +244,7 @@ class WPM_Setup {
 						}
 
 						$url = str_replace( $base_url, $b_home_url, wpm_get_current_url() );
-						wp_redirect( $url, 301 );
+						wp_redirect( $url );
 						exit;
 					}
 				}
@@ -294,7 +294,7 @@ class WPM_Setup {
 			if ( ( $value == $user_language ) ) {
 				switch_to_locale( $key );
 				if ( $key == $default_locale && ! is_admin() && ! isset( $_GET['lang'] ) ) {
-					wp_redirect( home_url( str_replace( '/' . $user_language . '/', '/', $_SERVER['REQUEST_URI'] ) ), 301 );
+					wp_redirect( home_url( str_replace( '/' . $user_language . '/', '/', $_SERVER['REQUEST_URI'] ) ) );
 					exit;
 				}
 				break;

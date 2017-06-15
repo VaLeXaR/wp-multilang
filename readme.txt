@@ -135,6 +135,7 @@ Compatible with multisite not tested.
 
 = 1.3.3 =
 * fix setting for default site language
+* fix redirect to browser language
 
 = 1.3.2 =
 * add setting for default site language
