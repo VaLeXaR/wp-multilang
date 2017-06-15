@@ -133,6 +133,9 @@ Compatible with multisite not tested.
 
 == Changelog ==
 
+= 1.3.4 =
+* add 404 error for not available language
+
 = 1.3.3 =
 * fix setting for default site language
 * fix redirect to browser language
