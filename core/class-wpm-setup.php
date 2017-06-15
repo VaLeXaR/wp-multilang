@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WPM_Setup
  * @package  WPM\Core
  * @author   VaLeXaR
- * @version  1.1.1
+ * @version  1.2.0
  */
 class WPM_Setup {
 
@@ -98,6 +98,7 @@ class WPM_Setup {
 		add_action( 'activated_plugin', __NAMESPACE__ . '\WPM_Config::load_config_run' );
 		add_action( 'upgrader_process_complete', __NAMESPACE__ . '\WPM_Config::load_config_run' );
 		add_action( 'wpm_init', array( $this, 'load_vendor' ) );
+		add_action( 'template_redirect', array( $this, 'set_not_found' ) );
 		$this->init();
 	}
 
@@ -231,7 +232,7 @@ class WPM_Setup {
 
 					if ( $browser_language != $this->user_language ) {
 
-						$base_url   = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'];
+						$base_url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'];
 
 						$b_home_url = $base_url . '/' . $browser_language;
 
@@ -453,5 +454,16 @@ class WPM_Setup {
 		}
 
 		return null;
+	}
+
+
+	public function set_not_found() {
+		$languages      = $this->get_languages();
+
+		if ( ! in_array( $this->user_language, $languages ) ) {
+			global $wp_query;
+			$wp_query->set_404();
+			status_header( 404 );
+		}
 	}
 }
