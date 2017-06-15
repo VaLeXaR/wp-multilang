@@ -302,7 +302,7 @@ class WPM_Setup {
 			}
 		}
 
-		if ( ! $this->user_language ) {
+		if ( ! $this->user_language || ! in_array( $this->user_language, $languages ) ) {
 			$this->user_language = $languages[ $default_locale ];
 		}
 	}
