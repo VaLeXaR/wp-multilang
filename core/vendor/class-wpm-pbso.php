@@ -12,16 +12,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( defined( 'SITEORIGIN_PANELS_VERSION' ) ) {
 
 	/**
-	 * Class WPM_Site_Origins
+	 * Class WPM_PBSO
 	 * @package  WPM\Core\Vendor
 	 * @category Vendor
 	 * @author   VaLeXaR
 	 * @since    1.2.0
 	 */
-	class WPM_Site_Origins {
+	class WPM_PBSO {
 
 		/**
-		 * WPM_Site_Origins constructor.
+		 * WPM_PBSO constructor.
 		 */
 		public function __construct() {
 			add_filter( 'wpm_filter_old_panels_data_meta_value', array( $this, 'filter_old_value' ), 10, 2 );
@@ -29,7 +29,14 @@ if ( defined( 'SITEORIGIN_PANELS_VERSION' ) ) {
 			add_filter( 'siteorigin_widgets_search_posts_results', 'wpm_translate_value' );
 		}
 
-
+		/**
+		 * Filter old values recursively
+		 *
+		 * @param $old_value
+		 * @param $meta_value
+		 *
+		 * @return mixed
+		 */
 		public function filter_old_value( $old_value, $meta_value ) {
 			$new_old_value            = $meta_value;
 			$new_old_value['widgets'] = array();
@@ -61,6 +68,14 @@ if ( defined( 'SITEORIGIN_PANELS_VERSION' ) ) {
 		}
 
 
+		/**
+		 * Add config for values recursively
+		 *
+		 * @param $config
+		 * @param $meta_value
+		 *
+		 * @return mixed
+		 */
 		public function add_recursive_config( $config, $meta_value ) {
 			if ( is_array( $meta_value ) && isset( $meta_value['widgets'] ) ) {
 
@@ -82,5 +97,5 @@ if ( defined( 'SITEORIGIN_PANELS_VERSION' ) ) {
 		}
 	}
 
-	new WPM_Site_Origins();
+	new WPM_PBSO();
 }

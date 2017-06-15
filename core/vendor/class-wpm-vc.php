@@ -34,6 +34,14 @@ if ( defined( 'WPB_VC_VERSION' ) ) {
 			}
 		}
 
+
+		/**
+		 * Add lang param to url
+		 *
+		 * @param $link
+		 *
+		 * @return string
+		 */
 		public function append_lang_to_url( $link ) {
 			return add_query_arg( 'lang', wpm_get_language(), $link );
 		}
@@ -59,6 +67,8 @@ if ( defined( 'WPB_VC_VERSION' ) ) {
 		}
 
 		/**
+		 * Generate language switcher
+		 *
 		 * @return string
 		 */
 		public function generate_select_frontend() {
@@ -77,6 +87,8 @@ if ( defined( 'WPB_VC_VERSION' ) ) {
 		}
 
 		/**
+		 * Add menu item
+		 *
 		 * @param $list
 		 *
 		 * @return array
@@ -93,6 +105,8 @@ if ( defined( 'WPB_VC_VERSION' ) ) {
 		}
 
 		/**
+		 * Generate edit link
+		 *
 		 * @param $link
 		 *
 		 * @return string
