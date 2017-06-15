@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-06-14 11:46+0300\n"
+"POT-Creation-Date: 2017-06-15 09:12+0300\n"
 "PO-Revision-Date: 2017-05-22 12:43+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -52,86 +52,87 @@ msgid "Multilingual Settings"
 msgstr ""
 
 #: core/admin/class-wpm-admin-settings.php:51
-#: core/admin/class-wpm-admin-settings.php:190
+#: core/admin/class-wpm-admin-settings.php:184
 msgid "Delete translations when uninstalling plugin"
 msgstr ""
 
 #: core/admin/class-wpm-admin-settings.php:81
-#: core/admin/class-wpm-admin-settings.php:156
+#: core/admin/class-wpm-admin-settings.php:160
 msgid "Order"
 msgstr ""
 
 #: core/admin/class-wpm-admin-settings.php:82
-#: core/admin/class-wpm-admin-settings.php:100
-#: core/admin/class-wpm-admin-settings.php:157
-msgid "Enable"
+#: core/admin/class-wpm-admin-settings.php:161
+msgid "Default language"
 msgstr ""
 
 #: core/admin/class-wpm-admin-settings.php:83
-#: core/admin/class-wpm-admin-settings.php:111
-#: core/admin/class-wpm-admin-settings.php:112
-#: core/admin/class-wpm-admin-settings.php:158
-msgid "Locale"
+#: core/admin/class-wpm-admin-settings.php:104
+#: core/admin/class-wpm-admin-settings.php:162
+msgid "Enable"
 msgstr ""
 
 #: core/admin/class-wpm-admin-settings.php:84
-#: core/admin/class-wpm-admin-settings.php:117
-#: core/admin/class-wpm-admin-settings.php:118
-#: core/admin/class-wpm-admin-settings.php:159
-msgid "Slug *"
+#: core/admin/class-wpm-admin-settings.php:115
+#: core/admin/class-wpm-admin-settings.php:116
+#: core/admin/class-wpm-admin-settings.php:163
+msgid "Locale"
 msgstr ""
 
 #: core/admin/class-wpm-admin-settings.php:85
+#: core/admin/class-wpm-admin-settings.php:121
 #: core/admin/class-wpm-admin-settings.php:122
-#: core/admin/class-wpm-admin-settings.php:123
-#: core/admin/class-wpm-admin-settings.php:160
-#: core/widgets/class-wpm-widget-language-switcher.php:39
-msgid "Name"
+#: core/admin/class-wpm-admin-settings.php:164
+msgid "Slug *"
 msgstr ""
 
 #: core/admin/class-wpm-admin-settings.php:86
 #: core/admin/class-wpm-admin-settings.php:126
-#: core/admin/class-wpm-admin-settings.php:161
+#: core/admin/class-wpm-admin-settings.php:127
+#: core/admin/class-wpm-admin-settings.php:165
+#: core/widgets/class-wpm-widget-language-switcher.php:39
+msgid "Name"
+msgstr ""
+
+#: core/admin/class-wpm-admin-settings.php:87
+#: core/admin/class-wpm-admin-settings.php:130
+#: core/admin/class-wpm-admin-settings.php:166
 #: core/widgets/class-wpm-widget-language-switcher.php:38
 msgid "Flag"
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:87
-#: core/admin/class-wpm-admin-settings.php:147
-#: core/admin/class-wpm-admin-settings.php:162
+#: core/admin/class-wpm-admin-settings.php:88
+#: core/admin/class-wpm-admin-settings.php:151
+#: core/admin/class-wpm-admin-settings.php:167
 msgid "Delete"
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:127
+#: core/admin/class-wpm-admin-settings.php:131
 msgid "&mdash; Select &mdash;"
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:140
+#: core/admin/class-wpm-admin-settings.php:144
 msgid "Current"
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:142
+#: core/admin/class-wpm-admin-settings.php:146
 msgid "Default"
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:144
+#: core/admin/class-wpm-admin-settings.php:148
 msgid "Built-in"
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:169
-msgid "Default site language"
-msgstr ""
-
-#: core/admin/class-wpm-admin-settings.php:180
-#: core/admin/class-wpm-admin-settings.php:184
+#: core/admin/class-wpm-admin-settings.php:174
+#: core/admin/class-wpm-admin-settings.php:178
 msgid "Uninstalling"
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:250
+#: core/admin/class-wpm-admin-settings.php:243
 msgid "New language package installed"
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:254
+#: core/admin/class-wpm-admin-settings.php:247
 msgid "Language slug is required"
 msgstr ""
 

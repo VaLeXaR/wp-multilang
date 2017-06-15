@@ -79,6 +79,7 @@ class WPM_Admin_Settings {
 			<thead>
 			<tr>
 				<th class="wpm-lang-order"><?php esc_attr_e( 'Order', 'wpm' ); ?></th>
+				<th class="wpm-lang-default"><?php esc_attr_e( 'Default language', 'wpm' ); ?></th>
 				<th class="wpm-lang-status"><?php esc_attr_e( 'Enable', 'wpm' ); ?></th>
 				<th class="wpm-lang-locale"><?php esc_attr_e( 'Locale', 'wpm' ); ?></th>
 				<th class="wpm-lang-slug"><?php esc_attr_e( 'Slug *', 'wpm' ); ?></th>
@@ -95,6 +96,9 @@ class WPM_Admin_Settings {
 				} ?>
 				<tr>
 					<td class="wpm-lang-order"><?php echo $i; ?></td>
+					<td class="wpm-lang-status">
+						<input type="radio" name="WPLANG" value="<?php echo ( $key == 'en_US') ? '' : $key ; ?>"<?php checked( $key, wpm_get_default_locale() ); ?>>
+					</td>
 					<td class="wpm-lang-status">
 						<input type="hidden" name="wpm_languages[<?php echo $key; ?>][enable]" value="0">
 						<input name="wpm_languages[<?php echo $key; ?>][enable]" type="checkbox" value="1"<?php checked( $language['enable'] ); ?> title="<?php esc_attr_e( 'Enable', 'wpm' ); ?>"<?php if ( $key == wpm_get_default_locale() ) { ?> disabled="disabled"<?php } ?>>
@@ -154,6 +158,7 @@ class WPM_Admin_Settings {
 			<tfoot>
 			<tr>
 				<th class="wpm-lang-order"><?php esc_attr_e( 'Order', 'wpm' ); ?></th>
+				<th class="wpm-lang-default"><?php esc_attr_e( 'Default language', 'wpm' ); ?></th>
 				<th class="wpm-lang-status"><?php esc_attr_e( 'Enable', 'wpm' ); ?></th>
 				<th class="wpm-lang-locale"><?php esc_attr_e( 'Locale', 'wpm' ); ?></th>
 				<th class="wpm-lang-slug"><?php esc_attr_e( 'Slug *', 'wpm' ); ?></th>
@@ -165,17 +170,6 @@ class WPM_Admin_Settings {
 		</table>
 
 		<table class="form-table">
-			<tr>
-				<th scope="row"><label for="wpm_default_lang"><?php _e( 'Default site language', 'wpm' ); ?></label></th>
-				<td>
-					<select name="WPLANG" id="wpm_default_lang">
-						<?php foreach( $languages as $locale => $language ) { ?>
-							<?php if ( $locale == 'en_US' )  ?>
-							<option value="<?php echo ( $locale == 'en_US') ? '' : $locale ; ?>"<?php selected( $locale, wpm_get_default_locale() ); ?>><?php echo $language['name']; ?></option>
-						<?php } ?>
-					</select>
-				</td>
-			</tr>
 			<tr>
 				<th scope="row"><?php _e( 'Uninstalling', 'wpm' ); ?></th>
 				<td>
@@ -193,7 +187,6 @@ class WPM_Admin_Settings {
 				</td>
 			</tr>
 		</table>
-
 		<?php
 	}
 
