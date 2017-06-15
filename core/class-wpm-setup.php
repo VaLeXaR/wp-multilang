@@ -456,7 +456,9 @@ class WPM_Setup {
 		return null;
 	}
 
-
+	/**
+	 * Set 404 headers for not available language
+	 */
 	public function set_not_found() {
 		$languages      = $this->get_languages();
 
