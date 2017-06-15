@@ -135,6 +135,7 @@ Compatible with multisite not tested.
 
 = 1.3.4 =
 * add 404 error for not available language
+* fix translate option in init
 
 = 1.3.3 =
 * fix setting for default site language
