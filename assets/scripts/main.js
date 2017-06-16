@@ -49,5 +49,7 @@
       }
     });
 
+    $('#WPLANG').parents('tr').hide();
+
   });
 }(jQuery));
