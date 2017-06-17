@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WPM_Setup
  * @package  WPM\Core
  * @author   VaLeXaR
- * @version  1.2.0
+ * @version  1.2.1
  */
 class WPM_Setup {
 
@@ -99,6 +99,7 @@ class WPM_Setup {
 		add_action( 'upgrader_process_complete', __NAMESPACE__ . '\WPM_Config::load_config_run' );
 		add_action( 'wpm_init', array( $this, 'load_vendor' ) );
 		add_action( 'template_redirect', array( $this, 'set_not_found' ) );
+		add_action( 'init', array( $this, 'switch_to_language' ) );
 		$this->init();
 	}
 
@@ -282,10 +283,7 @@ class WPM_Setup {
 	 * Set locale from user language
 	 */
 	public function set_locale() {
-
-		if ( ! did_action( 'before_wpm_init' ) ) {
-			return;
-		}
+		global $locale;
 
 		$languages      = $this->get_languages();
 		$default_locale = $this->get_default_locale();
@@ -293,7 +291,7 @@ class WPM_Setup {
 		foreach ( $languages as $key => $value ) {
 			$user_language = $this->get_user_language();
 			if ( ( $value == $user_language ) ) {
-				switch_to_locale( $key );
+				$locale = $key;
 				if ( $key == $default_locale && ! is_admin() && ! isset( $_GET['lang'] ) ) {
 					wp_redirect( home_url( str_replace( '/' . $user_language . '/', '/', $_SERVER['REQUEST_URI'] ) ) );
 					exit;
@@ -460,12 +458,19 @@ class WPM_Setup {
 	 * Set 404 headers for not available language
 	 */
 	public function set_not_found() {
-		$languages      = $this->get_languages();
+		$languages = $this->get_languages();
 
 		if ( ! in_array( $this->user_language, $languages ) ) {
 			global $wp_query;
 			$wp_query->set_404();
 			status_header( 404 );
 		}
+	}
+
+	/**
+	 * Switch locale to language
+	 */
+	public function switch_to_language() {
+		switch_to_locale( get_locale() );
 	}
 }

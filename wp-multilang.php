@@ -8,7 +8,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:     wpm
  * Domain Path:     /languages
- * Version:         1.3.4
+ * Version:         1.3.5
  *
  * @package  WPM
  * @category Core
@@ -33,7 +33,7 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 	 * Main WP_Multilang.
 	 *
 	 * @class   WPM
-	 * @version 1.0.2
+	 * @version 1.0.3
 	 */
 	final class WP_Multilang {
 
@@ -42,7 +42,7 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 		 *
 		 * @var string
 		 */
-		public $version = '1.3.4';
+		public $version = '1.3.5';
 
 		/**
 		 * The single instance of the class.
@@ -99,6 +99,7 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 		private function init_hooks() {
 			register_activation_hook( __FILE__, array( 'WPM\Core\WPM_Install', 'install' ) );
 			add_action( 'init', array( $this, 'init' ), 0 );
+			add_action( 'setup_theme', array( $this, 'setup' ), 0 );
 		}
 
 		/**
@@ -158,14 +159,17 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 			}
 		}
 
+
+		public function setup() {
+			Core\WPM_Setup::instance();
+		}
+
 		/**
 		 * Init Multilang when WordPress Initialises.
 		 */
 		public function init() {
 			// Before init action.
 			do_action( 'before_wpm_init' );
-
-			Core\WPM_Setup::instance();
 
 			// Set up localisation.
 			$this->load_plugin_textdomain();
