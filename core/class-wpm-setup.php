@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WPM_Setup
  * @package  WPM\Core
  * @author   VaLeXaR
- * @version  1.2.1
+ * @version  1.2.2
  */
 class WPM_Setup {
 
@@ -93,22 +93,14 @@ class WPM_Setup {
 		add_filter( 'query_vars', array( $this, 'set_lang_var' ) );
 		add_filter( 'option_home', array( $this, 'set_home_url' ), 99 );
 		add_action( 'change_locale', array( $this, 'change_locale' ), 0 );
-		add_action( 'after_setup_theme', array( $this, 'setup_lang_query' ), 0 );
+		add_action( 'wp', array( $this, 'setup_lang_query' ), 0 );
 		add_action( 'after_switch_theme', __NAMESPACE__ . '\WPM_Config::load_config_run' );
 		add_action( 'activated_plugin', __NAMESPACE__ . '\WPM_Config::load_config_run' );
 		add_action( 'upgrader_process_complete', __NAMESPACE__ . '\WPM_Config::load_config_run' );
 		add_action( 'wpm_init', array( $this, 'load_vendor' ) );
 		add_action( 'template_redirect', array( $this, 'set_not_found' ) );
 		add_action( 'init', array( $this, 'switch_to_language' ) );
-		$this->init();
-	}
-
-
-	/**
-	 * Set locale, load vendor classes
-	 */
-	public function init() {
-		$this->set_locale();
+		add_action( 'setup_theme', array( $this, 'set_locale' ), 0 );
 	}
 
 
@@ -373,7 +365,7 @@ class WPM_Setup {
 	 */
 	public function set_home_url( $value ) {
 
-		if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
+		if ( ( is_admin() && ! defined( 'DOING_AJAX' ) ) ) {
 			return $value;
 		}
 

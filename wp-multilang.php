@@ -8,7 +8,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:     wpm
  * Domain Path:     /languages
- * Version:         1.3.5
+ * Version:         1.3.6
  *
  * @package  WPM
  * @category Core
@@ -42,7 +42,7 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 		 *
 		 * @var string
 		 */
-		public $version = '1.3.5';
+		public $version = '1.3.6';
 
 		/**
 		 * The single instance of the class.
@@ -99,7 +99,6 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 		private function init_hooks() {
 			register_activation_hook( __FILE__, array( 'WPM\Core\WPM_Install', 'install' ) );
 			add_action( 'init', array( $this, 'init' ), 0 );
-			add_action( 'setup_theme', array( $this, 'setup' ), 0 );
 		}
 
 		/**
@@ -153,15 +152,12 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 			include_once( 'core/wpm-widget-functions.php' );
 			include_once( 'core/abstracts/abstract-wpm-object.php' );
 
+			Core\WPM_Setup::instance();
+
 			if ( $this->is_request( 'frontend' ) ) {
 				include_once( 'core/wpm-template-hooks.php' );
 				Core\WPM_Frontend_Scripts::init();               // Frontend Scripts
 			}
-		}
-
-
-		public function setup() {
-			Core\WPM_Setup::instance();
 		}
 
 		/**
