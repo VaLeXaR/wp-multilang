@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WPM_Setup
  * @package  WPM\Core
  * @author   VaLeXaR
- * @version  1.2.2
+ * @version  1.2.3
  */
 class WPM_Setup {
 
@@ -99,8 +99,7 @@ class WPM_Setup {
 		add_action( 'upgrader_process_complete', __NAMESPACE__ . '\WPM_Config::load_config_run' );
 		add_action( 'wpm_init', array( $this, 'load_vendor' ) );
 		add_action( 'template_redirect', array( $this, 'set_not_found' ) );
-		add_action( 'init', array( $this, 'switch_to_language' ) );
-		add_action( 'setup_theme', array( $this, 'set_locale' ), 0 );
+		add_action( 'plugins_loaded', array( $this, 'set_locale' ), 0 );
 	}
 
 
@@ -457,12 +456,5 @@ class WPM_Setup {
 			$wp_query->set_404();
 			status_header( 404 );
 		}
-	}
-
-	/**
-	 * Switch locale to language
-	 */
-	public function switch_to_language() {
-		switch_to_locale( get_locale() );
 	}
 }

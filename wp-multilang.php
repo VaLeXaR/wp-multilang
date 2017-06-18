@@ -8,7 +8,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:     wpm
  * Domain Path:     /languages
- * Version:         1.3.6
+ * Version:         1.3.7
  *
  * @package  WPM
  * @category Core
@@ -42,7 +42,7 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 		 *
 		 * @var string
 		 */
-		public $version = '1.3.6';
+		public $version = '1.3.7';
 
 		/**
 		 * The single instance of the class.
@@ -99,6 +99,7 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 		private function init_hooks() {
 			register_activation_hook( __FILE__, array( 'WPM\Core\WPM_Install', 'install' ) );
 			add_action( 'init', array( $this, 'init' ), 0 );
+			add_action( 'plugins_loaded', array( $this, 'translate_options' ), 0 );
 		}
 
 		/**
@@ -161,6 +162,13 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 		}
 
 		/**
+		 * Translate options
+		 */
+		public function translate_options() {
+			new Core\WPM_Options();
+		}
+
+		/**
 		 * Init Multilang when WordPress Initialises.
 		 */
 		public function init() {
@@ -173,7 +181,6 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 			Core\WPM_AJAX::init();
 			new Core\WPM_Posts();
 			new Core\WPM_Taxonomies();
-			new Core\WPM_Options();
 			new Core\WPM_Widgets();
 
 			if ( $this->is_request( 'admin' ) ) {
