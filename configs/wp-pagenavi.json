@@ -1,0 +1,18 @@
+{
+  "admin_pages": [
+    "settings_page_pagenavi"
+  ],
+  "options": {
+    "pagenavi_options": {
+      "pages_text": {},
+      "current_text": {},
+      "page_text": {},
+      "first_text": {},
+      "last_text": {},
+      "prev_text": {},
+      "next_text": {},
+      "dotleft_text": {},
+      "dotright_text": {}
+    }
+  }
+}
