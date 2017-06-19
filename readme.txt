@@ -40,6 +40,7 @@ WP Multilang compatible with plugins:
 * Maps Builder
 * Max Mega Menu
 * MasterSlider
+* WP-PageNavi
 
 Supports configuration via json.
 
@@ -135,6 +136,7 @@ Compatible with multisite not tested.
 
 = 1.3.7 =
 * fix load plugins localizations
+* add support WP-PageNavi
 
 = 1.3.6 =
 * fix load main static page
