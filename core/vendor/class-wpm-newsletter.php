@@ -24,8 +24,6 @@ if ( defined( 'NEWSLETTER_VERSION' ) ) {
 		 * WPM_Newsletter constructor.
 		 */
 		public function __construct() {
-			$newsletterwp          = \NewsletterWp::instance();
-			$newsletterwp->options = wpm_translate_value( $newsletterwp->options );
 			add_filter( 'wpm_option_newsletter_profile_config', array( $this, 'add_options_config' ) );
 			add_filter( 'newsletter_message_subject', 'wpm_translate_string' );
 			add_filter( 'newsletter_message_html', 'wpm_translate_string' );
