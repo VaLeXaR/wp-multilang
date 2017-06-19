@@ -35,7 +35,7 @@ if ( defined( 'WPCF7_PLUGIN' ) ) {
 			$screen    = get_current_screen();
 			$screen_id = $screen ? $screen->id : '';
 
-			if ( $screen_id == 'toplevel_page_wpcf7' && isset($_GET['post']) ) {
+			if ( $screen_id === 'toplevel_page_wpcf7' && isset( $_GET['post'] ) ) {
 				wp_enqueue_script( 'wpm_translator' );
 				wpm_enqueue_js( "
 					(function ( $ ) {

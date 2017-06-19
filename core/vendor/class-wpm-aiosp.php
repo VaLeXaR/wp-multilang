@@ -22,7 +22,7 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 		public $meta_fields = array(
 			'_aioseop_title'       => '',
 			'_aioseop_description' => '',
-			'_aioseop_keywords'    => ''
+			'_aioseop_keywords'    => '',
 		);
 
 		/**
@@ -46,7 +46,7 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 			$post_types = get_post_types();
 
 			foreach ( $post_types as $post_type ) {
-				$config["aiosp_{$post_type}_title_format"] = array();
+				$config[ "aiosp_{$post_type}_title_format" ] = array();
 			}
 
 			return $config;
@@ -110,7 +110,7 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 				$result = $wpdb->insert( $wpdb->postmeta, array(
 					'post_id'    => $object_id,
 					'meta_key'   => $meta_key,
-					'meta_value' => $meta_value
+					'meta_value' => $meta_value,
 				) );
 
 				if ( ! $result ) {

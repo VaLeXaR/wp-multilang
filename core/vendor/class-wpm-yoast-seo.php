@@ -55,7 +55,7 @@ if ( defined( 'WPSEO_VERSION' ) ) {
 			foreach ( $taxonomies as $taxonomy ) {
 				$tax_config = array(
 					"title-tax-{$taxonomy}"    => array(),
-					"metadesc-tax-{$taxonomy}" => array()
+					"metadesc-tax-{$taxonomy}" => array(),
 				);
 
 				$config = wpm_array_merge_recursive( $config, $tax_config );

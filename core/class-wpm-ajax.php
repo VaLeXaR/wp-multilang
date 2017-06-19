@@ -117,7 +117,7 @@ class WPM_AJAX {
 		$locale  = wpm_clean( $_POST['locale'] );
 		$options = wpm_get_options();
 
-		if ( ! isset( $options[ $locale ] ) || ( $locale == get_locale() ) || ( $locale == wpm_get_default_locale() ) ) {
+		if ( ! isset( $options[ $locale ] ) || ( $locale === get_locale() ) || ( $locale === wpm_get_default_locale() ) ) {
 			return;
 		}
 

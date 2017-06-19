@@ -62,7 +62,7 @@ abstract class WPM_Object {
 		}
 
 		$column    = sanitize_key( $this->object_type . '_id' );
-		$id_column = 'user' == $this->object_type ? 'umeta_id' : 'meta_id';
+		$id_column = 'user' === $this->object_type ? 'umeta_id' : 'meta_id';
 
 		$meta_values = wp_cache_get( $object_id . '_' . $meta_key, $this->object_type . '_wpm_meta' );
 		$values      = array();
@@ -127,7 +127,7 @@ abstract class WPM_Object {
 		}
 		$table     = $wpdb->{$this->object_table};
 		$column    = sanitize_key( $this->object_type . '_id' );
-		$id_column = 'user' == $this->object_type ? 'umeta_id' : 'meta_id';
+		$id_column = 'user' === $this->object_type ? 'umeta_id' : 'meta_id';
 
 		if ( empty( $prev_value ) ) {
 
@@ -141,7 +141,7 @@ abstract class WPM_Object {
 				$old_value = get_metadata( $this->object_type, $object_id, $meta_key );
 			}
 
-			if ( count( $old_value ) == 1 ) {
+			if ( count( $old_value ) === 1 ) {
 				if ( $old_value[0] === $meta_value ) {
 					return false;
 				}
@@ -195,7 +195,7 @@ abstract class WPM_Object {
 			 */
 			do_action( "update_{$this->object_type}_meta", $meta_id, $object_id, $meta_key, $_meta_value );
 
-			if ( 'post' == $this->object_type ) {
+			if ( 'post' === $this->object_type ) {
 				/**
 				 * Fires immediately before updating a post's metadata.
 				 *
@@ -234,7 +234,7 @@ abstract class WPM_Object {
 			 */
 			do_action( "updated_{$this->object_type}_meta", $meta_id, $object_id, $meta_key, $_meta_value );
 
-			if ( 'post' == $this->object_type ) {
+			if ( 'post' === $this->object_type ) {
 				/**
 				 * Fires immediately after updating a post's metadata.
 				 *
@@ -313,7 +313,7 @@ abstract class WPM_Object {
 		$result = $wpdb->insert( $table, array(
 			$column      => $object_id,
 			'meta_key'   => $meta_key,
-			'meta_value' => $meta_value
+			'meta_value' => $meta_value,
 		) );
 
 		if ( ! $result ) {

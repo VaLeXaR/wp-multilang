@@ -26,7 +26,7 @@ if ( defined( 'MC4WP_VERSION' ) ) {
 		public function __construct() {
 			add_action( 'admin_enqueue_scripts', array( $this, 'add_translator_script' ), 11 );
 			add_filter( 'mc4wp_form_content', 'wpm_translate_string' );
-			add_filter( "mc4wp_integration_checkbox_label", 'wpm_translate_string' );
+			add_filter( 'mc4wp_integration_checkbox_label', 'wpm_translate_string' );
 		}
 
 
@@ -37,7 +37,7 @@ if ( defined( 'MC4WP_VERSION' ) ) {
 			$screen    = get_current_screen();
 			$screen_id = $screen ? $screen->id : '';
 
-			if ( $screen_id == 'mailchimp-for-wp_page_mailchimp-for-wp-integrations' && isset( $_GET['integration'] ) ) {
+			if ( $screen_id === 'mailchimp-for-wp_page_mailchimp-for-wp-integrations' && isset( $_GET['integration'] ) ) {
 				wp_enqueue_script( 'wpm_translator' );
 				wpm_enqueue_js( "
 					(function ( $ ) {

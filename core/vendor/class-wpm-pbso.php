@@ -45,7 +45,7 @@ if ( defined( 'SITEORIGIN_PANELS_VERSION' ) ) {
 
 				foreach ( $old_value['widgets'] as $_widget ) {
 
-					if ( $widget['_sow_form_id'] == $_widget['_sow_form_id'] ) {
+					if ( $widget['_sow_form_id'] === $_widget['_sow_form_id'] ) {
 						$new_old_value['widgets'][ $key ] = $_widget;
 
 						if ( isset( $widget['frames'] ) ) {

@@ -22,9 +22,9 @@ class WPM_Admin_Edit_Menus {
 	 * WPM_Admin_Edit_Menus constructor.
 	 */
 	public function __construct() {
-		add_filter( 'wp_setup_nav_menu_item', array( $this, 'translate_menu_item' ), ( 'POST' == $_SERVER['REQUEST_METHOD'] ? 99 : 0 ) );
-		add_filter( 'customize_nav_menu_available_items', array( $this, 'filter_menus' ), 0);
-		add_filter( 'customize_nav_menu_searched_items', array( $this, 'filter_menus' ), 0);
+		add_filter( 'wp_setup_nav_menu_item', array( $this, 'translate_menu_item' ), ( 'POST' === $_SERVER['REQUEST_METHOD'] ? 99 : 0 ) );
+		add_filter( 'customize_nav_menu_available_items', array( $this, 'filter_menus' ), 0 );
+		add_filter( 'customize_nav_menu_searched_items', array( $this, 'filter_menus' ), 0 );
 	}
 
 	/**
@@ -35,8 +35,8 @@ class WPM_Admin_Edit_Menus {
 	 * @return mixed
 	 */
 	public function filter_menus( $items ) {
-		foreach ($items as &$item) {
-			$item['title'] = wpm_translate_string( $item['title']);
+		foreach ( $items as &$item ) {
+			$item['title'] = wpm_translate_string( $item['title'] );
 		}
 
 		return $items;
@@ -54,9 +54,9 @@ class WPM_Admin_Edit_Menus {
 		$menu_item = wpm_translate_object( $menu_item );
 
 		if ( isset( $menu_item->post_type ) ) {
-			if ( 'nav_menu_item' == $menu_item->post_type ) {
+			if ( 'nav_menu_item' === $menu_item->post_type ) {
 
-				if ( 'post_type' == $menu_item->type ) {
+				if ( 'post_type' === $menu_item->type ) {
 					$object = get_post_type_object( $menu_item->object );
 					if ( $object ) {
 						$menu_item->type_label = $object->labels->singular_name;
@@ -73,19 +73,19 @@ class WPM_Admin_Edit_Menus {
 						$original_title = sprintf( __( '#%d (no title)' ), $original_object->ID );
 					}
 
-					$menu_item->title = '' == $menu_item->post_title ? $original_title : $menu_item->post_title;
+					$menu_item->title = '' === $menu_item->post_title ? $original_title : $menu_item->post_title;
 
-				} elseif ( 'post_type_archive' == $menu_item->type ) {
-					$object =  get_post_type_object( $menu_item->object );
+				} elseif ( 'post_type_archive' === $menu_item->type ) {
+					$object = get_post_type_object( $menu_item->object );
 					if ( $object ) {
-						$menu_item->title = '' == $menu_item->post_title ? $object->labels->archives : $menu_item->post_title;
+						$menu_item->title = '' === $menu_item->post_title ? $object->labels->archives : $menu_item->post_title;
 					} else {
 						$menu_item->_invalid = true;
 					}
 
 					$menu_item->type_label = __( 'Post Type Archive' );
 					$menu_item->url = get_post_type_archive_link( $menu_item->object );
-				} elseif ( 'taxonomy' == $menu_item->type ) {
+				} elseif ( 'taxonomy' === $menu_item->type ) {
 					$object = get_taxonomy( $menu_item->object );
 					if ( $object ) {
 						$menu_item->type_label = $object->labels->singular_name;
@@ -96,12 +96,12 @@ class WPM_Admin_Edit_Menus {
 					$original_title = get_term_field( 'name', $menu_item->object_id, $menu_item->object, 'raw' );
 					if ( is_wp_error( $original_title ) )
 						$original_title = false;
-					$menu_item->title = '' == $menu_item->post_title ? $original_title : $menu_item->post_title;
+					$menu_item->title = '' === $menu_item->post_title ? $original_title : $menu_item->post_title;
 
 				} else {
-					$menu_item->type_label = __('Custom Link');
+					$menu_item->type_label = __( 'Custom Link' );
 					$menu_item->title = $menu_item->post_title;
-				}
+				}// End if().
 				$menu_item->attr_title = ! isset( $menu_item->attr_title ) ? apply_filters( 'nav_menu_attr_title', $menu_item->post_excerpt ) : $menu_item->attr_title;
 				if ( ! isset( $menu_item->description ) ) {
 					$menu_item->description = apply_filters( 'nav_menu_description', wp_trim_words( $menu_item->post_content, 200 ) );
@@ -124,7 +124,7 @@ class WPM_Admin_Edit_Menus {
 
 				/** This filter is documented in wp-includes/nav-menu.php */
 				$menu_item->description = apply_filters( 'nav_menu_description', '' );
-			}
+			}// End if().
 		} elseif ( isset( $menu_item->taxonomy ) ) {
 			$object = get_taxonomy( $menu_item->taxonomy );
 			$menu_item->type_label = $object->labels->singular_name;
@@ -133,7 +133,7 @@ class WPM_Admin_Edit_Menus {
 			$menu_item->attr_title = '';
 			$menu_item->description = get_term_field( 'description', $menu_item->term_id, $menu_item->taxonomy );
 
-		}
+		}// End if().
 
 		return $menu_item;
 	}

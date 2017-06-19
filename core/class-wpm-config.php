@@ -53,7 +53,7 @@ class WPM_Config {
 		if ( ! empty( $mu_plugins ) ) {
 			foreach ( $mu_plugins as $mup ) {
 				$plugin_dir_name        = dirname( $mup );
-				$plugin_base_name       = basename( $mup, ".php" );
+				$plugin_base_name       = basename( $mup, '.php' );
 				self::$active_plugins[] = $plugin_base_name;
 				$plugin_sub_dir         = $plugin_dir_name . '/' . $plugin_base_name;
 				if ( file_exists( $plugin_sub_dir . '/wpm-config.json' ) ) {
@@ -72,7 +72,7 @@ class WPM_Config {
 		$config_path = dirname( WPM_PLUGIN_FILE ) . '/configs/';
 		foreach ( glob( $config_path . '*.json' ) as $config_file ) {
 			$config_name = pathinfo( $config_file, PATHINFO_FILENAME );
-			if ( in_array( $config_name, self::$active_plugins ) && ! isset( $config_files[ $config_name ] ) ) {
+			if ( in_array( $config_name, self::$active_plugins, true ) && ! isset( $config_files[ $config_name ] ) ) {
 				self::$config_files[ $config_name ] = $config_file;
 			}
 		}
@@ -90,7 +90,7 @@ class WPM_Config {
 			self::$config_files[] = $config_file;
 		}
 
-		if ( get_template_directory() != get_stylesheet_directory() ) {
+		if ( get_template_directory() !== get_stylesheet_directory() ) {
 			$config_file = get_stylesheet_directory() . '/wpm-config.json';
 			if ( file_exists( $config_file ) ) {
 				self::$config_files[] = $config_file;

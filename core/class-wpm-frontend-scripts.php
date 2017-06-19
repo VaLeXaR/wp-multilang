@@ -57,7 +57,7 @@ class WPM_Frontend_Scripts {
 				'src'     => wpm_asset_path( 'styles/main.css' ),
 				'deps'    => '',
 				'version' => WPM_VERSION,
-				'media'   => 'all'
+				'media'   => 'all',
 			),
 		);
 
@@ -94,7 +94,7 @@ class WPM_Frontend_Scripts {
 	 * @param  boolean  $in_footer
 	 */
 	private static function enqueue_script( $handle, $path = '', $deps = array( 'jquery' ), $version = WPM_VERSION, $in_footer = true ) {
-		if ( ! in_array( $handle, self::$scripts ) && $path ) {
+		if ( ! in_array( $handle, self::$scripts, true ) && $path ) {
 			self::register_script( $handle, $path, $deps, $version, $in_footer );
 		}
 		wp_enqueue_script( $handle );
@@ -130,7 +130,7 @@ class WPM_Frontend_Scripts {
 	 * @param  string   $media
 	 */
 	private static function enqueue_style( $handle, $path = '', $deps = array(), $version = WPM_VERSION, $media = 'all' ) {
-		if ( ! in_array( $handle, self::$styles ) && $path ) {
+		if ( ! in_array( $handle, self::$styles, true ) && $path ) {
 			self::register_style( $handle, $path, $deps, $version, $media );
 		}
 		wp_enqueue_style( $handle );
@@ -163,7 +163,7 @@ class WPM_Frontend_Scripts {
 	 * @param  string $handle
 	 */
 	private static function localize_script( $handle ) {
-		if ( ! in_array( $handle, self::$wp_localize_scripts ) && wp_script_is( $handle ) && ( $data = self::get_script_data( $handle ) ) ) {
+		if ( ! in_array( $handle, self::$wp_localize_scripts, true ) && wp_script_is( $handle ) && ( $data = self::get_script_data( $handle ) ) ) {
 			$name                        = str_replace( '-', '_', $handle ) . '_params';
 			self::$wp_localize_scripts[] = $handle;
 			wp_localize_script( $handle, $name, apply_filters( $name, $data ) );

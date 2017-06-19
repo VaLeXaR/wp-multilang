@@ -40,23 +40,22 @@ class WPM_Admin_Posts {
 
 		$config = wpm_get_config();
 
-		$posts_config = apply_filters( "wpm_posts_config", $config['post_types'] );
+		$posts_config = apply_filters( 'wpm_posts_config', $config['post_types'] );
 
 		foreach ( $posts_config as $post_type => $post_config ) {
 
 			$post_config = apply_filters( "wpm_posts_{$post_type}_config", $post_config );
 
 			if ( ! is_null( $post_config ) ) {
-				if ( 'attachment' == $post_type ) {
-					add_filter( "manage_media_columns", array( $this, 'language_columns' ) );
-					add_action( "manage_media_custom_column", array( $this, 'render_language_column' ) );
+				if ( 'attachment' === $post_type ) {
+					add_filter( 'manage_media_columns', array( $this, 'language_columns' ) );
+					add_action( 'manage_media_custom_column', array( $this, 'render_language_column' ) );
 					continue;
 				}
 
 				add_filter( "manage_{$post_type}_posts_columns", array( $this, 'language_columns' ) );
 				add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'render_language_column' ) );
 			}
-
 		}
 
 	}
@@ -83,7 +82,7 @@ class WPM_Admin_Posts {
 		$config = wpm_get_config();
 
 		$posts_config = $config['post_types'];
-		$posts_config = apply_filters( "wpm_posts_config", $posts_config );
+		$posts_config = apply_filters( 'wpm_posts_config', $posts_config );
 		$posts_config = apply_filters( "wpm_posts_{$data['post_type']}_config", $posts_config );
 
 		if ( ! isset( $posts_config[ $data['post_type'] ] ) ) {
@@ -92,11 +91,11 @@ class WPM_Admin_Posts {
 
 		if ( 'attachment' !== $data['post_type'] ) {
 
-			if ( 'trash' == $postarr['post_status'] ) {
+			if ( 'trash' === $postarr['post_status'] ) {
 				return $data;
 			}
 
-			if ( isset( $_GET['action'] ) && 'untrash' == $_GET['action'] ) {
+			if ( isset( $_GET['action'] ) && 'untrash' === $_GET['action'] ) {
 				return $data;
 			}
 		}
@@ -112,7 +111,7 @@ class WPM_Admin_Posts {
 		$default_fields = array(
 			'post_title'   => array(),
 			'post_excerpt' => array(),
-			'post_content' => array()
+			'post_content' => array(),
 		);
 
 		$post_config = wpm_array_merge_recursive( $default_fields, $post_config );
@@ -132,12 +131,12 @@ class WPM_Admin_Posts {
 			}
 		}
 
-		if ( 'nav_menu_item' == $data['post_type'] ) {
+		if ( 'nav_menu_item' === $data['post_type'] ) {
 			$screen = get_current_screen();
 
-			if ( 'POST' == $_SERVER['REQUEST_METHOD'] && 'update' == $_POST['action'] && $screen->id == 'nav-menus' ) {
+			if ( 'POST' === $_SERVER['REQUEST_METHOD'] && 'update' === $_POST['action'] && 'nav-menus' === $screen->id ) {
 				// hack to get wp to create a post object when too many properties are empty
-				if ( '' == $data['post_title'] && '' == $data['post_content'] ) {
+				if ( '' === $data['post_title'] && '' === $data['post_content'] ) {
 					$data['post_content'] = ' ';
 				}
 			}
@@ -169,7 +168,7 @@ class WPM_Admin_Posts {
 
 		$i = 0;
 		foreach ( $columns as $key => $value ) {
-			if ( $key == $insert_after ) {
+			if ( $key === $insert_after ) {
 				break;
 			}
 			$i ++;
@@ -188,7 +187,7 @@ class WPM_Admin_Posts {
 	 */
 	public function render_language_column( $column ) {
 
-		if ( 'languages' == $column ) {
+		if ( 'languages' === $column ) {
 
 			$post      = wpm_untranslate_post( get_post() );
 			$output    = array();
@@ -219,7 +218,7 @@ class WPM_Admin_Posts {
 	public function translate_post_link( $link ) {
 		$languages = wpm_get_languages();
 		$lang      = wpm_get_language();
-		if ( in_array( $lang, $languages ) && $lang != $languages[ wpm_get_default_locale() ] ) {
+		if ( in_array( $lang, $languages, true ) && $lang !== $languages[ wpm_get_default_locale() ] ) {
 			$link = str_replace( home_url(), home_url( '/' . $lang ), $link );
 		}
 

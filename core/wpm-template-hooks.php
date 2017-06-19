@@ -23,7 +23,7 @@ function wpm_set_meta_languages() {
 	$languages   = wpm_get_languages();
 	$current_url = wpm_get_current_url();
 	foreach ( $languages as $language ) {
-		printf( '<link rel="alternate" hreflang="%s" href="%s"/>', $language, wpm_translate_url( $current_url, $language ) );
+		printf( '<link rel="alternate" hreflang="%s" href="%s"/>', esc_attr( $language ), esc_url( wpm_translate_url( $current_url, $language ) ) );
 	}
 }
 
@@ -88,10 +88,10 @@ function wpm_generate_widget_media_image( $html, $attr, $content ) {
 	}
 
 	if ( $html5 ) {
-		$html = '<figure ' . $atts['id'] . $style . 'class="' . esc_attr( $class ) . '">'
+		$html = '<figure ' . $atts['id'] . $style . ' class="' . esc_attr( $class ) . '">'
 		        . do_shortcode( $content ) . '<figcaption class="wp-caption-text">' . $atts['caption'] . '</figcaption></figure>';
 	} else {
-		$html = '<div ' . $atts['id'] . $style . 'class="' . esc_attr( $class ) . '">'
+		$html = '<div ' . $atts['id'] . $style . ' class="' . esc_attr( $class ) . '">'
 		        . do_shortcode( $content ) . '<p class="wp-caption-text">' . $atts['caption'] . '</p></div>';
 	}
 

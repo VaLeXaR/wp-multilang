@@ -37,7 +37,7 @@ if ( defined( 'NGG_PLUGIN' ) ) {
 		 */
 		public function save_gallery() {
 
-			if ( isset ( $_POST['update_album'] ) ) {
+			if ( isset( $_POST['update_album'] ) ) {
 
 				$fields = array( 'album_name' => 'name', 'album_desc' => 'albumdesc' );
 				$data   = array();
@@ -57,13 +57,13 @@ if ( defined( 'NGG_PLUGIN' ) ) {
 				}
 			}
 
-			if ( isset( $_POST['page'] ) && $_POST['page'] == 'manage-images' ) {
+			if ( isset( $_POST['page'] ) && 'manage-images' === $_POST['page'] ) {
 
-				if ( isset ( $_POST['updatepictures'] ) ) {
+				if ( isset( $_POST['updatepictures'] ) ) {
 
 					check_admin_referer( 'ngg_updategallery' );
 
-					if ( ! isset ( $_GET['s'] ) ) {
+					if ( ! isset( $_GET['s'] ) ) {
 
 						$fields = array( 'title', 'galdesc' );
 						$data   = array();
@@ -109,8 +109,8 @@ if ( defined( 'NGG_PLUGIN' ) ) {
 							}
 						}
 					}
-				}
-			}
+				}// End if().
+			}// End if().
 
 		}
 
@@ -129,7 +129,7 @@ if ( defined( 'NGG_PLUGIN' ) ) {
 
 			$admin_pages = array(
 				'_page_nggallery-manage-gallery',
-				'_page_nggallery-manage-album'
+				'_page_nggallery-manage-album',
 			);
 
 			foreach ( $admin_pages as $admin_page ) {
@@ -153,7 +153,7 @@ if ( defined( 'NGG_PLUGIN' ) ) {
 
 			$translate_fields = array(
 				'title',
-				'description'
+				'description',
 			);
 
 			foreach ( $translate_fields as $field ) {
@@ -199,14 +199,14 @@ if ( defined( 'NGG_PLUGIN' ) ) {
 
 			$admin_pages = array(
 				'_page_nggallery-manage-gallery',
-				'_page_nggallery-manage-album'
+				'_page_nggallery-manage-album',
 			);
 
 			foreach ( $admin_pages as $admin_page ) {
 				if ( strpos( $screen_id, $admin_page ) !== false ) {
 
-					if ( $admin_page == '_page_nggallery-manage-album' ) {
-						if ( 'POST' == $_SERVER['REQUEST_METHOD'] && isset( $_POST['act_album'] ) ) {
+					if ( '_page_nggallery-manage-album' === $admin_page ) {
+						if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['act_album'] ) ) {
 							wp_enqueue_script( 'wpm_translator' );
 							wpm_enqueue_js( "
 							(function ( $ ) {
@@ -219,8 +219,8 @@ if ( defined( 'NGG_PLUGIN' ) ) {
 						}
 					}
 
-					if ( $admin_page == '_page_nggallery-manage-gallery' ) {
-						if ( 'POST' == $_SERVER['REQUEST_METHOD'] && ( isset( $_POST['page'] ) && $_POST['page'] == 'manage-images' ) && isset ( $_POST['updatepictures'] ) ) {
+					if ( '_page_nggallery-manage-gallery' === $admin_page ) {
+						if ( 'POST' === $_SERVER['REQUEST_METHOD'] && ( isset( $_POST['page'] ) && 'manage-images' === $_POST['page'] ) && isset( $_POST['updatepictures'] ) ) {
 							wp_enqueue_script( 'wpm_translator' );
 							wpm_enqueue_js( "
 							(function ( $ ) {

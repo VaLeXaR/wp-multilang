@@ -57,7 +57,7 @@ abstract class WPM_Widget extends WP_Widget {
 		$widget_ops = array(
 			'classname'   => $this->widget_cssclass,
 			'description' => $this->widget_description,
-			'customize_selective_refresh' => true
+			'customize_selective_refresh' => true,
 		);
 
 		parent::__construct( $this->widget_id, $this->widget_name, $widget_ops );
@@ -215,7 +215,7 @@ abstract class WPM_Widget extends WP_Widget {
 					?>
 					<p>
 						<label for="<?php echo $this->get_field_id( $key ); ?>"><?php echo $setting['label']; ?></label>
-						<input class="widefat <?php echo esc_attr( $class ); ?>" id="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>" name="<?php echo $this->get_field_name( $key ); ?>" type="text" value="<?php echo esc_attr( $value ); ?>" />
+						<input class="widefat <?php esc_attr_e( $class ); ?>" id="<?php esc_attr_e( $this->get_field_id( $key ) ); ?>" name="<?php echo $this->get_field_name( $key ); ?>" type="text" value="<?php esc_attr_e( $value ); ?>" />
 					</p>
 					<?php
 				break;
@@ -224,7 +224,7 @@ abstract class WPM_Widget extends WP_Widget {
 					?>
 					<p>
 						<label for="<?php echo $this->get_field_id( $key ); ?>"><?php echo $setting['label']; ?></label>
-						<input class="widefat <?php echo esc_attr( $class ); ?>" id="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>" name="<?php echo $this->get_field_name( $key ); ?>" type="number" step="<?php echo esc_attr( $setting['step'] ); ?>" min="<?php echo esc_attr( $setting['min'] ); ?>" max="<?php echo esc_attr( $setting['max'] ); ?>" value="<?php echo esc_attr( $value ); ?>" />
+						<input class="widefat <?php esc_attr_e( $class ); ?>" id="<?php esc_attr_e( $this->get_field_id( $key ) ); ?>" name="<?php echo $this->get_field_name( $key ); ?>" type="number" step="<?php esc_attr_e( $setting['step'] ); ?>" min="<?php esc_attr_e( $setting['min'] ); ?>" max="<?php echo esc_attr( $setting['max'] ); ?>" value="<?php esc_attr_e( $value ); ?>" />
 					</p>
 					<?php
 				break;
@@ -233,9 +233,9 @@ abstract class WPM_Widget extends WP_Widget {
 					?>
 					<p>
 						<label for="<?php echo $this->get_field_id( $key ); ?>"><?php echo $setting['label']; ?></label>
-						<select class="widefat <?php echo esc_attr( $class ); ?>" id="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>" name="<?php echo $this->get_field_name( $key ); ?>">
+						<select class="widefat <?php esc_attr_e( $class ); ?>" id="<?php esc_attr_e( $this->get_field_id( $key ) ); ?>" name="<?php echo $this->get_field_name( $key ); ?>">
 							<?php foreach ( $setting['options'] as $option_key => $option_value ) : ?>
-								<option value="<?php echo esc_attr( $option_key ); ?>" <?php selected( $option_key, $value ); ?>><?php echo esc_html( $option_value ); ?></option>
+								<option value="<?php esc_attr_e( $option_key ); ?>" <?php selected( $option_key, $value ); ?>><?php esc_html_e( $option_value ); ?></option>
 							<?php endforeach; ?>
 						</select>
 					</p>
@@ -246,7 +246,7 @@ abstract class WPM_Widget extends WP_Widget {
 					?>
 					<p>
 						<label for="<?php echo $this->get_field_id( $key ); ?>"><?php echo $setting['label']; ?></label>
-						<textarea class="widefat <?php echo esc_attr( $class ); ?>" id="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>" name="<?php echo $this->get_field_name( $key ); ?>" cols="20" rows="3"><?php echo esc_textarea( $value ); ?></textarea>
+						<textarea class="widefat <?php esc_attr_e( $class ); ?>" id="<?php esc_attr_e( $this->get_field_id( $key ) ); ?>" name="<?php echo $this->get_field_name( $key ); ?>" cols="20" rows="3"><?php echo esc_textarea( $value ); ?></textarea>
 						<?php if ( isset( $setting['desc'] ) ) : ?>
 							<small><?php echo esc_html( $setting['desc'] ); ?></small>
 						<?php endif; ?>
@@ -257,7 +257,7 @@ abstract class WPM_Widget extends WP_Widget {
 				case 'checkbox' :
 					?>
 					<p>
-						<input class="checkbox <?php echo esc_attr( $class ); ?>" id="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( $key ) ); ?>" type="checkbox" value="1" <?php checked( $value, 1 ); ?> />
+						<input class="checkbox <?php esc_attr_e( $class ); ?>" id="<?php esc_attr_e( $this->get_field_id( $key ) ); ?>" name="<?php esc_attr_e( $this->get_field_name( $key ) ); ?>" type="checkbox" value="1" <?php checked( $value, 1 ); ?> />
 						<label for="<?php echo $this->get_field_id( $key ); ?>"><?php echo $setting['label']; ?></label>
 					</p>
 					<?php

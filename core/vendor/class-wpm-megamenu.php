@@ -35,7 +35,7 @@ if ( defined( 'MEGAMENU_VERSION' ) ) {
 			$screen    = get_current_screen();
 			$screen_id = $screen ? $screen->id : '';
 
-			if ( $screen_id == 'mega-menu_page_maxmegamenu_theme_editor' ) {
+			if ( 'mega-menu_page_maxmegamenu_theme_editor' === $screen_id ) {
 				wpm_enqueue_js( "
 					(function ( $ ) {
 					    if ($('#wpm-language-switcher').length === 0) {

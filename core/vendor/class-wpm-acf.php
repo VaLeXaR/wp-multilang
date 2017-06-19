@@ -31,18 +31,18 @@ if ( class_exists( 'acf' ) ) {
 		 * WPM_Acf constructor.
 		 */
 		public function __construct() {
-			add_filter( "acf/load_field", 'wpm_translate_value', 0 );
-			add_filter( "acf/translate_field_group", 'wpm_translate_string', 0 );
-			add_filter( "acf/update_field", array( $this, 'save_field' ), 99 );
-			add_filter( "acf/update_field/type=text", array( $this, 'save_text_field' ), 99 );
-			add_filter( "acf/update_field/type=textarea", array( $this, 'save_text_field' ), 99 );
-			add_filter( "acf/update_field/type=wysiwyg", array( $this, 'save_text_field' ), 99 );
-			add_filter( "acf/load_value/type=text", 'wpm_translate_value', 0 );
-			add_filter( "acf/load_value/type=textarea", 'wpm_translate_value', 0 );
-			add_filter( "acf/load_value/type=wysiwyg", 'wpm_translate_value', 0 );
-			add_filter( "acf/update_value/type=text", array( $this, 'save_value' ), 99, 3 );
-			add_filter( "acf/update_value/type=textarea", array( $this, 'save_value' ), 99, 3 );
-			add_filter( "acf/update_value/type=wysiwyg", array( $this, 'save_value' ), 99, 3 );
+			add_filter( 'acf/load_field', 'wpm_translate_value', 0 );
+			add_filter( 'acf/translate_field_group', 'wpm_translate_string', 0 );
+			add_filter( 'acf/update_field', array( $this, 'save_field' ), 99 );
+			add_filter( 'acf/update_field/type=text', array( $this, 'save_text_field' ), 99 );
+			add_filter( 'acf/update_field/type=textarea', array( $this, 'save_text_field' ), 99 );
+			add_filter( 'acf/update_field/type=wysiwyg', array( $this, 'save_text_field' ), 99 );
+			add_filter( 'acf/load_value/type=text', 'wpm_translate_value', 0 );
+			add_filter( 'acf/load_value/type=textarea', 'wpm_translate_value', 0 );
+			add_filter( 'acf/load_value/type=wysiwyg', 'wpm_translate_value', 0 );
+			add_filter( 'acf/update_value/type=text', array( $this, 'save_value' ), 99, 3 );
+			add_filter( 'acf/update_value/type=textarea', array( $this, 'save_value' ), 99, 3 );
+			add_filter( 'acf/update_value/type=wysiwyg', array( $this, 'save_value' ), 99, 3 );
 			add_filter( 'wpm_posts_acf-field-group_config', array( $this, 'add_config' ) );
 			add_action( 'init', array( $this, 'check_pro' ) );
 		}
@@ -53,7 +53,7 @@ if ( class_exists( 'acf' ) ) {
 		public function check_pro() {
 			$post_types = get_post_types( '', 'names' );
 
-			if ( in_array( 'acf-field-group', $post_types ) ) {
+			if ( in_array( 'acf-field-group', $post_types, true ) ) {
 				$this->pro = true;
 			}
 		}
@@ -69,7 +69,7 @@ if ( class_exists( 'acf' ) ) {
 		public function add_config( $config ) {
 			$config['post_types']['acf-field-group'] = array(
 				"post_content" => null,
-				"post_excerpt" => null
+				"post_excerpt" => null,
 			);
 
 			return $config;
@@ -102,7 +102,7 @@ if ( class_exists( 'acf' ) ) {
 			$default_config = array(
 				'label'        => array(),
 				'placeholder'  => array(),
-				'instructions' => array()
+				'instructions' => array(),
 			);
 
 			$new_field = wpm_set_language_value( $old_field, $field, $default_config );
@@ -134,7 +134,7 @@ if ( class_exists( 'acf' ) ) {
 			$old_field = wpm_value_to_ml_array( $old_field );
 
 			$default_config = array(
-				'default_value' => array()
+				'default_value' => array(),
 			);
 
 			$new_field = wpm_set_language_value( $old_field, $field, $default_config );

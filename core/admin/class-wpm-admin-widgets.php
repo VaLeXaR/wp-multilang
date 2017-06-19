@@ -37,7 +37,7 @@ class WPM_Admin_Widgets {
 	 */
 	public function save_widgets( $value, $option ) {
 
-		if ( substr( $option, 0, 6 ) != 'widget' ) {
+		if ( substr( $option, 0, 6 ) !== 'widget' ) {
 			return $value;
 		}
 
@@ -51,7 +51,7 @@ class WPM_Admin_Widgets {
 		$config         = wpm_get_config();
 		$default_fields = array(
 			'title' => array(),
-			'text'  => array()
+			'text'  => array(),
 		);
 
 		$widget_config = $default_fields;
@@ -64,7 +64,7 @@ class WPM_Admin_Widgets {
 
 		foreach ( $value as $key => &$widget ) {
 
-			if ( ( '_multiwidget' == $key ) || ! isset( $old_value[ $key ] ) ) {
+			if ( ( '_multiwidget' === $key ) || ! isset( $old_value[ $key ] ) ) {
 				continue;
 			}
 

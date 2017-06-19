@@ -72,7 +72,7 @@ class WPM_Admin_Taxonomies {
 
 		foreach ( $results as $result ) {
 			$ml_term = wpm_translate_string( $result->name, $to_locale );
-			if ( $ml_term == $term ) {
+			if ( $ml_term === $term ) {
 				return '';
 			}
 		}
@@ -117,7 +117,7 @@ class WPM_Admin_Taxonomies {
 
 		$this->description = array(
 			'old' => $old_description,
-			'new' => $args['description']
+			'new' => $args['description'],
 		);
 
 		return $data;
@@ -177,7 +177,7 @@ class WPM_Admin_Taxonomies {
 
 		$i = 0;
 		foreach ( $columns as $key => $value ) {
-			if ( $key == $insert_after ) {
+			if ( $key === $insert_after ) {
 				break;
 			}
 			$i ++;
@@ -200,7 +200,7 @@ class WPM_Admin_Taxonomies {
 	 */
 	public function render_language_column( $columns, $column, $term_id ) {
 
-		if ( 'languages' == $column ) {
+		if ( 'languages' === $column ) {
 			remove_filter( 'get_term', 'wpm_translate_object', 0 );
 			$term = get_term( $term_id );
 			add_filter( 'get_term', 'wpm_translate_object', 0 );

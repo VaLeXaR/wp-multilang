@@ -35,7 +35,7 @@ if ( defined( 'MSWP_AVERTA_VERSION' ) ) {
 		 */
 		public function save_slider() {
 			// verify nonce
-			if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], "msp_panel" ) ) {
+			if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'msp_panel' ) ) {
 				return;
 			}
 
@@ -76,7 +76,7 @@ if ( defined( 'MSWP_AVERTA_VERSION' ) ) {
 					if ( $old_params && is_array( $old_params ) && $old_params['MSPanel.Slide'] ) {
 						foreach ( $old_params['MSPanel.Slide'] as $old_slide ) {
 							$old_slide = json_decode( $old_slide, true );
-							if ( $slide['id'] == $old_slide['id'] ) {
+							if ( $slide['id'] === $old_slide['id'] ) {
 								$strings   = wpm_value_to_ml_array( $old_slide );
 								$new_value = wpm_set_language_value( $strings, $slide, $slider_config );
 								$slide     = wpm_ml_value_to_string( $new_value );
@@ -88,7 +88,7 @@ if ( defined( 'MSWP_AVERTA_VERSION' ) ) {
 							$slide = wpm_ml_value_to_string( $slide );
 						}
 					}
-					$params['MSPanel.Slide'][ $key ] = json_encode( $slide );
+					$params['MSPanel.Slide'][ $key ] = wp_json_encode( $slide );
 				}
 			}
 
@@ -104,7 +104,7 @@ if ( defined( 'MSWP_AVERTA_VERSION' ) ) {
 					if ( $old_params && is_array( $old_params ) && $old_params['MSPanel.Layer'] ) {
 						foreach ( $old_params['MSPanel.Layer'] as $old_layer ) {
 							$old_layer = json_decode( $old_layer, true );
-							if ( $layer['id'] == $old_layer['id'] ) {
+							if ( $layer['id'] === $old_layer['id'] ) {
 								$strings   = wpm_value_to_ml_array( $old_layer );
 								$new_value = wpm_set_language_value( $strings, $layer, $layer_config );
 								$layer     = wpm_ml_value_to_string( $new_value );
@@ -116,11 +116,11 @@ if ( defined( 'MSWP_AVERTA_VERSION' ) ) {
 							$layer = wpm_ml_value_to_string( $layer );
 						}
 					}
-					$params['MSPanel.Layer'][ $key ] = json_encode( $layer );
+					$params['MSPanel.Layer'][ $key ] = wp_json_encode( $layer );
 				}
 			}
 
-			$_REQUEST['msp_data'] = base64_encode( json_encode( $params ) );
+			$_REQUEST['msp_data'] = base64_encode( wp_json_encode( $params ) );
 		}
 
 
@@ -142,14 +142,14 @@ if ( defined( 'MSWP_AVERTA_VERSION' ) ) {
 				}
 			}
 
-			if ( $slider_data && $slider_data != 'null' ) {
+			if ( $slider_data && $slider_data !== 'null' ) {
 				$slider_data = json_decode( base64_decode( $slider_data ), true );
 
 				if ( isset( $slider_data['MSPanel.Slide'] ) ) {
 					foreach ( $slider_data['MSPanel.Slide'] as $key => $slide ) {
 						$slide                                = json_decode( $slide, true );
 						$slide                                = wpm_translate_value( $slide );
-						$slider_data['MSPanel.Slide'][ $key ] = json_encode( $slide );
+						$slider_data['MSPanel.Slide'][ $key ] = wp_json_encode( $slide );
 					}
 				}
 
@@ -157,11 +157,11 @@ if ( defined( 'MSWP_AVERTA_VERSION' ) ) {
 					foreach ( $slider_data['MSPanel.Layer'] as $key => $layer ) {
 						$layer                                = json_decode( $layer, true );
 						$layer                                = wpm_translate_value( $layer );
-						$slider_data['MSPanel.Layer'][ $key ] = json_encode( $layer );
+						$slider_data['MSPanel.Layer'][ $key ] = wp_json_encode( $layer );
 					}
 				}
 
-				$data_array[] = 'var __MSP_DATA = "' . base64_encode( json_encode( $slider_data ) ) . '";';
+				$data_array[] = 'var __MSP_DATA = "' . base64_encode( wp_json_encode( $slider_data ) ) . '";';
 				$data         = implode( "\n", $data_array );
 				$wp_scripts->add_data( 'jquery-core', 'data', $data );
 			}
@@ -178,7 +178,7 @@ if ( defined( 'MSWP_AVERTA_VERSION' ) ) {
 		public function add_language_switcher( $config ) {
 			$screen    = get_current_screen();
 			$screen_id = $screen ? $screen->id : '';
-			if ( $screen_id == 'toplevel_page_masterslider' && isset( $_GET['slider_id'] ) ) {
+			if ( $screen_id === 'toplevel_page_masterslider' && isset( $_GET['slider_id'] ) ) {
 				$config[] = 'toplevel_page_masterslider';
 			}
 

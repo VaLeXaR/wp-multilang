@@ -50,9 +50,9 @@ class WPM_Admin_Menus {
 			'id'     => 'wpm-language-switcher',
 			'parent' => 'top-secondary',
 			'title'  => '<span class="ab-icon">' .
-			            '<img src="' . WPM()->flag_dir() . $options[$locale]['flag'] . '.png' . '"/>' .
+			            '<img src="' . esc_url( WPM()->flag_dir() . $options[ $locale ]['flag'] . '.png' ) . '"/>' .
 			            '</span><span class="ab-label">' .
-			            $options[$locale]['name'] .
+			            $options[ $locale ]['name'] .
 			            '</span>',
 		) );
 
@@ -67,7 +67,7 @@ class WPM_Admin_Menus {
 			$wp_admin_bar->add_menu( array(
 				'parent' => 'wpm-language-switcher',
 				'id'     => 'wpm-language-' . $language,
-				'title'  => '<img src="' . WPM()->flag_dir() . $options[$key]['flag'] . '.png' . '" />' .
+				'title'  => '<img src="' . esc_url( WPM()->flag_dir() . $options[ $key ]['flag'] . '.png' ) . '" />' .
 				            '&nbsp;&nbsp;' .
 				            $options[ $key ]['name'],
 				'href'   => add_query_arg( 'lang', $language, $current_url ),

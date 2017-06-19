@@ -32,8 +32,8 @@ if ( defined( 'NEWSLETTER_VERSION' ) ) {
 
 		public function add_options_config( $config ) {
 			for ( $i = 1; $i <= 20; $i ++ ) {
-				$config["profile_{$i}"]             = array();
-				$config["profile_{$i}_placeholder"] = array();
+				$config[ "profile_{$i}" ]             = array();
+				$config[ "profile_{$i}_placeholder" ] = array();
 			}
 
 			return $config;

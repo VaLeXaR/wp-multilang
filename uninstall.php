@@ -38,7 +38,7 @@ if ( $uninstall_translations ) {
 
 			case 'post_types':
 
-				$posts_config = apply_filters( "wpm_posts_config", $item_config );
+				$posts_config = apply_filters( 'wpm_posts_config', $item_config );
 
 				foreach ( $posts_config as $post_type => $post_config ) {
 
@@ -115,7 +115,6 @@ if ( $uninstall_translations ) {
 
 				break;
 		}
-
 	}
 
 	// Clear any cached data that has been removed

@@ -86,7 +86,7 @@ class WPM_Install {
 		$available_translations          = wp_get_available_translations();
 		$available_translations['en_US'] = array(
 			'native_name' => 'English (US)',
-			'iso'         => array( 'en' )
+			'iso'         => array( 'en' ),
 		);
 
 		$translations = $available_translations;
@@ -96,7 +96,7 @@ class WPM_Install {
 				'name'   => $translations[ $language ]['native_name'],
 				'slug'   => current( $translations[ $language ]['iso'] ),
 				'flag'   => current( $translations[ $language ]['iso'] ),
-				'enable' => 1
+				'enable' => 1,
 			);
 		}
 

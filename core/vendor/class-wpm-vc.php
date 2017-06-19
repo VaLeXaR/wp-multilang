@@ -75,11 +75,11 @@ if ( defined( 'WPB_VC_VERSION' ) ) {
 			$output             = '';
 			$output             .= '<select id="vc_vendor_wpm_langs_front" class="vc_select vc_select-navbar">';
 			$inline_url         = vc_frontend_editor()->getInlineUrl();
-			$activeLanguage     = wpm_get_language();
+			$active_language     = wpm_get_language();
 			$options            = wpm_get_options();
-			$availableLanguages = wpm_get_languages();
-			foreach ( $availableLanguages as $locale => $lang ) {
-				$output .= '<option value="' . add_query_arg( 'edit_lang', $lang, $inline_url ) . '" ' . selected( $lang, $activeLanguage, false ) . ' >' . $options[ $locale ]['name'] . '</option >';
+			$available_languages = wpm_get_languages();
+			foreach ( $available_languages as $locale => $lang ) {
+				$output .= '<option value="' . add_query_arg( 'edit_lang', $lang, $inline_url ) . '" ' . selected( $lang, $active_language, false ) . ' >' . $options[ $locale ]['name'] . '</option >';
 			}
 			$output .= '</select >';
 

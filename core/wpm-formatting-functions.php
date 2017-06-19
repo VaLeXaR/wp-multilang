@@ -43,8 +43,8 @@ function wpm_array_merge_recursive( array & $array1, array & $array2 ) {
 	foreach ( $array2 as $key => & $value ) {
 		if ( is_array( $value ) && isset( $merged[ $key ] ) && is_array( $merged[ $key ] ) ) {
 			$merged[ $key ] = wpm_array_merge_recursive( $merged[ $key ], $value );
-		} else if ( is_numeric( $key ) ) {
-			if ( ! in_array( $value, $merged ) ) {
+		} elseif ( is_numeric( $key ) ) {
+			if ( ! in_array( $value, $merged, true ) ) {
 				$merged[] = $value;
 			}
 		} else {

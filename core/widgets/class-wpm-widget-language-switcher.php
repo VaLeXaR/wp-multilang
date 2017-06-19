@@ -28,7 +28,7 @@ class WPM_Widget_Language_Switcher extends \WPM_Widget {
 			'title' => array(
 				'type'  => 'text',
 				'std'   => __( 'Languages', 'wpm' ),
-				'label' => __( 'Title', 'wpm' )
+				'label' => __( 'Title', 'wpm' ),
 			),
 			'show'  => array(
 				'type'    => 'select',
@@ -38,7 +38,7 @@ class WPM_Widget_Language_Switcher extends \WPM_Widget {
 					'flag'     => __( 'Flag', 'wpm' ),
 					'name' => __( 'Name', 'wpm' ),
 				),
-				'label'   => __( 'Show', 'wpm' )
+				'label'   => __( 'Show', 'wpm' ),
 			),
 			'type'  => array(
 				'type'    => 'select',
@@ -47,8 +47,8 @@ class WPM_Widget_Language_Switcher extends \WPM_Widget {
 					'list'     => __( 'List', 'wpm' ),
 					'dropdown' => __( 'Dropdown', 'wpm' ),
 				),
-				'label'   => __( 'Switcher Type', 'wpm' )
-			)
+				'label'   => __( 'Switcher Type', 'wpm' ),
+			),
 		);
 		parent::__construct();
 	}

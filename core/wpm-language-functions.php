@@ -119,7 +119,7 @@ function wpm_get_translations() {
 function wpm_get_language() {
 	if ( is_admin() ) {
 		$languages = wpm_get_languages();
-		$lang      = ( isset( $_GET['edit_lang'] ) && in_array( wpm_clean( $_GET['edit_lang'] ), $languages ) ) ? wpm_clean( $_GET['edit_lang'] ) : ( ( isset( $_COOKIE['edit_language'] ) && in_array( wpm_clean( $_COOKIE['edit_language'] ), $languages ) ) ? wpm_clean( $_COOKIE['edit_language'] ) : wpm_get_user_language() );
+		$lang      = ( isset( $_GET['edit_lang'] ) && in_array( wpm_clean( $_GET['edit_lang'] ), $languages, true ) ) ? wpm_clean( $_GET['edit_lang'] ) : ( ( isset( $_COOKIE['edit_language'] ) && in_array( wpm_clean( $_COOKIE['edit_language'] ), $languages, true ) ) ? wpm_clean( $_COOKIE['edit_language'] ) : wpm_get_user_language() );
 	} else {
 		$lang = wpm_get_user_language();
 	}

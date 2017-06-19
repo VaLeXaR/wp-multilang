@@ -156,7 +156,7 @@ class WPM_Setup {
 						'name'   => $translations[ $language ]['native_name'],
 						'slug'   => current( $translations[ $language ]['iso'] ),
 						'flag'   => current( $translations[ $language ]['iso'] ),
-						'enable' => 1
+						'enable' => 1,
 					);
 				}
 			}
@@ -207,7 +207,7 @@ class WPM_Setup {
 
 		if ( ! is_admin() && ! defined( 'REST_REQUEST' ) ) {
 
-			$path = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
+			$path = wp_parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
 
 			if ( preg_match( '!^/([a-z]{2})(/|$)!i', $path, $match ) ) {
 				$this->user_language = $match[1];
@@ -222,13 +222,13 @@ class WPM_Setup {
 
 					$browser_language = $this->get_browser_language();
 
-					if ( $browser_language != $this->user_language ) {
+					if ( $browser_language !== $this->user_language ) {
 
 						$base_url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'];
 
 						$b_home_url = $base_url . '/' . $browser_language;
 
-						if ( $browser_language == $languages[ $default_locale ] ) {
+						if ( $browser_language === $languages[ $default_locale ] ) {
 							$b_home_url = $base_url;
 						}
 
@@ -242,7 +242,7 @@ class WPM_Setup {
 					}
 				}
 			}
-		}
+		} // End if().
 
 		if ( isset( $_GET['lang'] ) ) {
 			$lang = wpm_clean( $_GET['lang'] );
@@ -259,7 +259,7 @@ class WPM_Setup {
 			if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
 				if ( isset( $_COOKIE['language'] ) ) {
 					$lang = wpm_clean( $_COOKIE['language'] );
-					if ( in_array( $lang, $languages ) ) {
+					if ( in_array( $lang, $languages, true ) ) {
 						$this->user_language = $lang;
 					}
 				} else {
@@ -281,9 +281,9 @@ class WPM_Setup {
 
 		foreach ( $languages as $key => $value ) {
 			$user_language = $this->get_user_language();
-			if ( ( $value == $user_language ) ) {
+			if ( ( $value === $user_language ) ) {
 				$locale = $key;
-				if ( $key == $default_locale && ! is_admin() && ! isset( $_GET['lang'] ) ) {
+				if ( $key === $default_locale && ! is_admin() && ! isset( $_GET['lang'] ) ) {
 					wp_redirect( home_url( str_replace( '/' . $user_language . '/', '/', $_SERVER['REQUEST_URI'] ) ) );
 					exit;
 				}
@@ -291,7 +291,7 @@ class WPM_Setup {
 			}
 		}
 
-		if ( ! $this->user_language || ! in_array( $this->user_language, $languages ) ) {
+		if ( ! $this->user_language || ! in_array( $this->user_language, $languages, true ) ) {
 			$this->user_language = $languages[ $default_locale ];
 		}
 	}
@@ -307,7 +307,7 @@ class WPM_Setup {
 			$available_translations          = wp_get_available_translations();
 			$available_translations['en_US'] = array(
 				'native_name' => 'English (US)',
-				'iso'         => array( 'en' )
+				'iso'         => array( 'en' ),
 			);
 
 			$this->translations = $available_translations;
@@ -371,7 +371,7 @@ class WPM_Setup {
 		$language       = $this->get_user_language();
 		$languages      = $this->get_languages();
 		$default_locale = $this->get_default_locale();
-		if ( $language != $languages[ $default_locale ] ) {
+		if ( $language !== $languages[ $default_locale ] ) {
 			$value .= '/' . $language;
 		}
 
@@ -410,11 +410,11 @@ class WPM_Setup {
 	 * @return null|string
 	 */
 	private function get_browser_language() {
-		if ( ! isset( $_SERVER["HTTP_ACCEPT_LANGUAGE"] ) ) {
+		if ( ! isset( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) ) {
 			return null;
 		}
 
-		if ( ! preg_match_all( "#([^;,]+)(;[^,0-9]*([0-9\.]+)[^,]*)?#i", $_SERVER["HTTP_ACCEPT_LANGUAGE"], $matches, PREG_SET_ORDER ) ) {
+		if ( ! preg_match_all( '#([^;,]+)(;[^,0-9]*([0-9\.]+)[^,]*)?#i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches, PREG_SET_ORDER ) ) {
 			return null;
 		}
 
@@ -435,7 +435,7 @@ class WPM_Setup {
 		$languages = $this->get_languages();
 
 		foreach ( $prefered_languages as $language => $priority ) {
-			if ( in_array( $language, $languages ) ) {
+			if ( in_array( $language, $languages, true ) ) {
 				return $language;
 			} elseif ( isset( $languages[ $language ] ) ) {
 				return $languages[ $language ];
@@ -451,7 +451,7 @@ class WPM_Setup {
 	public function set_not_found() {
 		$languages = $this->get_languages();
 
-		if ( ! in_array( $this->user_language, $languages ) ) {
+		if ( ! in_array( $this->user_language, $languages, true ) ) {
 			global $wp_query;
 			$wp_query->set_404();
 			status_header( 404 );
