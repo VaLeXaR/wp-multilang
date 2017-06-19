@@ -27,7 +27,7 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	require_once __DIR__ . '/vendor/autoload.php';
 }
 
-if ( ! class_exists( 'WP_Multilingual' ) ) :
+if ( ! class_exists( 'WP_Multilang' ) ) :
 
 	/**
 	 * Main WP_Multilang.
@@ -72,14 +72,14 @@ if ( ! class_exists( 'WP_Multilingual' ) ) :
 		 * Cloning is forbidden.
 		 */
 		public function __clone() {
-			doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wpm' ), '2.1' );
+			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wpm' ), '2.1' );
 		}
 
 		/**
 		 * Unserializing instances of this class is forbidden.
 		 */
 		public function __wakeup() {
-			doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wpm' ), '2.1' );
+			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wpm' ), '2.1' );
 		}
 
 		/**

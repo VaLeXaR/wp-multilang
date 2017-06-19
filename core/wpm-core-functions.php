@@ -31,7 +31,7 @@ function wpm_get_template_html( $path ) {
 
 	$located = WPM()->template_path() . $path;
 	if ( ! file_exists( $located ) ) {
-		doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', $located ), '1.0' );
+		_doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', $located ), '1.0' );
 
 		return false;
 	}
