@@ -24,6 +24,7 @@ Translations of post types, taxonomies, meta fields, options, text fields in mil
 * Maps Builder
 * Max Mega Menu
 * MasterSlider
+* WP-PageNavi
 
 Supports configuration via json.
 
@@ -131,6 +132,7 @@ Features of the plugin **WP Multilang**:
 * Maps Builder
 * Max Mega Menu
 * MasterSlider
+* WP-PageNavi
 
 Підтримує налаштування через json.
 
