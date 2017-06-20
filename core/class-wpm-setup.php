@@ -250,13 +250,13 @@ class WPM_Setup {
 				$this->user_language = $lang;
 			}
 
-			if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
+			if ( is_admin() && ! wp_doing_ajax() ) {
 				wpm_setcookie( 'language', $lang, time() + MONTH_IN_SECONDS );
 			}
 
 		} else {
 
-			if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
+			if ( is_admin() && ! wp_doing_ajax() ) {
 				if ( isset( $_COOKIE['language'] ) ) {
 					$lang = wpm_clean( $_COOKIE['language'] );
 					if ( in_array( $lang, $languages, true ) ) {
@@ -364,7 +364,7 @@ class WPM_Setup {
 	 */
 	public function set_home_url( $value ) {
 
-		if ( ( is_admin() && ! defined( 'DOING_AJAX' ) ) ) {
+		if ( ( is_admin() && ! wp_doing_ajax() ) ) {
 			return $value;
 		}
 

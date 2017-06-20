@@ -135,11 +135,11 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 				case 'admin' :
 					return is_admin();
 				case 'ajax' :
-					return defined( 'DOING_AJAX' );
+					return wp_doing_ajax();
 				case 'cron' :
 					return defined( 'DOING_CRON' );
 				case 'frontend' :
-					return ( ! is_admin() || defined( 'DOING_AJAX' ) ) && ! defined( 'DOING_CRON' );
+					return ( ! is_admin() || wp_doing_ajax() ) && ! defined( 'DOING_CRON' );
 				default:
 					return false;
 			}

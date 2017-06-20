@@ -44,7 +44,7 @@ class WPM_AJAX {
 	 */
 	public static function define_ajax() {
 		if ( ! empty( $_GET['wpm-ajax'] ) ) {
-			if ( ! defined( 'DOING_AJAX' ) ) {
+			if ( ! wp_doing_ajax() ) {
 				define( 'DOING_AJAX', true );
 			}
 			if ( ! defined( 'WPM_DOING_AJAX' ) ) {
