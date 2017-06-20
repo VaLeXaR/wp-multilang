@@ -128,5 +128,14 @@ class WPM_Admin_Assets {
 			'switcher' => wpm_get_template_html( 'language-switcher.php' ),
 		);
 		wp_localize_script( 'wpm_language_switcher', 'wpm_language_switcher_params', $params );
+		add_action('admin_head', function() {
+			?>
+			<style>
+				#wpbody-content .wrap {
+					padding-top: 37px;
+				}
+			</style>
+			<?php
+		});
 	}
 }

@@ -67,10 +67,13 @@ if ( class_exists( 'acf' ) ) {
 		 * @return mixed
 		 */
 		public function add_config( $config ) {
-			$config['post_types']['acf-field-group'] = array(
-				"post_content" => null,
-				"post_excerpt" => null,
-			);
+
+			if ( ! isset( $_GET['page'] ) ) {
+				$config['post_types']['acf-field-group'] = array(
+					'post_content' => null,
+					'post_excerpt' => null,
+				);
+			}
 
 			return $config;
 		}

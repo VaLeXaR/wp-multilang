@@ -28,6 +28,11 @@
       .lang-dropdown li a:hover {
         background-color: #f3f3f5; }
 
+.language-switcher {
+  left: 0;
+  position: absolute;
+  top: 10px; }
+
 table.wpm-languages {
   text-align: center; }
   table.wpm-languages th {

@@ -95,7 +95,7 @@ class WPM_Admin_Settings {
 					continue;
 				} ?>
 				<tr>
-					<td class="wpm-lang-order"><?php echo $i; ?></td>
+					<td class="wpm-lang-order"><?php esc_attr_e( $i ); ?></td>
 					<td class="wpm-lang-status">
 						<input type="radio" name="WPLANG" value="<?php echo ( 'en_US' === $key ) ? '' : $key ; ?>"<?php checked( $key, wpm_get_default_locale() ); ?>>
 					</td>
@@ -142,7 +142,7 @@ class WPM_Admin_Settings {
 					<td class="wpm-lang-delete">
 						<?php if ( get_locale() === $key ) { ?>
 							<?php esc_html_e( 'Current', 'wpm' ); ?>
-						<?php } elseif ( $key === wpm_get_default_locale() ) { ?>
+						<?php } elseif ( wpm_get_default_locale() === $key ) { ?>
 							<?php esc_html_e( 'Default', 'wpm' ); ?>
 						<?php } elseif ( 'en_US' === $key ) { ?>
 							<?php esc_html_e( 'Built-in', 'wpm' ); ?>
@@ -153,7 +153,7 @@ class WPM_Admin_Settings {
 					</td>
 				</tr>
 				<?php $i ++;
-			} ?>
+			}// End foreach(). ?>
 			</tbody>
 			<tfoot>
 			<tr>
@@ -221,7 +221,7 @@ class WPM_Admin_Settings {
 				'enable' => $_POST['wpm_languages'][ $key ]['enable'] ? 1 : 0,
 				'slug'   => wpm_clean( $item['slug'] ),
 				'name'   => wpm_clean( $item['name'] ),
-				'flag'   => wpm_clean( $item['flag'] )
+				'flag'   => wpm_clean( $item['flag'] ),
 			);
 
 			$translations        = wpm_get_translations();
@@ -231,7 +231,7 @@ class WPM_Admin_Settings {
 				unset( $translations[ $installed_language ] );
 			}
 
-			if ( in_array( $locale, $translations ) ) {
+			if ( in_array( $locale, $translations, true ) ) {
 				if ( wp_can_install_language_pack() ) {
 					wp_download_language_pack( $locale );
 					$type = 'updated';
@@ -239,11 +239,11 @@ class WPM_Admin_Settings {
 			}
 		}
 
-		if ( 'updated' == $type ) {
+		if ( 'updated' === $type ) {
 			add_settings_error( $option_name, '', __( 'New language package installed', 'wpm' ), $type );
 		}
 
-		if ( 'error' == $type ) {
+		if ( 'error' === $type ) {
 			add_settings_error( $option_name, '', __( 'Language slug is required', 'wpm' ), $type );
 
 			return get_option( $option_name );
@@ -266,7 +266,7 @@ class WPM_Admin_Settings {
 			'name'   => '',
 			'slug'   => '',
 			'flag'   => '',
-			'enable' => 1
+			'enable' => 1,
 		);
 
 		return array_merge( $default, $language );
