@@ -5,6 +5,7 @@
  * @author   VaLeXaR
  * @category Admin
  * @package  WPM/Core/Admin
+ * @version  1.0.1
  */
 
 namespace WPM\Core\Admin;
@@ -22,7 +23,10 @@ class WPM_Admin_Edit_Menus {
 	 * WPM_Admin_Edit_Menus constructor.
 	 */
 	public function __construct() {
-		add_filter( 'wp_setup_nav_menu_item', array( $this, 'translate_menu_item' ), ( 'POST' === $_SERVER['REQUEST_METHOD'] ? 99 : 0 ) );
+		add_filter( 'wp_setup_nav_menu_item', array(
+			$this,
+			'translate_menu_item'
+		), ( 'POST' === $_SERVER['REQUEST_METHOD'] ? 99 : 0 ) );
 		add_filter( 'customize_nav_menu_available_items', array( $this, 'filter_menus' ), 0 );
 		add_filter( 'customize_nav_menu_searched_items', array( $this, 'filter_menus' ), 0 );
 	}
@@ -37,7 +41,12 @@ class WPM_Admin_Edit_Menus {
 	public function filter_menus( $items ) {
 		foreach ( $items as &$item ) {
 			$title = wpm_translate_string( $item['title'] );
-			$item['title'] = '' === $title ? $title : __( 'Not Translated', 'wpm' );
+
+			if ( ! is_admin() ) {
+				$title = '' === $title ? $title : __( 'Not Translated', 'wpm' );
+			}
+
+			$item['title'] = $title;
 		}
 
 		return $items;
@@ -90,7 +99,7 @@ class WPM_Admin_Edit_Menus {
 					}
 
 					$menu_item->type_label = __( 'Post Type Archive' );
-					$menu_item->url = get_post_type_archive_link( $menu_item->object );
+					$menu_item->url        = get_post_type_archive_link( $menu_item->object );
 
 				} elseif ( 'taxonomy' === $menu_item->type ) {
 
@@ -113,7 +122,7 @@ class WPM_Admin_Edit_Menus {
 				} else {
 
 					$menu_item->type_label = __( 'Custom Link' );
-					$menu_item->title = $menu_item->post_title;
+					$menu_item->title      = $menu_item->post_title;
 				}// End if().
 
 				$menu_item->attr_title = ! isset( $menu_item->attr_title ) ? apply_filters( 'nav_menu_attr_title', $menu_item->post_excerpt ) : $menu_item->attr_title;
@@ -122,8 +131,8 @@ class WPM_Admin_Edit_Menus {
 				}
 			} else {
 
-				$object = get_post_type_object( $menu_item->post_type );
-				$menu_item->object = $object->name;
+				$object                = get_post_type_object( $menu_item->post_type );
+				$menu_item->object     = $object->name;
 				$menu_item->type_label = $object->labels->singular_name;
 
 				if ( '' === $menu_item->post_title ) {
@@ -141,11 +150,11 @@ class WPM_Admin_Edit_Menus {
 			}// End if().
 		} elseif ( isset( $menu_item->taxonomy ) ) {
 
-			$object = get_taxonomy( $menu_item->taxonomy );
+			$object                = get_taxonomy( $menu_item->taxonomy );
 			$menu_item->type_label = $object->labels->singular_name;
 
-			$menu_item->title = $menu_item->name;
-			$menu_item->attr_title = '';
+			$menu_item->title       = $menu_item->name;
+			$menu_item->attr_title  = '';
 			$menu_item->description = get_term_field( 'description', $menu_item->term_id, $menu_item->taxonomy );
 
 		}// End if().
