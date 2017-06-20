@@ -36,7 +36,8 @@ class WPM_Admin_Edit_Menus {
 	 */
 	public function filter_menus( $items ) {
 		foreach ( $items as &$item ) {
-			$item['title'] = wpm_translate_string( $item['title'] );
+			$title = wpm_translate_string( $item['title'] );
+			$item['title'] = '' === $title ? $title : __( 'Not Translated', 'wpm' );
 		}
 
 		return $items;
@@ -57,7 +58,9 @@ class WPM_Admin_Edit_Menus {
 			if ( 'nav_menu_item' === $menu_item->post_type ) {
 
 				if ( 'post_type' === $menu_item->type ) {
+
 					$object = get_post_type_object( $menu_item->object );
+
 					if ( $object ) {
 						$menu_item->type_label = $object->labels->singular_name;
 					} else {
@@ -65,6 +68,7 @@ class WPM_Admin_Edit_Menus {
 					}
 
 					$original_object = get_post( $menu_item->object_id );
+
 					/** This filter is documented in wp-includes/post-template.php */
 					$original_title = apply_filters( 'the_title', $original_object->post_title, $original_object->ID );
 
@@ -76,7 +80,9 @@ class WPM_Admin_Edit_Menus {
 					$menu_item->title = '' === $menu_item->post_title ? $original_title : $menu_item->post_title;
 
 				} elseif ( 'post_type_archive' === $menu_item->type ) {
+
 					$object = get_post_type_object( $menu_item->object );
+
 					if ( $object ) {
 						$menu_item->title = '' === $menu_item->post_title ? $object->labels->archives : $menu_item->post_title;
 					} else {
@@ -85,8 +91,11 @@ class WPM_Admin_Edit_Menus {
 
 					$menu_item->type_label = __( 'Post Type Archive' );
 					$menu_item->url = get_post_type_archive_link( $menu_item->object );
+
 				} elseif ( 'taxonomy' === $menu_item->type ) {
+
 					$object = get_taxonomy( $menu_item->object );
+
 					if ( $object ) {
 						$menu_item->type_label = $object->labels->singular_name;
 					} else {
@@ -94,14 +103,19 @@ class WPM_Admin_Edit_Menus {
 					}
 
 					$original_title = get_term_field( 'name', $menu_item->object_id, $menu_item->object, 'raw' );
-					if ( is_wp_error( $original_title ) )
+
+					if ( is_wp_error( $original_title ) ) {
 						$original_title = false;
+					}
+
 					$menu_item->title = '' === $menu_item->post_title ? $original_title : $menu_item->post_title;
 
 				} else {
+
 					$menu_item->type_label = __( 'Custom Link' );
 					$menu_item->title = $menu_item->post_title;
 				}// End if().
+
 				$menu_item->attr_title = ! isset( $menu_item->attr_title ) ? apply_filters( 'nav_menu_attr_title', $menu_item->post_excerpt ) : $menu_item->attr_title;
 				if ( ! isset( $menu_item->description ) ) {
 					$menu_item->description = apply_filters( 'nav_menu_description', wp_trim_words( $menu_item->post_content, 200 ) );
@@ -126,6 +140,7 @@ class WPM_Admin_Edit_Menus {
 				$menu_item->description = apply_filters( 'nav_menu_description', '' );
 			}// End if().
 		} elseif ( isset( $menu_item->taxonomy ) ) {
+
 			$object = get_taxonomy( $menu_item->taxonomy );
 			$menu_item->type_label = $object->labels->singular_name;
 
