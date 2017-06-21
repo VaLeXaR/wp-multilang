@@ -67,7 +67,7 @@ class WPM_Admin_Taxonomies {
 		$results = $wpdb->get_results( $wpdb->prepare( "SELECT t.name AS `name` FROM {$wpdb->terms} AS t INNER JOIN {$wpdb->term_taxonomy} AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy = '%s' AND `name` LIKE '%s'", $taxonomy, $like ) );
 
 		foreach ( $results as $result ) {
-			$ml_term = wpm_translate_string( $result->name );
+			$ml_term = wpm_translate_string( $result->name, wpm_get_language() );
 			if ( $ml_term === $term ) {
 				return '';
 			}
