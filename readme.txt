@@ -135,9 +135,11 @@ Compatible with multisite not tested.
 == Changelog ==
 
 = 1.3.7 =
+* add option for snow not translated texts
+* add support WP-PageNavi
 * fix load plugins localizations
 * fix empty menu title
-* add support WP-PageNavi
+* fix translation new term
 
 = 1.3.6 =
 * fix load main static page
