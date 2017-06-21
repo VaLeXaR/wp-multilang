@@ -23,10 +23,7 @@ class WPM_Admin_Edit_Menus {
 	 * WPM_Admin_Edit_Menus constructor.
 	 */
 	public function __construct() {
-		add_filter( 'wp_setup_nav_menu_item', array(
-			$this,
-			'translate_menu_item'
-		), ( 'POST' === $_SERVER['REQUEST_METHOD'] ? 99 : 0 ) );
+		add_filter( 'wp_setup_nav_menu_item', array( $this, 'translate_menu_item' ), ( 'POST' === $_SERVER['REQUEST_METHOD'] ? 99 : 0 ) );
 		add_filter( 'customize_nav_menu_available_items', array( $this, 'filter_menus' ), 0 );
 		add_filter( 'customize_nav_menu_searched_items', array( $this, 'filter_menus' ), 0 );
 	}
@@ -41,12 +38,7 @@ class WPM_Admin_Edit_Menus {
 	public function filter_menus( $items ) {
 		foreach ( $items as &$item ) {
 			$title = wpm_translate_string( $item['title'] );
-
-			if ( ! is_admin() ) {
-				$title = '' === $title ? $title : __( 'Not Translated', 'wpm' );
-			}
-
-			$item['title'] = $title;
+			$item['title'] = '' === $title ? $title : sprintf( __( '#%d (no title)' ), $item->ID );
 		}
 
 		return $items;
