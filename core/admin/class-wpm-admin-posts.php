@@ -89,15 +89,12 @@ class WPM_Admin_Posts {
 			return $data;
 		}
 
-		if ( 'attachment' !== $data['post_type'] ) {
+		if ( 'trash' === $postarr['post_status'] ) {
+			return $data;
+		}
 
-			if ( 'trash' === $postarr['post_status'] ) {
-				return $data;
-			}
-
-			if ( isset( $_GET['action'] ) && 'untrash' === $_GET['action'] ) {
-				return $data;
-			}
+		if ( isset( $_GET['action'] ) && 'untrash' === $_GET['action'] ) {
+			return $data;
 		}
 
 		$post_id = isset( $data['ID'] ) ? wpm_clean( $data['ID'] ) : ( isset( $postarr['ID'] ) ? wpm_clean( $postarr['ID'] ) : 0 );
@@ -174,8 +171,7 @@ class WPM_Admin_Posts {
 			$i ++;
 		}
 
-		$columns =
-			array_slice( $columns, 0, $i + 1 ) + array( 'languages' => __( 'Languages', 'wpm' ) ) + array_slice( $columns, $i + 1 );
+		$columns = array_slice( $columns, 0, $i + 1 ) + array( 'languages' => __( 'Languages', 'wpm' ) ) + array_slice( $columns, $i + 1 );
 
 		return $columns;
 	}

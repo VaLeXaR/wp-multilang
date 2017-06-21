@@ -32,15 +32,12 @@ class WPM_Admin_Settings {
 	 */
 	public function add_section() {
 
-		add_settings_section( 'wpm_options', __( 'Multilingual Settings', 'wpm' ), array(
-			$this,
-			'view_settings'
-		), 'general' );
+		add_settings_section( 'wpm_options', __( 'Multilingual Settings', 'wpm' ), array( $this, 'view_settings' ), 'general' );
 
 		register_setting( 'general', 'wpm_languages', array(
 			'type'              => 'array',
 			'group'             => 'general',
-			'description'       => '',
+			'description'       => __( 'Multilingual Settings', 'wpm' ),
 			'sanitize_callback' => array( $this, 'save_options' ),
 			'show_in_rest'      => true,
 		) );
@@ -49,6 +46,13 @@ class WPM_Admin_Settings {
 			'type'         => 'integer',
 			'group'        => 'general',
 			'description'  => __( 'Delete translations when uninstalling plugin', 'wpm' ),
+			'show_in_rest' => true,
+		) );
+
+		register_setting( 'general', 'wpm_show_untranslated_strings', array(
+			'type'         => 'integer',
+			'group'        => 'general',
+			'description'  => __( 'Show untranslated strings', 'wpm' ),
 			'show_in_rest' => true,
 		) );
 	}
@@ -170,6 +174,22 @@ class WPM_Admin_Settings {
 		</table>
 
 		<table class="form-table">
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Translate mode', 'wpm' ); ?></th>
+				<td>
+					<fieldset>
+						<legend class="screen-reader-text">
+							<span><?php esc_html_e( 'Translate mode', 'wpm' ); ?></span>
+						</legend>
+						<label for="wpm_show_untranslated_strings">
+							<input type="hidden" name="wpm_show_untranslated_strings" value="0">
+							<input name="wpm_show_untranslated_strings" type="checkbox" id="wpm_show_untranslated_strings"
+							       value="1"<?php checked( get_option( 'wpm_show_untranslated_strings' ) ); ?>>
+							<?php esc_attr_e( 'Show untranslated strings in default language', 'wpm' ); ?>
+						</label>
+					</fieldset>
+				</td>
+			</tr>
 			<tr>
 				<th scope="row"><?php esc_html_e( 'Uninstalling', 'wpm' ); ?></th>
 				<td>

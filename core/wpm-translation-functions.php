@@ -36,7 +36,7 @@ function wpm_translate_url( $url, $language = '' ) {
 	$url_lang = '';
 
 	$path_url = wp_parse_url( $url, PHP_URL_PATH );
-	$host = wp_parse_url( $url, PHP_URL_HOST );
+	$host     = wp_parse_url( $url, PHP_URL_HOST );
 	$path     = $path_url ? $path_url : '/';
 
 	if ( preg_match( '!^/([a-z]{2})(/|$)!i', $path, $match ) ) {
@@ -95,25 +95,24 @@ function wpm_translate_string( $string, $language = '' ) {
 		return $strings;
 	}
 
+	$languages      = wpm_get_languages();
+	$default_locale = wpm_get_default_locale();
+
 	if ( $language ) {
-		if ( isset( $strings[ $language ] ) ) {
+		if ( in_array( $language, $languages, true ) ) {
 			return $strings[ $language ];
 		} else {
 			return '';
 		}
 	}
 
-	$language       = wpm_get_language();
-	$languages      = wpm_get_languages();
-	$default_locale = wpm_get_default_locale();
+	$language = wpm_get_language();
 
-	if ( isset( $strings[ $language ] ) ) {
-		return $strings[ $language ];
-	} elseif ( isset( $strings[ $languages[ $default_locale ] ] ) ) {
+	if ( empty( $strings[ $language ] ) && get_option( 'wpm_show_untranslated_strings' ) ) {
 		return $strings[ $languages[ $default_locale ] ];
-	} else {
-		return '';
 	}
+
+	return $strings[ $language ];
 }
 
 /**
