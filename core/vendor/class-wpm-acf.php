@@ -68,7 +68,7 @@ if ( class_exists( 'acf' ) ) {
 		 */
 		public function add_config( $config ) {
 
-			if ( ! isset( $_GET['page'] ) && apply_filters( 'wpm_translate_acf_group', false ) ) {
+			if ( ! isset( $_GET['page'] ) ) {
 				$config['post_types']['acf-field-group'] = array(
 					'post_content' => null,
 					'post_excerpt' => null,
