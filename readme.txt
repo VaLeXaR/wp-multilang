@@ -136,6 +136,7 @@ Compatible with multisite not tested.
 
 = 1.3.7 =
 * fix load plugins localizations
+* fix empty menu title
 * add support WP-PageNavi
 
 = 1.3.6 =
