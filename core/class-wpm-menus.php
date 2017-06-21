@@ -1,26 +1,26 @@
 <?php
 /**
- * Translate menus in WP admin.
+ * Translate WP menus.
  *
  * @author   VaLeXaR
- * @category Admin
- * @package  WPM/Core/Admin
- * @version  1.0.1
+ * @category Class
+ * @package  WPM/Core
+ * @version  1.0.2
  */
 
-namespace WPM\Core\Admin;
+namespace WPM\Core;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * WPM_Admin_Edit_Menus Class.
+ * WPM_Menus Class.
  */
-class WPM_Admin_Edit_Menus {
+class WPM_Menus {
 
 	/**
-	 * WPM_Admin_Edit_Menus constructor.
+	 * WPM_Menus constructor.
 	 */
 	public function __construct() {
 		add_filter( 'wp_setup_nav_menu_item', array( $this, 'translate_menu_item' ), ( 'POST' === $_SERVER['REQUEST_METHOD'] ? 99 : 0 ) );
@@ -150,6 +150,8 @@ class WPM_Admin_Edit_Menus {
 			$menu_item->description = get_term_field( 'description', $menu_item->term_id, $menu_item->taxonomy );
 
 		}// End if().
+
+		$menu_item->title = '' === $menu_item->title ? sprintf( __( '#%d (no title)' ), $menu_item->ID ) : $menu_item->title ;
 
 		return $menu_item;
 	}

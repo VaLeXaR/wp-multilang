@@ -33,7 +33,7 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 	 * Main WP_Multilang.
 	 *
 	 * @class   WPM
-	 * @version 1.0.3
+	 * @version 1.0.4
 	 */
 	final class WP_Multilang {
 
@@ -179,6 +179,7 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 			$this->load_plugin_textdomain();
 
 			Core\WPM_AJAX::init();
+			new Core\WPM_Menus();
 			new Core\WPM_Posts();
 			new Core\WPM_Taxonomies();
 			new Core\WPM_Widgets();
