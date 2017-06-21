@@ -37,8 +37,7 @@ class WPM_Menus {
 	 */
 	public function filter_menus( $items ) {
 		foreach ( $items as &$item ) {
-			$title = wpm_translate_string( $item['title'] );
-			$item['title'] = '' === $title ? $title : sprintf( __( '#%d (no title)' ), $item->ID );
+			$item['title'] = wpm_translate_string( $item['title'] );
 		}
 
 		return $items;
