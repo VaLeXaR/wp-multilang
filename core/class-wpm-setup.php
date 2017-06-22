@@ -213,7 +213,7 @@ class WPM_Setup {
 				$this->user_language = $match[1];
 			}
 
-			if ( ! isset( $_COOKIE['wpm_was_here'] ) ) {
+			if ( ! isset( $_COOKIE['wpm_was_here'] ) && ! defined( 'WP_CLI' ) ) {
 
 				wpm_setcookie( 'wpm_was_here', true, time() + YEAR_IN_SECONDS );
 				$redirect_to_browser_language = apply_filters( 'wpm_redirect_to_browser_language', true );
