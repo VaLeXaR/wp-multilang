@@ -140,6 +140,7 @@ Compatible with multisite not tested.
 * fix load plugins localizations
 * fix empty menu title
 * fix translation new term
+* fix update widgets
 
 = 1.3.6 =
 * fix load main static page

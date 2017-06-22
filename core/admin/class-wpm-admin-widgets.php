@@ -23,60 +23,39 @@ class WPM_Admin_Widgets {
 	 * WPM_Admin_Widgets constructor.
 	 */
 	public function __construct() {
-		add_filter( 'pre_update_option', array( $this, 'save_widgets' ), 99, 2 );
 		add_filter( 'widget_form_callback', 'wpm_translate_value', 0 );
+		add_filter( 'widget_update_callback', array( $this, 'pre_save_widget' ), 99, 4 );
 	}
 
 	/**
-	 * Save widgets with translation. Title and text field translate for all widgets.
+	 * Update widget translation. Title and text field translate for all widgets.
 	 *
-	 * @param $value
-	 * @param $option
+	 * @param $instance
+	 * @param $new_instance
+	 * @param $old_instance
+	 * @param $widget
 	 *
-	 * @return mixed
+	 * @return array
+	 *
 	 */
-	public function save_widgets( $value, $option ) {
+	public function pre_save_widget( $instance, $new_instance, $old_instance, $widget ) {
 
-		if ( substr( $option, 0, 6 ) !== 'widget' ) {
-			return $value;
-		}
-
-		$old_value = get_option( $option );
-
-		if ( ! $old_value ) {
-			return $value;
-		}
-
-		$widget_name    = substr( $option, 7 );
-		$config         = wpm_get_config();
-		$default_fields = array(
+		$config        = wpm_get_config();
+		$widget_config = array(
 			'title' => array(),
 			'text'  => array(),
 		);
 
-		$widget_config = $default_fields;
-
-		if ( isset( $config['widgets'][ $widget_name ] ) ) {
-			$widget_config = wpm_array_merge_recursive( $widget_config, $config['widgets'][ $widget_name ] );
+		if ( isset( $config['widgets'][ $widget->id_base ] ) ) {
+			$widget_config = wpm_array_merge_recursive( $widget_config, $config['widgets'][ $widget->id_base ] );
 		}
 
-		$widget_config = apply_filters( "wpm_widget_{$widget_name}_config", $widget_config, $value );
+		$widget_config = apply_filters( "wpm_widget_{$widget->id_base}_config", $widget_config, $instance );
 
-		foreach ( $value as $key => &$widget ) {
+		$strings   = wpm_value_to_ml_array( $old_instance );
+		$new_value = wpm_set_language_value( $strings, $new_instance, $widget_config );
+		$instance  = wpm_ml_value_to_string( $new_value );
 
-			if ( ( '_multiwidget' === $key ) || ! isset( $old_value[ $key ] ) ) {
-				continue;
-			}
-
-			foreach ( $widget as $_key => $_value ) {
-				if ( isset( $widget_config[ $_key ] ) ) {
-					$strings                = wpm_value_to_ml_array( $old_value[ $key ][ $_key ] );
-					$new_value              = wpm_set_language_value( $strings, $_value, $widget_config[ $_key ] );
-					$value[ $key ][ $_key ] = wpm_ml_value_to_string( $new_value );
-				}
-			}
-		}
-
-		return $value;
+		return $instance;
 	}
 }
