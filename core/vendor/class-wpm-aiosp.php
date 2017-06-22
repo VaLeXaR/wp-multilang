@@ -42,7 +42,6 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 		 * @return array
 		 */
 		public function set_posts_config( $config ) {
-			//TODO add check post type, taxonomy
 
 			$post_types = get_post_types();
 
@@ -65,9 +64,15 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 		 * @return mixed
 		 */
 		public function save_old_fields( $check, $object_id, $meta_key, $meta_value, $delete_all ) {
-			//TODO add check post type, taxonomy
 
 			if ( $delete_all ) {
+				return $check;
+			}
+
+			$config = wpm_get_config();
+
+
+			if ( ! isset( $config['posts'][ get_post_type( $object_id ) ] ) ) {
 				return $check;
 			}
 
@@ -98,7 +103,13 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 		 * @return bool|int
 		 */
 		public function update_old_fields( $check, $object_id, $meta_key, $meta_value, $unique ) {
-			//TODO add check post type, taxonomy
+
+			$config = wpm_get_config();
+
+
+			if ( ! isset( $config['posts'][ get_post_type( $object_id ) ] ) ) {
+				return $check;
+			}
 
 			if ( isset( $this->meta_fields[ $meta_key ] ) && $this->meta_fields[ $meta_key ] ) {
 				global $wpdb;
@@ -128,15 +139,6 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 			}
 
 			return $check;
-		}
-
-		/**
-		 * Translate global $aioseop_options
-		 */
-		public function translate_options() {
-			//TODO add check if need this
-			global $aioseop_options;
-			$aioseop_options = wpm_translate_value( $aioseop_options );
 		}
 	}
 

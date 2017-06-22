@@ -123,7 +123,6 @@ if ( class_exists( 'acf' ) ) {
 		 * @return array|mixed|string
 		 */
 		public function save_text_field( $field ) {
-			//TODO add check post type, taxonomy
 
 			if ( ! $this->pro ) {
 				return $field;

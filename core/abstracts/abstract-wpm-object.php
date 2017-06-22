@@ -33,7 +33,6 @@ abstract class WPM_Object {
 	 */
 	public function get_meta_field( $value, $object_id, $meta_key ) {
 		global $wpdb;
-		//TODO add check post type, taxonomy
 
 		if ( ! $meta_key ) {
 
@@ -111,9 +110,24 @@ abstract class WPM_Object {
 	 */
 	public function update_meta_field( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
 		global $wpdb;
-		//TODO add check post type, taxonomy
 
-		$config               = wpm_get_config();
+		$config = wpm_get_config();
+
+		switch ( $this->object_type ) {
+
+			case 'post':
+				if ( ! isset( $config['posts'][ get_post_type( $object_id ) ] ) ) {
+					return $check;
+				}
+				break;
+
+			case 'term':
+				$term = get_term( $object_id );
+				if ( ! isset( $config['taxonomies'][ $term->taxonomy ] ) ) {
+					return $check;
+				}
+		}
+
 		$object_fields_config = $config[ $this->object_type . '_fields' ];
 		$object_fields_config = apply_filters( "wpm_{$this->object_type}_meta_config", $object_fields_config );
 
@@ -256,15 +270,29 @@ abstract class WPM_Object {
 
 
 	public function add_meta_field( $check, $object_id, $meta_key, $meta_value, $unique ) {
-		//TODO add check post type, taxonomy
+		global $wpdb;
 
 		if ( null !== $check ) {
 			return $check;
 		}
 
-		global $wpdb;
+		$config = wpm_get_config();
 
-		$config               = wpm_get_config();
+		switch ( $this->object_type ) {
+
+			case 'post':
+				if ( ! isset( $config['posts'][ get_post_type( $object_id ) ] ) ) {
+					return $check;
+				}
+				break;
+
+			case 'term':
+				$term = get_term( $object_id );
+				if ( ! isset( $config['taxonomies'][ $term->taxonomy ] ) ) {
+					return $check;
+				}
+		}
+
 		$object_fields_config = $config[ $this->object_type . '_fields' ];
 		$object_fields_config = apply_filters( "wpm_{$this->object_type}_meta_config", $object_fields_config );
 
