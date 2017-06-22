@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-06-21 14:34+0300\n"
+"POT-Creation-Date: 2017-06-22 09:46+0300\n"
 "PO-Revision-Date: 2017-05-22 12:43+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -116,7 +116,7 @@ msgstr ""
 
 #: core/admin/class-wpm-admin-settings.php:178
 #: core/admin/class-wpm-admin-settings.php:182
-msgid "Translate mode"
+msgid "Translating settings"
 msgstr ""
 
 #: core/admin/class-wpm-admin-settings.php:188

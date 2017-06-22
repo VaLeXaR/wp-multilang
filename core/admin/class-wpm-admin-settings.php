@@ -175,11 +175,11 @@ class WPM_Admin_Settings {
 
 		<table class="form-table">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Translate settings', 'wpm' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Translating settings', 'wpm' ); ?></th>
 				<td>
 					<fieldset>
 						<legend class="screen-reader-text">
-							<span><?php esc_html_e( 'Translate settings', 'wpm' ); ?></span>
+							<span><?php esc_html_e( 'Translating settings', 'wpm' ); ?></span>
 						</legend>
 						<label for="wpm_show_untranslated_strings">
 							<input type="hidden" name="wpm_show_untranslated_strings" value="0">
