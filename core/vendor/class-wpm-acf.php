@@ -123,6 +123,7 @@ if ( class_exists( 'acf' ) ) {
 		 * @return array|mixed|string
 		 */
 		public function save_text_field( $field ) {
+			//TODO add check post type, taxonomy
 
 			if ( ! $this->pro ) {
 				return $field;
@@ -158,6 +159,7 @@ if ( class_exists( 'acf' ) ) {
 		 * @return array|bool|string
 		 */
 		public function save_value( $value, $post_id, $field ) {
+			//TODO add check post type, taxonomy
 			remove_filter( "acf/load_value/type={$field['type']}", 'wpm_translate_value', 0 );
 			$old_value = get_field( $field['name'], $post_id );
 			add_filter( "acf/load_value/type={$field['type']}", 'wpm_translate_value', 0 );

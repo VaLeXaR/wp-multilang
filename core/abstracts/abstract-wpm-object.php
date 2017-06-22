@@ -33,6 +33,7 @@ abstract class WPM_Object {
 	 */
 	public function get_meta_field( $value, $object_id, $meta_key ) {
 		global $wpdb;
+		//TODO add check post type, taxonomy
 
 		if ( ! $meta_key ) {
 
@@ -110,6 +111,7 @@ abstract class WPM_Object {
 	 */
 	public function update_meta_field( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
 		global $wpdb;
+		//TODO add check post type, taxonomy
 
 		$config               = wpm_get_config();
 		$object_fields_config = $config[ $this->object_type . '_fields' ];
@@ -254,6 +256,7 @@ abstract class WPM_Object {
 
 
 	public function add_meta_field( $check, $object_id, $meta_key, $meta_value, $unique ) {
+		//TODO add check post type, taxonomy
 
 		if ( null !== $check ) {
 			return $check;

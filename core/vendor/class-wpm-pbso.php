@@ -38,6 +38,7 @@ if ( defined( 'SITEORIGIN_PANELS_VERSION' ) ) {
 		 * @return mixed
 		 */
 		public function filter_old_value( $old_value, $meta_value ) {
+			//TODO add check post type, taxonomy
 			$new_old_value            = $meta_value;
 			$new_old_value['widgets'] = array();
 

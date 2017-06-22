@@ -35,6 +35,7 @@ if ( defined( 'WPSEO_VERSION' ) ) {
 		 * @return array
 		 */
 		public function set_posts_config( $config ) {
+			//TODO add check post type, taxonomy
 
 			$post_types = get_post_types();
 

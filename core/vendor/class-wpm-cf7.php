@@ -32,6 +32,7 @@ if ( defined( 'WPCF7_PLUGIN' ) ) {
 		 * Translate some field without PHP filters by javascript for displaying
 		 */
 		public function add_translator_script() {
+			//TODO add check post type, taxonomy
 			$screen    = get_current_screen();
 			$screen_id = $screen ? $screen->id : '';
 
