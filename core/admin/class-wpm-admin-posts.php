@@ -139,11 +139,8 @@ class WPM_Admin_Posts {
 			}
 		}
 
-		$languages      = wpm_get_languages();
-		$default_locale = wpm_get_default_locale();
-
 		if ( empty( $data['post_name'] ) ) {
-			$data['post_name'] = sanitize_title( wpm_translate_value( $data['post_title'], $languages[ $default_locale ] ) );
+			$data['post_name'] = sanitize_title( wpm_translate_value( $data['post_title'] ) );
 		}
 
 		return $data;
