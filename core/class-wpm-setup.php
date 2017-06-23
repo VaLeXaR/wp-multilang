@@ -222,7 +222,7 @@ class WPM_Setup {
 
 					$browser_language = $this->get_browser_language();
 
-					if ( $browser_language !== $this->user_language ) {
+					if ( $browser_language && ( $browser_language !== $this->user_language ) ) {
 
 						$base_url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'];
 
