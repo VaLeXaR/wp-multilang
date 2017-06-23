@@ -140,7 +140,7 @@ Compatible with multisite not tested.
 + add check for ACF fields. Field translate only if it is in config. Support all object types.
 + add filter for disable load vendor scripts
 + add check for meta fields
-* fix redirect for disabled use cookie
+* fix redirect for disable browser cookie
 
 = 1.3.8 =
 * fix WP-CLI error
