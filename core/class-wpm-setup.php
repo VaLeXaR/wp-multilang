@@ -222,7 +222,7 @@ class WPM_Setup {
 
 					$browser_language = $this->get_browser_language();
 
-					if ( $browser_language !== $this->user_language ) {
+					if ( $browser_language && ( $browser_language !== $this->user_language ) ) {
 
 						$base_url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'];
 
@@ -399,7 +399,9 @@ class WPM_Setup {
 	public function load_vendor() {
 		$vendor_path = ( dirname( WPM_PLUGIN_FILE ) . '/core/vendor/' );
 		foreach ( glob( $vendor_path . '*.php' ) as $vendor_file ) {
-			require_once( $vendor_file );
+			if ( apply_filters( 'wpm_load_vendor_file', basename( $vendor_file ), true ) ) {
+				require_once( $vendor_file );
+			}
 		}
 	}
 

@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.8
-Stable tag: 1.3.8
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,15 @@ Compatible with multisite not tested.
 5. Post edit page
 
 == Changelog ==
+
+= 1.4.0 =
++ add support comments and user fields
++ add support ACF widget fields
++ add check for ACF fields. Field translate only if object type is in config. Support all object types.
++ add filter for disable load vendor scripts
++ add check for meta fields
+* add filter for disable ACF field
+* fix redirect for disable browser cookie
 
 = 1.3.8 =
 * fix WP-CLI error

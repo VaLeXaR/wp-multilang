@@ -38,6 +38,7 @@ if ( defined( 'SITEORIGIN_PANELS_VERSION' ) ) {
 		 * @return mixed
 		 */
 		public function filter_old_value( $old_value, $meta_value ) {
+
 			$new_old_value            = $meta_value;
 			$new_old_value['widgets'] = array();
 
@@ -77,6 +78,7 @@ if ( defined( 'SITEORIGIN_PANELS_VERSION' ) ) {
 		 * @return mixed
 		 */
 		public function add_recursive_config( $config, $meta_value ) {
+
 			if ( is_array( $meta_value ) && isset( $meta_value['widgets'] ) ) {
 
 				foreach ( $meta_value['widgets'] as $widget ) {

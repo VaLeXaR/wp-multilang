@@ -8,7 +8,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:     wpm
  * Domain Path:     /languages
- * Version:         1.3.8
+ * Version:         1.4.0
  *
  * @package  WPM
  * @category Core
@@ -42,7 +42,7 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		 *
 		 * @var string
 		 */
-		public $version = '1.3.8';
+		public $version = '1.4.0';
 
 		/**
 		 * The single instance of the class.
@@ -183,6 +183,8 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 			new Core\WPM_Posts();
 			new Core\WPM_Taxonomies();
 			new Core\WPM_Widgets();
+//			new Core\WPM_Users();
+//			new Core\WPM_Comments();
 
 			if ( $this->is_request( 'admin' ) ) {
 				new Core\Admin\WPM_Admin;

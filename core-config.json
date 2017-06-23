@@ -16,6 +16,8 @@
     "post_tag" : {}
   },
   "term_fields": {},
+  "user_fields": {},
+  "comment_fields": {},
   "admin_pages": [
     "upload",
     "nav-menus",

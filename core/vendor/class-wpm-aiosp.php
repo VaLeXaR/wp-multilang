@@ -69,6 +69,13 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 				return $check;
 			}
 
+			$config = wpm_get_config();
+
+
+			if ( ! isset( $config['post_types'][ get_post_type( $object_id ) ] ) ) {
+				return $check;
+			}
+
 			if ( isset( $this->meta_fields[ $meta_key ] ) ) {
 				global $wpdb;
 
@@ -96,9 +103,16 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 		 * @return bool|int
 		 */
 		public function update_old_fields( $check, $object_id, $meta_key, $meta_value, $unique ) {
+			global $wpdb;
+
+			$config = wpm_get_config();
+
+
+			if ( ! isset( $config['post_types'][ get_post_type( $object_id ) ] ) ) {
+				return $check;
+			}
 
 			if ( isset( $this->meta_fields[ $meta_key ] ) && $this->meta_fields[ $meta_key ] ) {
-				global $wpdb;
 
 				$old_value  = wpm_value_to_ml_array( $this->meta_fields[ $meta_key ] );
 				$meta_value = wpm_set_language_value( $old_value, $meta_value, array() );
@@ -125,14 +139,6 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 			}
 
 			return $check;
-		}
-
-		/**
-		 * Translate global $aioseop_options
-		 */
-		public function translate_options() {
-			global $aioseop_options;
-			$aioseop_options = wpm_translate_value( $aioseop_options );
 		}
 	}
 

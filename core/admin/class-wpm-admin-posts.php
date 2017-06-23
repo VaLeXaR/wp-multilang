@@ -44,7 +44,7 @@ class WPM_Admin_Posts {
 
 		foreach ( $posts_config as $post_type => $post_config ) {
 
-			$post_config = apply_filters( "wpm_posts_{$post_type}_config", $post_config );
+			$post_config = apply_filters( "wpm_posts_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
 
 			if ( ! is_null( $post_config ) ) {
 				if ( 'attachment' === $post_type ) {
@@ -81,9 +81,9 @@ class WPM_Admin_Posts {
 	public function save_post( $data, $postarr ) {
 		$config = wpm_get_config();
 
-		$posts_config = $config['post_types'];
-		$posts_config = apply_filters( 'wpm_posts_config', $posts_config );
-		$posts_config = apply_filters( "wpm_posts_{$data['post_type']}_config", $posts_config );
+		$posts_config                       = $config['post_types'];
+		$posts_config                       = apply_filters( 'wpm_posts_config', $posts_config );
+		$posts_config[ $data['post_type'] ] = apply_filters( "wpm_post_{$data['post_type']}_config", isset( $posts_config[ $data['post_type'] ] ) ? $posts_config[ $data['post_type'] ] : null );
 
 		if ( ! isset( $posts_config[ $data['post_type'] ] ) ) {
 			return $data;
