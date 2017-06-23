@@ -399,7 +399,9 @@ class WPM_Setup {
 	public function load_vendor() {
 		$vendor_path = ( dirname( WPM_PLUGIN_FILE ) . '/core/vendor/' );
 		foreach ( glob( $vendor_path . '*.php' ) as $vendor_file ) {
-			require_once( apply_filters( 'wpm_load_vendor_file', $vendor_file ) );
+			if ( apply_filters( 'wpm_load_vendor_file', basename( $vendor_file ), true ) ) {
+				require_once( $vendor_file );
+			}
 		}
 	}
 

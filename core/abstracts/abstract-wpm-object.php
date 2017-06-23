@@ -119,6 +119,7 @@ abstract class WPM_Object {
 				if ( ! isset( $config['posts'][ get_post_type( $object_id ) ] ) ) {
 					return $check;
 				}
+
 				break;
 
 			case 'term':
@@ -126,6 +127,11 @@ abstract class WPM_Object {
 				if ( ! isset( $config['taxonomies'][ $term->taxonomy ] ) ) {
 					return $check;
 				}
+
+				break;
+
+			default:
+				return $check;
 		}
 
 		$object_fields_config = $config[ $this->object_type . '_fields' ];

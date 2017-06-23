@@ -158,7 +158,43 @@ if ( class_exists( 'acf' ) ) {
 		 * @return array|bool|string
 		 */
 		public function save_value( $value, $post_id, $field ) {
-			//TODO add check post type, taxonomy
+
+			$config = wpm_get_config();
+			$info   = acf_get_post_id_info( $post_id );
+
+			switch ( $info['type'] ) {
+
+				case 'post':
+				case 'term':
+				case 'comment':
+				case 'user':
+
+					if ( ! isset( $config[ $info['type'] . '_fields' ][ $field['name'] ] ) ) {
+						return $value;
+					}
+
+					break;
+
+				case 'option':
+
+					if ( substr( $post_id, 0, 6 ) != 'widget' ) {
+
+						if ( ! isset( $config['options'][ $field['name'] ] ) ) {
+							return $value;
+						}
+
+					} else {
+
+						$acf_widget_fields = apply_filters( 'wpm_acf_widget_fields', array() );
+
+						if ( ! isset( $acf_widget_fields[ $field['name'] ] ) ) {
+							return $value;
+						}
+					}
+
+					break;
+			}
+
 			remove_filter( "acf/load_value/type={$field['type']}", 'wpm_translate_value', 0 );
 			$old_value = get_field( $field['name'], $post_id );
 			add_filter( "acf/load_value/type={$field['type']}", 'wpm_translate_value', 0 );
