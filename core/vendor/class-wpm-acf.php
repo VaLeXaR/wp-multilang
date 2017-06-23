@@ -43,7 +43,7 @@ if ( class_exists( 'acf' ) ) {
 			add_filter( 'acf/update_value/type=text', array( $this, 'save_value' ), 99, 3 );
 			add_filter( 'acf/update_value/type=textarea', array( $this, 'save_value' ), 99, 3 );
 			add_filter( 'acf/update_value/type=wysiwyg', array( $this, 'save_value' ), 99, 3 );
-			add_filter( 'wpm_posts_acf-field-group_config', array( $this, 'add_config' ) );
+			add_filter( 'wpm_post_acf-field-group_config', array( $this, 'add_config' ) );
 			add_action( 'init', array( $this, 'check_pro' ) );
 		}
 
@@ -69,7 +69,7 @@ if ( class_exists( 'acf' ) ) {
 		public function add_config( $config ) {
 
 			if ( ! isset( $_GET['page'] ) ) {
-				$config['post_types']['acf-field-group'] = array(
+				$config = array(
 					'post_content' => null,
 					'post_excerpt' => null,
 				);
@@ -91,6 +91,8 @@ if ( class_exists( 'acf' ) ) {
 			if ( ! $this->pro ) {
 				return false;
 			}
+
+			$config        = wpm_get_config();
 
 			$old_field = maybe_unserialize( get_post_field( 'post_content', $field['ID'] ) );
 
@@ -159,7 +161,6 @@ if ( class_exists( 'acf' ) ) {
 		 */
 		public function save_value( $value, $post_id, $field ) {
 
-			$config = wpm_get_config();
 			$info   = acf_get_post_id_info( $post_id );
 
 			switch ( $info['type'] ) {
@@ -169,25 +170,34 @@ if ( class_exists( 'acf' ) ) {
 				case 'comment':
 				case 'user':
 
-					if ( ! isset( $config[ $info['type'] . '_fields' ][ $field['name'] ] ) ) {
-						return $value;
-					}
+					add_filter( "wpm_{$info['type']}_meta_config", function ( $object_fields_config ) use ( $field ) {
 
+						if ( ! isset( $object_fields_config[ $field['name'] ] ) ) {
+							$object_fields_config[ $field['name'] ] = array();
+						}
+
+						return $object_fields_config;
+					} );
 					break;
 
 				case 'option':
 
 					if ( substr( $post_id, 0, 6 ) != 'widget' ) {
 
-						if ( ! isset( $config['options'][ $field['name'] ] ) ) {
-							return $value;
-						}
+						add_filter( 'wpm_options_config', function ( $config_options ) use ( $field ) {
+
+							if ( ! isset( $config_options[ $field['name'] ] ) ) {
+								$config_options[ $field['name'] ] = array();
+							}
+
+							return $config_options;
+						} );
 
 					} else {
 
 						$acf_widget_fields = apply_filters( 'wpm_acf_widget_fields', array() );
 
-						if ( ! isset( $acf_widget_fields[ $field['name'] ] ) ) {
+						if ( isset( $acf_widget_fields[ $field['name'] ] ) && is_null( $acf_widget_fields[ $field['name'] ] ) ) {
 							return $value;
 						}
 					}
@@ -195,14 +205,7 @@ if ( class_exists( 'acf' ) ) {
 					break;
 			}
 
-			remove_filter( "acf/load_value/type={$field['type']}", 'wpm_translate_value', 0 );
-			$old_value = get_field( $field['name'], $post_id );
-			add_filter( "acf/load_value/type={$field['type']}", 'wpm_translate_value', 0 );
-			$old_value = wpm_value_to_ml_array( $old_value );
-			$new_value = wpm_set_language_value( $old_value, $value, array() );
-			$new_value = wpm_ml_value_to_string( $new_value );
-
-			return $new_value;
+			return $value;
 		}
 	}
 

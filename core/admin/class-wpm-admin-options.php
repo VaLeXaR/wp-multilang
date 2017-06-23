@@ -2,7 +2,7 @@
 /**
  * Save options with translate
  *
- * @class WPM_Admin_Options
+ * @class    WPM_Admin_Options
  * @package  WPM\Core\Admin
  * @author   VaLeXaR
  */
@@ -52,8 +52,9 @@ class WPM_Admin_Options {
 			return $value;
 		}
 
-		$config        = wpm_get_config();
-		$option_config = apply_filters( "wpm_option_{$option}_config", $config['options'][ $option ], $value );
+		$config         = wpm_get_config();
+		$options_config = apply_filters( 'wpm_options_config', $config['options'] );
+		$option_config  = apply_filters( "wpm_option_{$option}_config", $options_config[ $option ], $value );
 		remove_filter( "option_{$option}", 'wpm_translate_value', 0 );
 		$old_value = get_option( $option );
 		add_filter( "option_{$option}", 'wpm_translate_value', 0 );

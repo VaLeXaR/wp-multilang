@@ -15,7 +15,7 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 
 global $wpdb;
 
-require_once __DIR__ . '/lib/autoloader.php';
+require_once __DIR__ . '/lib/autoload.php';
 
 $uninstall_translations = get_option( 'wpm_uninstall_translations', '' );
 

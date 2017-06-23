@@ -72,7 +72,7 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 			$config = wpm_get_config();
 
 
-			if ( ! isset( $config['posts'][ get_post_type( $object_id ) ] ) ) {
+			if ( ! isset( $config['post_types'][ get_post_type( $object_id ) ] ) ) {
 				return $check;
 			}
 
@@ -108,7 +108,7 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 			$config = wpm_get_config();
 
 
-			if ( ! isset( $config['posts'][ get_post_type( $object_id ) ] ) ) {
+			if ( ! isset( $config['post_types'][ get_post_type( $object_id ) ] ) ) {
 				return $check;
 			}
 
