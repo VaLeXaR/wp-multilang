@@ -137,9 +137,10 @@ Compatible with multisite not tested.
 = 1.4.0 =
 + add support comments and user fields
 + add support ACF widget fields
-+ add check for ACF fields. Field translate only if it is in config. Support all object types.
++ add check for ACF fields. Field translate only if object type is in config. Support all object types.
 + add filter for disable load vendor scripts
 + add check for meta fields
+* add filter for disable ACF field
 * fix redirect for disable browser cookie
 
 = 1.3.8 =
