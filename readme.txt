@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.8
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,9 @@ Compatible with multisite not tested.
 5. Post edit page
 
 == Changelog ==
+
+= 1.4.2 =
+* fix translate user meta
 
 = 1.4.1 =
 + add mobile styles in admin for language switcher
