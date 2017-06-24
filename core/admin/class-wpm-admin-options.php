@@ -30,8 +30,9 @@ class WPM_Admin_Options {
 	 * Add filters for options in config
 	 */
 	public function init() {
-		$config = wpm_get_config();
-		foreach ( $config['options'] as $option => $option_config ) {
+		$config         = wpm_get_config();
+		$options_config = apply_filters( 'wpm_options_config', $config['options'] );
+		foreach ( $options_config as $option => $option_config ) {
 			add_filter( "pre_update_option_{$option}", array( $this, 'wpm_update_option' ), 99, 3 );
 		}
 	}

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-06-22 09:46+0300\n"
+"POT-Creation-Date: 2017-06-24 15:21+0300\n"
 "PO-Revision-Date: 2017-05-22 12:43+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -27,7 +27,7 @@ msgstr ""
 msgid "Are you sure you want to delete this language?"
 msgstr ""
 
-#: core/admin/class-wpm-admin-posts.php:174
+#: core/admin/class-wpm-admin-posts.php:171
 #: core/admin/class-wpm-admin-taxonomies.php:259
 #: core/widgets/class-wpm-widget-language-switcher.php:30
 msgid "Languages"

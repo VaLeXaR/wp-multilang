@@ -92,8 +92,6 @@ if ( class_exists( 'acf' ) ) {
 				return false;
 			}
 
-			$config        = wpm_get_config();
-
 			$old_field = maybe_unserialize( get_post_field( 'post_content', $field['ID'] ) );
 
 			if ( ! $old_field ) {
@@ -200,6 +198,13 @@ if ( class_exists( 'acf' ) ) {
 						if ( isset( $acf_widget_fields[ $field['name'] ] ) && is_null( $acf_widget_fields[ $field['name'] ] ) ) {
 							return $value;
 						}
+
+						remove_filter( "acf/load_value/type={$field['type']}", 'wpm_translate_value', 0 );
+						$old_value = get_field( $field['name'], $post_id );
+						add_filter( "acf/load_value/type={$field['type']}", 'wpm_translate_value', 0 );
+						$old_value = wpm_value_to_ml_array( $old_value );
+						$new_value = wpm_set_language_value( $old_value, $value, $acf_widget_fields );
+						$value = wpm_ml_value_to_string( $new_value );
 					}
 
 					break;

@@ -52,8 +52,37 @@
   }
 }
 
-.wrap {
-  position: relative;
+@media screen and (max-width: 782px) {
+  #wp-toolbar > ul > #wp-admin-bar-wpm-language-switcher {
+    display: block;
+  }
+
+  #wp-admin-bar-wpm-language-switcher-default {
+
+    .ab-item {
+      min-width: 20px !important;
+      padding: 0 !important;
+    }
+
+    .ab-icon {
+      line-height: 20px !important;
+    }
+  }
+
+  #wp-admin-bar-wpm-language-switcher {
+
+    .ab-icon {
+      line-height: 20px !important;
+    }
+  }
+
+  .language-switcher {
+    padding-top: 0;
+
+    a {
+      margin-top: 0 !important;
+    }
+  }
 }
 
 .language-switcher {
