@@ -160,7 +160,7 @@ if ( class_exists( 'acf' ) ) {
 		public function save_value( $value, $post_id, $field ) {
 
 			$info             = acf_get_post_id_info( $post_id );
-			$acf_field_config = apply_filters( "wpm_acf_{$info['type']}_meta_config", array(), $value, $post_id, $field );
+			$acf_field_config = apply_filters( "wpm_acf_{$info['type']}_config", array(), $value, $post_id, $field );
 
 			if ( is_null( $acf_field_config ) ) {
 				return $value;
