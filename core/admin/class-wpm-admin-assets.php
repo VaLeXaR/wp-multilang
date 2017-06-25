@@ -69,20 +69,21 @@ class WPM_Admin_Assets {
 			'underscore',
 		), WPM_VERSION );
 
-		wp_register_script( 'wpm_translator', wpm_asset_path( 'scripts/translator' . $suffix . '.js' ), array( 'jquery' ), WPM_VERSION );
+		wp_register_script( 'wpm_translator', wpm_asset_path( 'scripts/translator' . $suffix . '.js' ), array(), WPM_VERSION );
 
 		$translator_params = array(
-			'languages'        => array_values( wpm_get_languages() ),
-			'default_language' => wpm_get_languages()[ wpm_get_default_locale() ],
-			'language'         => wpm_get_language(),
+			'languages'                 => array_values( wpm_get_languages() ),
+			'default_language'          => wpm_get_languages()[ wpm_get_default_locale() ],
+			'language'                  => wpm_get_language(),
+			'show_untranslated_strings' => get_option( 'wpm_show_untranslated_strings' ),
 		);
 		wp_localize_script( 'wpm_translator', 'wpm_translator_params', $translator_params );
 
 		if ( 'customize' === $screen_id ) {
 			wp_enqueue_script( 'wpm_language_switcher_customizer' );
-			add_action('admin_print_footer_scripts', function() {
+			add_action( 'admin_print_footer_scripts', function () {
 				echo wpm_get_template_html( 'language-switcher-customizer.php' );
-			});
+			} );
 		}
 
 		$admin_pages_config = apply_filters( 'wpm_admin_pages', $config['admin_pages'] );
@@ -122,7 +123,7 @@ class WPM_Admin_Assets {
 	public function set_language_switcher() {
 		wp_enqueue_script( 'wpm_language_switcher' );
 
-		add_action('admin_head', function() {
+		add_action( 'admin_head', function () {
 			?>
 			<style>
 				#wpbody-content .wrap {
@@ -131,10 +132,10 @@ class WPM_Admin_Assets {
 				}
 			</style>
 			<?php
-		});
+		} );
 
-		add_action('admin_print_footer_scripts', function() {
+		add_action( 'admin_print_footer_scripts', function () {
 			echo wpm_get_template_html( 'language-switcher.php' );
-		});
+		} );
 	}
 }

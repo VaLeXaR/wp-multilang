@@ -95,8 +95,7 @@ function wpm_translate_string( $string, $language = '' ) {
 		return $strings;
 	}
 
-	$languages      = wpm_get_languages();
-	$default_locale = wpm_get_default_locale();
+	$languages = wpm_get_languages();
 
 	if ( $language ) {
 		if ( in_array( $language, $languages, true ) ) {
@@ -106,7 +105,8 @@ function wpm_translate_string( $string, $language = '' ) {
 		}
 	}
 
-	$language = wpm_get_language();
+	$language       = wpm_get_language();
+	$default_locale = wpm_get_default_locale();
 
 	if ( empty( $strings[ $language ] ) && get_option( 'wpm_show_untranslated_strings' ) ) {
 		return $strings[ $languages[ $default_locale ] ];

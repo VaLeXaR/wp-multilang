@@ -16,7 +16,7 @@ if ( class_exists( 'acf' ) ) {
 	 * @package  WPM\Core\Vendor
 	 * @category Vendor
 	 * @author   VaLeXaR
-	 * @version  1.0.4
+	 * @version  1.0.5
 	 */
 	class WPM_Acf {
 
@@ -34,15 +34,14 @@ if ( class_exists( 'acf' ) ) {
 			add_filter( 'acf/load_field', 'wpm_translate_value', 0 );
 			add_filter( 'acf/translate_field_group', 'wpm_translate_string', 0 );
 			add_filter( 'acf/update_field', array( $this, 'save_field' ), 99 );
-			add_filter( 'acf/update_field/type=text', array( $this, 'save_text_field' ), 99 );
-			add_filter( 'acf/update_field/type=textarea', array( $this, 'save_text_field' ), 99 );
-			add_filter( 'acf/update_field/type=wysiwyg', array( $this, 'save_text_field' ), 99 );
-			add_filter( 'acf/load_value/type=text', 'wpm_translate_value', 0 );
-			add_filter( 'acf/load_value/type=textarea', 'wpm_translate_value', 0 );
-			add_filter( 'acf/load_value/type=wysiwyg', 'wpm_translate_value', 0 );
-			add_filter( 'acf/update_value/type=text', array( $this, 'save_value' ), 99, 3 );
-			add_filter( 'acf/update_value/type=textarea', array( $this, 'save_value' ), 99, 3 );
-			add_filter( 'acf/update_value/type=wysiwyg', array( $this, 'save_value' ), 99, 3 );
+			add_filter( 'wpm_acf_field_text_config', array( $this, 'add_text_field_config' ) );
+			add_filter( 'wpm_acf_field_textarea_config', array( $this, 'add_text_field_config' ) );
+			add_filter( 'wpm_acf_field_wysiwyg_config', array( $this, 'add_text_field_config' ) );
+			add_filter( 'acf/load_value', 'wpm_translate_value', 0 );
+			add_filter( 'acf/update_value', array( $this, 'save_value' ), 99, 3 );
+			add_filter( 'wpm_acf_text_config', '__return_empty_array' );
+			add_filter( 'wpm_acf_textarea_config', '__return_empty_array' );
+			add_filter( 'wpm_acf_wysiwyg_config', '__return_empty_array' );
 			add_filter( 'wpm_post_acf-field-group_config', array( $this, 'add_config' ) );
 			add_action( 'init', array( $this, 'check_pro' ) );
 		}
@@ -108,7 +107,9 @@ if ( class_exists( 'acf' ) ) {
 				'instructions' => array(),
 			);
 
-			$new_field = wpm_set_language_value( $old_field, $field, $default_config );
+			$acf_field_config = apply_filters( "wpm_acf_field_{$field['type']}_config", $default_config );
+
+			$new_field = wpm_set_language_value( $old_field, $field, $acf_field_config );
 			$field     = wpm_array_merge_recursive( $field, $new_field );
 			$field     = wpm_ml_value_to_string( $field );
 
@@ -116,35 +117,16 @@ if ( class_exists( 'acf' ) ) {
 		}
 
 		/**
-		 * Save params for text field object. Only Pro.
+		 * Add translate config for text fields.
 		 *
-		 * @param $field
+		 * @param $config
 		 *
-		 * @return array|mixed|string
+		 * @return array
 		 */
-		public function save_text_field( $field ) {
+		public function add_text_field_config( $config ) {
+			$config['default_value'] = array();
 
-			if ( ! $this->pro ) {
-				return $field;
-			}
-
-			$old_field = maybe_unserialize( get_post_field( 'post_content', $field['ID'] ) );
-
-			if ( ! $old_field ) {
-				return $field;
-			}
-
-			$old_field = wpm_value_to_ml_array( $old_field );
-
-			$default_config = array(
-				'default_value' => array(),
-			);
-
-			$new_field = wpm_set_language_value( $old_field, $field, $default_config );
-			$field     = wpm_array_merge_recursive( $field, $new_field );
-			$field     = wpm_ml_value_to_string( $field );
-
-			return $field;
+			return $config;
 		}
 
 
@@ -159,16 +141,21 @@ if ( class_exists( 'acf' ) ) {
 		 */
 		public function save_value( $value, $post_id, $field ) {
 
+			if ( wpm_is_ml_value( $value ) ) {
+				return $value;
+			}
+
 			$info             = acf_get_post_id_info( $post_id );
-			$acf_field_config = apply_filters( "wpm_acf_{$info['type']}_config", array(), $value, $post_id, $field );
+			$acf_field_config = apply_filters( "wpm_acf_{$info['type']}_config", null, $value, $post_id, $field );
+			$acf_field_config = apply_filters( "wpm_acf_{$field['type']}_config", $acf_field_config, $value, $post_id, $field );
 
 			if ( is_null( $acf_field_config ) ) {
 				return $value;
 			}
 
-			remove_filter( "acf/load_value/type={$field['type']}", 'wpm_translate_value', 0 );
+			remove_filter( "acf/load_value", 'wpm_translate_value', 0 );
 			$old_value = get_field( $field['name'], $post_id );
-			add_filter( "acf/load_value/type={$field['type']}", 'wpm_translate_value', 0 );
+			add_filter( "acf/load_value", 'wpm_translate_value', 0 );
 			$old_value = wpm_value_to_ml_array( $old_value );
 			$new_value = wpm_set_language_value( $old_value, $value, $acf_field_config );
 			$value     = wpm_ml_value_to_string( $new_value );
