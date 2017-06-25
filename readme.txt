@@ -136,6 +136,7 @@ Compatible with multisite not tested.
 
 = 1.4.4 =
 + add support all fields in ACF
+* fix translate function in js
 
 = 1.4.3 =
 * fix acf save value
