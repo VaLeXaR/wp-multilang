@@ -141,15 +141,15 @@ if ( class_exists( 'acf' ) ) {
 		 */
 		public function save_value( $value, $post_id, $field ) {
 
+			if ( wpm_is_ml_value( $value ) ) {
+				return $value;
+			}
+
 			$info             = acf_get_post_id_info( $post_id );
 			$acf_field_config = apply_filters( "wpm_acf_{$info['type']}_config", null, $value, $post_id, $field );
 			$acf_field_config = apply_filters( "wpm_acf_{$field['type']}_config", $acf_field_config, $value, $post_id, $field );
 
 			if ( is_null( $acf_field_config ) ) {
-				return $value;
-			}
-
-			if ( wpm_is_ml_value( $value ) ) {
 				return $value;
 			}
 
