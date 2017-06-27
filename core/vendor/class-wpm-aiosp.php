@@ -31,7 +31,7 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 		public function __construct() {
 			add_filter( 'wpm_option_aioseop_options_config', array( $this, 'set_posts_config' ) );
 			add_filter( 'delete_post_metadata', array( $this, 'save_old_fields' ), 10, 5 );
-			add_filter( 'add_post_metadata', array( $this, 'update_old_fields' ), 10, 5 );
+			add_filter( 'add_post_metadata', array( $this, 'update_old_fields' ), 10, 4 );
 		}
 
 		/**
@@ -98,11 +98,10 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 		 * @param $object_id
 		 * @param $meta_key
 		 * @param $meta_value
-		 * @param $unique
 		 *
 		 * @return bool|int
 		 */
-		public function update_old_fields( $check, $object_id, $meta_key, $meta_value, $unique ) {
+		public function update_old_fields( $check, $object_id, $meta_key, $meta_value ) {
 			global $wpdb;
 
 			$config = wpm_get_config();

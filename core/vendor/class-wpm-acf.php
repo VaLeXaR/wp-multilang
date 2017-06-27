@@ -145,7 +145,25 @@ if ( class_exists( 'acf' ) ) {
 				return $value;
 			}
 
-			$info             = acf_get_post_id_info( $post_id );
+			$info   = acf_get_post_id_info( $post_id );
+			$config = wpm_get_config();
+
+			switch ( $info['type'] ) {
+
+				case 'post':
+					if ( ! isset( $config['post_types'][ get_post_type( $info['id'] ) ] ) ) {
+						return $value;
+					}
+
+					break;
+
+				case 'term':
+					$term = get_term( $info['id'] );
+					if ( ! isset( $config['taxonomies'][ $term->taxonomy ] ) ) {
+						return $value;
+					}
+			}
+
 			$acf_field_config = apply_filters( "wpm_acf_{$info['type']}_config", null, $value, $post_id, $field );
 			$acf_field_config = apply_filters( "wpm_acf_{$field['type']}_config", $acf_field_config, $value, $post_id, $field );
 
