@@ -52,6 +52,25 @@
   }
 }
 
+#wp-admin-bar-wpm-language-switcher-default {
+
+  .ab-item {
+    height: 32px !important;
+    line-height: 32px !important;
+
+    .ab-label {
+      color: #eee !important;
+    }
+
+    &:hover, &:focus {
+
+      .ab-label {
+        color: #00b9eb !important;
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 782px) {
   #wp-toolbar > ul > #wp-admin-bar-wpm-language-switcher {
     display: block;
