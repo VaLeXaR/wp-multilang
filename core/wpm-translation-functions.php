@@ -23,6 +23,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function wpm_translate_url( $url, $language = '' ) {
 
+	if ( strpos( $url, wp_parse_url( get_site_url(), PHP_URL_HOST ) ) === false ) {
+		return $url;
+	}
+
 	$locale         = get_locale();
 	$default_locale = wpm_get_default_locale();
 	$languages      = wpm_get_languages();

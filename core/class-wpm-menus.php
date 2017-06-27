@@ -24,6 +24,7 @@ class WPM_Menus {
 	 */
 	public function __construct() {
 		add_filter( 'wp_setup_nav_menu_item', array( $this, 'translate_menu_item' ), ( 'POST' === $_SERVER['REQUEST_METHOD'] ? 99 : 0 ) );
+		add_filter( 'wp_setup_nav_menu_item', array( $this, 'translate_menu_url' ) );
 		add_filter( 'customize_nav_menu_available_items', array( $this, 'filter_menus' ), 0 );
 		add_filter( 'customize_nav_menu_searched_items', array( $this, 'filter_menus' ), 0 );
 	}
@@ -150,7 +151,26 @@ class WPM_Menus {
 
 		}// End if().
 
-		$menu_item->title = '' === $menu_item->title ? sprintf( __( '#%d (no title)' ), $menu_item->ID ) : $menu_item->title ;
+		$menu_item->title = '' === $menu_item->title ? sprintf( __( '#%d (no title)' ), $menu_item->ID ) : $menu_item->title;
+
+		return $menu_item;
+	}
+
+
+	/**
+	 * Translation custom menu link
+	 *
+	 * @param $menu_item
+	 *
+	 * @return mixed
+	 */
+	public function translate_menu_url( $menu_item ) {
+
+		if ( ! is_admin() ) {
+			if ( 'custom' === $menu_item->object && ! is_admin() ) {
+				$menu_item->url = wpm_translate_url( $menu_item->url );
+			}
+		}
 
 		return $menu_item;
 	}
