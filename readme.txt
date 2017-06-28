@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.8
-Stable tag: 1.4.4
+Stable tag: 1.4.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,11 @@ Compatible with multisite not tested.
 5. Post edit page
 
 == Changelog ==
+
+= 1.4.5 =
++ add translation for custom internal menu link
+* fix admin styles
+* fix ACF check
 
 = 1.4.4 =
 + add support all fields in ACF
