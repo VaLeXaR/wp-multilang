@@ -25,6 +25,7 @@ class WPM_Admin_Widgets {
 	public function __construct() {
 		add_filter( 'widget_form_callback', 'wpm_translate_value', 0 );
 		add_filter( 'widget_update_callback', array( $this, 'pre_save_widget' ), 99, 4 );
+		add_action( 'in_widget_form', array( $this, 'add_language_fields' ), 10, 3 );
 	}
 
 	/**
@@ -61,5 +62,10 @@ class WPM_Admin_Widgets {
 		$instance  = wpm_ml_value_to_string( $new_value );
 
 		return $instance;
+	}
+
+
+	public function add_language_fields($widget, $return, $instance) {
+		d($widget, $return, $instance);
 	}
 }
