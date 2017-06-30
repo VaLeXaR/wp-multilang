@@ -40,17 +40,18 @@ class WPM_Admin_Widgets {
 	 */
 	public function pre_save_widget( $instance, $new_instance, $old_instance, $widget ) {
 
-		$config        = wpm_get_config();
+		$config                             = wpm_get_config();
+		$widgets_config                     = $config['widgets'];
+		$widgets_config[ $widget->id_base ] = apply_filters( "wpm_widget_{$widget->id_base}_config", isset( $widgets_config[ $widget->id_base ] ) ? $widgets_config[ $widget->id_base ] : null );
+
 		$widget_config = array(
 			'title' => array(),
 			'text'  => array(),
 		);
 
-		if ( isset( $config['widgets'][ $widget->id_base ] ) ) {
-			$widget_config = wpm_array_merge_recursive( $widget_config, $config['widgets'][ $widget->id_base ] );
+		if ( isset( $widgets_config[ $widget->id_base ] ) ) {
+			$widget_config = wpm_array_merge_recursive( $widget_config, $widgets_config[ $widget->id_base ] );
 		}
-
-		$widget_config = apply_filters( "wpm_widget_{$widget->id_base}_config", $widget_config, $instance );
 
 		if ( wpm_is_ml_value( $old_instance ) ) {
 			$old_instance = wpm_value_to_ml_array( $old_instance );

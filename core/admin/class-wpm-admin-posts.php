@@ -85,16 +85,19 @@ class WPM_Admin_Posts {
 		$posts_config                       = apply_filters( 'wpm_posts_config', $posts_config );
 		$posts_config[ $data['post_type'] ] = apply_filters( "wpm_post_{$data['post_type']}_config", isset( $posts_config[ $data['post_type'] ] ) ? $posts_config[ $data['post_type'] ] : null );
 
-		if ( ! isset( $posts_config[ $data['post_type'] ] ) ) {
+		if ( ! isset( $posts_config[ $data['post_type'] ] ) || is_null( $posts_config[ $data['post_type'] ] ) ) {
 			return $data;
 		}
 
-		if ( 'trash' === $postarr['post_status'] ) {
-			return $data;
-		}
+		if ( 'attachment' !== $data['post_type'] ) {
 
-		if ( isset( $_GET['action'] ) && 'untrash' === $_GET['action'] ) {
-			return $data;
+			if ( 'trash' == $postarr['post_status'] ) {
+				return $data;
+			}
+
+			if ( isset( $_GET['action'] ) && 'untrash' == $_GET['action'] ) {
+				return $data;
+			}
 		}
 
 		$post_id = isset( $data['ID'] ) ? wpm_clean( $data['ID'] ) : ( isset( $postarr['ID'] ) ? wpm_clean( $postarr['ID'] ) : 0 );
@@ -115,15 +118,16 @@ class WPM_Admin_Posts {
 
 		foreach ( $data as $key => $content ) {
 			if ( isset( $post_config[ $key ] ) ) {
-				if ( wpm_is_ml_value( $content ) ) {
-					break;
-				}
 
 				$post_field_config = apply_filters( "wpm_post_{$data['post_type']}_field_{$key}_config", $post_config[ $key ], $content );
 				$post_field_config = apply_filters( "wpm_post_field_{$key}_config", $post_field_config, $content );
 				$old_value         = get_post_field( $key, $post_id, 'edit' );
-				$strings           = wpm_value_to_ml_array( $old_value );
-				$value             = wpm_set_language_value( $strings, $data[ $key ], $post_field_config );
+
+				if ( wpm_is_ml_value( $old_value ) ) {
+					$old_value = wpm_value_to_ml_array( $old_value );
+				}
+
+				$value             = wpm_set_language_value( $old_value, $data[ $key ], $post_field_config );
 				$data[ $key ]      = wpm_ml_value_to_string( $value );
 			}
 		}

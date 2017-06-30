@@ -168,8 +168,9 @@ class WPM_Admin_Taxonomies {
 
 		$taxonomies_config = $config['taxonomies'];
 		$taxonomies_config = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
+		$taxonomies_config[ $taxonomy ] = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
 
-		if ( ! isset( $taxonomies_config[ $taxonomy ] ) ) {
+		if ( ! isset( $taxonomies_config[ $taxonomy ] ) || is_null( $taxonomies_config[ $taxonomy ] ) ) {
 			return $data;
 		}
 
@@ -178,7 +179,6 @@ class WPM_Admin_Taxonomies {
 		}
 
 		$taxonomy_config = $taxonomies_config[ $taxonomy ];
-		$taxonomy_config = apply_filters( "wpm_taxonomy_{$taxonomy}_config", $taxonomy_config );
 		remove_filter( 'get_term', 'wpm_translate_object', 0 );
 		$old_name        = get_term_field( 'name', $term_id );
 		$old_description = get_term_field( 'description', $term_id );

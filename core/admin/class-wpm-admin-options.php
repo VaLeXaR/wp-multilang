@@ -55,7 +55,13 @@ class WPM_Admin_Options {
 
 		$config         = wpm_get_config();
 		$options_config = apply_filters( 'wpm_options_config', $config['options'] );
-		$option_config  = apply_filters( "wpm_option_{$option}_config", $options_config[ $option ], $value );
+		$options_config[ $option ]  = apply_filters( "wpm_option_{$option}_config", $options_config[ $option ] );
+
+		if ( ! isset( $options_config[ $option ] ) || is_null( $options_config[ $option ] ) ) {
+			return $value;
+		}
+
+		$option_config = $options_config[ $option ];
 		remove_filter( "option_{$option}", 'wpm_translate_value', 0 );
 		$old_value = get_option( $option );
 		add_filter( "option_{$option}", 'wpm_translate_value', 0 );
