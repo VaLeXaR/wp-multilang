@@ -49,7 +49,7 @@ if ( defined( 'NGG_PLUGIN' ) ) {
 				if ( $album = \C_Album_Mapper::get_instance()->find( wpm_clean( $_POST['act_album'] ) ) ) {
 					foreach ( $data as $key => $value ) {
 						if ( ! wpm_is_ml_string( $value ) ) {
-							$old_value     = wpm_value_to_ml_array( $album->{$fields[ $key ]} );
+							$old_value     = wpm_string_to_ml_array( $album->{$fields[ $key ]} );
 							$value         = wpm_set_language_value( $old_value, $value, array() );
 							$_POST[ $key ] = wpm_ml_value_to_string( $value );
 						}
@@ -77,7 +77,7 @@ if ( defined( 'NGG_PLUGIN' ) ) {
 						if ( $entity = $mapper->find( wpm_clean( $_GET['gid'] ) ) ) {
 							foreach ( $data as $key => $value ) {
 								if ( ! wpm_is_ml_string( $value ) ) {
-									$old_value     = wpm_value_to_ml_array( $entity->$key );
+									$old_value     = wpm_string_to_ml_array( $entity->$key );
 									$value         = wpm_set_language_value( $old_value, $value, array() );
 									$_POST[ $key ] = wpm_ml_value_to_string( $value );
 								}
@@ -103,7 +103,7 @@ if ( defined( 'NGG_PLUGIN' ) ) {
 						// Update all fields
 						foreach ( $data as $key => $value ) {
 							if ( ! wpm_is_ml_string( $value ) ) {
-								$old_value                       = wpm_value_to_ml_array( $old_image->$key );
+								$old_value                       = wpm_string_to_ml_array( $old_image->$key );
 								$value                           = wpm_set_language_value( $old_value, $value, array() );
 								$_POST['images'][ $pid ][ $key ] = wpm_ml_value_to_string( $value );
 							}

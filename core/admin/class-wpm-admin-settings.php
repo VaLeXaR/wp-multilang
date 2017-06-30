@@ -289,6 +289,6 @@ class WPM_Admin_Settings {
 			'enable' => 1,
 		);
 
-		return array_merge( $default, $language );
+		return wp_parse_args( $language, $default );
 	}
 }

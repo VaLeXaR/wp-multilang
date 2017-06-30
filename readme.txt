@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.8
-Stable tag: 1.4.5
+Stable tag: 1.4.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,16 +18,20 @@ Translations of post types, taxonomies, meta fields, options, text fields in mil
 
 Features of the plugin WP Multilang:
 
+* 100% free.
 * Translation at PHP.
 * Compatible with REST.
 * Support configuration files.
 * Support configuration for translate multidimensional arrays.
-* No dublicate posts
-* No subdomens for language version
+* Separate menu items by language
+* Separate widgets by language
+* Many filters for dynamic applying translation settings
+* No duplicate posts
+* No subdomains for language version
 
 WP Multilang compatible with plugins:
 
-* ACF, ACF Pro (ACF Pro supported in translating `object field`)
+* ACF, ACF Pro (in ACF Pro support translate `object field`)
 * WooCommerce
 * Yoast Seo
 * Contact Form 7
@@ -133,6 +137,11 @@ Compatible with multisite not tested.
 5. Post edit page
 
 == Changelog ==
+
+= 1.4.6 =
++ add separating settings for menu item
++ add separating settings for widgets
+* fixes in saving translation
 
 = 1.4.5 =
 + add translation for custom internal menu link

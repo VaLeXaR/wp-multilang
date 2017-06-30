@@ -123,12 +123,9 @@ class WPM_Admin_Posts {
 				$post_field_config = apply_filters( "wpm_post_field_{$key}_config", $post_field_config, $content );
 				$old_value         = get_post_field( $key, $post_id, 'edit' );
 
-				if ( wpm_is_ml_value( $old_value ) ) {
-					$old_value = wpm_value_to_ml_array( $old_value );
-				}
-
-				$value             = wpm_set_language_value( $old_value, $data[ $key ], $post_field_config );
-				$data[ $key ]      = wpm_ml_value_to_string( $value );
+				$old_value    = wpm_value_to_ml_array( $old_value );
+				$value        = wpm_set_language_value( $old_value, $data[ $key ], $post_field_config );
+				$data[ $key ] = wpm_ml_value_to_string( $value );
 			}
 		}
 

@@ -97,6 +97,7 @@ if ( class_exists( 'acf' ) ) {
 				return $field;
 			}
 
+			$old_field          = wpm_array_merge_recursive( $field, $old_field );
 			$old_field          = wpm_value_to_ml_array( $old_field );
 			$field_name         = get_post_field( 'post_title', $field['ID'] );
 			$old_field['label'] = wpm_value_to_ml_array( $field_name );

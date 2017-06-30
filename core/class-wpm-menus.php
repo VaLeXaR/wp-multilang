@@ -176,7 +176,13 @@ class WPM_Menus {
 		return $menu_item;
 	}
 
-
+	/**
+	 * Filter menu by language
+	 *
+	 * @param $items
+	 *
+	 * @return mixed
+	 */
 	public function filter_items_by_language( $items ) {
 		if ( ! is_admin() ) {
 			foreach ( $items as $key => $item ) {

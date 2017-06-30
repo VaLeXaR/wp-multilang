@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-06-24 15:21+0300\n"
-"PO-Revision-Date: 2017-06-24 15:21+0300\n"
+"POT-Creation-Date: 2017-07-01 00:59+0300\n"
+"PO-Revision-Date: 2017-07-01 00:59+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: uk\n"
@@ -28,11 +28,16 @@ msgstr ""
 msgid "Are you sure you want to delete this language?"
 msgstr "Ви впевнені, що хочете видалити цю мову?"
 
-#: core/admin/class-wpm-admin-posts.php:171
+#: core/admin/class-wpm-admin-edit-menus.php:56
+#: core/admin/class-wpm-admin-posts.php:172
 #: core/admin/class-wpm-admin-taxonomies.php:259
 #: core/widgets/class-wpm-widget-language-switcher.php:30
 msgid "Languages"
 msgstr "Мови"
+
+#: core/admin/class-wpm-admin-edit-menus.php:135
+msgid "Show item only in:"
+msgstr "Показувати пункт лише у:"
 
 #: core/admin/class-wpm-admin-settings.php:35
 #: core/admin/class-wpm-admin-settings.php:40
@@ -137,17 +142,21 @@ msgstr "Новий мовний пакет втсановлений"
 msgid "Language slug is required"
 msgstr "Ланка мови обов'язкова"
 
-#: core/class-wpm-menus.php:77 core/class-wpm-menus.php:131
-#: core/class-wpm-menus.php:153
+#: core/admin/class-wpm-admin-widgets.php:78
+msgid "Show widget only in:"
+msgstr "Показувати віджет лише у:"
+
+#: core/class-wpm-menus.php:79 core/class-wpm-menus.php:133
+#: core/class-wpm-menus.php:155
 #, php-format
 msgid "#%d (no title)"
 msgstr ""
 
-#: core/class-wpm-menus.php:92
+#: core/class-wpm-menus.php:94
 msgid "Post Type Archive"
 msgstr ""
 
-#: core/class-wpm-menus.php:115
+#: core/class-wpm-menus.php:117
 msgid "Custom Link"
 msgstr ""
 

@@ -124,7 +124,7 @@ class WPM_Setup {
 	 */
 	public function get_installed_languages() {
 		if ( ! $this->installed_languages ) {
-			$this->installed_languages = array_merge( array( 'en_US' ), get_available_languages() );
+			$this->installed_languages = wp_parse_args( get_available_languages(), array( 'en_US' ) );
 		}
 
 		return $this->installed_languages;

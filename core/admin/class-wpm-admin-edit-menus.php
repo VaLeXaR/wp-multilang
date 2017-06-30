@@ -20,10 +20,15 @@ class WPM_Admin_Edit_Menus {
 	 * WPM_Admin_Menus constructor.
 	 */
 	public function __construct() {
-		add_filter( 'wp_edit_nav_menu_walker', array( $this, 'filter_walker' ) );
 		add_filter( 'manage_nav-menus_columns', array( $this, 'nav_menu_manage_columns' ), 11 );
 		add_action( 'wp_update_nav_menu_item', array( $this, 'wp_update_nav_menu_item_action' ), 10, 2 );
-		add_action( 'wp_nav_menu_item_custom_fields', array( $this, 'menu_item_custom_fields' ) );
+		add_filter( 'wp_setup_nav_menu_item', array( $this, 'setup_nav_menu_item' ) );
+
+		if ( ! has_action( 'wp_nav_menu_item_custom_fields' ) ) {
+			add_filter( 'wp_edit_nav_menu_walker', array( $this, 'filter_walker' ) );
+		}
+
+		add_action( 'wp_nav_menu_item_custom_fields', array( $this, 'menu_item_custom_fields' ), 10, 2 );
 	}
 
 
@@ -43,16 +48,16 @@ class WPM_Admin_Edit_Menus {
 	}
 
 	/**
-	 * Adding images as screen options.
+	 * Adding languages as screen options.
 	 *
-	 * If not checked screen option 'image', uploading form not showed.
+	 * If not checked screen option 'languages', uploading form not showed.
 	 *
 	 * @param array $columns
 	 *
 	 * @return array
 	 */
 	public function nav_menu_manage_columns( $columns ) {
-		$columns['language'] = __( 'Language', 'wpm' );
+		$columns['languages'] = __( 'Languages', 'wpm' );
 
 		return $columns;
 	}
@@ -65,7 +70,6 @@ class WPM_Admin_Edit_Menus {
 	 *
 	 * @param int   $menu_id         Nav menu ID
 	 * @param int   $menu_item_db_id Menu item ID
-	 * @param array $menu_item_args  Menu item data
 	 */
 	public static function wp_update_nav_menu_item_action( $menu_id, $menu_item_db_id ) {
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
@@ -93,34 +97,49 @@ class WPM_Admin_Edit_Menus {
 		}
 	}
 
+
+	/**
+	 * Load menu languages meta for each menu item.
+	 *
+	 * @param $item
+	 *
+	 * @return mixed
+	 */
+	public function setup_nav_menu_item( $item ) {
+		if ( !isset( $item->languages ) ) {
+			$languages = get_post_meta( $item->ID, '_menu_item_languages', true );
+			$item->languages = is_array( $languages ) ? $languages : array();
+		}
+
+		return $item;
+	}
+
 	/**
 	 * Add custom fields to menu item.
 	 *
-	 * @param int    $item_id
+	 * @param int $item_id
+	 * @param object $item
 	 *
 	 * @see http://web.archive.org/web/20141021012233/http://shazdeh.me/2014/06/25/custom-fields-nav-menu-items
 	 * @see https://core.trac.wordpress.org/ticket/18584
 	 */
-	public function menu_item_custom_fields( $item_id ) {
+	public function menu_item_custom_fields( $item_id, $item ) {
 
 		$_key  = 'languages';
 		$key   = sprintf( 'menu-item-%s', $_key );
 		$id    = sprintf( 'edit-%s-%s', $key, $item_id );
 		$name  = sprintf( '%s[%s]', $key, $item_id );
-		$value = get_post_meta( $item_id, '_' . str_replace( '-', '_', $key ), true );
-
-		if ( ! is_array( $value ) ) {
-			$value = array();
-		}
+		$value = $item->languages;
 
 		$class = sprintf( 'field-%s', $_key );
 		$languages = wpm_get_options();
+		$i = 0;
 		?>
 		<p class="description description-wide <?php echo esc_attr( $class ) ?>">
 			<?php _e( 'Show item only in:', 'wpm' ); ?><br>
-			<?php foreach ( $languages as $key => $language ) { ?>
-			<label><input type="checkbox" name="<?php esc_attr_e( $name ); ?>[<?php esc_attr_e( $key ); ?>]" id="<?php esc_attr_e( $id . '_' . $language['slug'] ); ?>" value="<?php esc_attr_e( $language['slug'] ); ?>"<?php if ( in_array( $language['slug'], $value ) ) { ?> checked="checked"<?php } ?>><?php echo $language['name']; ?></label>&emsp;
-			<?php } ?>
+			<?php foreach ( $languages as $language ) { ?>
+			<label><input type="checkbox" name="<?php esc_attr_e( $name ); ?>[<?php esc_attr_e( $i ); ?>]" id="<?php echo $id . '-' . $language['slug']; ?>" value="<?php esc_attr_e( $language['slug'] ); ?>"<?php if ( in_array( $language['slug'], $value ) ) { ?> checked="checked"<?php } ?>><?php echo $language['name']; ?></label>&emsp;
+			<?php $i++; } ?>
 		</p>
 		<?php
 	}

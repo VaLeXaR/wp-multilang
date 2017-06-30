@@ -25,7 +25,7 @@ function wpm_language_switcher( $args = array(), $echo = true ) {
 		'type' => 'list',
 		'show' => 'both',
 	);
-	$args    = array_merge( $default, $args );
+	$args    = wp_parse_args( $args, $default );
 
 	$languages = wpm_get_languages();
 
