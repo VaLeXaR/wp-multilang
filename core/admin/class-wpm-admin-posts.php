@@ -30,6 +30,7 @@ class WPM_Admin_Posts {
 		add_filter( 'wp_insert_post_data', array( $this, 'save_post' ), 99, 2 );
 		add_filter( 'wp_insert_attachment_data', array( $this, 'save_post' ), 99, 2 );
 		add_filter( 'preview_post_link', array( $this, 'translate_post_link' ), 0 );
+		new WPM_Admin_Meta_Boxes();
 	}
 
 
@@ -38,8 +39,7 @@ class WPM_Admin_Posts {
 	 */
 	public function init() {
 
-		$config = wpm_get_config();
-
+		$config       = wpm_get_config();
 		$posts_config = apply_filters( 'wpm_posts_config', $config['post_types'] );
 
 		foreach ( $posts_config as $post_type => $post_config ) {

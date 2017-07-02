@@ -84,7 +84,7 @@ class WPM_Admin_Edit_Menus {
 		// Sanitize
 		if ( ! empty( $_POST[ $key ][ $menu_item_db_id ] ) ) {
 			// Do some checks here...
-			$value = $_POST[ $key ][ $menu_item_db_id ];
+			$value = wpm_clean( $_POST[ $key ][ $menu_item_db_id ] );
 		} else {
 			$value = null;
 		}
