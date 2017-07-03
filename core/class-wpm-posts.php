@@ -30,8 +30,9 @@ class WPM_Posts extends \WPM_Object {
 	 * WPM_Posts constructor.
 	 */
 	public function __construct() {
-		add_filter( 'get_pages', array( $this, 'filter_posts' ), 0, 2 );
-		add_filter( 'posts_results', array( $this, 'filter_posts' ), 0, 2 );
+		add_filter( 'get_pages', array( $this, 'filter_posts' ), 0 );
+		add_filter( 'posts_results', array( $this, 'filter_posts' ), 0 );
+		add_action( 'parse_query', array( $this, 'filter_posts_by_language' ) );
 		add_filter( 'the_post', 'wpm_translate_object', 0 );
 		add_filter( 'the_title', 'wpm_translate_string', 0 );
 		add_filter( 'the_content', 'wpm_translate_string', 0 );
@@ -52,6 +53,41 @@ class WPM_Posts extends \WPM_Object {
 	 */
 	public function filter_posts( $posts ) {
 		return array_map( 'wpm_translate_object', $posts );
+	}
+
+	/**
+	 * Separate posts py languages
+	 *
+	 * @param $query
+	 *
+	 * @return object WP_Query
+	 */
+	public function filter_posts_by_language( $query ) {
+		if ( ( ! is_admin() || wp_doing_ajax() ) && ! defined( 'DOING_CRON' ) ) {
+			$lang = get_query_var( 'lang' );
+
+			if ( $lang ) {
+				$meta_query = array(
+					'relation' => 'OR',
+					array(
+						'key'     => '_languages',
+						'compare' => 'NOT EXISTS',
+					),
+					array(
+						'key'     => '_languages',
+						'value'   => 's:' . strlen( $lang ) . ':"' . $lang . '";',
+						'compare' => 'LIKE',
+					),
+				);
+
+				if ( isset( $query->query_vars['meta_query'] ) ) {
+					$meta_query = wp_parse_args( $query->query_vars['meta_query'], $meta_query );
+				}
+				$query->set( 'meta_query', $meta_query );
+			}
+		}
+
+		return $query;
 	}
 
 

@@ -23,6 +23,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function wpm_translate_url( $url, $language = '' ) {
 
+	if ( strpos( $url, wp_parse_url( get_site_url(), PHP_URL_HOST ) ) === false ) {
+		return $url;
+	}
+
 	$locale         = get_locale();
 	$default_locale = wpm_get_default_locale();
 	$languages      = wpm_get_languages();
@@ -95,8 +99,7 @@ function wpm_translate_string( $string, $language = '' ) {
 		return $strings;
 	}
 
-	$languages      = wpm_get_languages();
-	$default_locale = wpm_get_default_locale();
+	$languages = wpm_get_languages();
 
 	if ( $language ) {
 		if ( in_array( $language, $languages, true ) ) {
@@ -106,7 +109,8 @@ function wpm_translate_string( $string, $language = '' ) {
 		}
 	}
 
-	$language = wpm_get_language();
+	$language       = wpm_get_language();
+	$default_locale = wpm_get_default_locale();
 
 	if ( empty( $strings[ $language ] ) && get_option( 'wpm_show_untranslated_strings' ) ) {
 		return $strings[ $languages[ $default_locale ] ];
@@ -301,6 +305,7 @@ function wpm_ml_value_to_string( $value ) {
  */
 function wpm_set_language_value( $localize_array, $value, $config = null, $lang = '' ) {
 	$languages = wpm_get_languages();
+	$new_value = array();
 
 	if ( ! $lang && isset( $_POST['lang'] ) && in_array( $_POST['lang'], $languages, true ) ) {
 		$lang = wpm_clean( $_POST['lang'] );
@@ -319,29 +324,30 @@ function wpm_set_language_value( $localize_array, $value, $config = null, $lang 
 			}
 
 			if ( ! isset( $localize_array[ $key ] ) ) {
-				$localize_array[ $key ] = array();
+				$new_value[ $key ] = array();
 			}
 
-			$localize_array[ $key ] = wpm_set_language_value( $localize_array[ $key ], $value[ $key ], $config_key, $lang );
+			$new_value[ $key ] = wpm_set_language_value( $localize_array[ $key ], $value[ $key ], $config_key, $lang );
 		}
 	} else {
 		if ( ! is_null( $config ) && ! is_bool( $value ) ) {
 			if ( wpm_is_ml_array( $localize_array ) ) {
-				$localize_array[ $lang ] = $value;
+				$new_value = $localize_array;
+				$new_value[ $lang ] = $value;
 			} else {
 				$result = array();
 				foreach ( $languages as $language ) {
 					$result[ $language ] = '';
 				}
 				$result[ $lang ] = $value;
-				$localize_array  = $result;
+				$new_value  = $result;
 			}
 		} else {
-			$localize_array = $value;
+			$new_value = $value;
 		}
 	}
 
-	return $localize_array;
+	return $new_value;
 }
 
 

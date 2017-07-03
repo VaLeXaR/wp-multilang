@@ -86,17 +86,11 @@ var wpm_translator = {
       }
     }
 
-    for (var result in results) {
-      if (!results[result].length) {
-        delete results[result];
-      }
-    }
-
     return results;
   },
 
 
-  translate_string: function (string, lang) {
+  translate_string: function (string, language) {
 
     var strings = wpm_translator.string_to_ml_array(string);
 
@@ -106,23 +100,20 @@ var wpm_translator = {
 
     var languages = wpm_translator_params.languages;
 
-    if (lang) {
-      if (typeof(languages[lang]) !== 'undefined') {
-        return strings[lang];
+    if (language) {
+      if (typeof(languages[language]) !== 'undefined') {
+        return strings[language];
       } else {
         return '';
       }
     }
 
-    var language = wpm_translator_params.language,
-      default_language = wpm_translator_params.default_language;
+    language = wpm_translator_params.language;
 
-    if (typeof(strings[language]) !== 'undefined') {
-      return strings[language];
-    } else if (typeof(strings[default_language]) !== 'undefined') {
-      return strings[default_language];
-    } else {
-      return '';
+    if (!strings[language].length && wpm_translator_params.show_untranslated_strings === "1") {
+      return strings[wpm_translator_params.default_language];
     }
+
+    return strings[language];
   }
 };

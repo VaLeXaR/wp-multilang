@@ -67,9 +67,10 @@ class WPM_Admin_Menus {
 			$wp_admin_bar->add_menu( array(
 				'parent' => 'wpm-language-switcher',
 				'id'     => 'wpm-language-' . $language,
-				'title'  => '<img src="' . esc_url( WPM()->flag_dir() . $options[ $key ]['flag'] . '.png' ) . '" />' .
-				            '&nbsp;&nbsp;' .
-				            $options[ $key ]['name'],
+				'title'  => '<span class="ab-icon">' .
+				            '<img src="' . esc_url( WPM()->flag_dir() . $options[ $key ]['flag'] . '.png' ) . '" />' .
+							'</span>' .
+				            '<span class="ab-label">' . $options[ $key ]['name'] . '</span>',
 				'href'   => add_query_arg( 'lang', $language, $current_url ),
 			) );
 		}

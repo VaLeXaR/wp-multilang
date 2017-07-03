@@ -33,7 +33,7 @@ class WPM_Admin_Assets {
 	public function admin_styles() {
 
 		// Register admin styles
-		wp_register_style( 'wpm_language_switcher', wpm_asset_path( 'styles/admin/admin.css' ), array(), WPM_VERSION );
+		wp_enqueue_style( 'wpm_language_switcher', wpm_asset_path( 'styles/admin/admin.css' ), array(), WPM_VERSION );
 	}
 
 
@@ -69,22 +69,21 @@ class WPM_Admin_Assets {
 			'underscore',
 		), WPM_VERSION );
 
-		wp_register_script( 'wpm_translator', wpm_asset_path( 'scripts/translator' . $suffix . '.js' ), array( 'jquery' ), WPM_VERSION );
+		wp_register_script( 'wpm_translator', wpm_asset_path( 'scripts/translator' . $suffix . '.js' ), array(), WPM_VERSION );
 
 		$translator_params = array(
-			'languages'        => array_values( wpm_get_languages() ),
-			'default_language' => wpm_get_languages()[ wpm_get_default_locale() ],
-			'language'         => wpm_get_language(),
+			'languages'                 => array_values( wpm_get_languages() ),
+			'default_language'          => wpm_get_languages()[ wpm_get_default_locale() ],
+			'language'                  => wpm_get_language(),
+			'show_untranslated_strings' => get_option( 'wpm_show_untranslated_strings' ),
 		);
 		wp_localize_script( 'wpm_translator', 'wpm_translator_params', $translator_params );
 
 		if ( 'customize' === $screen_id ) {
-			wp_enqueue_style( 'wpm_language_switcher' );
 			wp_enqueue_script( 'wpm_language_switcher_customizer' );
-			$params = array(
-				'switcher' => wpm_get_template_html( 'language-switcher-customizer.php' ),
-			);
-			wp_localize_script( 'wpm_language_switcher_customizer', 'wpm_language_switcher_params', $params );
+			add_action( 'admin_print_footer_scripts', function () {
+				echo wpm_get_template_html( 'language-switcher-customizer.php' );
+			} );
 		}
 
 		$admin_pages_config = apply_filters( 'wpm_admin_pages', $config['admin_pages'] );
@@ -122,20 +121,21 @@ class WPM_Admin_Assets {
 	 * Display language switcher for edit posts, taxonomies, options
 	 */
 	public function set_language_switcher() {
-		wp_enqueue_style( 'wpm_language_switcher' );
 		wp_enqueue_script( 'wpm_language_switcher' );
-		$params = array(
-			'switcher' => wpm_get_template_html( 'language-switcher.php' ),
-		);
-		wp_localize_script( 'wpm_language_switcher', 'wpm_language_switcher_params', $params );
-		add_action('admin_head', function() {
+
+		add_action( 'admin_head', function () {
 			?>
 			<style>
 				#wpbody-content .wrap {
 					padding-top: 37px;
+					position: relative;
 				}
 			</style>
 			<?php
-		});
+		} );
+
+		add_action( 'admin_print_footer_scripts', function () {
+			echo wpm_get_template_html( 'language-switcher.php' );
+		} );
 	}
 }

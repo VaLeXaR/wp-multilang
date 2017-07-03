@@ -81,7 +81,7 @@ class WPM_Install {
 	private static function create_options() {
 
 		$languages           = array();
-		$installed_languages = array_merge( array( 'en_US' ), get_available_languages() );
+		$installed_languages = wp_parse_args( get_available_languages(), array( 'en_US' ) );
 		require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
 		$available_translations          = wp_get_available_translations();
 		$available_translations['en_US'] = array(
