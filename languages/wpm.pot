@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-07-01 00:57+0300\n"
+"POT-Creation-Date: 2017-07-03 15:47+0300\n"
 "PO-Revision-Date: 2017-05-22 12:43+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -27,14 +27,15 @@ msgstr ""
 msgid "Are you sure you want to delete this language?"
 msgstr ""
 
-#: core/admin/class-wpm-admin-edit-menus.php:56
+#: core/admin/class-wpm-admin-edit-menus.php:57
+#: core/admin/class-wpm-admin-meta-boxes.php:99
 #: core/admin/class-wpm-admin-posts.php:172
 #: core/admin/class-wpm-admin-taxonomies.php:259
 #: core/widgets/class-wpm-widget-language-switcher.php:30
 msgid "Languages"
 msgstr ""
 
-#: core/admin/class-wpm-admin-edit-menus.php:135
+#: core/admin/class-wpm-admin-edit-menus.php:136
 msgid "Show item only in:"
 msgstr ""
 
@@ -145,17 +146,21 @@ msgstr ""
 msgid "Show widget only in:"
 msgstr ""
 
-#: core/class-wpm-menus.php:79 core/class-wpm-menus.php:133
-#: core/class-wpm-menus.php:155
+#: core/admin/meta-boxes/class-wpm-meta-box-languages.php:37
+msgid "Show post only in:"
+msgstr ""
+
+#: core/class-wpm-menus.php:78 core/class-wpm-menus.php:132
+#: core/class-wpm-menus.php:154
 #, php-format
 msgid "#%d (no title)"
 msgstr ""
 
-#: core/class-wpm-menus.php:94
+#: core/class-wpm-menus.php:93
 msgid "Post Type Archive"
 msgstr ""
 
-#: core/class-wpm-menus.php:117
+#: core/class-wpm-menus.php:116
 msgid "Custom Link"
 msgstr ""
 
