@@ -332,6 +332,7 @@ function wpm_set_language_value( $localize_array, $value, $config = null, $lang 
 	} else {
 		if ( ! is_null( $config ) && ! is_bool( $value ) ) {
 			if ( wpm_is_ml_array( $localize_array ) ) {
+				$new_value = $localize_array;
 				$new_value[ $lang ] = $value;
 			} else {
 				$result = array();

@@ -27,7 +27,6 @@ class WPM_Menus {
 		add_filter( 'wp_setup_nav_menu_item', array( $this, 'translate_menu_url' ) );
 		add_filter( 'customize_nav_menu_available_items', array( $this, 'filter_menus' ), 0 );
 		add_filter( 'customize_nav_menu_searched_items', array( $this, 'filter_menus' ), 0 );
-		add_filter( 'wp_get_nav_menu_items', array( $this, 'filter_items_by_language' ) );
 	}
 
 	/**
@@ -174,25 +173,5 @@ class WPM_Menus {
 		}
 
 		return $menu_item;
-	}
-
-	/**
-	 * Filter menu by language
-	 *
-	 * @param $items
-	 *
-	 * @return mixed
-	 */
-	public function filter_items_by_language( $items ) {
-		if ( ! is_admin() ) {
-			foreach ( $items as $key => $item ) {
-				$menu_languages = get_post_meta( $item->ID, '_menu_item_languages', true );
-				if ( is_array( $menu_languages ) && ! in_array( wpm_get_user_language(), $menu_languages ) ) {
-					unset( $items[ $key ] );
-				}
-			}
-		}
-		return $items;
-
 	}
 }

@@ -93,13 +93,13 @@ class WPM_Setup {
 		add_filter( 'query_vars', array( $this, 'set_lang_var' ) );
 		add_filter( 'option_home', array( $this, 'set_home_url' ), 99 );
 		add_action( 'change_locale', array( $this, 'change_locale' ), 0 );
-		add_action( 'wp', array( $this, 'setup_lang_query' ), 0 );
 		add_action( 'after_switch_theme', __NAMESPACE__ . '\WPM_Config::load_config_run' );
 		add_action( 'activated_plugin', __NAMESPACE__ . '\WPM_Config::load_config_run' );
 		add_action( 'upgrader_process_complete', __NAMESPACE__ . '\WPM_Config::load_config_run' );
 		add_action( 'wpm_init', array( $this, 'load_vendor' ) );
 		add_action( 'template_redirect', array( $this, 'set_not_found' ) );
 		add_action( 'plugins_loaded', array( $this, 'set_locale' ), 0 );
+		add_action( 'parse_request', array( $this, 'setup_query_var' ), 0 );
 	}
 
 
@@ -330,20 +330,6 @@ class WPM_Setup {
 		return $this->config;
 	}
 
-
-	/**
-	 * Add 'lang' param to query vars
-	 */
-	public function setup_lang_query() {
-		$user_language = $this->get_user_language();
-		set_query_var( 'lang', $user_language );
-		add_filter( 'request', function ( $query_vars ) {
-			$query_vars['lang'] = get_query_var( 'lang' );
-
-			return $query_vars;
-		} );
-	}
-
 	/**
 	 * Set global $locale when change locale
 	 *
@@ -458,5 +444,20 @@ class WPM_Setup {
 			$wp_query->set_404();
 			status_header( 404 );
 		}
+	}
+
+	/**
+	 * Add query var 'lang' in global request
+	 *
+	 * @param $request
+	 *
+	 * @return object WP
+	 */
+	public function setup_query_var( $request ) {
+		if ( ! empty( $request->query_vars ) ) {
+			$request->query_vars['lang'] = $this->get_user_language();
+		}
+
+		return $request;
 	}
 }

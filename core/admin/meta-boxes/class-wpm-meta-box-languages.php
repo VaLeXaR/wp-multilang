@@ -49,11 +49,10 @@ class WPM_Meta_Box_Languages {
 	 * @param int $post_id
 	 */
 	public static function save( $post_id ) {
-		$languages = wpm_clean( $_POST['wpm_languages'] );
 		if ( ! isset( $_POST['wpm_languages'] ) || empty( $_POST['wpm_languages'] ) ) {
 			delete_post_meta( $post_id, 'wpm_languages');
 		} else {
-			update_post_meta( $post_id, '_languages', $languages );
+			update_post_meta( $post_id, '_languages', wpm_clean( $_POST['wpm_languages'] ) );
 		}
 	}
 }

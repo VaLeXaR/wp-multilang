@@ -18,7 +18,7 @@ class WPM_Widgets {
 	 */
 	public function __construct() {
 		add_filter( 'widget_display_callback', 'wpm_translate_value', 0 );
-		add_filter( 'widget_display_callback', array($this, 'widget_display') );
+		add_filter( 'widget_display_callback', array( $this, 'widget_display' ) );
 	}
 
 
@@ -30,7 +30,7 @@ class WPM_Widgets {
 	 * @return bool|array
 	 */
 	public function widget_display( $instance ) {
-		if ( isset( $instance['languages']) && is_array( $instance['languages'] ) && ! in_array( wpm_get_user_language(), $instance['languages'] ) ) {
+		if ( isset( $instance['languages'] ) && is_array( $instance['languages'] ) && ! in_array( wpm_get_user_language(), $instance['languages'] ) ) {
 			return false;
 		}
 

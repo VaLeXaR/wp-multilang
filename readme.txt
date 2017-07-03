@@ -25,6 +25,7 @@ Features of the plugin WP Multilang:
 * Support configuration for translate multidimensional arrays.
 * Separate menu items by language
 * Separate widgets by language
+* Separate posts by language
 * Many filters for dynamic applying translation settings
 * No duplicate posts
 * No subdomains for language version
@@ -141,6 +142,7 @@ Compatible with multisite not tested.
 = 1.4.6 =
 + add separating settings for menu item
 + add separating settings for widgets
++ add separating settings for posts
 * fixes in saving translation
 
 = 1.4.5 =

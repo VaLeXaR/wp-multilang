@@ -38,8 +38,6 @@ class WPM_Admin_Edit_Menus {
 	 * We don't actually replace the default walker. We're still using it and
 	 * only injecting some HTMLs.
 	 *
-	 * @since   0.1.0
-	 * @access  private
 	 * @wp_hook filter wp_edit_nav_menu_walker
 	 * @return  string Walker class name
 	 */
@@ -53,7 +51,6 @@ class WPM_Admin_Edit_Menus {
 	 * If not checked screen option 'languages', uploading form not showed.
 	 *
 	 * @param array $columns
-	 *
 	 * @return array
 	 */
 	public function nav_menu_manage_columns( $columns ) {
@@ -79,7 +76,7 @@ class WPM_Admin_Edit_Menus {
 		check_admin_referer( 'update-nav_menu', 'update-nav-menu-nonce' );
 
 
-		$key = 'menu-item-languages';
+		$key = 'languages';
 
 		// Sanitize
 		if ( ! empty( $_POST[ $key ][ $menu_item_db_id ] ) ) {
@@ -91,9 +88,9 @@ class WPM_Admin_Edit_Menus {
 
 		// Update
 		if ( ! is_null( $value ) ) {
-			update_post_meta( $menu_item_db_id, '_' . str_replace( '-', '_', $key ), $value );
+			update_post_meta( $menu_item_db_id, '_' . $key, $value );
 		} else {
-			delete_post_meta( $menu_item_db_id, '_' . str_replace( '-', '_', $key ) );
+			delete_post_meta( $menu_item_db_id, '_' . $key );
 		}
 	}
 
@@ -107,7 +104,7 @@ class WPM_Admin_Edit_Menus {
 	 */
 	public function setup_nav_menu_item( $item ) {
 		if ( !isset( $item->languages ) ) {
-			$languages = get_post_meta( $item->ID, '_menu_item_languages', true );
+			$languages = get_post_meta( $item->ID, '_languages', true );
 			$item->languages = is_array( $languages ) ? $languages : array();
 		}
 
@@ -128,7 +125,7 @@ class WPM_Admin_Edit_Menus {
 		$_key  = 'languages';
 		$key   = sprintf( 'menu-item-%s', $_key );
 		$id    = sprintf( 'edit-%s-%s', $key, $item_id );
-		$name  = sprintf( '%s[%s]', $key, $item_id );
+		$name  = sprintf( '%s[%s]', $_key, $item_id );
 		$value = $item->languages;
 
 		$class = sprintf( 'field-%s', $_key );
