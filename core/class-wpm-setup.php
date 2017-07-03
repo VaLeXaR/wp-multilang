@@ -97,7 +97,7 @@ class WPM_Setup {
 		add_action( 'activated_plugin', __NAMESPACE__ . '\WPM_Config::load_config_run' );
 		add_action( 'upgrader_process_complete', __NAMESPACE__ . '\WPM_Config::load_config_run' );
 		add_action( 'wpm_init', array( $this, 'load_vendor' ) );
-		add_action( 'template_redirect', array( $this, 'set_not_found' ) );
+		add_action( 'wp', array( $this, 'set_not_found' ) );
 		add_action( 'plugins_loaded', array( $this, 'set_locale' ), 0 );
 		add_action( 'parse_request', array( $this, 'setup_query_var' ), 0 );
 	}
