@@ -66,6 +66,10 @@ class WPM_Posts extends \WPM_Object {
 		if ( ( ! is_admin() || wp_doing_ajax() ) && ! defined( 'DOING_CRON' ) ) {
 			$lang = get_query_var( 'lang' );
 
+			if ( ! $lang && ! $query->is_main_query() ) {
+				$lang = wpm_get_user_language();
+			}
+
 			if ( $lang ) {
 				$meta_query = array(
 					'relation' => 'OR',

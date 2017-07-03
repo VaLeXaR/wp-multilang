@@ -35,7 +35,7 @@ class WPM_Meta_Box_Languages {
 		?>
 		<p>
 			<strong><?php _e( 'Show post only in:', 'wpm' ); ?></strong><br>
-			<?php foreach ( $languages as $language ) { ?>
+			<?php foreach ( $languages as $language ) { if ( ! $language['enable'] ) continue; ?>
 				<label><input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $language['slug']; ?>" value="<?php esc_attr_e( $language['slug'] ); ?>"<?php if ( in_array( $language['slug'], $post_languages ) ) { ?> checked="checked"<?php } ?>><?php echo $language['name']; ?></label><br>
 				<?php $i++; } ?>
 		</p>
