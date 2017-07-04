@@ -95,7 +95,7 @@ class WPM_Admin_Meta_Boxes {
 		$posts_config = apply_filters( 'wpm_posts_config', $config['post_types'] );
 		$post_config  = apply_filters( "wpm_posts_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
 
-		if ( ! is_null( $post_config ) ) {
+		if ( ! is_null( $post_config ) && ( 'attachment' !== $post_type ) ) {
 			add_meta_box( "wpm-{$post_type}-languages", __( 'Languages', 'wpm' ), __NAMESPACE__ . '\Meta_Boxes\WPM_Meta_Box_Languages::output', $post_type, 'side' );
 		}
 	}

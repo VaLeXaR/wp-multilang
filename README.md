@@ -10,6 +10,20 @@ Multilingual plugin for WordPress.
 
 Translations of post types, taxonomies, meta fields, options, text fields in miltimedia files, menus, titles and text field in widgets.
 
+Features of the plugin WP Multilang:
+
+* 100% free.
+* Translation at PHP.
+* Compatible with REST.
+* Support configuration files.
+* Support configuration for translate multidimensional arrays.
+* Separate menu items by language
+* Separate widgets by language
+* Separate posts by language
+* Many filters for dynamic applying translation settings
+* No duplicate posts
+* No subdomains for language version
+
 **WP Multilang** compatible out of the box with the plugin:
 * ACF, ACF Pro (ACF Pro supported in translating `object field`)
 * WooCommerce
@@ -104,19 +118,23 @@ Has the ability to keep recording the target language through the transmission p
 
 Compatible with multisite not tested.
 
-Features of the plugin **WP Multilang**:
-* Translation at PHP.
-* Compatible with REST.
-* Support configuration files.
-* Support configuration for translate multidimensional arrays.
-* No dublicate posts
-* No subdomens for language version
-
 #### Українська
 
 **WP Multilang** це плаґін багатомовності для WordPress.
 
 Доступний переклад текстових полів мільтімедіа файлів, меню, заголовків та текстів віджетів.
+
+Особливості плаґіна *WP Multilang*:
+* Переклад на рівні PHP.
+* Сумісність з REST.
+* Підтримка файлів конфігурації.
+* Підтримка перекладів багаторівневих масивів налаштувань.
+* Розділення записів за мовами.
+* Розділення пунктів меню за мовами.
+* Розділення віджетів за мовами.
+* Багато фільтрів для динамічної зміни конфігурації перекладу.
+* Без дублювання записів
+* Без субдоменів для мовних версій
 
 **WP Multilang** сумісний з коробки з плаґінами:
 * ACF, ACF Pro (у ACF Pro підтримується переклад `object field`)
@@ -212,11 +230,3 @@ wpm_translate_value( $value, $language = '' ); // translate multidimensional arr
 Має можливість зберігати запис потрібною мовою через передачу параметру `lang` у POST запиті.
 
 Сумісність з багатосайтовістю не тестувалася.
-
-Особливості плаґіна *WP Multilang*:
-* Переклад на рівні PHP.
-* Сумісність з REST.
-* Підтримка файлів конфігурації.
-* Підтримка перекладів багаторівневих масивів налаштувань.
-* Без дублювання записів
-* Без субдоменів для мовних версій
