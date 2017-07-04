@@ -93,6 +93,7 @@ class WPM_AJAX {
 	public static function add_ajax_events() {
 		$ajax_events = array(
 			'delete_lang' => false,
+			'get_translated_url' => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -166,6 +167,21 @@ class WPM_AJAX {
 			@unlink( $file );
 		}
 
-		wp_die();
+		die();
+	}
+
+
+	public function get_translated_url() {
+
+		check_ajax_referer( 'get-translated-url', 'security' );
+
+		$current_url = wpm_clean( $_POST['current_url'] );
+		$current_url = esc_url( $current_url );
+
+		if ( $current_url ) {
+			echo wpm_translate_url( $current_url );
+		}
+
+		die();
 	}
 }
