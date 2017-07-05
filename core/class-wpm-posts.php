@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WPM_Posts
  * @package  WPM\Core
  * @author   VaLeXaR
- * @version  1.1.1
+ * @version  1.1.2
  */
 class WPM_Posts extends \WPM_Object {
 
@@ -65,10 +65,22 @@ class WPM_Posts extends \WPM_Object {
 	 */
 	public function filter_posts_by_language( $query ) {
 		if ( ( ! is_admin() || wp_doing_ajax() ) && ! defined( 'DOING_CRON' ) ) {
-			$config = wpm_get_config();
 
-			if ( isset( $query->query_vars['post_type'] ) && ( ! isset( $config['post_types'][ $query->query_vars['post_type'] ] ) || is_null( $config['post_types'][ $query->query_vars['post_type'] ] ) ) ) {
-				return $query;
+			if ( isset( $query->query_vars['post_type'] ) && ! empty( $query->query_vars['post_type'] ) ) {
+
+				$post_type = $query->query_vars['post_type'];
+
+				if ( is_string( $post_type ) ) {
+
+					$config                     = wpm_get_config();
+					$posts_config               = $config['post_types'];
+					$posts_config               = apply_filters( 'wpm_posts_config', $posts_config );
+					$posts_config[ $post_type ] = apply_filters( "wpm_post_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
+
+					if ( ! isset( $config['post_types'][ $post_type ] ) || is_null( $config['post_types'][ $post_type ] ) ) {
+						return $query;
+					}
+				}
 			}
 
 			$lang = get_query_var( 'lang' );
@@ -99,7 +111,7 @@ class WPM_Posts extends \WPM_Object {
 
 				$query->set( 'meta_query', $lang_meta_query );
 			}
-		}
+		} // End if().
 
 		return $query;
 	}

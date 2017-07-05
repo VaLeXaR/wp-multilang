@@ -79,8 +79,8 @@ class WPM_Admin_Posts {
 	 * @return mixed
 	 */
 	public function save_post( $data, $postarr ) {
-		$config = wpm_get_config();
 
+		$config                             = wpm_get_config();
 		$posts_config                       = $config['post_types'];
 		$posts_config                       = apply_filters( 'wpm_posts_config', $posts_config );
 		$posts_config[ $data['post_type'] ] = apply_filters( "wpm_post_{$data['post_type']}_config", isset( $posts_config[ $data['post_type'] ] ) ? $posts_config[ $data['post_type'] ] : null );

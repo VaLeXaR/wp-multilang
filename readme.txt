@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.8
-Stable tag: 1.4.9
+Stable tag: 1.4.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -138,6 +138,9 @@ Compatible with multisite not tested.
 5. Post edit page
 
 == Changelog ==
+
+= 1.4.10 =
+* add filer by config for separate posts
 
 = 1.4.9 =
 * add 'lang' url param to iframe url in Customizer
