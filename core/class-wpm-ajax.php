@@ -166,6 +166,6 @@ class WPM_AJAX {
 			@unlink( $file );
 		}
 
-		wp_die();
+		die();
 	}
 }
