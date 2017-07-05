@@ -69,12 +69,6 @@ class WPM_Admin_Assets {
 			'underscore',
 		), WPM_VERSION );
 
-		$customizer_params = array(
-			'ajax_url'                 => admin_url( 'admin-ajax.php' ),
-			'get_translated_url_nonce' => wp_create_nonce( 'get-translated-url' ),
-		);
-		wp_localize_script( 'wpm_language_switcher_customizer', 'wpm_customizer_params', $customizer_params );
-
 		wp_register_script( 'wpm_translator', wpm_asset_path( 'scripts/translator' . $suffix . '.js' ), array(), WPM_VERSION );
 
 		$translator_params = array(
@@ -89,13 +83,6 @@ class WPM_Admin_Assets {
 			wp_enqueue_script( 'wpm_language_switcher_customizer' );
 			add_action( 'admin_print_footer_scripts', function () {
 				echo wpm_get_template_html( 'language-switcher-customizer.php' );
-				echo "<script>jQuery.post(wpm_customizer_params.ajax_url, {
-		      current_url: wp.customize.previewer.previewUrl(),
-		      security: wpm_customizer_params.get_translated_url_nonce
-		    }, function (data) {
-		      wp.customize.previewer.previewUrl(data);
-		      wp.customize.previewer.refresh();
-		    });</script>";
 			} );
 		}
 

@@ -10,6 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WPM_Posts
  * @package  WPM\Core
  * @author   VaLeXaR
+ * @version  1.1.1
  */
 class WPM_Posts extends \WPM_Object {
 
@@ -58,12 +59,18 @@ class WPM_Posts extends \WPM_Object {
 	/**
 	 * Separate posts py languages
 	 *
-	 * @param $query
+	 * @param $query object WP_Query
 	 *
 	 * @return object WP_Query
 	 */
 	public function filter_posts_by_language( $query ) {
 		if ( ( ! is_admin() || wp_doing_ajax() ) && ! defined( 'DOING_CRON' ) ) {
+			$config = wpm_get_config();
+
+			if ( isset( $query->query_vars['post_type'] ) && ( ! isset( $config['post_types'][ $query->query_vars['post_type'] ] ) || is_null( $config['post_types'][ $query->query_vars['post_type'] ] ) ) ) {
+				return $query;
+			}
+
 			$lang = get_query_var( 'lang' );
 
 			if ( ! $lang && ! $query->is_main_query() ) {
@@ -71,23 +78,26 @@ class WPM_Posts extends \WPM_Object {
 			}
 
 			if ( $lang ) {
-				$meta_query = array(
-					'relation' => 'OR',
+				$lang_meta_query = array(
 					array(
-						'key'     => '_languages',
-						'compare' => 'NOT EXISTS',
-					),
-					array(
-						'key'     => '_languages',
-						'value'   => 's:' . strlen( $lang ) . ':"' . $lang . '";',
-						'compare' => 'LIKE',
+						'relation' => 'OR',
+						array(
+							'key'     => '_languages',
+							'compare' => 'NOT EXISTS',
+						),
+						array(
+							'key'     => '_languages',
+							'value'   => 's:' . strlen( $lang ) . ':"' . $lang . '";',
+							'compare' => 'LIKE',
+						),
 					),
 				);
 
 				if ( isset( $query->query_vars['meta_query'] ) ) {
-					$meta_query = wp_parse_args( $query->query_vars['meta_query'], $meta_query );
+					$lang_meta_query = wp_parse_args( $query->query_vars['meta_query'], $lang_meta_query );
 				}
-				$query->set( 'meta_query', $meta_query );
+
+				$query->set( 'meta_query', $lang_meta_query );
 			}
 		}
 

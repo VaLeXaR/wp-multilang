@@ -1,0 +1,1 @@
+var WPMLang=(function(b,c){var a={data:{url:null}};a.init=function d(e){_.extend(a.data,e);if(!e||!e.url){throw new Error("Missing args")}b.bind("ready",function(){b.previewer.previewUrl.set(e.url)})};return a}(wp.customize,jQuery));
