@@ -140,7 +140,9 @@ Compatible with multisite not tested.
 == Changelog ==
 
 = 1.4.10 =
-* add filer by config for separate posts
++ add filer by config for separate posts
++ add separating settings for taxonomies
+* fix disabling separate by language in post
 
 = 1.4.9 =
 * add 'lang' url param to iframe url in Customizer
