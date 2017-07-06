@@ -31,8 +31,8 @@ class WPM_Posts extends \WPM_Object {
 	 * WPM_Posts constructor.
 	 */
 	public function __construct() {
-		add_filter( 'get_pages', array( $this, 'filter_posts' ), 0 );
-		add_filter( 'posts_results', array( $this, 'filter_posts' ), 0 );
+		add_filter( 'get_pages', array( $this, 'translate_posts' ), 0 );
+		add_filter( 'posts_results', array( $this, 'translate_posts' ), 0 );
 		add_action( 'parse_query', array( $this, 'filter_posts_by_language' ) );
 		add_filter( 'the_post', 'wpm_translate_object', 0 );
 		add_filter( 'the_title', 'wpm_translate_string', 0 );
@@ -52,7 +52,7 @@ class WPM_Posts extends \WPM_Object {
 	 *
 	 * @return array
 	 */
-	public function filter_posts( $posts ) {
+	public function translate_posts( $posts ) {
 		return array_map( 'wpm_translate_object', $posts );
 	}
 
