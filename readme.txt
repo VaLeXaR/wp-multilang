@@ -140,13 +140,14 @@ Compatible with multisite not tested.
 == Changelog ==
 
 = 1.4.10 =
-+ add filer by config for separate posts
++ add filer by config for separating posts
 + add separating settings for taxonomies
-* fix disabling separate by language in post
++ add checking set user locale
+* fix disabling for separating by language in post
 
 = 1.4.9 =
 * add 'lang' url param to iframe url in Customizer
-* fix query for separate posts
+* fix query for separating posts
 
 = 1.4.8 =
 * fix redirect in REST
