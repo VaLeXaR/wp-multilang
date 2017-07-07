@@ -42,6 +42,8 @@ class WPM_Posts extends \WPM_Object {
 		add_filter( "update_{$this->object_type}_metadata", array( $this, 'update_meta_field' ), 99, 5 );
 		add_filter( "add_{$this->object_type}_metadata", array( $this, 'add_meta_field' ), 99, 5 );
 		add_action( 'wp', array( $this, 'translate_queried_object' ), 0 );
+		add_filter( 'wp_insert_post_data', array( $this, 'save_post' ), 99, 2 );
+		add_filter( 'wp_insert_attachment_data', array( $this, 'save_post' ), 99, 2 );
 	}
 
 
@@ -125,5 +127,83 @@ class WPM_Posts extends \WPM_Object {
 		if ( is_singular() ) {
 			$wp_query->queried_object = wpm_translate_object( $wp_query->queried_object );
 		}
+	}
+
+
+	/**
+	 * Update post with translation
+	 *
+	 * @param $data
+	 * @param $postarr
+	 *
+	 * @return mixed
+	 */
+	public function save_post( $data, $postarr ) {
+
+		$config                             = wpm_get_config();
+		$posts_config                       = $config['post_types'];
+		$posts_config                       = apply_filters( 'wpm_posts_config', $posts_config );
+		$posts_config[ $data['post_type'] ] = apply_filters( "wpm_post_{$data['post_type']}_config", isset( $posts_config[ $data['post_type'] ] ) ? $posts_config[ $data['post_type'] ] : null );
+
+		if ( ! isset( $posts_config[ $data['post_type'] ] ) || is_null( $posts_config[ $data['post_type'] ] ) ) {
+			return $data;
+		}
+
+		if ( 'attachment' !== $data['post_type'] ) {
+
+			if ( 'trash' == $postarr['post_status'] ) {
+				return $data;
+			}
+
+			if ( isset( $_GET['action'] ) && 'untrash' == $_GET['action'] ) {
+				return $data;
+			}
+		}
+
+		$post_id = isset( $data['ID'] ) ? wpm_clean( $data['ID'] ) : ( isset( $postarr['ID'] ) ? wpm_clean( $postarr['ID'] ) : 0 );
+
+		if ( ! $post_id ) {
+			return $data;
+		}
+
+		$post_config = $posts_config[ $data['post_type'] ];
+
+		$default_fields = array(
+			'post_title'   => array(),
+			'post_excerpt' => array(),
+			'post_content' => array(),
+		);
+
+		$post_config = wpm_array_merge_recursive( $default_fields, $post_config );
+
+		foreach ( $data as $key => $content ) {
+			if ( isset( $post_config[ $key ] ) ) {
+
+				$post_field_config = apply_filters( "wpm_post_{$data['post_type']}_field_{$key}_config", $post_config[ $key ], $content );
+				$post_field_config = apply_filters( "wpm_post_field_{$key}_config", $post_field_config, $content );
+				$old_value         = get_post_field( $key, $post_id, 'edit' );
+
+				$old_value    = wpm_value_to_ml_array( $old_value );
+				$value        = wpm_set_language_value( $old_value, $data[ $key ], $post_field_config );
+				$data[ $key ] = wpm_ml_value_to_string( $value );
+			}
+		}
+
+		if ( 'nav_menu_item' === $data['post_type'] ) {
+			$screen = get_current_screen();
+
+			if ( 'POST' === $_SERVER['REQUEST_METHOD'] && 'update' === $_POST['action'] && 'nav-menus' === $screen->id ) {
+				// hack to get wp to create a post object when too many properties are empty
+				if ( '' === $data['post_title'] && '' === $data['post_content'] ) {
+					$data['post_content'] = ' ';
+				}
+			}
+		}
+
+		if ( empty( $data['post_name'] ) ) {
+			$data['post_name'] = sanitize_title( wpm_translate_value( $data['post_title'] ) );
+		}
+
+		return $data;
 	}
 }
