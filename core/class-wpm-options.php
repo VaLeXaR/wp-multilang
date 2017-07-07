@@ -32,7 +32,7 @@ class WPM_Options {
 
 		foreach ( $options_config as $key => $option ) {
 			add_filter( "option_{$key}", 'wpm_translate_value', 0 );
-			add_filter( "pre_update_option_{$option}", array( $this, 'wpm_update_option' ), 99, 3 );
+			add_filter( "pre_update_option_{$key}", array( $this, 'wpm_update_option' ), 99, 3 );
 		}
 	}
 
