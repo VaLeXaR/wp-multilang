@@ -26,22 +26,20 @@ class WPM_Admin_Menus {
 	 * Add language switcher to admin
 	 *
 	 * @param \WP_Admin_Bar $wp_admin_bar
-	 *
-	 * @return bool
 	 */
 	public function admin_bar_menu( \WP_Admin_Bar $wp_admin_bar ) {
 
 		$user_id = get_current_user_id();
 
-		if ( ! $user_id ) {
-			return false;
+		if ( ! $user_id || get_user_meta( $user_id, 'locale', true ) ) {
+			return;
 		}
 
 		$locale = get_locale();
 		$languages = wpm_get_languages();
 
 		if ( count( $languages ) <= 1 ) {
-			return false;
+			return;
 		}
 
 		$options = wpm_get_options();

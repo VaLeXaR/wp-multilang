@@ -22,6 +22,7 @@ class WPM_Admin_Taxonomies {
 
 	private $description = array();
 
+
 	/**
 	 * Constructor.
 	 */
@@ -32,6 +33,8 @@ class WPM_Admin_Taxonomies {
 		add_action( 'created_term', array( $this, 'insert_description' ), 99, 3 );
 		add_filter( 'wp_update_term_data', array( $this, 'update_term' ), 99, 4 );
 		add_action( 'edited_term_taxonomy', array( $this, 'update_description' ), 0, 2 );
+		add_action( 'created_term', array( $this, 'save_taxonomy_fields' ), 10, 3 );
+		add_action( 'edit_term', array( $this, 'save_taxonomy_fields' ), 10, 3 );
 	}
 
 
@@ -47,6 +50,8 @@ class WPM_Admin_Taxonomies {
 			if ( ! is_null( $taxonomy_config ) ) {
 				add_filter( "manage_edit-{$taxonomy}_columns", array( $this, 'language_columns' ) );
 				add_filter( "manage_{$taxonomy}_custom_column", array( $this, 'render_language_column' ), 0, 3 );
+				add_action( "{$taxonomy}_add_form_fields", array( $this, 'add_taxonomy_fields' ) );
+				add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_taxonomy_fields' ), 10 );
 			}
 		}
 	}
@@ -75,6 +80,7 @@ class WPM_Admin_Taxonomies {
 
 		return $term;
 	}
+
 
 	/**
 	 * Translate inserted term
@@ -233,6 +239,7 @@ class WPM_Admin_Taxonomies {
 		$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_taxonomy_id' => $tt_id ) );
 	}
 
+
 	/**
 	 * Define custom columns for post_types.
 	 *
@@ -260,6 +267,7 @@ class WPM_Admin_Taxonomies {
 
 		return $columns;
 	}
+
 
 	/**
 	 * Output language columns for taxonomies.
@@ -294,5 +302,113 @@ class WPM_Admin_Taxonomies {
 		}
 
 		return $columns;
+	}
+
+
+	/**
+	 * Add languages to insert term form
+	 */
+	public function add_taxonomy_fields() {
+
+		$screen = get_current_screen();
+
+		if ( empty( $screen->taxonomy ) ) {
+			return;
+		}
+
+		$taxonomy                       = $screen->taxonomy;
+		$config                         = wpm_get_config();
+		$taxonomies_config              = $config['taxonomies'];
+		$taxonomies_config              = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
+		$taxonomies_config[ $taxonomy ] = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
+
+		if ( ! isset( $config['taxonomies'][ $taxonomy ] ) || is_null( $config['taxonomies'][ $taxonomy ] ) ) {
+			return;
+		}
+
+		$languages = wpm_get_options();
+		$i = 0;
+		?>
+		<div class="form-field term-languages">
+			<p><?php _e( 'Show term only in:', 'wpm' ); ?></p>
+			<?php foreach ( $languages as $language ) { if ( ! $language['enable'] ) continue; ?>
+				<label><input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $language['slug']; ?>" value="<?php esc_attr_e( $language['slug'] ); ?>"><?php echo $language['name']; ?></label>
+				<?php $i++; } ?>
+		</div>
+		<?php
+	}
+
+
+	/**
+	 * Add languages to edit term form
+	 *
+	 * @param $term
+	 */
+	public function edit_taxonomy_fields( $term ) {
+
+		$screen = get_current_screen();
+
+		if ( empty( $screen->taxonomy ) ) {
+			return;
+		}
+
+		$taxonomy                       = $screen->taxonomy;
+		$config                         = wpm_get_config();
+		$taxonomies_config              = $config['taxonomies'];
+		$taxonomies_config              = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
+		$taxonomies_config[ $taxonomy ] = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
+
+		if ( ! isset( $config['taxonomies'][ $taxonomy ] ) || is_null( $config['taxonomies'][ $taxonomy ] ) ) {
+			return;
+		}
+
+		$term_languages = get_term_meta( $term->term_id, '_languages', true );
+
+		if ( ! is_array( $term_languages ) ) {
+			$term_languages = array();
+		}
+
+		$languages = wpm_get_options();
+		$i = 0;
+		?>
+		<tr class="form-field">
+			<th scope="row" valign="top"><?php _e( 'Show term only in:', 'wpm' ); ?></th>
+			<td>
+				<?php foreach ( $languages as $language ) { if ( ! $language['enable'] ) continue; ?>
+					<label><input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $language['slug']; ?>" value="<?php esc_attr_e( $language['slug'] ); ?>"<?php if ( in_array( $language['slug'], $term_languages ) ) { ?> checked="checked"<?php } ?>><?php echo $language['name']; ?></label><br>
+					<?php $i++; } ?>
+			</td>
+		</tr>
+		<?php
+	}
+
+
+	/**
+	 * save_taxonomy_fields function.
+	 *
+	 * @param mixed $term_id Term ID being saved
+	 * @param mixed $tt_id
+	 * @param string $taxonomy
+	 */
+	public function save_taxonomy_fields( $term_id, $tt_id = '', $taxonomy = '' ) {
+
+		if ( empty( $taxonomy ) ) {
+			return;
+		}
+
+		$config                         = wpm_get_config();
+		$taxonomies_config              = $config['taxonomies'];
+		$taxonomies_config              = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
+		$taxonomies_config[ $taxonomy ] = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
+
+		if ( ! isset( $config['taxonomies'][ $taxonomy ] ) || is_null( $config['taxonomies'][ $taxonomy ] ) ) {
+			return;
+		}
+
+		if ( isset( $_POST['wpm_languages'] ) ) {
+			update_term_meta( $term_id, '_languages', wpm_clean( $_POST['wpm_languages'] ) );
+		} else {
+			delete_term_meta( $term_id, '_languages' );
+		}
 	}
 }

@@ -221,7 +221,6 @@ class WPM_Setup {
 			if ( is_admin() && ! wp_doing_ajax() ) {
 				wpm_setcookie( 'language', $lang, time() + MONTH_IN_SECONDS );
 			}
-
 		} else {
 
 			if ( is_admin() && ! wp_doing_ajax() ) {
@@ -457,6 +456,7 @@ class WPM_Setup {
 			}
 			$prefered_languages[ str_replace( '-', '_', $match[1] ) ] = $pr;
 		}
+
 		arsort( $prefered_languages, SORT_NUMERIC );
 
 		$languages = $this->get_languages();
