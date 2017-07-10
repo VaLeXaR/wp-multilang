@@ -163,7 +163,7 @@ class WPM_AJAX {
 		}
 
 		foreach ( $files_delete as $file ) {
-			@unlink( $file );
+			wp_delete_file( $file );
 		}
 
 		die();

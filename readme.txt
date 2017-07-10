@@ -139,6 +139,10 @@ Compatible with multisite not tested.
 
 == Changelog ==
 
+= 1.4.11 =
++ add support editing by REST-API
+* fix set language by AJAX request
+
 = 1.4.10 =
 + add filer by config for separating posts
 + add separating settings for taxonomies

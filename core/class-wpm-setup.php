@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WPM_Setup
  * @package  WPM\Core
  * @author   VaLeXaR
- * @version  1.2.4
+ * @version  1.2.5
  */
 class WPM_Setup {
 
@@ -208,12 +208,20 @@ class WPM_Setup {
 
 		$path = wp_parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
 
+		if ( wp_doing_ajax() ) {
+			$referrer = wp_get_raw_referer();
+
+			if ( $referrer && ( strpos( $referrer, admin_url() ) === false ) ) {
+				$path = wp_parse_url( $referrer, PHP_URL_PATH );
+			}
+		}
+
 		if ( preg_match( '!^/([a-z]{2})(/|$)!i', $path, $match ) ) {
 			$this->user_language = $match[1];
 		}
 
-		if ( isset( $_GET['lang'] ) ) {
-			$lang = wpm_clean( $_GET['lang'] );
+		if ( isset( $_REQUEST['lang'] ) ) {
+			$lang = wpm_clean( $_REQUEST['lang'] );
 			if ( in_array( $lang, $languages ) ) {
 				$this->user_language = $lang;
 			}
@@ -222,7 +230,6 @@ class WPM_Setup {
 				wpm_setcookie( 'language', $lang, time() + MONTH_IN_SECONDS );
 			}
 		} else {
-
 			if ( is_admin() && ! wp_doing_ajax() ) {
 				if ( isset( $_COOKIE['language'] ) ) {
 					$lang = wpm_clean( $_COOKIE['language'] );
@@ -250,7 +257,7 @@ class WPM_Setup {
 			$user_language = $this->get_user_language();
 			if ( ( $value === $user_language ) ) {
 				$locale = $key;
-				if ( $key === $default_locale && ! is_admin() && ! isset( $_GET['lang'] ) ) {
+				if ( $key === $default_locale && ! is_admin() && ! isset( $_REQUEST['lang'] ) ) {
 					wp_redirect( home_url( str_replace( '/' . $user_language . '/', '/', $_SERVER['REQUEST_URI'] ) ) );
 					exit;
 				}
@@ -317,7 +324,7 @@ class WPM_Setup {
 	 */
 	public function set_home_url( $value ) {
 
-		if ( ( is_admin() && ! wp_doing_ajax() ) ) {
+		if ( ( is_admin() && ! wp_doing_ajax() ) || ! did_action( 'wpm_init' ) ) {
 			return $value;
 		}
 

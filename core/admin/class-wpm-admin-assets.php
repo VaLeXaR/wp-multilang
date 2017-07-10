@@ -60,14 +60,8 @@ class WPM_Admin_Assets {
 		);
 		wp_localize_script( 'wpm_main', 'wpm_params', $main_params );
 
-		wp_register_script( 'wpm_language_switcher', wpm_asset_path( 'scripts/language-switcher' . $suffix . '.js' ), array(
-			'jquery',
-			'underscore',
-		), WPM_VERSION );
-		wp_register_script( 'wpm_language_switcher_customizer', wpm_asset_path( 'scripts/customizer' . $suffix . '.js' ), array(
-			'jquery',
-			'underscore',
-		), WPM_VERSION );
+		wp_register_script( 'wpm_language_switcher', wpm_asset_path( 'scripts/language-switcher' . $suffix . '.js' ), array( 'wp-util' ), WPM_VERSION );
+		wp_register_script( 'wpm_language_switcher_customizer', wpm_asset_path( 'scripts/customizer' . $suffix . '.js' ), array( 'wp-util' ), WPM_VERSION );
 
 		wp_register_script( 'wpm_translator', wpm_asset_path( 'scripts/translator' . $suffix . '.js' ), array(), WPM_VERSION );
 

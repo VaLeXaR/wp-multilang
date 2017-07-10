@@ -162,10 +162,6 @@ class WPM_Posts extends \WPM_Object {
 
 		$post_id = isset( $data['ID'] ) ? wpm_clean( $data['ID'] ) : ( isset( $postarr['ID'] ) ? wpm_clean( $postarr['ID'] ) : 0 );
 
-		if ( ! $post_id ) {
-			return $data;
-		}
-
 		$post_config = $posts_config[ $data['post_type'] ];
 
 		$default_fields = array(
@@ -181,9 +177,14 @@ class WPM_Posts extends \WPM_Object {
 
 				$post_field_config = apply_filters( "wpm_post_{$data['post_type']}_field_{$key}_config", $post_config[ $key ], $content );
 				$post_field_config = apply_filters( "wpm_post_field_{$key}_config", $post_field_config, $content );
-				$old_value         = get_post_field( $key, $post_id, 'edit' );
 
-				$old_value    = wpm_value_to_ml_array( $old_value );
+				if ( $post_id ) {
+					$old_value = get_post_field( $key, $post_id, 'edit' );
+					$old_value    = wpm_value_to_ml_array( $old_value );
+				} else {
+					$old_value = '';
+				}
+
 				$value        = wpm_set_language_value( $old_value, $data[ $key ], $post_field_config );
 				$data[ $key ] = wpm_ml_value_to_string( $value );
 			}

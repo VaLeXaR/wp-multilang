@@ -42,36 +42,61 @@ if ( defined( 'GUTENBERG_VERSION' ) ) {
 
 			wp_add_inline_script(
 				'wp-editor', "
-				(function ($) {
+				(function( $ ) {
 				  'use strict';
-				
-				  $(function () {
-				
-				    if ($('#wpm-language-switcher').length === 0) {
-				      var language_switcher = _.template($('#tmpl-wpm-ls').text());
-				      $('#components-panel__header р2').after(language_switcher);
-				    }
-				
+				  
+				  $(function() {
+					wp.api.init().done( function() {
+					if ($('#wpm-language-switcher').length === 0) {
+					      var language_switcher = wp.template( 'wpm-ls' );
+					      $('.components-panel__header h2').after(language_switcher);
+					    }
+				    });
 				  });
-				})(jQuery);
+				})( jQuery, wp );
 			");
 
-			wpm_enqueue_js( "
-				(function ($) {
-				  'use strict';
-				
-				  $(function () {
-				
-				    if ($('#wpm-language-switcher').length === 0) {
-				      var language_switcher = _.template($('#tmpl-wpm-ls').text());
-				      $('#gutenberg__editor').after(language_switcher);
-				    }
-				
-				  });
-				})(jQuery);
-			" );
+			add_action( 'admin_head', function () {
+				?>
+				<style>
+					.wpm-language-switcher {
+						position: relative;
+						left: 0 !important;
+						height: 100%;
+					}
+
+					.wpm-language-switcher .lang-main {
+						padding-left: 10px;
+						padding-right: 10px;
+						line-height: 54px;
+						height: 100%;
+					}
+
+					.lang-dropdown {
+						position: absolute;
+						top: 100%;
+						left: 0;
+						background-color: #fff;
+						z-index: 1;
+					}
+
+					.lang-dropdown ul {
+						list-style: none;
+					}
+
+					.lang-dropdown ul a {
+						padding: 10px 10px;
+						display: block;
+					}
+
+					.lang-dropdown ul a:hover, .lang-dropdown ul a:focus {
+						background-color: #ccc;
+					}
+				</style>
+				<?php
+			} );
 		}
 	}
 
-//	new WPM_Gutenberg();
+	new WPM_Gutenberg();
 }
