@@ -205,19 +205,26 @@ class WPM_Setup {
 
 		$languages      = $this->get_languages();
 		$default_locale = $this->get_default_locale();
+		$url            = '';
 
-		$path = wp_parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
+		if ( ! is_admin() ) {
+			$url = $_SERVER['REQUEST_URI'];
+		}
 
 		if ( wp_doing_ajax() ) {
 			$referrer = wp_get_raw_referer();
 
 			if ( $referrer && ( strpos( $referrer, admin_url() ) === false ) ) {
-				$path = wp_parse_url( $referrer, PHP_URL_PATH );
+				$url = $referrer;
 			}
 		}
 
-		if ( preg_match( '!^/([a-z]{2})(/|$)!i', $path, $match ) ) {
-			$this->user_language = $match[1];
+		if ( $url ) {
+			$path = wp_parse_url( $url, PHP_URL_PATH );
+
+			if ( preg_match( '!^/([a-z]{2})(/|$)!i', $path, $match ) ) {
+				$this->user_language = $match[1];
+			}
 		}
 
 		if ( isset( $_REQUEST['lang'] ) ) {
@@ -359,8 +366,10 @@ class WPM_Setup {
 	public function load_vendor() {
 		$vendor_path = ( dirname( WPM_PLUGIN_FILE ) . '/core/vendor/' );
 		foreach ( glob( $vendor_path . '*.php' ) as $vendor_file ) {
-			if ( apply_filters( 'wpm_load_vendor_file', basename( $vendor_file ), true ) ) {
-				require_once( $vendor_file );
+			if ( apply_filters( 'wpm_load_vendor_file_' . basename( $vendor_file, '.php' ), true ) ) {
+				if ( $vendor_file && is_readable( $vendor_file ) ) {
+					include_once( $vendor_file );
+				}
 			}
 		}
 	}

@@ -104,9 +104,15 @@ class WPM_Config {
 	static public function parse_config_files() {
 		$core_config = dirname( WPM_PLUGIN_FILE ) . '/core-config.json';
 		array_unshift( self::$config_files, $core_config );
+
 		foreach ( self::$config_files as $file ) {
-			$config       = is_object( $file ) ? $file->config : json_decode( file_get_contents( $file ), true );
-			self::$config = wpm_array_merge_recursive( self::$config, $config );
+			if ( $file && is_readable( $file ) ) {
+				$config = json_decode( file_get_contents( $file ), true );
+
+				if ( is_array( $config ) && ! empty( $config ) ) {
+					self::$config = wpm_array_merge_recursive( self::$config, $config );
+				}
+			}
 		}
 	}
 }
