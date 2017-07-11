@@ -141,6 +141,7 @@ Compatible with multisite not tested.
 
 = 1.4.11 =
 + add support editing by REST-API
++ add blank for support Gutenberg Editor
 * fix set language by AJAX request
 
 = 1.4.10 =
