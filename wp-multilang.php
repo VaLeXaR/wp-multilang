@@ -8,7 +8,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:     wpm
  * Domain Path:     /languages
- * Version:         1.4.10
+ * Version:         1.4.11
  *
  * @package  WPM
  * @category Core
@@ -42,7 +42,7 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		 *
 		 * @var string
 		 */
-		public $version = '1.4.10';
+		public $version = '1.4.11';
 
 		/**
 		 * The single instance of the class.

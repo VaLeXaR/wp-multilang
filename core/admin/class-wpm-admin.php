@@ -55,7 +55,6 @@ class WPM_Admin {
 		new WPM_Admin_Posts();
 		new WPM_Admin_Taxonomies();
 		new WPM_Admin_Settings();
-		new WPM_Admin_Options();
 		new WPM_Admin_Widgets();
 		new WPM_Admin_Assets();
 		new WPM_Admin_Customizer();

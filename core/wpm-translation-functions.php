@@ -307,10 +307,6 @@ function wpm_set_language_value( $localize_array, $value, $config = null, $lang 
 	$languages = wpm_get_languages();
 	$new_value = array();
 
-	if ( ! $lang && isset( $_POST['lang'] ) && in_array( $_POST['lang'], $languages, true ) ) {
-		$lang = wpm_clean( $_POST['lang'] );
-	}
-
 	if ( ! $lang || ! in_array( $lang, $languages, true ) ) {
 		$lang = wpm_get_language();
 	}
@@ -417,14 +413,14 @@ function wpm_untranslate_post( $post ) {
  */
 function wpm_is_ml_array( $array ) {
 
-	if ( ! is_array( $array ) ) {
+	if ( ! is_array( $array ) || wp_is_numeric_array( $array ) ) {
 		return false;
 	}
 
 	$languages = wpm_get_all_languages();
 
 	foreach ( $array as $key => $item ) {
-		if ( ! is_string( $key ) || ! in_array( $key, $languages, true ) ) {
+		if ( ! in_array( $key, $languages, true ) ) {
 			return false;
 		}
 	}

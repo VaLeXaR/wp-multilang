@@ -4,9 +4,9 @@
   $(function () {
 
     if ($('#wpm-language-switcher').length === 0) {
-      var language_switcher = _.template($('#tmpl-wpm-ls').text());
+      var language_switcher = wp.template( 'wpm-ls' );
       $('#customize-header-actions').append(language_switcher);
     }
 
   });
-})(jQuery);
+})(jQuery, wp);

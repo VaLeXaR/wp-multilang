@@ -160,3 +160,5 @@ function wpm_set_time_limit( $limit = 0 ) {
 		@set_time_limit( $limit );
 	}
 }
+
+add_filter( 'wpm_load_vendor_class_wpm_gutenberg', '__return_false' );
