@@ -366,7 +366,7 @@ class WPM_Setup {
 	public function load_vendor() {
 		$vendor_path = ( dirname( WPM_PLUGIN_FILE ) . '/core/vendor/' );
 		foreach ( glob( $vendor_path . '*.php' ) as $vendor_file ) {
-			if ( apply_filters( 'wpm_load_vendor_file_' . str_replace( 'class-', '', basename( $vendor_file, '.php' ) ), true ) ) {
+			if ( apply_filters( 'wpm_load_vendor_' . str_replace( '-', '_', basename( $vendor_file, '.php' ) ), true ) ) {
 				if ( $vendor_file && is_readable( $vendor_file ) ) {
 					include_once( $vendor_file );
 				}
