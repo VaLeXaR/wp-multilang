@@ -211,10 +211,9 @@ class WPM_Setup {
 			$url = $_SERVER['REQUEST_URI'];
 		}
 
-		if ( wp_doing_ajax() ) {
-			$referrer = wp_get_raw_referer();
+		if ( wp_doing_ajax() && ( $referrer = wp_get_raw_referer() ) ) {
 
-			if ( $referrer && ( strpos( $referrer, admin_url() ) === false ) ) {
+			if ( strpos( $referrer, admin_url() ) === false ) {
 				$url = $referrer;
 			}
 		}
