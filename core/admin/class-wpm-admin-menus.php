@@ -108,7 +108,7 @@ class WPM_Admin_Menus {
 	}
 
 	/**
-	 * Output menu links.
+	 * Output menu link.
 	 */
 	public function nav_menu_links() {
 		global $_nav_menu_placeholder;
@@ -138,6 +138,7 @@ class WPM_Admin_Menus {
 		<?php
 	}
 
+
 	/**
 	 * Add custom fields to menu item.
 	 *
@@ -154,7 +155,7 @@ class WPM_Admin_Menus {
 		$key   = sprintf( 'menu-item-%s', $_key );
 		$id    = sprintf( 'edit-%s-%s', $key, $item_id );
 		$name  = sprintf( '%s[%s]', $_key, $item_id );
-		$value = get_post_meta( $item_id, '_languages_show', true );
+		$value = get_post_meta( $item_id, '_menu_item_languages_show', true );
 		$class = sprintf( 'field-%s', $_key );
 		$options = array(
 			'both' => __( 'Both', 'wpm' ),
@@ -174,7 +175,17 @@ class WPM_Admin_Menus {
 	}
 
 
+	/**
+	 * Add language settings params
+	 *
+	 * @param $menu_id
+	 * @param $menu_item_db_id
+	 */
 	public function update_nav_menu_item( $menu_id, $menu_item_db_id ) {
+
+		if( 'update' !== $_REQUEST['action'] ) {
+			return;
+		}
 
 		check_admin_referer( 'update-nav_menu', 'update-nav-menu-nonce' );
 
@@ -182,6 +193,6 @@ class WPM_Admin_Menus {
 			return;
 		}
 
-		update_post_meta( $menu_item_db_id, '_languages_show', $_POST['language_show'][ $menu_item_db_id ] );
+		update_post_meta( $menu_item_db_id, '_menu_item_languages_show', $_POST['language_show'][ $menu_item_db_id ] );
 	}
 }
