@@ -27,6 +27,25 @@ class WPM_Menus {
 		add_filter( 'wp_setup_nav_menu_item', array( $this, 'translate_menu_url' ) );
 		add_filter( 'customize_nav_menu_available_items', array( $this, 'filter_menus' ), 0 );
 		add_filter( 'customize_nav_menu_searched_items', array( $this, 'filter_menus' ), 0 );
+		add_filter( 'wp_nav_menu_items', function( $items ){
+			$menu_items = explode("\n", $items);
+//			d($menu_items);
+			/*foreach ( $items as $key => $item ) {
+				if ( '#wpm-languages' === $item->url ) {
+					$languages = wpm_get_languages();
+					$options = wpm_get_options();
+					foreach ( $languages as $language ) {
+						$new_item = clone $item;
+						d($new_item);
+
+					}
+
+					unset( $items[ $key ] );
+				}
+			}*/
+
+			return $items;
+		});
 	}
 
 	/**
