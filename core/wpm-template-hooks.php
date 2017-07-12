@@ -20,10 +20,15 @@ add_filter( 'document_title_parts', 'wpm_translate_value', 0 );
  * Add meta params to 'head'
  */
 function wpm_set_meta_languages() {
-	$languages   = wpm_get_languages();
 	$current_url = wpm_get_current_url();
-	foreach ( $languages as $language ) {
-		printf( '<link rel="alternate" hreflang="%s" href="%s"/>', esc_attr( $language ), esc_url( wpm_translate_url( $current_url, $language ) ) );
+	foreach ( wpm_get_languages() as $locale => $language ) {
+		if ( get_locale() != $locale ) {
+			printf( '<link rel="alternate" hreflang="%s" href="%s"/>', esc_attr( str_replace( '_', '-', strtolower( $locale ) ) ), esc_url( wpm_translate_url( $current_url, $language ) ) );
+		}
+
+		if ( wpm_get_default_locale() == $locale ) {
+			printf( '<link rel="alternate" hreflang="x-default" href="%s"/>', esc_url( wpm_translate_url( $current_url, $language ) ) );
+		}
 	}
 }
 

@@ -83,7 +83,6 @@ class WPM_Admin_Settings {
 			<thead>
 			<tr>
 				<th class="wpm-lang-order"><?php esc_attr_e( 'Order', 'wpm' ); ?></th>
-				<th class="wpm-lang-default"><?php esc_attr_e( 'Default language', 'wpm' ); ?></th>
 				<th class="wpm-lang-status"><?php esc_attr_e( 'Enable', 'wpm' ); ?></th>
 				<th class="wpm-lang-locale"><?php esc_attr_e( 'Locale', 'wpm' ); ?></th>
 				<th class="wpm-lang-slug"><?php esc_attr_e( 'Slug *', 'wpm' ); ?></th>
@@ -100,9 +99,6 @@ class WPM_Admin_Settings {
 				} ?>
 				<tr>
 					<td class="wpm-lang-order"><?php esc_attr_e( $i ); ?></td>
-					<td class="wpm-lang-status">
-						<input type="radio" name="WPLANG" value="<?php echo ( 'en_US' === $key ) ? '' : $key ; ?>"<?php checked( $key, wpm_get_default_locale() ); ?>>
-					</td>
 					<td class="wpm-lang-status">
 						<input type="hidden" name="wpm_languages[<?php echo $key; ?>][enable]" value="0">
 						<input name="wpm_languages[<?php echo $key; ?>][enable]" type="checkbox" value="1"<?php checked( $language['enable'] ); ?> title="<?php esc_attr_e( 'Enable', 'wpm' ); ?>"<?php if ( wpm_get_default_locale() === $key ) { ?> disabled="disabled"<?php } ?>>
@@ -162,7 +158,6 @@ class WPM_Admin_Settings {
 			<tfoot>
 			<tr>
 				<th class="wpm-lang-order"><?php esc_attr_e( 'Order', 'wpm' ); ?></th>
-				<th class="wpm-lang-default"><?php esc_attr_e( 'Default language', 'wpm' ); ?></th>
 				<th class="wpm-lang-status"><?php esc_attr_e( 'Enable', 'wpm' ); ?></th>
 				<th class="wpm-lang-locale"><?php esc_attr_e( 'Locale', 'wpm' ); ?></th>
 				<th class="wpm-lang-slug"><?php esc_attr_e( 'Slug *', 'wpm' ); ?></th>
@@ -174,6 +169,43 @@ class WPM_Admin_Settings {
 		</table>
 
 		<table class="form-table">
+			<tr>
+				<th scope="row">
+					<label for="wpm-install-language">
+						<?php esc_html_e( 'Site Language' ); ?>
+					</label>
+				</th>
+				<td>
+					<?php
+					$enable_locales = array_keys( $languages );
+					$translations = wp_get_available_translations();
+
+					foreach ( $languages as $key => $language ) {
+						if ( ! isset( $translations[ $key ] ) &&  'en_US' !== $key ) {
+							$translations[ $key ] = array(
+								'language'    => $key,
+								'native_name' => $language['name'],
+								'iso'         => array( $language['slug'] ),
+							);
+						}
+					}
+
+					$locale = wpm_get_default_locale();
+					if ( ! in_array( $locale, $enable_locales ) ) {
+						$locale = '';
+					}
+
+					wp_dropdown_languages( array(
+						'name'         => 'WPLANG',
+						'id'           => 'wpm-install-language',
+						'selected'     => $locale,
+						'languages'    => array_diff( $enable_locales, array( 'en_US' ) ),
+						'translations' => $translations,
+						'show_available_translations' => ( ! is_multisite() || is_super_admin() ) && wp_can_install_language_pack(),
+					) );
+					?>
+				</td>
+			</tr>
 			<tr>
 				<th scope="row"><?php esc_html_e( 'Translating settings', 'wpm' ); ?></th>
 				<td>
@@ -283,7 +315,7 @@ class WPM_Admin_Settings {
 	private function set_default_settings( $language ) {
 
 		$default = array(
-			'name'   => '',
+			'name'   => __( 'No name', 'wpm' ),
 			'slug'   => '',
 			'flag'   => '',
 			'enable' => 1,
