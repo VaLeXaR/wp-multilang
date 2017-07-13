@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.8
-Stable tag: 1.4.12
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -138,6 +138,11 @@ Compatible with multisite not tested.
 5. Post edit page
 
 == Changelog ==
+
+= 1.5.0 =
+* add language items in menu
+* add filters in vendor scripts
+* fix language for AJAX requests in set user locale
 
 = 1.4.12 =
 * fix install language settings
