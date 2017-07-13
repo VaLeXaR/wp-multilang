@@ -15,7 +15,7 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 	 * @package  WPM\Core\Vendor
 	 * @category Vendor
 	 * @author   VaLeXaR
-	 * @since    1.2.0
+	 * @since    1.2.1
 	 */
 	class WPM_AIOSP {
 
@@ -46,7 +46,7 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 			$post_types = get_post_types();
 
 			foreach ( $post_types as $post_type ) {
-				$config[ "aiosp_{$post_type}_title_format" ] = array();
+				$config["aiosp_{$post_type}_title_format"] = array();
 			}
 
 			return $config;
@@ -69,10 +69,13 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 				return $check;
 			}
 
-			$config = wpm_get_config();
+			$config                     = wpm_get_config();
+			$posts_config               = $config['post_types'];
+			$posts_config               = apply_filters( 'wpm_posts_config', $posts_config );
+			$post_type                  = get_post_type( $object_id );
+			$posts_config[ $post_type ] = apply_filters( "wpm_post_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
 
-
-			if ( ! isset( $config['post_types'][ get_post_type( $object_id ) ] ) ) {
+			if ( ! isset( $posts_config[ $post_type ] ) || is_null( $posts_config[ $post_type ] ) ) {
 				return $check;
 			}
 
@@ -104,10 +107,13 @@ if ( defined( 'AIOSEOP_VERSION' ) ) {
 		public function update_old_fields( $check, $object_id, $meta_key, $meta_value ) {
 			global $wpdb;
 
-			$config = wpm_get_config();
+			$config                     = wpm_get_config();
+			$posts_config               = $config['post_types'];
+			$posts_config               = apply_filters( 'wpm_posts_config', $posts_config );
+			$post_type                  = get_post_type( $object_id );
+			$posts_config[ $post_type ] = apply_filters( "wpm_post_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
 
-
-			if ( ! isset( $config['post_types'][ get_post_type( $object_id ) ] ) ) {
+			if ( ! isset( $posts_config[ $post_type ] ) || is_null( $posts_config[ $post_type ] ) ) {
 				return $check;
 			}
 
