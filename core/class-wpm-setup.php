@@ -501,7 +501,7 @@ class WPM_Setup {
 	 * @param $meta_key
 	 * @param $single
 	 *
-	 * @return array
+	 * @return array|string
 	 */
 	public function set_user_locale( $check, $object_id, $meta_key, $single ) {
 		if ( 'locale' == $meta_key ) {
