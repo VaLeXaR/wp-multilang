@@ -27,6 +27,7 @@ class WPM_Menus {
 		add_filter( 'wp_setup_nav_menu_item', array( $this, 'translate_menu_url' ) );
 		add_filter( 'customize_nav_menu_available_items', array( $this, 'filter_menus' ), 0 );
 		add_filter( 'customize_nav_menu_searched_items', array( $this, 'filter_menus' ), 0 );
+		add_filter( 'wp_nav_menu_items', array( $this, 'add_languages_to_menu' ) );
 	}
 
 	/**
@@ -173,5 +174,70 @@ class WPM_Menus {
 		}
 
 		return $menu_item;
+	}
+
+	/**
+	 * Add languages to menu
+	 *
+	 * @param $items
+	 *
+	 * @return string
+	 */
+	public function add_languages_to_menu( $items ) {
+
+		$menu_items = explode( "\n", $items );
+
+		foreach ( $menu_items as $key => $item ) {
+
+			if ( strstr( $item, '#wpm-languages' ) ) {
+
+				$doc = new \DOMDocument();
+				// start libxml error managent
+				// modify state
+				$libxml_previous_state = libxml_use_internal_errors( true );
+				@$doc->loadHTML( '<?xml encoding="' . strtolower( get_bloginfo( 'charset' ) ) . '" ?>' . $item );
+				// handle errors
+				libxml_clear_errors();
+				// restore
+				libxml_use_internal_errors( $libxml_previous_state );
+				// end libxml error management
+
+				$list_item   = $doc->getElementsByTagName( 'li' )->item( 0 );
+				$list_id     = $list_item->getAttribute( 'id' );
+				$menu_id     = preg_replace( '/[^0-9]+/', '', $list_id );
+				$link        = $doc->getElementsByTagName( 'a' )->item( 0 );
+				$link_text   = $link->textContent;
+				$languages   = wpm_get_languages();
+				$options     = wpm_get_options();
+				$current_url = wpm_get_current_url();
+				$new_items   = array();
+				$show_type   = get_post_meta( $menu_id, '_menu_item_languages_show', true );
+
+				foreach ( $languages as $locale => $language ) {
+
+					$language_string = '';
+
+					if ( ( ( 'flag' === $show_type ) || ( 'both' === $show_type ) ) && ( $options[ $locale ]['flag'] ) ) {
+						$language_string = '<img src="' . esc_url( WPM()->flag_dir() . $options[ $locale ]['flag'] . '.png' ) . '" alt="' . esc_attr( $options[ $locale ]['name'] ) . '">';
+					}
+
+					if ( ( 'name' === $show_type ) || ( 'both' === $show_type ) ) {
+						$language_string .= '<span>' . esc_attr( $options[ $locale ]['name'] ) . '</span>';
+					}
+
+					$new_item    = str_replace( $link_text, $language_string, $item );
+					$new_item    = str_replace( $list_id, 'menu-item-language-' . $language, $new_item );
+					$new_items[] = str_replace( '#wpm-languages', esc_url( wpm_translate_url( $current_url, $language ) ), $new_item );
+				}
+
+				$menu_items = wpm_array_insert_after( $menu_items, $key, $new_items );
+				unset( $doc );
+				unset( $menu_items[ $key ] );
+			}// End if().
+		}// End foreach().
+
+		$items = implode( "\n", $menu_items );
+
+		return $items;
 	}
 }

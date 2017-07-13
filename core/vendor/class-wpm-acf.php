@@ -16,7 +16,7 @@ if ( class_exists( 'acf' ) ) {
 	 * @package  WPM\Core\Vendor
 	 * @category Vendor
 	 * @author   VaLeXaR
-	 * @version  1.0.5
+	 * @version  1.0.6
 	 */
 	class WPM_Acf {
 
@@ -152,15 +152,25 @@ if ( class_exists( 'acf' ) ) {
 			switch ( $info['type'] ) {
 
 				case 'post':
-					if ( ! isset( $config['post_types'][ get_post_type( $info['id'] ) ] ) ) {
+					$posts_config               = $config['post_types'];
+					$posts_config               = apply_filters( 'wpm_posts_config', $posts_config );
+					$post_type                  = get_post_type( $info['id'] );
+					$posts_config[ $post_type ] = apply_filters( "wpm_post_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
+
+					if ( ! isset( $posts_config[ $post_type ] ) || is_null( $posts_config[ $post_type ] ) ) {
 						return $value;
 					}
 
 					break;
 
 				case 'term':
-					$term = get_term( $info['id'] );
-					if ( ! isset( $config['taxonomies'][ $term->taxonomy ] ) ) {
+					$taxonomies_config              = $config['taxonomies'];
+					$taxonomies_config              = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
+					$term                           = get_term( $info['id'] );
+					$taxonomy                       = $term->taxonomy;
+					$taxonomies_config[ $taxonomy ] = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
+
+					if ( ! isset( $config['taxonomies'][ $taxonomy ] ) ) {
 						return $value;
 					}
 			}

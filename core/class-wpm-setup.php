@@ -211,10 +211,16 @@ class WPM_Setup {
 			$url = $_SERVER['REQUEST_URI'];
 		}
 
-		if ( wp_doing_ajax() && ( $referrer = wp_get_raw_referer() ) ) {
+		if ( wp_doing_ajax() ) {
+			$referrer = wp_get_raw_referer();
 
-			if ( strpos( $referrer, admin_url() ) === false ) {
-				$url = $referrer;
+			if ( $referrer ) {
+				if ( strpos( $referrer, admin_url() ) === false ) {
+					$url = $referrer;
+					add_filter( 'get_user_metadata', array( $this, 'set_user_locale' ), 10, 4 );
+				}
+			} else {
+				add_filter( 'get_user_metadata', array( $this, 'set_user_locale' ), 10, 4 );
 			}
 		}
 
@@ -485,5 +491,30 @@ class WPM_Setup {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Set user locale for AJAX front requests
+	 *
+	 * @param $check
+	 * @param $object_id
+	 * @param $meta_key
+	 * @param $single
+	 *
+	 * @return array|string
+	 */
+	public function set_user_locale( $check, $object_id, $meta_key, $single ) {
+		if ( 'locale' == $meta_key ) {
+			$locales = array_flip( $this->languages );
+			$locale = $locales[ $this->user_language ];
+
+			if ( $single ) {
+				$check = $locale;
+			} else {
+				$check = array( $locale );
+			}
+		}
+
+		return $check;
 	}
 }
