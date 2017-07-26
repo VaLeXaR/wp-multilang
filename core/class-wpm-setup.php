@@ -495,7 +495,7 @@ class WPM_Setup {
 
 	/**
 	 * Set user locale for AJAX front requests
-	 *
+
 	 * @param $check
 	 * @param $object_id
 	 * @param $meta_key
