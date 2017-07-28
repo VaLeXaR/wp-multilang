@@ -180,7 +180,7 @@ class WPM_Posts extends \WPM_Object {
 
 				if ( $post_id ) {
 					$old_value = get_post_field( $key, $post_id, 'edit' );
-					$old_value    = wpm_value_to_ml_array( $old_value );
+					$old_value = wpm_value_to_ml_array( $old_value );
 				} else {
 					$old_value = '';
 				}

@@ -51,7 +51,7 @@ class WPM_Gutenberg {
 					wp.api.init().done( function() {
 					if ($('#wpm-language-switcher').length === 0) {
 					      var language_switcher = wp.template( 'wpm-ls' );
-					      $('.components-panel__header h2').after(language_switcher);
+					      $('.editor-header .editor-tools').prepend(language_switcher);
 					    }
 				    });
 				  });
@@ -64,14 +64,15 @@ class WPM_Gutenberg {
 				.wpm-language-switcher {
 					position: relative;
 					left: 0 !important;
-					height: 100%;
 				}
 
 				.wpm-language-switcher .lang-main {
 					padding-left: 10px;
 					padding-right: 10px;
-					line-height: 54px;
-					height: 100%;
+				}
+
+				.wpm-language-switcher .lang-main img {
+					top: 2px;
 				}
 
 				.lang-dropdown {
