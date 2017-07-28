@@ -9,36 +9,37 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( defined( 'NEWSLETTER_VERSION' ) ) {
+if ( ! defined( 'NEWSLETTER_VERSION' ) ) {
+	return;
+}
+
+/**
+ * Class WPM_Newsletter
+ * @package  WPM\Core\Vendor
+ * @category Vendor
+ * @author   VaLeXaR
+ * @since    1.2.0
+ */
+class WPM_Newsletter {
 
 	/**
-	 * Class WPM_Newsletter
-	 * @package  WPM\Core\Vendor
-	 * @category Vendor
-	 * @author   VaLeXaR
-	 * @since    1.2.0
+	 * WPM_Newsletter constructor.
 	 */
-	class WPM_Newsletter {
-
-		/**
-		 * WPM_Newsletter constructor.
-		 */
-		public function __construct() {
-			add_filter( 'wpm_option_newsletter_profile_config', array( $this, 'add_options_config' ) );
-			add_filter( 'newsletter_message_subject', 'wpm_translate_string' );
-			add_filter( 'newsletter_message_html', 'wpm_translate_string' );
-		}
-
-
-		public function add_options_config( $config ) {
-			for ( $i = 1; $i <= 20; $i ++ ) {
-				$config[ "profile_{$i}" ]             = array();
-				$config[ "profile_{$i}_placeholder" ] = array();
-			}
-
-			return $config;
-		}
+	public function __construct() {
+		add_filter( 'wpm_option_newsletter_profile_config', array( $this, 'add_options_config' ) );
+		add_filter( 'newsletter_message_subject', 'wpm_translate_string' );
+		add_filter( 'newsletter_message_html', 'wpm_translate_string' );
 	}
 
-	new WPM_Newsletter();
+
+	public function add_options_config( $config ) {
+		for ( $i = 1; $i <= 20; $i ++ ) {
+			$config[ "profile_{$i}" ]             = array();
+			$config[ "profile_{$i}_placeholder" ] = array();
+		}
+
+		return $config;
+	}
 }
+
+new WPM_Newsletter();
