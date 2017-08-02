@@ -21,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class WPM_Admin_Posts {
 
+
 	/**
 	 * Constructor.
 	 */
@@ -59,6 +60,7 @@ class WPM_Admin_Posts {
 
 	}
 
+
 	/**
 	 * Fix for translate post in edit post page
 	 * use get_post
@@ -67,6 +69,7 @@ class WPM_Admin_Posts {
 		global $post;
 		$post = wpm_translate_object( $post );
 	}
+
 
 	/**
 	 * Define language columns for post_types.
@@ -82,6 +85,7 @@ class WPM_Admin_Posts {
 
 		return wpm_array_insert_after( $columns, 'title', array( 'languages' => __( 'Languages', 'wpm' ) ) );
 	}
+
 
 	/**
 	 * Output language columns for post types.
@@ -111,6 +115,7 @@ class WPM_Admin_Posts {
 		}
 	}
 
+
 	/**
 	 * Translate preview url for posts
 	 *
@@ -129,6 +134,9 @@ class WPM_Admin_Posts {
 	}
 
 
+	/**
+	 * Add indicator for editing post
+	 */
 	public function add_lang_indicator() {
 		$options   = wpm_get_options();
 		$languages = wpm_get_all_languages();
