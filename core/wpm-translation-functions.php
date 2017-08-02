@@ -297,7 +297,7 @@ function wpm_ml_value_to_string( $value ) {
  * Set new value to multidimensional array with multilingual arrays by config
  *
  * @param        $localize_array
- * @param        $value
+ * @param mixed  $value
  * @param null   $config
  * @param string $lang
  *
@@ -327,6 +327,11 @@ function wpm_set_language_value( $localize_array, $value, $config = null, $lang 
 		}
 	} else {
 		if ( ! is_null( $config ) && ! is_bool( $value ) ) {
+
+			if ( wpm_is_ml_string( $value ) ) {
+				$value = wpm_translate_string( $value );
+			}
+
 			if ( wpm_is_ml_array( $localize_array ) ) {
 				$new_value = $localize_array;
 				$new_value[ $lang ] = $value;
@@ -341,7 +346,7 @@ function wpm_set_language_value( $localize_array, $value, $config = null, $lang 
 		} else {
 			$new_value = $value;
 		}
-	}
+	}// End if().
 
 	return $new_value;
 }
