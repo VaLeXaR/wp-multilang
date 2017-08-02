@@ -2,10 +2,7 @@
 $languages = wpm_get_languages();
 $locales   = array_flip( $languages );
 $lang      = wpm_get_language();
-if ( count( $languages ) <= 1 ) {
-	return;
-}
-$options = wpm_get_options();
+$options   = wpm_get_options();
 ?>
 <script id="tmpl-wpm-ls" type="text/template">
 	<div id="wpm-language-switcher" class="wpm-language-switcher customize-controls-close">

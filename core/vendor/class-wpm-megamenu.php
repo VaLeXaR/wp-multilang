@@ -34,6 +34,12 @@ class WPM_Megamenu {
 	 * Add language switcher
 	 */
 	public function add_language_switcher() {
+
+		$languages = wpm_get_languages();
+		if ( count( $languages ) <= 1 ) {
+			return;
+		}
+
 		$screen    = get_current_screen();
 		$screen_id = $screen ? $screen->id : '';
 

@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.8
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -138,6 +138,12 @@ Compatible with multisite not tested.
 5. Post edit page
 
 == Changelog ==
+
+= 1.5.1 =
+* fix save ml string for translate
+* change priority for lang meta boxes
+* fix error in JS if enabled one language
+* add support Gutenberg
 
 = 1.5.0 =
 * add language items in menu
