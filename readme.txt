@@ -144,6 +144,7 @@ Compatible with multisite not tested.
 * change priority for lang meta boxes
 * fix error in JS if enabled one language
 * add support Gutenberg
+* add lang indicator for editing post
 
 = 1.5.0 =
 * add language items in menu

@@ -27,6 +27,7 @@ class WPM_Admin_Posts {
 	public function __construct() {
 		add_action( 'dbx_post_advanced', array( $this, 'translate_post' ), 0 );
 		add_action( 'admin_init', array( $this, 'init' ) );
+		add_action( 'post_submitbox_misc_actions', array( $this, 'add_lang_indicator' ) );
 		add_filter( 'preview_post_link', array( $this, 'translate_post_link' ), 0 );
 		new WPM_Admin_Meta_Boxes();
 	}
@@ -126,4 +127,21 @@ class WPM_Admin_Posts {
 
 		return $link;
 	}
+
+
+	public function add_lang_indicator() {
+		$options   = wpm_get_options();
+		$languages = wpm_get_all_languages();
+		$locales   = array_flip( $languages );
+		$lang      = wpm_get_language();
+		?>
+		<div class="misc-pub-section language">
+			<?php esc_html_e( 'Current edit language:', 'wpm' ); ?>
+			<?php if ( $options[ $locales[ $lang ] ]['flag'] ) { ?>
+				<img src="<?php echo esc_url( WPM()->flag_dir() . $options[ $locales[ $lang ] ]['flag'] . '.png' ); ?>">
+			<?php } else { ?>
+				<b><?php echo $options[ $locales[ $lang ] ]['name']; ?></b>
+			<?php } ?>
+		</div>
+	<?php }
 }
