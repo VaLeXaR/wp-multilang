@@ -28,7 +28,7 @@ class WPM_Admin_Menus {
 			add_filter( 'wp_edit_nav_menu_walker', array( $this, 'filter_walker' ) );
 		}
 
-		add_action( 'wp_nav_menu_item_custom_fields', array( $this, 'menu_item_languages_setting' ), 10, 2 );
+		add_action( 'wp_nav_menu_item_custom_fields', array( $this, 'menu_item_languages_setting' ), 5, 2 );
 		add_action( 'wp_update_nav_menu_item', array( $this, 'update_nav_menu_item' ), 10, 2 );
 	}
 

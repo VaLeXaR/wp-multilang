@@ -23,7 +23,7 @@ class WPM_Admin_Edit_Menus {
 		add_filter( 'manage_nav-menus_columns', array( $this, 'nav_menu_manage_columns' ), 11 );
 		add_action( 'wp_update_nav_menu_item', array( $this, 'wp_update_nav_menu_item_action' ), 10, 2 );
 		add_filter( 'wp_setup_nav_menu_item', array( $this, 'setup_nav_menu_item' ) );
-		add_action( 'wp_nav_menu_item_custom_fields', array( $this, 'menu_item_custom_fields' ), 10, 2 );
+		add_action( 'wp_nav_menu_item_custom_fields', array( $this, 'menu_item_custom_fields' ), 15, 2 );
 	}
 
 	/**

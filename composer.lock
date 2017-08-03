@@ -9,16 +9,16 @@
     "packages-dev": [
         {
             "name": "kint-php/kint",
-            "version": "2.1",
+            "version": "2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kint-php/kint.git",
-                "reference": "17ec4f2393560ea857f7e72ada106f489cb1e277"
+                "reference": "1a1104729f10277b06d7db742d3c98d1881d4d7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kint-php/kint/zipball/17ec4f2393560ea857f7e72ada106f489cb1e277",
-                "reference": "17ec4f2393560ea857f7e72ada106f489cb1e277",
+                "url": "https://api.github.com/repos/kint-php/kint/zipball/1a1104729f10277b06d7db742d3c98d1881d4d7e",
+                "reference": "1a1104729f10277b06d7db742d3c98d1881d4d7e",
                 "shasum": ""
             },
             "require": {
@@ -63,7 +63,7 @@
                 "kint",
                 "php"
             ],
-            "time": "2017-05-13T17:24:30+00:00"
+            "time": "2017-07-03T20:08:05+00:00"
         }
     ],
     "aliases": [],

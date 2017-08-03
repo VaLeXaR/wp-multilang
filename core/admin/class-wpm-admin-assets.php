@@ -74,6 +74,12 @@ class WPM_Admin_Assets {
 		wp_localize_script( 'wpm_translator', 'wpm_translator_params', $translator_params );
 
 		if ( 'customize' === $screen_id ) {
+
+			$languages = wpm_get_languages();
+			if ( count( $languages ) <= 1 ) {
+				return;
+			}
+
 			wp_enqueue_script( 'wpm_language_switcher_customizer' );
 			add_action( 'admin_print_footer_scripts', function () {
 				echo wpm_get_template_html( 'language-switcher-customizer.php' );
@@ -115,6 +121,12 @@ class WPM_Admin_Assets {
 	 * Display language switcher for edit posts, taxonomies, options
 	 */
 	public function set_language_switcher() {
+
+		$languages = wpm_get_languages();
+		if ( count( $languages ) <= 1 ) {
+			return;
+		}
+
 		wp_enqueue_script( 'wpm_language_switcher' );
 
 		add_action( 'admin_head', function () {

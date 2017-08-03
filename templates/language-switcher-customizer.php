@@ -2,16 +2,15 @@
 $languages = wpm_get_languages();
 $locales   = array_flip( $languages );
 $lang      = wpm_get_language();
-if ( count( $languages ) <= 1 ) {
-	return;
-}
-$options = wpm_get_options();
+$options   = wpm_get_options();
 ?>
 <script id="tmpl-wpm-ls" type="text/template">
 	<div id="wpm-language-switcher" class="wpm-language-switcher customize-controls-close">
 		<div class="lang-main">
 			<?php if ( $options[ $locales[ $lang ] ]['flag'] ) { ?>
 				<img src="<?php echo esc_url( WPM()->flag_dir() . $options[ $locales[ $lang ] ]['flag'] . '.png' ); ?>">
+			<?php } else { ?>
+				<?php esc_html_e( $options[ $locales[ $lang ] ]['name'] ); ?>
 			<?php } ?>
 		</div>
 		<div class="lang-dropdown">
@@ -25,6 +24,8 @@ $options = wpm_get_options();
 							<?php if ( $options[ $key ]['flag'] ) { ?>
 								<img src="<?php echo esc_url( WPM()->flag_dir() . $options[ $key ]['flag'] . '.png' ); ?>"
 								     alt="<?php esc_attr_e( $options[ $key ]['name'] ); ?>">
+							<?php } else { ?>
+								<?php esc_html_e( $options[ $key ]['name'] ); ?>
 							<?php } ?>
 						</a>
 					</li>

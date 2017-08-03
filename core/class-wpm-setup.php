@@ -495,7 +495,7 @@ class WPM_Setup {
 
 	/**
 	 * Set user locale for AJAX front requests
-	 *
+
 	 * @param $check
 	 * @param $object_id
 	 * @param $meta_key
@@ -505,8 +505,7 @@ class WPM_Setup {
 	 */
 	public function set_user_locale( $check, $object_id, $meta_key, $single ) {
 		if ( 'locale' == $meta_key ) {
-			$locales = array_flip( $this->languages );
-			$locale = $locales[ $this->user_language ];
+			$locale = get_locale();
 
 			if ( $single ) {
 				$check = $locale;

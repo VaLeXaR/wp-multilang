@@ -117,7 +117,7 @@ function wpm_get_translations() {
  * @return string
  */
 function wpm_get_language() {
-	if ( is_admin() ) {
+	if ( is_admin() || ( defined( 'REST_REQUEST' ) && 'GET' !== $_SERVER['REQUEST_METHOD'] ) ) {
 		$languages = wpm_get_languages();
 
 		if ( wp_doing_ajax() && ( $referrer = wp_get_raw_referer() ) ) {
