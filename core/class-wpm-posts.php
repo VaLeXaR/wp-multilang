@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WPM_Posts
  * @package  WPM\Core
  * @author   VaLeXaR
- * @version  1.1.2
+ * @version  1.1.3
  */
 class WPM_Posts extends \WPM_Object {
 
@@ -38,12 +38,16 @@ class WPM_Posts extends \WPM_Object {
 		add_filter( 'the_title', 'wpm_translate_string', 0 );
 		add_filter( 'the_content', 'wpm_translate_string', 0 );
 		add_filter( 'the_excerpt', 'wpm_translate_string', 0 );
+		add_filter( 'esc_html', 'wpm_translate_string', 0 );
+		add_filter( 'attribute_escape', 'wpm_translate_string', 0 );
+		add_filter( 'esc_textarea', 'wpm_translate_string', 0 );
 		add_filter( "get_{$this->object_type}_metadata", array( $this, 'get_meta_field' ), 0, 3 );
 		add_filter( "update_{$this->object_type}_metadata", array( $this, 'update_meta_field' ), 99, 5 );
 		add_filter( "add_{$this->object_type}_metadata", array( $this, 'add_meta_field' ), 99, 5 );
 		add_action( 'wp', array( $this, 'translate_queried_object' ), 0 );
 		add_filter( 'wp_insert_post_data', array( $this, 'save_post' ), 99, 2 );
 		add_filter( 'wp_insert_attachment_data', array( $this, 'save_post' ), 99, 2 );
+		add_filter( 'wp_get_attachment_link', array( $this, 'translate_attachment_link' ), 0 );
 	}
 
 
@@ -206,5 +210,19 @@ class WPM_Posts extends \WPM_Object {
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Translate attachment link
+	 *
+	 * @param string $link
+	 *
+	 * @return string
+	 */
+	public function translate_attachment_link( $link ) {
+		$text            = strip_tags( $link );
+		$translated_text = wpm_translate_string( $text );
+
+		return str_replace( $text, $translated_text, $link );
 	}
 }
