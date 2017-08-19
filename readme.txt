@@ -141,6 +141,7 @@ Compatible with multisite not tested.
 
 = 1.5.2 =
 * add filters for escaping functions
+* add filter for translate attachment link
 
 = 1.5.1 =
 * fix save ml string for translate

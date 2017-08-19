@@ -47,6 +47,7 @@ class WPM_Posts extends \WPM_Object {
 		add_action( 'wp', array( $this, 'translate_queried_object' ), 0 );
 		add_filter( 'wp_insert_post_data', array( $this, 'save_post' ), 99, 2 );
 		add_filter( 'wp_insert_attachment_data', array( $this, 'save_post' ), 99, 2 );
+		add_filter( 'wp_get_attachment_link', array( $this, 'translate_attachment_link' ), 0 );
 	}
 
 
@@ -211,8 +212,17 @@ class WPM_Posts extends \WPM_Object {
 		return $data;
 	}
 
+	/**
+	 * Translate attachment link
+	 *
+	 * @param string $link
+	 *
+	 * @return string
+	 */
+	public function translate_attachment_link( $link ) {
+		$text            = strip_tags( $link );
+		$translated_text = wpm_translate_string( $text );
 
-	public function format_attachment_link( $link, $id, $size, $permalink, $icon, $text ) {
-		return "<a href='" . esc_url( $url ) . "'>$link_text</a>";
+		return str_replace( $text, $translated_text, $link );
 	}
 }
