@@ -428,7 +428,7 @@ class WPM_Setup {
 
 					if ( $browser_language && ( $browser_language !== $this->user_language ) ) {
 
-						$base_url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'];
+						$base_url = set_url_scheme( $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'], is_ssl() ? 'https' : 'http' );
 
 						$b_home_url = $base_url . '/' . $browser_language;
 

@@ -134,14 +134,3 @@ function wpm_get_language() {
 
 	return $lang;
 }
-
-/**
- * Get current url from $_SERVER
- *
- * @return string
- */
-function wpm_get_current_url() {
-	$url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-
-	return $url;
-}

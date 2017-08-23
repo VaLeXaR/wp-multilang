@@ -161,4 +161,13 @@ function wpm_set_time_limit( $limit = 0 ) {
 	}
 }
 
-//add_filter( 'wpm_load_vendor_class_wpm_gutenberg', '__return_false' );
+/**
+ * Get current url from $_SERVER
+ *
+ * @return string
+ */
+function wpm_get_current_url() {
+	$url = set_url_scheme( $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], is_ssl() ? 'https' : 'http' );
+
+	return $url;
+}
