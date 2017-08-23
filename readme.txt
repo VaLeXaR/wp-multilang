@@ -141,6 +141,7 @@ Compatible with multisite not tested.
 
 = 1.5.3 =
 * fix switch language url for ssl
+* fix edit email in newsletter
 
 = 1.5.2 =
 * add filters for escaping functions
