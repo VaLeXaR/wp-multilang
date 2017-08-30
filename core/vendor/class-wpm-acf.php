@@ -186,7 +186,7 @@ class WPM_Acf {
 		}
 
 		remove_filter( "acf/load_value", 'wpm_translate_value', 0 );
-		$old_value = get_field( $field['name'], $post_id );
+		$old_value = get_field( $field['name'], $post_id, false );
 		add_filter( "acf/load_value", 'wpm_translate_value', 0 );
 		$old_value = wpm_value_to_ml_array( $old_value );
 		$new_value = wpm_set_language_value( $old_value, $value, $acf_field_config );
