@@ -112,7 +112,7 @@ function wpm_translate_string( $string, $language = '' ) {
 	$language       = wpm_get_language();
 	$default_locale = wpm_get_default_locale();
 
-	if ( empty( $strings[ $language ] ) && get_option( 'wpm_show_untranslated_strings' ) ) {
+	if ( ( '' == $strings[ $language ] ) && get_option( 'wpm_show_untranslated_strings' ) ) {
 		return $strings[ $languages[ $default_locale ] ];
 	}
 
@@ -250,7 +250,7 @@ function wpm_ml_array_to_string( $strings ) {
 
 	$languages = wpm_get_all_languages();
 	foreach ( $strings as $key => $value ) {
-		if ( in_array( $key, $languages, true ) && ! empty( $value ) ) {
+		if ( in_array( $key, $languages, true ) && ( '' != $value ) ) {
 			if ( wpm_is_ml_string( $value ) ) {
 				$string = wpm_translate_string( $string );
 			}
