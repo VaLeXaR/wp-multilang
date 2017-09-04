@@ -415,9 +415,9 @@ class WPM_Setup {
 
 		if ( ! is_admin() && ! defined( 'WP_CLI' ) ) {
 
-			if ( ! isset( $_COOKIE['wpm_was_here'] ) ) {
+			if ( ! isset( $_COOKIE['wpm_language'] ) ) {
 
-				wpm_setcookie( 'wpm_was_here', true, time() + YEAR_IN_SECONDS );
+				wpm_setcookie( 'wpm_language', $this->user_language, time() + YEAR_IN_SECONDS );
 				$redirect_to_browser_language = apply_filters( 'wpm_redirect_to_browser_language', true );
 
 				if ( $redirect_to_browser_language ) {
@@ -446,7 +446,12 @@ class WPM_Setup {
 						exit;
 					}
 				}
-			}
+			} else {
+				if ( $_COOKIE['wpm_language'] != $this->user_language ) {
+					do_action( 'wpm_changed_language' );
+					wpm_setcookie( 'wpm_language', $this->user_language, time() + YEAR_IN_SECONDS );
+				}
+			} // End if().
 		} // End if().
 	}
 
