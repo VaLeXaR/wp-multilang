@@ -30,7 +30,7 @@ class WPM_Widgets {
 	 * @return bool|array
 	 */
 	public function widget_display( $instance ) {
-		if ( isset( $instance['languages'] ) && is_array( $instance['languages'] ) && ! in_array( wpm_get_user_language(), $instance['languages'] ) ) {
+		if ( isset( $instance['languages'] ) && is_array( $instance['languages'] ) && ! in_array( wpm_get_language(), $instance['languages'] ) ) {
 			return false;
 		}
 

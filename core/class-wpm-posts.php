@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WPM_Posts
  * @package  WPM\Core
  * @author   VaLeXaR
- * @version  1.1.3
+ * @version  1.1.4
  */
 class WPM_Posts extends \WPM_Object {
 
@@ -89,11 +89,7 @@ class WPM_Posts extends \WPM_Object {
 				}
 			}
 
-			$lang = get_query_var( 'lang' );
-
-			if ( ! $lang && ! $query->is_main_query() ) {
-				$lang = wpm_get_user_language();
-			}
+			$lang = wpm_get_language();
 
 			if ( $lang ) {
 				$lang_meta_query = array(

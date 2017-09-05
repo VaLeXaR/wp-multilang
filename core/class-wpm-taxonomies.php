@@ -89,11 +89,8 @@ class WPM_Taxonomies extends \WPM_Object {
 				}
 			}
 
-			$lang = get_query_var( 'lang' );
 
-			if ( ! $lang ) {
-				$lang = wpm_get_user_language();
-			}
+			$lang = wpm_get_language();
 
 			if ( $lang ) {
 				$lang_meta_query = array(

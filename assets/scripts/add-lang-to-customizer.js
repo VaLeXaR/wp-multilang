@@ -29,7 +29,6 @@ var WPMLang = (function( api, $ ) {
     }
 
     api.bind( 'ready', function(){
-      // console.log( home.url );
       api.previewer.previewUrl.set( home.url );
     });
   };

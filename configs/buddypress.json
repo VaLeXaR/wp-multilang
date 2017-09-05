@@ -1,0 +1,10 @@
+{
+  "post_types": {
+    "bp-email": {}
+  },
+  "options": {
+    "bp_email_options": {
+      "footer_text": {}
+    }
+  }
+}
