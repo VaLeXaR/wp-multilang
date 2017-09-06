@@ -30,7 +30,7 @@ class WPM_BuddyPress {
 		add_action( 'init', array( $this, 'set_user_lang' ) );
 		add_action( 'wpm_changed_language', array( $this, 'set_user_lang_on_change' ) );
 		add_action( 'bp_send_email', array( $this, 'translate_email' ), 10, 3 );
-		add_filter( 'bp_activity_get_meta', 'wpm_translate_value' );
+		add_filter( 'bp_activity_get_meta', array($this, 'translate_meta_value') );
 		add_filter( 'bp_get_activity_content_body', 'wpm_translate_string' );
 	}
 
@@ -63,6 +63,15 @@ class WPM_BuddyPress {
 
 	public function set_user_lang_on_change() {
 		update_user_meta( get_current_user_id(), 'wpm_lang', wpm_get_language() );
+	}
+
+
+	public function translate_meta_value( $value ) {
+		if ( ! is_admin() ) {
+			$value = wpm_translate_value( $value );
+		}
+
+		return $value;
 	}
 
 	/**
