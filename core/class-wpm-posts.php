@@ -89,9 +89,19 @@ class WPM_Posts extends \WPM_Object {
 				}
 			}
 
-			$lang = wpm_get_language();
+			/*if ( isset( $query->query_vars['lang'] ) && ! empty( $query->query_vars['lang'] ) ) {
+				$lang = $query->query_vars['lang'];
+			} else {
+				$lang = wpm_get_language();
+			}*/
 
-			if ( $lang ) {
+			$lang = get_query_var( 'lang' );
+
+			if ( ! $lang && ! $query->is_main_query() ) {
+				$lang = wpm_get_user_language();
+			}
+
+			if ( 'all' !== $lang ) {
 				$lang_meta_query = array(
 					array(
 						'relation' => 'OR',
