@@ -7,6 +7,7 @@
  * @package     WPM/Core/Admin
  * @class       WPM_Admin_Customizer
  * @since       1.4.9
+ * @version     1.0.1
  */
 
 namespace WPM\Core\Admin;
@@ -34,20 +35,8 @@ class WPM_Admin_Customizer {
 		$suffix    = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$src = wpm_asset_path( '/scripts/add-lang-to-customizer' . $suffix . '.js' );
 		wp_enqueue_script( 'wpm-add-lang-to-customizer', $src, array( 'customize-controls' ), WPM_VERSION , true );
-		$url = add_query_arg( 'lang', wpm_get_language(), get_home_url() );
-		$this->add_lang_to_template( $url );
-	}
-
-	/**
-	 * Set the previewer url
-	 *
-	 * @param string $url
-	 */
-	public function add_lang_to_template( $url ) {
-		wp_add_inline_script(
-			'wpm-add-lang-to-customizer',
-			sprintf( 'WPMLang.init( %s );', wp_json_encode( array( 'url' => $url ) ) ),
-			'after'
-		);
+		$base_url = apply_filters( 'wpm_customizer_url', get_home_url() );
+		$url = add_query_arg( 'lang', wpm_get_language(), $base_url );
+		wp_add_inline_script( 'wpm-add-lang-to-customizer', sprintf( 'WPMLang.init( %s );', wp_json_encode( array( 'url' => $url ) ) ) );
 	}
 }

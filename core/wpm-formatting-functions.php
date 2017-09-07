@@ -56,34 +56,6 @@ function wpm_array_merge_recursive( array & $array1, array & $array2 ) {
 }
 
 /**
- * Trim a string and append a suffix.
- *
- * @param  string  $string
- * @param  integer $chars
- * @param  string  $suffix
- *
- * @return string
- */
-function wpm_trim_string( $string, $chars = 200, $suffix = '...' ) {
-	if ( strlen( $string ) > $chars ) {
-		$string = mb_substr( $string, 0, ( $chars - mb_strlen( $suffix ) ) ) . $suffix;
-	}
-
-	return $string;
-}
-
-/**
- * Sanitize terms from an attribute text based.
- *
- * @param  string $term
- *
- * @return string
- */
-function wpm_sanitize_term_text_based( $term ) {
-	return trim( wp_unslash( strip_tags( $term ) ) );
-}
-
-/**
  * Diff multidimensional array
  *
  * @param $array1

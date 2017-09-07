@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.8.1
-Stable tag: 1.5.5
+Stable tag: 1.6.0
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -47,6 +47,7 @@ WP Multilang compatible with plugins:
 * Max Mega Menu
 * MasterSlider
 * WP-PageNavi
+* BuddyPress
 
 Supports configuration via json.
 
@@ -139,6 +140,12 @@ Compatible with multisite not tested.
 5. Post edit page
 
 == Changelog ==
+
+= 1.6.0 =
+* add support BuddyPress(translate emails, activity stream, custom user fields)
+* add filter for customizer url
+* add param 'lang' for use in post and term query
+* small fixes
 
 = 1.5.5 =
 * fix update cart when switched language in WooCommerce

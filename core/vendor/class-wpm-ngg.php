@@ -52,7 +52,7 @@ class WPM_NGG {
 				foreach ( $data as $key => $value ) {
 					if ( ! wpm_is_ml_string( $value ) ) {
 						$old_value     = wpm_string_to_ml_array( $album->{$fields[ $key ]} );
-						$value         = wpm_set_language_value( $old_value, $value, array() );
+						$value         = wpm_set_language_value( $old_value, $value );
 						$_POST[ $key ] = wpm_ml_value_to_string( $value );
 					}
 				}
@@ -80,7 +80,7 @@ class WPM_NGG {
 						foreach ( $data as $key => $value ) {
 							if ( ! wpm_is_ml_string( $value ) ) {
 								$old_value     = wpm_string_to_ml_array( $entity->$key );
-								$value         = wpm_set_language_value( $old_value, $value, array() );
+								$value         = wpm_set_language_value( $old_value, $value );
 								$_POST[ $key ] = wpm_ml_value_to_string( $value );
 							}
 						}
@@ -106,7 +106,7 @@ class WPM_NGG {
 					foreach ( $data as $key => $value ) {
 						if ( ! wpm_is_ml_string( $value ) ) {
 							$old_value                       = wpm_string_to_ml_array( $old_image->$key );
-							$value                           = wpm_set_language_value( $old_value, $value, array() );
+							$value                           = wpm_set_language_value( $old_value, $value );
 							$_POST['images'][ $pid ][ $key ] = wpm_ml_value_to_string( $value );
 						}
 					}

@@ -1,0 +1,13 @@
+{
+  "post_types": {
+    "bp-email": {}
+  },
+  "options": {
+    "bp_email_options": {
+      "footer_text": {}
+    }
+  },
+  "admin_pages": [
+    "users_page_bp-profile-setup"
+  ]
+}

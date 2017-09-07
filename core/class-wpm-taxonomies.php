@@ -89,13 +89,13 @@ class WPM_Taxonomies extends \WPM_Object {
 				}
 			}
 
-			$lang = get_query_var( 'lang' );
-
-			if ( ! $lang ) {
-				$lang = wpm_get_user_language();
+			if ( isset( $args['lang'] ) && ! empty( $args['lang'] ) ) {
+				$lang = $args['lang'];
+			} else {
+				$lang = wpm_get_language();
 			}
 
-			if ( $lang ) {
+			if ( 'all' != $lang ) {
 				$lang_meta_query = array(
 					array(
 						'relation' => 'OR',
@@ -287,10 +287,10 @@ class WPM_Taxonomies extends \WPM_Object {
 			return;
 		}
 
-		$old_value       = $this->description['old'];
-		$strings         = wpm_value_to_ml_array( $old_value );
-		$value           = wpm_set_language_value( $strings, $value, $taxonomies_config[ $taxonomy ] );
-		$description     = wpm_ml_value_to_string( $value );
+		$old_value   = $this->description['old'];
+		$strings     = wpm_value_to_ml_array( $old_value );
+		$value       = wpm_set_language_value( $strings, $value, $taxonomies_config[ $taxonomy ] );
+		$description = wpm_ml_value_to_string( $value );
 
 		$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_taxonomy_id' => $tt_id ) );
 	}

@@ -123,7 +123,7 @@ class WPM_AIOSP {
 		if ( isset( $this->meta_fields[ $meta_key ] ) && $this->meta_fields[ $meta_key ] ) {
 
 			$old_value  = wpm_value_to_ml_array( $this->meta_fields[ $meta_key ] );
-			$meta_value = wpm_set_language_value( $old_value, $meta_value, array() );
+			$meta_value = wpm_set_language_value( $old_value, $meta_value );
 			$meta_value = wpm_ml_value_to_string( $meta_value );
 
 

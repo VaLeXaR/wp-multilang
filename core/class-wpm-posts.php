@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WPM_Posts
  * @package  WPM\Core
  * @author   VaLeXaR
- * @version  1.1.3
+ * @version  1.1.4
  */
 class WPM_Posts extends \WPM_Object {
 
@@ -89,13 +89,19 @@ class WPM_Posts extends \WPM_Object {
 				}
 			}
 
+			/*if ( isset( $query->query_vars['lang'] ) && ! empty( $query->query_vars['lang'] ) ) {
+				$lang = $query->query_vars['lang'];
+			} else {
+				$lang = wpm_get_language();
+			}*/
+
 			$lang = get_query_var( 'lang' );
 
 			if ( ! $lang && ! $query->is_main_query() ) {
 				$lang = wpm_get_user_language();
 			}
 
-			if ( $lang ) {
+			if ( 'all' !== $lang ) {
 				$lang_meta_query = array(
 					array(
 						'relation' => 'OR',
