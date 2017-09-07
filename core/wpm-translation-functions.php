@@ -303,7 +303,7 @@ function wpm_ml_value_to_string( $value ) {
  *
  * @return array|bool
  */
-function wpm_set_language_value( $localize_array, $value, $config = null, $lang = '' ) {
+function wpm_set_language_value( $localize_array, $value, $config = array(), $lang = '' ) {
 	$languages = wpm_get_languages();
 	$new_value = array();
 

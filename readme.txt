@@ -141,9 +141,10 @@ Compatible with multisite not tested.
 == Changelog ==
 
 = 1.6.0 =
-* add support BuddyPress(translate emails, activity stream)
+* add support BuddyPress(translate emails, activity stream, custom user fields)
 * add filter for customizer url
 * add param 'lang' for use in post and term query
+* small fixes
 
 = 1.5.5 =
 * fix update cart when switched language in WooCommerce
