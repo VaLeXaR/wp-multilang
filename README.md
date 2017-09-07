@@ -1,4 +1,4 @@
-# WP Multilang
+# [WP Multilang](https://wordpress.org/plugins/wp-multilang/)
 
 Multilingual plugin for WordPress.
 
@@ -39,6 +39,7 @@ Features of the plugin WP Multilang:
 * Max Mega Menu
 * MasterSlider
 * WP-PageNavi
+* BuddyPress
 
 Supports configuration via json.
 
