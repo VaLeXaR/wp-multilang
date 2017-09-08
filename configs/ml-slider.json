@@ -1,0 +1,19 @@
+{
+  "post_types": {
+    "ml-slide": {
+      "post_title": null,
+      "post_content": null
+    },
+    "ml-slider": {
+      "post_content": null,
+      "post_excerpt": null
+    }
+  },
+  "post_fields": {
+    "ml-slider_title": {},
+    "ml-slider_url": {}
+  },
+  "admin_pages": [
+    "toplevel_page_metaslider"
+  ]
+}

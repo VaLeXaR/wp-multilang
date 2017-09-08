@@ -48,6 +48,8 @@ WP Multilang compatible with plugins:
 * MasterSlider
 * WP-PageNavi
 * BuddyPress
+* Meta Slider
+* TablePress
 
 Supports configuration via json.
 
@@ -143,6 +145,8 @@ Compatible with multisite not tested.
 
 = 1.6.0 =
 * add support BuddyPress(translate emails, activity stream, custom user fields)
+* add support TablePress
+* add support Meta Slider
 * add filter for customizer url
 * add param 'lang' for use in post and term query
 * small fixes

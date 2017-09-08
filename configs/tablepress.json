@@ -1,0 +1,11 @@
+{
+  "post_types": {
+    "tablepress_table": {
+      "post_content": null
+    }
+  },
+  "admin_pages": [
+    "tablepress_list",
+    "tablepress_edit"
+  ]
+}
