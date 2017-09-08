@@ -57,7 +57,7 @@ class WPM_Tablepress {
 		$value                = json_decode( stripslashes_from_strings_only( $data['post_content'] ) );
 		$new_value            = wpm_set_language_value( $strings, $value, $options );
 		$new_value            = wpm_ml_value_to_string( $new_value );
-		$data['post_content'] = wp_json_encode( $new_value );
+		$data['post_content'] = addslashes_gpc( wp_json_encode( $new_value ) );
 
 		return $data;
 	}
