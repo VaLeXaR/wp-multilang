@@ -133,6 +133,16 @@ Compatible with multisite not tested.
 2. Activate the plugin through the 'Plugins' screen in WordPress.
 3. Adjust languages on General Options Page.
 
+== Frequently Asked Questions ==
+
+= I saved post and translation for language by default is disappeared. =
+
+For saving post which not was translated before, you need save post on default language. And only then on different language.
+
+= I add new translation, but it rewrite another translation on different language. =
+
+If you have opened several browser tabs for editing this post in different languages, translation will be saved for the language that you opened last.
+
 == Screenshots ==
 
 1. Settings page
