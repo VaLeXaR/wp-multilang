@@ -448,8 +448,8 @@ class WPM_Setup {
 				}
 			} else {
 				if ( $_COOKIE['wpm_language'] != $this->user_language ) {
-					do_action( 'wpm_changed_language' );
 					wpm_setcookie( 'wpm_language', $this->user_language, time() + YEAR_IN_SECONDS );
+					do_action( 'wpm_changed_language' );
 				}
 			} // End if().
 		} // End if().

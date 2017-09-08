@@ -4,7 +4,8 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.8.1
-Stable tag: 1.5.5
+Stable tag: 1.6.0
+Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +47,9 @@ WP Multilang compatible with plugins:
 * Max Mega Menu
 * MasterSlider
 * WP-PageNavi
+* BuddyPress
+* Meta Slider
+* TablePress
 
 Supports configuration via json.
 
@@ -129,6 +133,16 @@ Compatible with multisite not tested.
 2. Activate the plugin through the 'Plugins' screen in WordPress.
 3. Adjust languages on General Options Page.
 
+== Frequently Asked Questions ==
+
+= I saved post and translation for language by default is disappeared. =
+
+For saving post which not was translated before, you need save post on default language. And only then on different language.
+
+= I add new translation, but it rewrite another translation on different language. =
+
+If you have opened several browser tabs for editing this post in different languages, translation will be saved for the language that you opened last.
+
 == Screenshots ==
 
 1. Settings page
@@ -138,6 +152,14 @@ Compatible with multisite not tested.
 5. Post edit page
 
 == Changelog ==
+
+= 1.6.0 =
++ add support BuddyPress(translate emails, activity stream, custom user fields)
++ add support TablePress
++ add support Meta Slider
++ add filter for customizer url
++ add param 'lang' for use in post and term query
+* small fixes
 
 = 1.5.5 =
 * fix update cart when switched language in WooCommerce
@@ -154,19 +176,19 @@ Compatible with multisite not tested.
 * fix escaping string
 
 = 1.5.2 =
-* add filters for escaping functions
-* add filter for translate attachment link
++ add filters for escaping functions
++ add filter for translate attachment link
 
 = 1.5.1 =
 * fix save ml string for translate
 * change priority for lang meta boxes
 * fix error in JS if enabled one language
-* add support Gutenberg
-* add lang indicator for editing post
++ add support Gutenberg
++ add lang indicator for editing post
 
 = 1.5.0 =
-* add language items in menu
-* add filters in vendor scripts
++ add language items in menu
++ add filters in vendor scripts
 * fix language for AJAX requests in set user locale
 
 = 1.4.12 =
