@@ -154,11 +154,11 @@ If you have opened several browser tabs for editing this post in different langu
 == Changelog ==
 
 = 1.6.0 =
-* add support BuddyPress(translate emails, activity stream, custom user fields)
-* add support TablePress
-* add support Meta Slider
-* add filter for customizer url
-* add param 'lang' for use in post and term query
++ add support BuddyPress(translate emails, activity stream, custom user fields)
++ add support TablePress
++ add support Meta Slider
++ add filter for customizer url
++ add param 'lang' for use in post and term query
 * small fixes
 
 = 1.5.5 =
@@ -176,19 +176,19 @@ If you have opened several browser tabs for editing this post in different langu
 * fix escaping string
 
 = 1.5.2 =
-* add filters for escaping functions
-* add filter for translate attachment link
++ add filters for escaping functions
++ add filter for translate attachment link
 
 = 1.5.1 =
 * fix save ml string for translate
 * change priority for lang meta boxes
 * fix error in JS if enabled one language
-* add support Gutenberg
-* add lang indicator for editing post
++ add support Gutenberg
++ add lang indicator for editing post
 
 = 1.5.0 =
-* add language items in menu
-* add filters in vendor scripts
++ add language items in menu
++ add filters in vendor scripts
 * fix language for AJAX requests in set user locale
 
 = 1.4.12 =
