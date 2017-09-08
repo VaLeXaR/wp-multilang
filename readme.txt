@@ -137,7 +137,7 @@ Compatible with multisite not tested.
 
 = I saved post and translation for language by default is disappeared. =
 
-For saving post which do not translated before, you need save post on default language. And only then on different language.
+For saving post which do not translated never before, you need save post on default language. And only then on different language.
 
 = I add new translation, but it rewrite another translation on different language. =
 
