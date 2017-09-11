@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.8.1
-Stable tag: 1.6.0
+Stable tag: 1.6.1
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -137,7 +137,7 @@ Compatible with multisite not tested.
 
 = I saved post and translation for language by default is disappeared. =
 
-For saving post which not was translated before, you need save post on default language. And only then on different language.
+For saving post which do not translated never before, you need save post on default language. And only then on different language.
 
 = I add new translation, but it rewrite another translation on different language. =
 
@@ -152,6 +152,10 @@ If you have opened several browser tabs for editing this post in different langu
 5. Post edit page
 
 == Changelog ==
+
+= 1.6.1 =
++ add info notice if need use strings with ml syntax
+* fix emails templates in Newsletter plugin
 
 = 1.6.0 =
 + add support BuddyPress(translate emails, activity stream, custom user fields)

@@ -53,6 +53,7 @@ class WPM_BuddyPress {
 		add_filter( 'xprofile_field_description_before_save', array( $this, 'save_field_description' ), 10, 2 );
 		add_filter( 'bp_xprofile_field_get_children', array( $this, 'remove_filter' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_translator_script' ), 11 );
+		add_action( 'bp_xprofile_admin_new_field_additional_settings', 'wpm_show_notice' );
 	}
 
 	/**

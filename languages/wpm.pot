@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-08-03 09:41+0300\n"
+"POT-Creation-Date: 2017-09-11 09:20+0300\n"
 "PO-Revision-Date: 2017-05-22 12:43+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -214,6 +214,11 @@ msgstr ""
 
 #: core/widgets/class-wpm-widget-language-switcher.php:50
 msgid "Switcher Type"
+msgstr ""
+
+#: core/wpm-core-functions.php:288
+#, php-format
+msgid "For multilingual string, use syntax like %s."
 msgstr ""
 
 #: wp-multilang.php:75 wp-multilang.php:82

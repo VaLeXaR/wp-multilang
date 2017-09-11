@@ -1,17 +1,4 @@
 {
-  "admin_pages": [
-    "newsletter_page_newsletter_subscription_options",
-    "admin_page_newsletter_wp_index",
-    "admin_page_newsletter_subscription_profile",
-    "admin_page_newsletter_subscription_unsubscription",
-    "admin_page_newsletter_subscription_lists",
-    "admin_page_newsletter_lock_index",
-    "admin_page_newsletter_subscription_forms",
-    "admin_page_newsletter_subscription_template",
-    "newsletter_page_newsletter_main_main",
-    "admin_page_newsletter_main_info",
-    "admin_page_newsletter_emails_edit"
-  ],
   "options": {
     "newsletter": {
       "profile_text": {},
@@ -68,6 +55,21 @@
       "footer_title": {},
       "footer_contact": {},
       "footer_legal": {}
+    },
+    "newsletter_forms": {
+      "wpm_each": {}
     }
-  }
+  },
+  "admin_pages": [
+    "newsletter_page_newsletter_subscription_options",
+    "admin_page_newsletter_wp_index",
+    "admin_page_newsletter_subscription_profile",
+    "admin_page_newsletter_subscription_unsubscription",
+    "admin_page_newsletter_subscription_lists",
+    "admin_page_newsletter_lock_index",
+    "admin_page_newsletter_subscription_forms",
+    "admin_page_newsletter_subscription_template",
+    "newsletter_page_newsletter_main_main",
+    "admin_page_newsletter_main_info"
+  ]
 }
