@@ -282,3 +282,13 @@ if ( ! function_exists( 'remove_class_action' ) ) {
 		return remove_class_filter( $tag, $class_name, $method_name, $priority );
 	}
 }
+
+
+function wpm_show_notice( $echo = true ) {
+	$notise = '<div class="notice notice-info inline"><p>' . sprintf( esc_attr__( 'For multilingual string, use syntax like %s.', 'wpm' ), '<code>[:en]Text on english[:de]Text auf Deutsch[:]</code>' ) . '</p></div>';
+	if ( $echo ) {
+		echo $notise;
+	} else {
+		return $notise;
+	}
+}

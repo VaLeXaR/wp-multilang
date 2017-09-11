@@ -29,6 +29,7 @@ class WPM_Newsletter {
 		add_filter( 'wpm_option_newsletter_profile_config', array( $this, 'add_options_config' ) );
 		add_filter( 'newsletter_message_subject', 'wpm_translate_string' );
 		add_filter( 'newsletter_message_html', 'wpm_translate_string' );
+		add_action( 'admin_notices', array( $this, 'add_notice' ) );
 	}
 
 
@@ -39,6 +40,22 @@ class WPM_Newsletter {
 		}
 
 		return $config;
+	}
+
+
+	/**
+	 * Translate some texts without PHP filters by javascript for displaying
+	 */
+	public function add_notice() {
+		$screen    = get_current_screen();
+		$screen_id = $screen ? $screen->id : '';
+
+		if ( 'admin_page_newsletter_emails_edit' === $screen_id ) {
+			remove_class_filter( 'attribute_escape', 'WPM\Core\WPM_Posts', 'escaping_text', 0 );
+			remove_class_filter( 'esc_textarea', 'WPM\Core\WPM_Posts', 'escaping_text', 0 );
+			remove_class_filter( 'esc_html', 'WPM\Core\WPM_Posts', 'escaping_text', 0 );
+			wpm_show_notice();
+		}
 	}
 }
 
