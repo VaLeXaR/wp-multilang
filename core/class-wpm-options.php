@@ -56,7 +56,7 @@ class WPM_Options {
 		$options_config            = apply_filters( 'wpm_options_config', $config['options'] );
 		$options_config[ $option ] = apply_filters( "wpm_option_{$option}_config", isset( $options_config[ $option ] ) ? $options_config[ $option ] : null );
 
-		if ( ! isset( $options_config[ $option ] ) || is_null( $options_config[ $option ] ) ) {
+		if ( is_null( $options_config[ $option ] ) ) {
 			return $value;
 		}
 
