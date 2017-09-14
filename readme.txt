@@ -154,7 +154,7 @@ If you have opened several browser tabs for editing this post in different langu
 == Changelog ==
 
 = 1.6.2 =
-+ add translation for ACF field object
++ add translation for ACF(not PRO) field object
 * fix error in ACF(not PRO)
 * fix apply taxonomy config
 
