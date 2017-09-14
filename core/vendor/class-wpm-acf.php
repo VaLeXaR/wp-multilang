@@ -24,35 +24,10 @@ if ( ! class_exists( 'acf' ) ) {
 class WPM_Acf {
 
 	/**
-	 * Flag ACF is Pro or not
-	 *
-	 * @var bool
-	 */
-	private $pro = false;
-
-	/**
 	 * WPM_Acf constructor.
 	 */
 	public function __construct() {
-		add_action( 'init', array( $this, 'check_pro' ) );
-
-		if ( $this->pro ) {
-			add_filter( 'acf/translate_field_group', 'wpm_translate_string', 0 );
-			add_filter( 'acf/update_field', array( $this, 'update_field_pro' ), 99 );
-			add_filter( 'acf/update_value', array( $this, 'update_value_pro' ), 99, 3 );
-			add_filter( 'wpm_post_acf-field-group_config', array( $this, 'add_config' ) );
-		} else {
-			add_filter( 'wpm_post_acf_config', array( $this, 'add_config' ) );
-			remove_class_action( 'acf/update_value', 'acf_field_functions', 'update_value', 5 );
-			add_action( 'acf/update_value', array( $this, 'update_value' ), 5, 3 );
-			add_filter( 'attribute_escape', array( $this, 'translate_value' ) );
-			add_filter( 'esc_textarea', array( $this, 'translate_value' ) );
-			add_filter( 'acf_the_editor_content', 'wpm_translate_value', 0 );
-			remove_class_action( 'acf/update_field', 'acf_field_functions', 'update_field', 5 );
-			add_filter( 'acf/update_field', array( $this, 'update_field' ), 5, 2 );
-			add_filter( 'acf/field_group/get_fields', 'wpm_translate_value' );
-		}
-
+		add_action( 'init', array( $this, 'check_pro' ), 5 );
 		add_filter( 'acf/load_field', 'wpm_translate_value', 0 );
 		add_filter( 'acf/load_value', 'wpm_translate_value', 0 );
 		add_filter( 'wpm_acf_field_text_config', array( $this, 'add_text_field_config' ) );
@@ -70,7 +45,20 @@ class WPM_Acf {
 		$post_types = get_post_types( '', 'names' );
 
 		if ( in_array( 'acf-field-group', $post_types, true ) ) {
-			$this->pro = true;
+			add_filter( 'wpm_post_acf-field-group_config', array( $this, 'add_config' ) );
+			add_filter( 'acf/translate_field_group', 'wpm_translate_string', 0 );
+			add_filter( 'acf/update_field', array( $this, 'update_field_pro' ), 99 );
+			add_filter( 'acf/update_value', array( $this, 'update_value_pro' ), 99, 3 );
+		} else {
+			add_filter( 'wpm_post_acf_config', array( $this, 'add_config' ) );
+			remove_class_action( 'acf/update_value', 'acf_field_functions', 'update_value', 5 );
+			add_action( 'acf/update_value', array( $this, 'update_value' ), 5, 3 );
+			add_filter( 'attribute_escape', array( $this, 'translate_value' ) );
+			add_filter( 'esc_textarea', array( $this, 'translate_value' ) );
+			add_filter( 'acf_the_editor_content', 'wpm_translate_value', 0 );
+			remove_class_action( 'acf/update_field', 'acf_field_functions', 'update_field', 5 );
+			add_filter( 'acf/update_field', array( $this, 'update_field' ), 5, 2 );
+			add_filter( 'acf/field_group/get_fields', 'wpm_translate_value' );
 		}
 	}
 
