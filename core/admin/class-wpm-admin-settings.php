@@ -233,7 +233,7 @@ class WPM_Admin_Settings {
 							<input type="hidden" name="wpm_uninstall_translations" value="0">
 							<input name="wpm_uninstall_translations" type="checkbox" id="wpm_uninstall_translations"
 							       value="1"<?php checked( get_option( 'wpm_uninstall_translations' ) ); ?>>
-							<?php esc_attr_e( 'Delete translations when uninstalling plugin', 'wpm' ); ?>
+							<?php esc_attr_e( 'Delete translations when uninstalling plugin (some translations may not be deleted and you must delete them manually).', 'wpm' ); ?>
 						</label>
 					</fieldset>
 				</td>

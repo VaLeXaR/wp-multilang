@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.8.1
-Stable tag: 1.6.1
+Stable tag: 1.6.2
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -33,7 +33,7 @@ Features of the plugin WP Multilang:
 
 WP Multilang compatible with plugins:
 
-* ACF, ACF Pro (in ACF Pro support translate `object field`)
+* ACF, ACF Pro
 * WooCommerce
 * Yoast Seo
 * Contact Form 7
@@ -152,6 +152,11 @@ If you have opened several browser tabs for editing this post in different langu
 5. Post edit page
 
 == Changelog ==
+
+= 1.6.2 =
++ add translation for ACF(not PRO) field object
+* fix error in ACF(not PRO)
+* fix apply taxonomy config
 
 = 1.6.1 =
 + add info notice if need use strings with ml syntax

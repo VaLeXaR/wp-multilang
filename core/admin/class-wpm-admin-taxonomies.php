@@ -119,7 +119,7 @@ class WPM_Admin_Taxonomies {
 		$taxonomies_config              = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
 		$taxonomies_config[ $taxonomy ] = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
 
-		if ( ! isset( $config['taxonomies'][ $taxonomy ] ) || is_null( $config['taxonomies'][ $taxonomy ] ) ) {
+		if ( is_null( $taxonomies_config[ $taxonomy ] ) ) {
 			return;
 		}
 
@@ -161,7 +161,7 @@ class WPM_Admin_Taxonomies {
 		$taxonomies_config              = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
 		$taxonomies_config[ $taxonomy ] = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
 
-		if ( ! isset( $config['taxonomies'][ $taxonomy ] ) || is_null( $config['taxonomies'][ $taxonomy ] ) ) {
+		if ( is_null( $taxonomies_config[ $taxonomy ] ) ) {
 			return;
 		}
 
@@ -211,7 +211,7 @@ class WPM_Admin_Taxonomies {
 		$taxonomies_config              = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
 		$taxonomies_config[ $taxonomy ] = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
 
-		if ( ! isset( $config['taxonomies'][ $taxonomy ] ) || is_null( $config['taxonomies'][ $taxonomy ] ) ) {
+		if ( is_null( $taxonomies_config[ $taxonomy ] ) ) {
 			return;
 		}
 

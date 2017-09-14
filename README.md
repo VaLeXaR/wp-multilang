@@ -25,7 +25,7 @@ Features of the plugin WP Multilang:
 * No subdomains for language version
 
 **WP Multilang** compatible out of the box with the plugin:
-* ACF, ACF Pro (ACF Pro supported in translating `object field`)
+* ACF, ACF Pro
 * WooCommerce
 * Yoast Seo
 * Contact Form 7
@@ -40,6 +40,8 @@ Features of the plugin WP Multilang:
 * MasterSlider
 * WP-PageNavi
 * BuddyPress
+* Meta Slider
+* TablePress
 
 Supports configuration via json.
 
@@ -138,7 +140,7 @@ Compatible with multisite not tested.
 * Без субдоменів для мовних версій
 
 **WP Multilang** сумісний з коробки з плаґінами:
-* ACF, ACF Pro (у ACF Pro підтримується переклад `object field`)
+* ACF, ACF Pro
 * WooCommerce
 * Yoast Seo
 * Contact Form 7
@@ -152,6 +154,9 @@ Compatible with multisite not tested.
 * Max Mega Menu
 * MasterSlider
 * WP-PageNavi
+* BuddyPress
+* Meta Slider
+* TablePress
 
 Підтримує налаштування через json.
 

@@ -38,9 +38,9 @@ class WPM_Posts extends \WPM_Object {
 		add_filter( 'the_title', 'wpm_translate_string', 0 );
 		add_filter( 'the_content', 'wpm_translate_string', 0 );
 		add_filter( 'the_excerpt', 'wpm_translate_string', 0 );
-		add_filter( 'esc_html', array( $this, 'escaping_text' ), 0 );
 		add_filter( 'attribute_escape', array( $this, 'escaping_text' ), 0 );
 		add_filter( 'esc_textarea', array( $this, 'escaping_text' ), 0 );
+		add_filter( 'esc_html', array( $this, 'escaping_text' ), 0 );
 		add_filter( "get_{$this->object_type}_metadata", array( $this, 'get_meta_field' ), 0, 3 );
 		add_filter( "update_{$this->object_type}_metadata", array( $this, 'update_meta_field' ), 99, 5 );
 		add_filter( "add_{$this->object_type}_metadata", array( $this, 'add_meta_field' ), 99, 5 );
@@ -83,17 +83,11 @@ class WPM_Posts extends \WPM_Object {
 					$posts_config               = apply_filters( 'wpm_posts_config', $posts_config );
 					$posts_config[ $post_type ] = apply_filters( "wpm_post_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
 
-					if ( ! isset( $config['post_types'][ $post_type ] ) || is_null( $config['post_types'][ $post_type ] ) ) {
+					if ( is_null( $config['post_types'][ $post_type ] ) ) {
 						return $query;
 					}
 				}
 			}
-
-			/*if ( isset( $query->query_vars['lang'] ) && ! empty( $query->query_vars['lang'] ) ) {
-				$lang = $query->query_vars['lang'];
-			} else {
-				$lang = wpm_get_language();
-			}*/
 
 			$lang = get_query_var( 'lang' );
 
@@ -155,7 +149,7 @@ class WPM_Posts extends \WPM_Object {
 		$posts_config                       = apply_filters( 'wpm_posts_config', $posts_config );
 		$posts_config[ $data['post_type'] ] = apply_filters( "wpm_post_{$data['post_type']}_config", isset( $posts_config[ $data['post_type'] ] ) ? $posts_config[ $data['post_type'] ] : null );
 
-		if ( ! isset( $posts_config[ $data['post_type'] ] ) || is_null( $posts_config[ $data['post_type'] ] ) ) {
+		if ( is_null( $posts_config[ $data['post_type'] ] ) ) {
 			return $data;
 		}
 

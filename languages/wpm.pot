@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-09-11 09:20+0300\n"
+"POT-Creation-Date: 2017-09-14 16:52+0300\n"
 "PO-Revision-Date: 2017-05-22 12:43+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -83,7 +83,6 @@ msgid "Multilingual Settings"
 msgstr ""
 
 #: core/admin/class-wpm-admin-settings.php:48
-#: core/admin/class-wpm-admin-settings.php:236
 msgid "Delete translations when uninstalling plugin"
 msgstr ""
 
@@ -154,6 +153,12 @@ msgstr ""
 #: core/admin/class-wpm-admin-settings.php:226
 #: core/admin/class-wpm-admin-settings.php:230
 msgid "Uninstalling"
+msgstr ""
+
+#: core/admin/class-wpm-admin-settings.php:236
+msgid ""
+"Delete translations when uninstalling plugin (some translations may not be "
+"deleted and you must delete them manually)."
 msgstr ""
 
 #: core/admin/class-wpm-admin-settings.php:295
