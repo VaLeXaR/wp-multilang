@@ -33,7 +33,7 @@ Features of the plugin WP Multilang:
 
 WP Multilang compatible with plugins:
 
-* ACF, ACF Pro (in ACF Pro support translate `object field`)
+* ACF, ACF Pro
 * WooCommerce
 * Yoast Seo
 * Contact Form 7

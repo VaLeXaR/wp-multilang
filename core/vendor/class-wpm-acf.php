@@ -27,7 +27,7 @@ class WPM_Acf {
 	 * WPM_Acf constructor.
 	 */
 	public function __construct() {
-		add_action( 'init', array( $this, 'check_pro' ), 5 );
+		add_action( 'init', array( $this, 'init_filters' ), 5 );
 		add_filter( 'acf/load_field', 'wpm_translate_value', 0 );
 		add_filter( 'acf/load_value', 'wpm_translate_value', 0 );
 		add_filter( 'wpm_acf_field_text_config', array( $this, 'add_text_field_config' ) );
@@ -39,12 +39,10 @@ class WPM_Acf {
 	}
 
 	/**
-	 * Check Pro version
+	 * Init filters for different versions
 	 */
-	public function check_pro() {
-		$post_types = get_post_types( '', 'names' );
-
-		if ( in_array( 'acf-field-group', $post_types, true ) ) {
+	public function init_filters() {
+		if ( defined( 'ACF' ) ) {
 			add_filter( 'wpm_post_acf-field-group_config', array( $this, 'add_config' ) );
 			add_filter( 'acf/translate_field_group', 'wpm_translate_string', 0 );
 			add_filter( 'acf/update_field', array( $this, 'update_field_pro' ), 99 );
