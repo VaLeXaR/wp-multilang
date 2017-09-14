@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-09-11 09:21+0300\n"
-"PO-Revision-Date: 2017-09-11 11:06+0300\n"
+"POT-Creation-Date: 2017-09-14 16:52+0300\n"
+"PO-Revision-Date: 2017-09-14 16:52+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: uk\n"
@@ -84,7 +84,6 @@ msgid "Multilingual Settings"
 msgstr "Налаштування багатомовності"
 
 #: core/admin/class-wpm-admin-settings.php:48
-#: core/admin/class-wpm-admin-settings.php:236
 msgid "Delete translations when uninstalling plugin"
 msgstr "Видалити переклади при видаленні плагіна"
 
@@ -156,6 +155,14 @@ msgstr "Показати неперекладені рядки на устале
 #: core/admin/class-wpm-admin-settings.php:230
 msgid "Uninstalling"
 msgstr "Видалення"
+
+#: core/admin/class-wpm-admin-settings.php:236
+msgid ""
+"Delete translations when uninstalling plugin (some translations may not be "
+"deleted and you must delete them manually)."
+msgstr ""
+"Видалити переклади, при видаленні плаґіна (деякі переклади можуть не "
+"видалитися і ви маєте їх видалити вручну)."
 
 #: core/admin/class-wpm-admin-settings.php:295
 msgid "New language package installed"
@@ -241,6 +248,20 @@ msgstr "Плаґін багатомовності для WordPress"
 #. Author of the plugin/theme
 msgid "Valentyn Riaboshtan"
 msgstr "Валентин Рябоштан"
+
+#~ msgid ""
+#~ "Delete translations when uninstalling plugin (some strings may not be "
+#~ "deleted and you must delete them manually)."
+#~ msgstr ""
+#~ "Видалити переклади, при видаленні плаґіна (деякі рядки можуть не "
+#~ "видалитися і ви маєте їх видалити вручну)."
+
+#~ msgid ""
+#~ "Delete translations when uninstalling plugin (some strings may not be "
+#~ "deleted, then you must delete them manually)."
+#~ msgstr ""
+#~ "Видалити переклади, при видаленні плаґіна (Деякі рядки можуть не "
+#~ "видалитися, тоді ви маєте їх видалити вручну.)."
 
 #~ msgid "Default language"
 #~ msgstr "Усталена мова"
