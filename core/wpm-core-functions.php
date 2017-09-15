@@ -172,6 +172,22 @@ function wpm_get_current_url() {
 	return $url;
 }
 
+/**
+ * Show notice for strings that cant`t be translated for displaying in admin.
+ *
+ * @param bool $echo
+ *
+ * @return string
+ */
+function wpm_show_notice( $echo = true ) {
+	$notise = '<div class="notice notice-info inline"><p>' . sprintf( esc_attr__( 'For multilingual string, use syntax like %s.', 'wpm' ), '<code>[:en]Text on english[:de]Text auf Deutsch[:]</code>' ) . '</p></div>';
+	if ( $echo ) {
+		echo $notise;
+	} else {
+		return $notise;
+	}
+}
+
 
 if ( ! function_exists( 'remove_class_filter' ) ) {
 	/**
@@ -280,15 +296,5 @@ if ( ! function_exists( 'remove_class_action' ) ) {
 	 */
 	function remove_class_action( $tag, $class_name = '', $method_name = '', $priority = 10 ) {
 		return remove_class_filter( $tag, $class_name, $method_name, $priority );
-	}
-}
-
-
-function wpm_show_notice( $echo = true ) {
-	$notise = '<div class="notice notice-info inline"><p>' . sprintf( esc_attr__( 'For multilingual string, use syntax like %s.', 'wpm' ), '<code>[:en]Text on english[:de]Text auf Deutsch[:]</code>' ) . '</p></div>';
-	if ( $echo ) {
-		echo $notise;
-	} else {
-		return $notise;
 	}
 }
