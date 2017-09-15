@@ -123,43 +123,6 @@ function wpm_setcookie( $name, $value, $expire = 0, $secure = false ) {
 	}
 }
 
-/**
- * Run a MySQL transaction query, if supported.
- *
- * @param string $type start (default), commit, rollback
- */
-function wpm_transaction_query( $type = 'start' ) {
-	global $wpdb;
-
-	$wpdb->hide_errors();
-
-	if ( ! defined( 'GP_USE_TRANSACTIONS' ) ) {
-		define( 'GP_USE_TRANSACTIONS', true );
-	}
-
-	if ( GP_USE_TRANSACTIONS ) {
-		switch ( $type ) {
-			case 'commit' :
-				$wpdb->query( 'COMMIT' );
-				break;
-			case 'rollback' :
-				$wpdb->query( 'ROLLBACK' );
-				break;
-			default :
-				$wpdb->query( 'START TRANSACTION' );
-				break;
-		}
-	}
-}
-
-/**
- * Wrapper for set_time_limit to see if it is enabled.
- */
-function wpm_set_time_limit( $limit = 0 ) {
-	if ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
-		@set_time_limit( $limit );
-	}
-}
 
 /**
  * Get current url from $_SERVER
@@ -167,10 +130,11 @@ function wpm_set_time_limit( $limit = 0 ) {
  * @return string
  */
 function wpm_get_current_url() {
-	$url = set_url_scheme( $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], is_ssl() ? 'https' : 'http' );
+	$url = set_url_scheme( $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
 
 	return $url;
 }
+
 
 /**
  * Show notice for strings that cant`t be translated for displaying in admin.
