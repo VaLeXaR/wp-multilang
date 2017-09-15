@@ -19,7 +19,7 @@ if ( ! class_exists( 'acf' ) ) {
  * @package  WPM\Core\Vendor
  * @category Vendor
  * @author   VaLeXaR
- * @version  1.1.0
+ * @version  1.1.1
  */
 class WPM_Acf {
 

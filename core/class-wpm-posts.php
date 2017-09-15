@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WPM_Posts
  * @package  WPM\Core
  * @author   VaLeXaR
- * @version  1.1.4
+ * @version  1.1.5
  */
 class WPM_Posts extends \WPM_Object {
 
