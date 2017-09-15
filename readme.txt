@@ -78,7 +78,7 @@ There are two ways:
 2. Through the filter.
     Add in functions.php
 
-    `add_filter ( 'wpm_posts_post_config', '__return_null');`
+    `add_filter ( 'wpm_post_post_config', '__return_null');`
 
 To enable translation pass an empty array in php `array()` or empty object in json `{}`.
 Supports translation multilevel array of options, custom fields and post_content.

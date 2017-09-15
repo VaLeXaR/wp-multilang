@@ -44,7 +44,7 @@ class WPM_Admin_Posts {
 
 		foreach ( $posts_config as $post_type => $post_config ) {
 
-			$post_config = apply_filters( "wpm_posts_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
+			$post_config = apply_filters( "wpm_post_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
 
 			if ( ! is_null( $post_config ) ) {
 				if ( 'attachment' === $post_type ) {
