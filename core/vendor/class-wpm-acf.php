@@ -42,7 +42,7 @@ class WPM_Acf {
 	 * Init filters for different versions
 	 */
 	public function init_filters() {
-		if ( defined( 'ACF' ) ) {
+		if ( version_compare( acf()->settings['version'], 5, 'ge' ) ) {
 			add_filter( 'wpm_post_acf-field-group_config', array( $this, 'add_config' ) );
 			add_filter( 'acf/translate_field_group', 'wpm_translate_string', 0 );
 			add_filter( 'acf/update_field', array( $this, 'update_field_pro' ), 99 );
