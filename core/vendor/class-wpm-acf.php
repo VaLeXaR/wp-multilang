@@ -19,7 +19,7 @@ if ( ! class_exists( 'acf' ) ) {
  * @package  WPM\Core\Vendor
  * @category Vendor
  * @author   VaLeXaR
- * @version  1.1.0
+ * @version  1.1.2
  */
 class WPM_Acf {
 
@@ -28,8 +28,6 @@ class WPM_Acf {
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'init_filters' ), 5 );
-		add_filter( 'acf/load_field', 'wpm_translate_value', 0 );
-		add_filter( 'acf/load_value', 'wpm_translate_value', 0 );
 		add_filter( 'wpm_acf_field_text_config', array( $this, 'add_text_field_config' ) );
 		add_filter( 'wpm_acf_field_textarea_config', array( $this, 'add_text_field_config' ) );
 		add_filter( 'wpm_acf_field_wysiwyg_config', array( $this, 'add_text_field_config' ) );
@@ -43,11 +41,15 @@ class WPM_Acf {
 	 */
 	public function init_filters() {
 		if ( version_compare( acf()->settings['version'], 5, 'ge' ) ) {
+			add_filter( 'acf/load_field', 'wpm_translate_value', 0 );
+			add_filter( 'acf/load_value', 'wpm_translate_value', 0 );
 			add_filter( 'wpm_post_acf-field-group_config', array( $this, 'add_config' ) );
 			add_filter( 'acf/translate_field_group', 'wpm_translate_string', 0 );
 			add_filter( 'acf/update_field', array( $this, 'update_field_pro' ), 99 );
 			add_filter( 'acf/update_value', array( $this, 'update_value_pro' ), 99, 3 );
 		} else {
+			add_filter( 'acf/load_field', 'wpm_translate_value', 5 );
+			add_filter( 'acf/load_value', 'wpm_translate_value', 5 );
 			add_filter( 'wpm_post_acf_config', array( $this, 'add_config' ) );
 			remove_class_action( 'acf/update_value', 'acf_field_functions', 'update_value', 5 );
 			add_action( 'acf/update_value', array( $this, 'update_value' ), 5, 3 );

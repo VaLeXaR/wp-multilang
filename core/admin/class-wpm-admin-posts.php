@@ -5,7 +5,7 @@
  * @author   VaLeXaR
  * @category Admin
  * @package  WPM/Core/Admin
- * @version  1.0.2
+ * @version  1.0.3
  */
 
 namespace WPM\Core\Admin;
