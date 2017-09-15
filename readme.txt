@@ -153,6 +153,12 @@ If you have opened several browser tabs for editing this post in different langu
 
 == Changelog ==
 
+= 1.6.4 =
++ add dependence check ACF PRO from version
+* fix ACF save field
+* fix filter for post type config
+* fix uninstalling function
+
 = 1.6.3 =
 * fix applying filter for post config
 
