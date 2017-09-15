@@ -83,7 +83,7 @@ class WPM_Posts extends \WPM_Object {
 					$posts_config               = apply_filters( 'wpm_posts_config', $posts_config );
 					$posts_config[ $post_type ] = apply_filters( "wpm_post_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
 
-					if ( is_null( $config['post_types'][ $post_type ] ) ) {
+					if ( is_null( $posts_config[ $post_type ] ) ) {
 						return $query;
 					}
 				}
