@@ -28,7 +28,6 @@ if ( $uninstall_translations ) {
 	}
 
 	$config    = wpm_get_config();
-	$config    = apply_filters( 'wpm_load_config', $config );
 	$languages = wpm_get_languages();
 	$lang      = $languages[ wpm_get_default_locale() ];
 
@@ -38,14 +37,7 @@ if ( $uninstall_translations ) {
 
 			case 'post_types':
 
-				$posts_config = apply_filters( 'wpm_posts_config', $item_config );
-				$post_types = get_post_types( '', 'names' );
-
-				foreach ( $post_types as $pt ) {
-					$posts_config[ $pt ] = apply_filters( "wpm_post_{$pt}_config", isset( $posts_config[ $pt ] ) ? $posts_config[ $pt ] : null );
-				}
-
-				foreach ( $posts_config as $post_type => $post_config ) {
+				foreach ( $item_config as $post_type => $post_config ) {
 
 					if ( is_null( $post_config ) ) {
 						continue;
@@ -75,13 +67,7 @@ if ( $uninstall_translations ) {
 
 			case 'taxonomies' :
 
-				$taxonomies_config = apply_filters( 'wpm_taxonomies_config', $item_config );
-				$taxonomies        = get_taxonomies();
-				foreach ( $taxonomies as $taxonomy ) {
-					$taxonomies_config[ $taxonomy ] = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
-				}
-
-				foreach ( $taxonomies_config as $term => $taxonomy_config ) {
+				foreach ( $item_config as $term => $taxonomy_config ) {
 
 					if ( is_null( $taxonomy_config ) ) {
 						continue;

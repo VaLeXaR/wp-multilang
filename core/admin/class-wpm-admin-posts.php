@@ -40,22 +40,22 @@ class WPM_Admin_Posts {
 	public function init() {
 
 		$config       = wpm_get_config();
-		$posts_config = apply_filters( 'wpm_posts_config', $config['post_types'] );
+		$posts_config = $config['post_types'];
 
 		foreach ( $posts_config as $post_type => $post_config ) {
 
-			$post_config = apply_filters( "wpm_post_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
-
-			if ( ! is_null( $post_config ) ) {
-				if ( 'attachment' === $post_type ) {
-					add_filter( 'manage_media_columns', array( $this, 'language_columns' ) );
-					add_action( 'manage_media_custom_column', array( $this, 'render_language_column' ) );
-					continue;
-				}
-
-				add_filter( "manage_{$post_type}_posts_columns", array( $this, 'language_columns' ) );
-				add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'render_language_column' ) );
+			if ( is_null( $post_config ) ) {
+				continue;
 			}
+
+			if ( 'attachment' === $post_type ) {
+				add_filter( 'manage_media_columns', array( $this, 'language_columns' ) );
+				add_action( 'manage_media_custom_column', array( $this, 'render_language_column' ) );
+				continue;
+			}
+
+			add_filter( "manage_{$post_type}_posts_columns", array( $this, 'language_columns' ) );
+			add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'render_language_column' ) );
 		}
 
 	}

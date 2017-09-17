@@ -298,7 +298,7 @@ function wpm_ml_value_to_string( $value ) {
  *
  * @param        $localize_array
  * @param mixed  $value
- * @param null   $config
+ * @param array  $config
  * @param string $lang
  *
  * @return array|bool
@@ -395,12 +395,14 @@ function wpm_untranslate_post( $post ) {
 
 	if ( $post instanceof WP_Post ) {
 
+		$orig_post = get_post( $post->ID );
+
 		foreach ( get_object_vars( $post ) as $key => $content ) {
 			switch ( $key ) {
 				case 'post_title':
 				case 'post_content':
 				case 'post_excerpt':
-					$post->$key = get_post_field( $key, $post->ID, 'edit' );
+					$post->$key = $orig_post->$key;
 					break;
 			}
 		}

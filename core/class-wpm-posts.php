@@ -78,12 +78,10 @@ class WPM_Posts extends \WPM_Object {
 
 				if ( is_string( $post_type ) ) {
 
-					$config                     = wpm_get_config();
-					$posts_config               = $config['post_types'];
-					$posts_config               = apply_filters( 'wpm_posts_config', $posts_config );
-					$posts_config[ $post_type ] = apply_filters( "wpm_post_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
+					$config       = wpm_get_config();
+					$posts_config = $config['post_types'];
 
-					if ( is_null( $posts_config[ $post_type ] ) ) {
+					if ( ! isset( $posts_config[ $post_type ] ) || is_null( $posts_config[ $post_type ] ) ) {
 						return $query;
 					}
 				}
@@ -146,10 +144,8 @@ class WPM_Posts extends \WPM_Object {
 
 		$config                             = wpm_get_config();
 		$posts_config                       = $config['post_types'];
-		$posts_config                       = apply_filters( 'wpm_posts_config', $posts_config );
-		$posts_config[ $data['post_type'] ] = apply_filters( "wpm_post_{$data['post_type']}_config", isset( $posts_config[ $data['post_type'] ] ) ? $posts_config[ $data['post_type'] ] : null );
 
-		if ( is_null( $posts_config[ $data['post_type'] ] ) ) {
+		if ( ! isset( $posts_config[ $data['post_type'] ] ) || is_null( $posts_config[ $data['post_type'] ] ) ) {
 			return $data;
 		}
 
