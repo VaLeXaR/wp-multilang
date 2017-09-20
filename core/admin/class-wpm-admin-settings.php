@@ -252,55 +252,58 @@ class WPM_Admin_Settings {
 	public function save_options( $value ) {
 
 		$option_name = 'wpm_languages';
-		$type        = '';
+		$languages   = array();
 
-		$languages = array();
+		if ( isset( $_POST[ $option_name ] ) ) {
 
-		foreach ( $value as $key => $item ) {
+			$type        = '';
 
-			$locale = $key;
+			foreach ( $value as $key => $item ) {
 
-			if ( isset( $item['locale'] ) ) {
-				$locale = wpm_clean( $item['locale'] );
-			}
+				$locale = $key;
 
-			if ( empty( $item['slug'] ) ) {
-				$type = 'error';
-				break;
-			}
+				if ( isset( $item['locale'] ) ) {
+					$locale = wpm_clean( $item['locale'] );
+				}
 
-			$languages[ $locale ] = array(
-				'enable' => $_POST['wpm_languages'][ $key ]['enable'] ? 1 : 0,
-				'slug'   => wpm_clean( $item['slug'] ),
-				'name'   => wpm_clean( $item['name'] ),
-				'flag'   => wpm_clean( $item['flag'] ),
-			);
+				if ( empty( $item['slug'] ) ) {
+					$type = 'error';
+					break;
+				}
 
-			$translations        = wpm_get_translations();
-			$installed_languages = wpm_get_installed_languages();
+				$languages[ $locale ] = array(
+					'enable' => $_POST[ $option_name ][ $key ]['enable'] ? 1 : 0,
+					'slug'   => wpm_clean( $item['slug'] ),
+					'name'   => wpm_clean( $item['name'] ),
+					'flag'   => wpm_clean( $item['flag'] ),
+				);
 
-			foreach ( $installed_languages as $installed_language ) {
-				unset( $translations[ $installed_language ] );
-			}
+				$translations        = wpm_get_translations();
+				$installed_languages = wpm_get_installed_languages();
 
-			if ( in_array( $locale, $translations, true ) ) {
-				if ( wp_can_install_language_pack() ) {
-					wp_download_language_pack( $locale );
-					$type = 'updated';
+				foreach ( $installed_languages as $installed_language ) {
+					unset( $translations[ $installed_language ] );
+				}
+
+				if ( in_array( $locale, $translations, true ) ) {
+					if ( wp_can_install_language_pack() ) {
+						wp_download_language_pack( $locale );
+						$type = 'updated';
+					}
 				}
 			}
-		}
 
-		if ( 'updated' === $type ) {
-			add_settings_error( $option_name, '', __( 'New language package installed', 'wpm' ), $type );
-		}
+			if ( 'updated' === $type ) {
+				add_settings_error( $option_name, '', __( 'New language package installed', 'wpm' ), $type );
+			}
 
-		if ( 'error' === $type ) {
-			add_settings_error( $option_name, '', __( 'Language slug is required', 'wpm' ), $type );
+			if ( 'error' === $type ) {
+				add_settings_error( $option_name, '', __( 'Language slug is required', 'wpm' ), $type );
 
-			return get_option( $option_name );
+				return get_option( $option_name );
 
-		}
+			}
+		}// End if().
 
 		return $languages;
 	}

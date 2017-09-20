@@ -45,7 +45,7 @@ class WPM_Install {
 
 		self::create_options();
 		WPM_Config::load_config_run();
-		self::update_gp_version();
+		self::update_wpm_version();
 
 		/*
 		 * Deletes all expired transients. The multi-table delete syntax is used
@@ -68,7 +68,7 @@ class WPM_Install {
 	/**
 	 * Update WPM version to current.
 	 */
-	private static function update_gp_version() {
+	private static function update_wpm_version() {
 		delete_option( 'wpm_version' );
 		add_option( 'wpm_version', WPM()->version );
 	}
@@ -101,5 +101,23 @@ class WPM_Install {
 		}
 
 		add_option( 'wpm_languages', $languages, '', 'yes' );
+	}
+
+	/**
+	 * Get blog ids
+	 *
+	 * @return array
+	 */
+	function get_blog_ids() {
+
+		global $wpdb;
+
+		// get an array of blog ids
+		$sql = "SELECT blog_id FROM $wpdb->blogs
+        WHERE archived = '0' AND spam = '0'
+        AND deleted = '0'";
+
+		return $wpdb->get_col( $sql );
+
 	}
 }
