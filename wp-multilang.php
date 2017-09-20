@@ -154,8 +154,8 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 			include_once( 'core/wpm-core-functions.php' );
 			include_once( 'core/wpm-widget-functions.php' );
 
-			Core\WPM_Setup::instance();
 			Core\WPM_Install::init();
+			Core\WPM_Setup::instance();
 
 			if ( $this->is_request( 'frontend' ) ) {
 				include_once( 'core/wpm-template-hooks.php' );
