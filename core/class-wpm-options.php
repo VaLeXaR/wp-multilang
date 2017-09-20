@@ -27,11 +27,11 @@ class WPM_Options {
 	 */
 	public function init() {
 
-		$config         = wpm_get_config();
-		$options_config = apply_filters( 'wpm_options_config', $config['options'] );
+		$config = wpm_get_config();
 
-		foreach ( $options_config as $key => $option ) {
+		foreach ( $config['options'] as $key => $option ) {
 			add_filter( "option_{$key}", 'wpm_translate_value', 0 );
+			add_action( "add_option_{$key}", 'update_option', 99, 2 );
 			add_filter( "pre_update_option_{$key}", array( $this, 'wpm_update_option' ), 99, 3 );
 		}
 	}
@@ -53,7 +53,7 @@ class WPM_Options {
 		}
 
 		$config                    = wpm_get_config();
-		$options_config            = apply_filters( 'wpm_options_config', $config['options'] );
+		$options_config            = $config['options'];
 		$options_config[ $option ] = apply_filters( "wpm_option_{$option}_config", isset( $options_config[ $option ] ) ? $options_config[ $option ] : null );
 
 		if ( is_null( $options_config[ $option ] ) ) {

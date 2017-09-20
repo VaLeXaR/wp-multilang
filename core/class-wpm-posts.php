@@ -81,7 +81,7 @@ class WPM_Posts extends \WPM_Object {
 					$config       = wpm_get_config();
 					$posts_config = $config['post_types'];
 
-					if ( ! isset( $posts_config[ $post_type ] ) || is_null( $posts_config[ $post_type ] ) ) {
+					if ( is_null( $posts_config[ $post_type ] ) ) {
 						return $query;
 					}
 				}
@@ -145,7 +145,7 @@ class WPM_Posts extends \WPM_Object {
 		$config                             = wpm_get_config();
 		$posts_config                       = $config['post_types'];
 
-		if ( ! isset( $posts_config[ $data['post_type'] ] ) || is_null( $posts_config[ $data['post_type'] ] ) ) {
+		if ( is_null( $posts_config[ $data['post_type'] ] ) ) {
 			return $data;
 		}
 

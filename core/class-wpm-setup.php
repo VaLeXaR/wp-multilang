@@ -333,6 +333,12 @@ class WPM_Setup {
 
 		$config['taxonomies'] = $taxonomies_config;
 
+		$config['options'] = apply_filters( 'wpm_options_config', $config['options'] );
+
+		if ( is_multisite() ) {
+			$config['site_options'] = apply_filters( 'wpm_site_options_config', $config['site_options'] );
+		}
+
 		return $config;
 	}
 

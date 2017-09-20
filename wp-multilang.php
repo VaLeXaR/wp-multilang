@@ -166,6 +166,10 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		 */
 		public function translate_options() {
 			new Core\WPM_Options();
+
+			if ( is_multisite() ) {
+				new Core\WPM_Site_Options();
+			}
 		}
 
 		/**
@@ -251,3 +255,8 @@ function WPM() {
 }
 
 WPM();
+
+
+add_action( 'wpm_init', function () {
+//	d( is_multisite() );
+} );

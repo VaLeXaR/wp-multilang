@@ -117,7 +117,7 @@ class WPM_Admin_Taxonomies {
 		$config            = wpm_get_config();
 		$taxonomies_config = $config['taxonomies'];
 
-		if ( ! isset( $taxonomies_config[ $screen->taxonomy ] ) || is_null( $taxonomies_config[ $screen->taxonomy ] ) ) {
+		if ( is_null( $taxonomies_config[ $screen->taxonomy ] ) ) {
 			return;
 		}
 
@@ -156,7 +156,7 @@ class WPM_Admin_Taxonomies {
 		$config            = wpm_get_config();
 		$taxonomies_config = $config['taxonomies'];
 
-		if ( ! isset( $taxonomies_config[ $screen->taxonomy ] ) || is_null( $taxonomies_config[ $screen->taxonomy ] ) ) {
+		if ( is_null( $taxonomies_config[ $screen->taxonomy ] ) ) {
 			return;
 		}
 
@@ -204,7 +204,7 @@ class WPM_Admin_Taxonomies {
 		$config            = wpm_get_config();
 		$taxonomies_config = $config['taxonomies'];
 
-		if ( ! isset( $taxonomies_config[ $taxonomy ] ) || is_null( $taxonomies_config[ $taxonomy ] ) ) {
+		if ( is_null( $taxonomies_config[ $taxonomy ] ) ) {
 			return;
 		}
 
