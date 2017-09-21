@@ -17,53 +17,67 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WPM_Setup {
 
 	/**
+	 * Original url
+	 *
+	 * @var string
+	 */
+	private $original_home_url = '';
+
+	/**
+	 * Original uri
+	 *
+	 * @var string
+	 */
+	private $original_request_uri = '';
+
+	/**
 	 * Default locale
 	 *
 	 * @var string
 	 */
-	public $default_locale = '';
+	private $default_locale = '';
 
 	/**
 	 * Languages
 	 *
 	 * @var array
 	 */
-	public $languages = array();
+	private $languages = array();
 
 	/**
 	 * Options
 	 *
 	 * @var array
 	 */
-	public $options = array();
+	private $options = array();
 
 	/**
 	 * Installed languages
 	 *
 	 * @var array
 	 */
-	public $installed_languages = array();
+	private $installed_languages = array();
 
 	/**
 	 * User language
 	 *
 	 * @var string
 	 */
-	public $user_language = '';
+	private $user_language = '';
 
 	/**
 	 * Available translations
 	 *
 	 * @var array
 	 */
-	public $translations = array();
+	private $translations = array();
 
 	/**
 	 * Config
 	 *
 	 * @var array
 	 */
-	public $config = array();
+	private $config = array();
 
 	/**
 	 * The single instance of the class.
@@ -92,10 +106,13 @@ class WPM_Setup {
 	public function __construct() {
 		add_filter( 'query_vars', array( $this, 'set_lang_var' ) );
 		add_filter( 'option_home', array( $this, 'set_home_url' ), 99 );
+		if ( defined( 'DOMAIN_MAPPING' ) ) {
+			add_filter( 'pre_option_home', array( $this, 'set_home_url' ), 99 );
+		}
 		add_action( 'change_locale', array( $this, 'change_locale' ), 0 );
-		add_action( 'after_switch_theme', __NAMESPACE__ . '\WPM_Config::load_config_run' );
-		add_action( 'activated_plugin', __NAMESPACE__ . '\WPM_Config::load_config_run' );
-		add_action( 'upgrader_process_complete', __NAMESPACE__ . '\WPM_Config::load_config_run' );
+		add_action( 'after_switch_theme', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
+		add_action( 'activated_plugin', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
+		add_action( 'upgrader_process_complete', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
 		add_action( 'wpm_init', array( $this, 'load_vendor' ) );
 		add_action( 'template_redirect', array( $this, 'set_not_found' ) );
 		add_action( 'plugins_loaded', array( $this, 'set_locale' ), 0 );
@@ -115,6 +132,30 @@ class WPM_Setup {
 		}
 
 		return $this->options;
+	}
+
+
+	/**
+	 * Get original home url
+	 *
+	 * @return string
+	 */
+	public function get_original_home_url() {
+		if ( ! $this->original_home_url ) {
+			$this->original_home_url = home_url();
+		}
+
+		return $this->original_home_url;
+	}
+
+
+	/**
+	 * Get original request url
+	 *
+	 * @return string
+	 */
+	public function get_original_request_uri() {
+		return $this->original_request_uri;
 	}
 
 
@@ -207,10 +248,6 @@ class WPM_Setup {
 		$default_locale = $this->get_default_locale();
 		$url            = '';
 
-		if ( ! is_admin() ) {
-			$url = $_SERVER['REQUEST_URI'];
-		}
-
 		if ( wp_doing_ajax() ) {
 			$referrer = wp_get_raw_referer();
 
@@ -224,10 +261,14 @@ class WPM_Setup {
 			}
 		}
 
-		if ( $url ) {
-			$path = wp_parse_url( $url, PHP_URL_PATH );
+		if ( ! is_admin() ) {
+			$url = wpm_get_current_url();
+		}
 
-			if ( preg_match( '!^/([a-z]{2})(/|$)!i', $path, $match ) ) {
+		if ( $url ) {
+			$this->original_request_uri = str_replace( $this->get_original_home_url(), '', $url );
+
+			if ( preg_match( '!^/([a-z]{2})(/|$)!i', $this->original_request_uri, $match ) ) {
 				$this->user_language = $match[1];
 			}
 		}
@@ -270,7 +311,7 @@ class WPM_Setup {
 			if ( ( $value === $user_language ) ) {
 				$locale = $key;
 				if ( $key === $default_locale && ! is_admin() && ! isset( $_REQUEST['lang'] ) ) {
-					wp_redirect( home_url( str_replace( '/' . $user_language . '/', '/', $_SERVER['REQUEST_URI'] ) ) );
+					wp_redirect( home_url( str_replace( '/' . $user_language . '/', '/', $this->original_request_uri ) ) );
 					exit;
 				}
 				break;
@@ -310,36 +351,41 @@ class WPM_Setup {
 	public function get_config() {
 
 		if ( ! $this->config ) {
-			$this->config = get_option( 'wpm_config' );
+			$config = get_option( 'wpm_config' );
+			$config = apply_filters( 'wpm_load_config', $config );
+
+			$posts_config = apply_filters( 'wpm_posts_config', $config['post_types'] );
+			$post_types   = get_post_types( '', 'names' );
+
+			foreach ( $post_types as $post_type ) {
+				$posts_config[ $post_type ] = apply_filters( "wpm_post_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
+			}
+
+			$config['post_types'] = $posts_config;
+
+			$taxonomies_config = apply_filters( 'wpm_taxonomies_config', $config['taxonomies'] );
+			$taxonomies        = get_taxonomies();
+
+			foreach ( $taxonomies as $taxonomy ) {
+				$taxonomies_config[ $taxonomy ] = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
+			}
+
+			$config['taxonomies'] = $taxonomies_config;
+
+			$config['options'] = apply_filters( 'wpm_options_config', $config['options'] );
+
+			if ( is_multisite() ) {
+				$config['site_options'] = apply_filters( 'wpm_site_options_config', $config['site_options'] );
+			} else {
+				unset( $config['site_options'] );
+			}
+
+			$config['widgets'] = apply_filters( 'wpm_widgets_config', $config['widgets'] );
+
+			$this->config = $config;
 		}
 
-		$config = apply_filters( 'wpm_load_config', $this->config );
-
-		$posts_config = apply_filters( 'wpm_posts_config', $config['post_types'] );
-		$post_types   = get_post_types( '', 'names' );
-
-		foreach ( $post_types as $post_type ) {
-			$posts_config[ $post_type ] = apply_filters( "wpm_post_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
-		}
-
-		$config['post_types'] = $posts_config;
-
-		$taxonomies_config = apply_filters( 'wpm_taxonomies_config', $config['taxonomies'] );
-		$taxonomies        = get_taxonomies();
-
-		foreach ( $taxonomies as $taxonomy ) {
-			$taxonomies_config[ $taxonomy ] = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
-		}
-
-		$config['taxonomies'] = $taxonomies_config;
-
-		$config['options'] = apply_filters( 'wpm_options_config', $config['options'] );
-
-		if ( is_multisite() ) {
-			$config['site_options'] = apply_filters( 'wpm_site_options_config', $config['site_options'] );
-		}
-
-		return $config;
+		return $this->config;
 	}
 
 	/**
@@ -360,15 +406,19 @@ class WPM_Setup {
 	 *
 	 * @return string
 	 */
-	public function set_home_url( $value ) {
+	public static function set_home_url( $value ) {
 
 		if ( ( is_admin() && ! wp_doing_ajax() ) || ! did_action( 'wpm_init' ) ) {
 			return $value;
 		}
 
-		$language       = $this->get_user_language();
-		$languages      = $this->get_languages();
-		$default_locale = $this->get_default_locale();
+		/*if ( did_action( 'init' ) && wpm_get_orig_request_uri() != $_SERVER['REQUEST_URI'] ) {
+			return $value;
+		}*/
+
+		$language       = wpm_get_user_language();
+		$languages      = wpm_get_languages();
+		$default_locale = wpm_get_default_locale();
 		if ( $language !== $languages[ $default_locale ] ) {
 			$value .= '/' . $language;
 		}
@@ -454,7 +504,7 @@ class WPM_Setup {
 
 					if ( $browser_language && ( $browser_language !== $this->user_language ) ) {
 
-						$base_url = set_url_scheme( $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'], is_ssl() ? 'https' : 'http' );
+						$base_url = $this->get_original_home_url();
 
 						$b_home_url = $base_url . '/' . $browser_language;
 

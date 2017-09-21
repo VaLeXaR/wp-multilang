@@ -103,7 +103,7 @@ class WPM_Admin_Assets {
 				$show_switcher = true;
 			}
 
-			$taxonomies_config                      = $config['taxonomies'];
+			$taxonomies_config = $config['taxonomies'];
 
 			if ( $screen->taxonomy && ! is_null( $taxonomies_config[ $screen->taxonomy ] ) ) {
 				$show_switcher = true;

@@ -23,7 +23,19 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function wpm_translate_url( $url, $language = '' ) {
 
-	if ( strpos( $url, wp_parse_url( get_site_url(), PHP_URL_HOST ) ) === false ) {
+	remove_filter( 'option_home', 'WPM\Core\WPM_Setup::set_home_url', 99 );
+	if ( defined( 'DOMAIN_MAPPING' ) ) {
+		remove_filter( 'pre_option_home', 'WPM\Core\WPM_Setup::set_home_url', 99 );
+	}
+
+	$host = wpm_get_orig_home_url();
+
+	add_filter( 'option_home', array( 'WPM\Core\WPM_Setup', 'set_home_url' ), 99 );
+	if ( defined( 'DOMAIN_MAPPING' ) ) {
+		add_filter( 'pre_option_home', array( 'WPM\Core\WPM_Setup', 'set_home_url' ), 99 );
+	}
+
+	if ( strpos( $url, $host ) === false ) {
 		return $url;
 	}
 
@@ -38,9 +50,7 @@ function wpm_translate_url( $url, $language = '' ) {
 	}
 
 	$url_lang = '';
-
-	$path_url = wp_parse_url( $url, PHP_URL_PATH );
-	$host     = wp_parse_url( $url, PHP_URL_HOST );
+	$path_url = wpm_get_orig_request_uri();
 	$path     = $path_url ? $path_url : '/';
 
 	if ( preg_match( '!^/([a-z]{2})(/|$)!i', $path, $match ) ) {

@@ -42,12 +42,6 @@ class WPM_Admin_Settings {
 			'show_in_rest'      => true,
 		) );
 
-		register_setting( 'general', 'wpm_uninstall_translations', array(
-			'type'         => 'integer',
-			'group'        => 'general',
-			'description'  => __( 'Delete translations when uninstalling plugin', 'wpm' ),
-			'show_in_rest' => true,
-		) );
 
 		register_setting( 'general', 'wpm_show_untranslated_strings', array(
 			'type'         => 'integer',
@@ -55,6 +49,15 @@ class WPM_Admin_Settings {
 			'description'  => __( 'Show untranslated strings', 'wpm' ),
 			'show_in_rest' => true,
 		) );
+
+		if ( ! is_multisite() || ( is_main_site() ) ) {
+			register_setting( 'general', 'wpm_uninstall_translations', array(
+				'type'         => 'integer',
+				'group'        => 'general',
+				'description'  => __( 'Delete translations when uninstalling plugin', 'wpm' ),
+				'show_in_rest' => true,
+			) );
+		}
 	}
 
 
@@ -146,7 +149,7 @@ class WPM_Admin_Settings {
 							<?php esc_html_e( 'Default', 'wpm' ); ?>
 						<?php } elseif ( 'en_US' === $key ) { ?>
 							<?php esc_html_e( 'Built-in', 'wpm' ); ?>
-						<?php } else { ?>
+						<?php } elseif ( ! is_multisite() || ( is_main_site() ) ) { ?>
 							<button type="button" class="button button-link delete-language"
 							        data-locale="<?php echo $key; ?>"><?php esc_attr_e( 'Delete', 'wpm' ); ?></button>
 						<?php } ?>
@@ -222,22 +225,24 @@ class WPM_Admin_Settings {
 					</fieldset>
 				</td>
 			</tr>
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Uninstalling', 'wpm' ); ?></th>
-				<td>
-					<fieldset>
-						<legend class="screen-reader-text">
-							<span><?php esc_html_e( 'Uninstalling', 'wpm' ); ?></span>
-						</legend>
-						<label for="wpm_uninstall_translations">
-							<input type="hidden" name="wpm_uninstall_translations" value="0">
-							<input name="wpm_uninstall_translations" type="checkbox" id="wpm_uninstall_translations"
-							       value="1"<?php checked( get_option( 'wpm_uninstall_translations' ) ); ?>>
-							<?php esc_attr_e( 'Delete translations when uninstalling plugin (some translations may not be deleted and you must delete them manually).', 'wpm' ); ?>
-						</label>
-					</fieldset>
-				</td>
-			</tr>
+			<?php if ( ! is_multisite() || ( is_main_site() ) ) { ?>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Uninstalling', 'wpm' ); ?></th>
+					<td>
+						<fieldset>
+							<legend class="screen-reader-text">
+								<span><?php esc_html_e( 'Uninstalling', 'wpm' ); ?></span>
+							</legend>
+							<label for="wpm_uninstall_translations">
+								<input type="hidden" name="wpm_uninstall_translations" value="0">
+								<input name="wpm_uninstall_translations" type="checkbox" id="wpm_uninstall_translations"
+								       value="1"<?php checked( get_option( 'wpm_uninstall_translations' ) ); ?>>
+								<?php esc_attr_e( 'Delete translations when uninstalling plugin (some translations may not be deleted and you must delete them manually).', 'wpm' ); ?>
+							</label>
+						</fieldset>
+					</td>
+				</tr>
+			<?php } ?>
 		</table>
 		<?php
 	}

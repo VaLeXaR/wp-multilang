@@ -23,7 +23,8 @@
     "nav-menus",
     "options-general",
     "widgets",
-    "settings-network"
+    "settings-network",
+    "site-settings-network"
   ],
   "options": {
     "blogname": {},

@@ -8,7 +8,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:     wpm
  * Domain Path:     /languages
- * Version:         1.6.4
+ * Version:         1.7.0
  *
  * @package  WPM
  * @category Core
@@ -42,7 +42,7 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		 *
 		 * @var string
 		 */
-		public $version = '1.6.4';
+		public $version = '1.7.0';
 
 		/**
 		 * The single instance of the class.
@@ -99,7 +99,7 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		private function init_hooks() {
 			register_activation_hook( __FILE__, array( 'WPM\Core\WPM_Install', 'install' ) );
 			register_deactivation_hook( __FILE__, array( $this, 'destroy_cookies' ) );
-			add_action( 'wpmu_new_blog', array( $this, 'on_create_blog' ) );
+			add_action( 'clear_auth_cookie', array( $this, 'destroy_cookies' ) );
 			add_action( 'init', array( $this, 'init' ), 0 );
 			add_action( 'plugins_loaded', array( $this, 'translate_options' ), 0 );
 		}
@@ -253,23 +253,9 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		 * Destroy all cookies
 		 */
 		public function destroy_cookies() {
-			wpm_setcookie( 'edit_language', '', time() - HOUR_IN_SECONDS );
-			wpm_setcookie( 'language', '', time() - HOUR_IN_SECONDS );
-			wpm_setcookie( 'wpm_language', '', time() - HOUR_IN_SECONDS );
-		}
-
-		/**
-		 * Install plugin for new blog
-		 *
-		 * @param $blog_id
-		 */
-		public function on_create_blog( $blog_id ) {
-
-			if ( is_plugin_active_for_network( __FILE__ ) ) {
-				switch_to_blog( $blog_id );
-				Core\WPM_Install::install();
-				restore_current_blog();
-			}
+			wpm_setcookie( 'edit_language', ' ', time() - YEAR_IN_SECONDS );
+			wpm_setcookie( 'language', ' ', time() - YEAR_IN_SECONDS );
+			wpm_setcookie( 'wpm_language', ' ', time() - YEAR_IN_SECONDS );
 		}
 	}
 
@@ -280,9 +266,3 @@ function WPM() {
 }
 
 WPM();
-
-
-add_action( 'wpm_init', function () {
-//	d( get_current_blog_id(), wpm_get_languages(), wpm_get_config(), is_multisite(), get_current_network_id() );
-//	die();
-} );

@@ -40,9 +40,9 @@ class WPM_Posts extends \WPM_Object {
 		add_filter( 'the_title', 'wpm_translate_string', 0 );
 		add_filter( 'the_content', 'wpm_translate_string', 0 );
 		add_filter( 'the_excerpt', 'wpm_translate_string', 0 );
-		add_filter( 'attribute_escape', array( $this, 'escaping_text' ), 0 );
-		add_filter( 'esc_textarea', array( $this, 'escaping_text' ), 0 );
-		add_filter( 'esc_html', array( $this, 'escaping_text' ), 0 );
+		add_filter( 'attribute_escape', array( __CLASS__, 'escaping_text' ), 0 );
+		add_filter( 'esc_textarea', array( __CLASS__, 'escaping_text' ), 0 );
+		add_filter( 'esc_html', array( __CLASS__, 'escaping_text' ), 0 );
 		add_filter( "get_{$this->object_type}_metadata", array( $this, 'get_meta_field' ), 0, 3 );
 		add_filter( "update_{$this->object_type}_metadata", array( $this, 'update_meta_field' ), 99, 5 );
 		add_filter( "add_{$this->object_type}_metadata", array( $this, 'add_meta_field' ), 99, 5 );
@@ -231,7 +231,7 @@ class WPM_Posts extends \WPM_Object {
 	 *
 	 * @return string
 	 */
-	public function escaping_text( $string ) {
+	public static function escaping_text( $string ) {
 		if ( 'GET' == $_SERVER['REQUEST_METHOD'] ) {
 			$string = wpm_translate_string( $string );
 		}
