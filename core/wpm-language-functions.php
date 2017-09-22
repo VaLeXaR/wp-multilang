@@ -4,7 +4,6 @@
  *
  * Functions for getting params from WPM_Setup.
  *
- * @author        VaLeXaR
  * @category      Core
  * @package       WPM/Functions
  * @version       1.0.2
@@ -155,7 +154,7 @@ function wpm_get_language() {
 			}
 		}
 
-		$lang = ( isset( $_GET['edit_lang'] ) && in_array( wpm_clean( $_GET['edit_lang'] ), $languages, true ) ) ? wpm_clean( $_GET['edit_lang'] ) : ( ( isset( $_COOKIE['edit_language'] ) && in_array( wpm_clean( $_COOKIE['edit_language'] ), $languages, true ) ) ? wpm_clean( $_COOKIE['edit_language'] ) : wpm_get_user_language() );
+		$lang = ( isset( $_GET['edit_lang'] ) && in_array( wpm_clean( $_GET['edit_lang'] ), $languages, true ) ) ? wpm_clean( $_GET['edit_lang'] ) : ( ( isset( $_COOKIE['edit_lang'] ) && in_array( wpm_clean( $_COOKIE['edit_lang'] ), $languages, true ) ) ? wpm_clean( $_COOKIE['edit_lang'] ) : wpm_get_user_language() );
 	} else {
 		$lang = wpm_get_user_language();
 	}

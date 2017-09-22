@@ -11,8 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Class WPM_Setup
  * @package  WPM\Core
- * @author   VaLeXaR
- * @version  1.3.0
+ * @version  1.3.1
  */
 class WPM_Setup {
 
@@ -286,17 +285,18 @@ class WPM_Setup {
 			}
 
 			if ( is_admin() && ! wp_doing_ajax() ) {
-				wpm_setcookie( 'language', $lang, time() + MONTH_IN_SECONDS );
+				$locales = array_flip( $languages );
+				update_user_meta( get_current_user_id(), 'locale', $locales[ $lang ] );
 			}
 		} else {
 			if ( is_admin() && ! wp_doing_ajax() ) {
-				if ( isset( $_COOKIE['language'] ) ) {
-					$lang = wpm_clean( $_COOKIE['language'] );
-					if ( in_array( $lang, $languages, true ) ) {
-						$this->user_language = $lang;
+				$user_locale = get_user_meta( get_current_user_id(), 'locale', true );
+				if ( $user_locale ) {
+					if ( isset( $languages[ $user_locale ] ) ) {
+						$this->user_language = $languages[ $user_locale ];
 					}
 				} else {
-					wpm_setcookie( 'language', $languages[ $default_locale ], time() + MONTH_IN_SECONDS );
+					update_user_meta( get_current_user_id(), 'locale', $default_locale );
 				}
 			}
 		}
@@ -311,9 +311,9 @@ class WPM_Setup {
 
 		$languages      = $this->get_languages();
 		$default_locale = $this->get_default_locale();
+		$user_language  = $this->get_user_language();
 
 		foreach ( $languages as $key => $value ) {
-			$user_language = $this->get_user_language();
 			if ( ( $value === $user_language ) ) {
 				$locale = $key;
 				if ( $key === $default_locale && ! is_admin() && ! isset( $_REQUEST['lang'] ) ) {
@@ -493,9 +493,9 @@ class WPM_Setup {
 
 		if ( ! is_admin() && ! defined( 'WP_CLI' ) ) {
 
-			if ( ! isset( $_COOKIE['wpm_language'] ) ) {
+			if ( ! isset( $_COOKIE['lang'] ) ) {
 
-				wpm_setcookie( 'wpm_language', $this->user_language, time() + YEAR_IN_SECONDS );
+				wpm_setcookie( 'lang', $this->user_language, time() + YEAR_IN_SECONDS );
 				$redirect_to_browser_language = apply_filters( 'wpm_redirect_to_browser_language', true );
 
 				if ( $redirect_to_browser_language ) {
@@ -525,8 +525,8 @@ class WPM_Setup {
 					}
 				}
 			} else {
-				if ( $_COOKIE['wpm_language'] != $this->user_language ) {
-					wpm_setcookie( 'wpm_language', $this->user_language, time() + YEAR_IN_SECONDS );
+				if ( $_COOKIE['lang'] != $this->user_language ) {
+					wpm_setcookie( 'lang', $this->user_language, time() + YEAR_IN_SECONDS );
 					do_action( 'wpm_changed_language' );
 				}
 			} // End if().

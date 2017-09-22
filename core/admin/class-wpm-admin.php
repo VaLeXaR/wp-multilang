@@ -65,8 +65,8 @@ class WPM_Admin {
 	 */
 	public function set_edit_lang() {
 
-		if ( isset( $_GET['edit_lang'] ) || ! isset( $_COOKIE['edit_language'] ) ) {
-			wpm_setcookie( 'edit_language', wpm_get_language(), time() + MONTH_IN_SECONDS );
+		if ( isset( $_GET['edit_lang'] ) || ! isset( $_COOKIE['edit_lang'] ) ) {
+			setcookie( 'edit_lang',  wpm_get_language(), time() + MONTH_IN_SECONDS,ADMIN_COOKIE_PATH, COOKIE_DOMAIN, is_ssl() );
 		}
 	}
 }
