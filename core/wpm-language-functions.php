@@ -116,6 +116,8 @@ function wpm_get_translations() {
  *
  * @see WPM_Setup::get_original_home_url()
  *
+ * @since 1.7.0
+ *
  * @return string
  */
 function wpm_get_orig_home_url() {
@@ -127,14 +129,18 @@ function wpm_get_orig_home_url() {
  *
  * @see WPM_Setup::get_translations()
  *
+ * @since 1.7.0
+ *
  * @return string
  */
-function wpm_get_orig_request_uri() {
-	return WPM_Setup::instance()->get_original_request_uri();
+function wpm_get_site_request_uri() {
+	return WPM_Setup::instance()->get_site_request_uri();
 }
 
 /**
  * Get language for translation
+ *
+ * @since 1.7.0
  *
  * @return string
  */

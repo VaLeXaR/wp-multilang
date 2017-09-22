@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WPM_Setup
  * @package  WPM\Core
  * @author   VaLeXaR
- * @version  1.2.5
+ * @version  1.3.0
  */
 class WPM_Setup {
 
@@ -28,7 +28,7 @@ class WPM_Setup {
 	 *
 	 * @var string
 	 */
-	private $original_request_uri = '';
+	private $site_request_uri = '';
 
 	/**
 	 * Default locale
@@ -118,6 +118,7 @@ class WPM_Setup {
 		add_action( 'plugins_loaded', array( $this, 'set_locale' ), 0 );
 		add_action( 'parse_request', array( $this, 'setup_query_var' ), 0 );
 		add_action( 'wp', array( $this, 'redirect_to_user_language' ) );
+		add_action( 'request', array( $this, 'set_home_page' ) );
 	}
 
 
@@ -138,6 +139,8 @@ class WPM_Setup {
 	/**
 	 * Get original home url
 	 *
+	 * @since 1.7.0
+	 *
 	 * @return string
 	 */
 	public function get_original_home_url() {
@@ -152,10 +155,12 @@ class WPM_Setup {
 	/**
 	 * Get original request url
 	 *
+	 * @since 1.7.0
+	 *
 	 * @return string
 	 */
-	public function get_original_request_uri() {
-		return $this->original_request_uri;
+	public function get_site_request_uri() {
+		return $this->site_request_uri;
 	}
 
 
@@ -266,9 +271,9 @@ class WPM_Setup {
 		}
 
 		if ( $url ) {
-			$this->original_request_uri = str_replace( $this->get_original_home_url(), '', $url );
+			$this->site_request_uri = str_replace( $this->get_original_home_url(), '', $url );
 
-			if ( preg_match( '!^/([a-z]{2})(/|$)!i', $this->original_request_uri, $match ) ) {
+			if ( preg_match( '!^/([a-z]{2})(/|$)!i', $this->site_request_uri, $match ) ) {
 				$this->user_language = $match[1];
 			}
 		}
@@ -311,7 +316,7 @@ class WPM_Setup {
 			if ( ( $value === $user_language ) ) {
 				$locale = $key;
 				if ( $key === $default_locale && ! is_admin() && ! isset( $_REQUEST['lang'] ) ) {
-					wp_redirect( home_url( str_replace( '/' . $user_language . '/', '/', $this->original_request_uri ) ) );
+					wp_redirect( home_url( str_replace( '/' . $user_language . '/', '/', $this->site_request_uri ) ) );
 					exit;
 				}
 				break;
@@ -411,10 +416,6 @@ class WPM_Setup {
 		if ( ( is_admin() && ! wp_doing_ajax() ) || ! did_action( 'wpm_init' ) ) {
 			return $value;
 		}
-
-		/*if ( did_action( 'init' ) && wpm_get_orig_request_uri() != $_SERVER['REQUEST_URI'] ) {
-			return $value;
-		}*/
 
 		$language       = wpm_get_user_language();
 		$languages      = wpm_get_languages();
@@ -596,5 +597,20 @@ class WPM_Setup {
 		}
 
 		return $check;
+	}
+
+	/**
+	 * Fix home page if isset 'lang' GET parameter
+	 *
+	 * @param $query_vars
+	 *
+	 * @return array
+	 */
+	public function set_home_page( $query_vars ) {
+		if ( isset( $_GET['lang'] ) && count( $_GET['lang'] ) == 1 && wp_parse_url( wpm_get_site_request_uri(), PHP_URL_PATH ) == '/' ) {
+			$query_vars = array();
+		}
+
+		return $query_vars;
 	}
 }

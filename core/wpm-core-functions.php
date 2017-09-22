@@ -116,7 +116,11 @@ function wpm_print_js() {
  */
 function wpm_setcookie( $name, $value, $expire = 0, $secure = false ) {
 	if ( ! headers_sent() ) {
-		setcookie( $name, $value, $expire, COOKIEPATH ? COOKIEPATH : '/', is_multisite() ? SITECOOKIEPATH : COOKIE_DOMAIN, $secure );
+		if ( ! is_multisite() || is_subdomain_install() ) {
+			setcookie( $name, $value, $expire,  COOKIEPATH ? COOKIEPATH : '/', null, $secure );
+		} else {
+			setcookie( $name, $value, $expire,  SITECOOKIEPATH, COOKIE_DOMAIN, $secure );
+		}
 	} elseif ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 		headers_sent( $file, $line );
 		trigger_error( "{$name} cookie cannot be set - headers already sent by {$file} on line {$line}", E_USER_NOTICE );

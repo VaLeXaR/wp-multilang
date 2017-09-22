@@ -98,7 +98,6 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		 */
 		private function init_hooks() {
 			register_activation_hook( __FILE__, array( 'WPM\Core\WPM_Install', 'install' ) );
-			register_deactivation_hook( __FILE__, array( $this, 'destroy_cookies' ) );
 			add_action( 'clear_auth_cookie', array( $this, 'destroy_cookies' ) );
 			add_action( 'init', array( $this, 'init' ), 0 );
 			add_action( 'plugins_loaded', array( $this, 'translate_options' ), 0 );
@@ -247,15 +246,6 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		 */
 		public function ajax_url() {
 			return admin_url( 'admin-ajax.php', 'relative' );
-		}
-
-		/**
-		 * Destroy all cookies
-		 */
-		public function destroy_cookies() {
-			wpm_setcookie( 'edit_language', ' ', time() - YEAR_IN_SECONDS );
-			wpm_setcookie( 'language', ' ', time() - YEAR_IN_SECONDS );
-			wpm_setcookie( 'wpm_language', ' ', time() - YEAR_IN_SECONDS );
 		}
 	}
 
