@@ -23,6 +23,8 @@ Features of the plugin WP Multilang:
 * Many filters for dynamic applying translation settings
 * No duplicate posts
 * No subdomains for language version
+* Support multisite
+* Support WordPress in subfolder
 
 **WP Multilang** compatible out of the box with the plugin:
 * ACF, ACF Pro
@@ -138,6 +140,8 @@ Compatible with multisite not tested.
 * Багато фільтрів для динамічної зміни конфігурації перекладу.
 * Без дублювання записів
 * Без субдоменів для мовних версій
+* Підтримка багатосайтовості
+* Пітдтримка роботи WordPress з підпапки
 
 **WP Multilang** сумісний з коробки з плаґінами:
 * ACF, ACF Pro

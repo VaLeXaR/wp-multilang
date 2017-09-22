@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-09-18 09:23+0300\n"
+"POT-Creation-Date: 2017-09-22 17:04+0300\n"
 "PO-Revision-Date: 2017-05-22 12:43+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -52,18 +52,18 @@ msgid "Both"
 msgstr ""
 
 #: core/admin/class-wpm-admin-menus.php:162
-#: core/admin/class-wpm-admin-settings.php:90
-#: core/admin/class-wpm-admin-settings.php:130
-#: core/admin/class-wpm-admin-settings.php:165
+#: core/admin/class-wpm-admin-settings.php:93
+#: core/admin/class-wpm-admin-settings.php:133
+#: core/admin/class-wpm-admin-settings.php:168
 #: core/widgets/class-wpm-widget-language-switcher.php:38
 msgid "Flag"
 msgstr ""
 
 #: core/admin/class-wpm-admin-menus.php:163
-#: core/admin/class-wpm-admin-settings.php:89
-#: core/admin/class-wpm-admin-settings.php:126
-#: core/admin/class-wpm-admin-settings.php:127
-#: core/admin/class-wpm-admin-settings.php:164
+#: core/admin/class-wpm-admin-settings.php:92
+#: core/admin/class-wpm-admin-settings.php:129
+#: core/admin/class-wpm-admin-settings.php:130
+#: core/admin/class-wpm-admin-settings.php:167
 #: core/widgets/class-wpm-widget-language-switcher.php:39
 msgid "Name"
 msgstr ""
@@ -82,94 +82,94 @@ msgstr ""
 msgid "Multilingual Settings"
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:48
-msgid "Delete translations when uninstalling plugin"
-msgstr ""
-
-#: core/admin/class-wpm-admin-settings.php:55
+#: core/admin/class-wpm-admin-settings.php:49
 msgid "Show untranslated strings"
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:85
-#: core/admin/class-wpm-admin-settings.php:160
-msgid "Order"
-msgstr ""
-
-#: core/admin/class-wpm-admin-settings.php:86
-#: core/admin/class-wpm-admin-settings.php:104
-#: core/admin/class-wpm-admin-settings.php:161
-msgid "Enable"
-msgstr ""
-
-#: core/admin/class-wpm-admin-settings.php:87
-#: core/admin/class-wpm-admin-settings.php:115
-#: core/admin/class-wpm-admin-settings.php:116
-#: core/admin/class-wpm-admin-settings.php:162
-msgid "Locale"
+#: core/admin/class-wpm-admin-settings.php:57
+msgid "Delete translations when uninstalling plugin"
 msgstr ""
 
 #: core/admin/class-wpm-admin-settings.php:88
-#: core/admin/class-wpm-admin-settings.php:121
-#: core/admin/class-wpm-admin-settings.php:122
 #: core/admin/class-wpm-admin-settings.php:163
-msgid "Slug *"
+msgid "Order"
+msgstr ""
+
+#: core/admin/class-wpm-admin-settings.php:89
+#: core/admin/class-wpm-admin-settings.php:107
+#: core/admin/class-wpm-admin-settings.php:164
+msgid "Enable"
+msgstr ""
+
+#: core/admin/class-wpm-admin-settings.php:90
+#: core/admin/class-wpm-admin-settings.php:118
+#: core/admin/class-wpm-admin-settings.php:119
+#: core/admin/class-wpm-admin-settings.php:165
+msgid "Locale"
 msgstr ""
 
 #: core/admin/class-wpm-admin-settings.php:91
-#: core/admin/class-wpm-admin-settings.php:151
+#: core/admin/class-wpm-admin-settings.php:124
+#: core/admin/class-wpm-admin-settings.php:125
 #: core/admin/class-wpm-admin-settings.php:166
+msgid "Slug *"
+msgstr ""
+
+#: core/admin/class-wpm-admin-settings.php:94
+#: core/admin/class-wpm-admin-settings.php:154
+#: core/admin/class-wpm-admin-settings.php:169
 msgid "Delete"
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:131
+#: core/admin/class-wpm-admin-settings.php:134
 msgid "&mdash; Select &mdash;"
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:144
+#: core/admin/class-wpm-admin-settings.php:147
 msgid "Current"
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:146
+#: core/admin/class-wpm-admin-settings.php:149
 msgid "Default"
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:148
+#: core/admin/class-wpm-admin-settings.php:151
 msgid "Built-in"
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:175
+#: core/admin/class-wpm-admin-settings.php:178
 msgid "Site Language"
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:210
-#: core/admin/class-wpm-admin-settings.php:214
+#: core/admin/class-wpm-admin-settings.php:213
+#: core/admin/class-wpm-admin-settings.php:217
 msgid "Translating settings"
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:220
+#: core/admin/class-wpm-admin-settings.php:223
 msgid "Show untranslated strings in default language"
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:226
 #: core/admin/class-wpm-admin-settings.php:230
+#: core/admin/class-wpm-admin-settings.php:234
 msgid "Uninstalling"
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:236
+#: core/admin/class-wpm-admin-settings.php:240
 msgid ""
 "Delete translations when uninstalling plugin (some translations may not be "
 "deleted and you must delete them manually)."
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:295
+#: core/admin/class-wpm-admin-settings.php:302
 msgid "New language package installed"
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:299
+#: core/admin/class-wpm-admin-settings.php:306
 msgid "Language slug is required"
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:318
+#: core/admin/class-wpm-admin-settings.php:326
 msgid "No name"
 msgstr ""
 
@@ -221,7 +221,7 @@ msgstr ""
 msgid "Switcher Type"
 msgstr ""
 
-#: core/wpm-core-functions.php:147
+#: core/wpm-core-functions.php:151
 #, php-format
 msgid "For multilingual string, use syntax like %s."
 msgstr ""

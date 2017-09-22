@@ -30,6 +30,8 @@ Features of the plugin WP Multilang:
 * Many filters for dynamic applying translation settings
 * No duplicate posts
 * No subdomains for language version
+* Support multisite
+* Support WordPress in subfolder
 
 WP Multilang compatible with plugins:
 
@@ -124,8 +126,6 @@ Supports syntax qTranslate-X, WPGlobus, etc.
 Compatible with REST-API.
 Supports transfer the required translation through option `lang` in the GET request to REST.
 Has the ability to keep recording the target language through the transmission parameter `lang` in the POST request.
-
-Compatible with multisite not tested.
 
 == Installation ==
 
