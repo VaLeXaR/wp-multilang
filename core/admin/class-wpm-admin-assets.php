@@ -6,7 +6,7 @@
  * @category    Admin
  * @package     WPM/Core/Admin
  * @class       WPM_Admin_Assets
- * @version     1.0.1
+ * @version     1.0.2
  */
 
 namespace WPM\Core\Admin;

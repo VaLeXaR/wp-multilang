@@ -11,6 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Class WPM_Site_Options
  * @package WPM\Core
+ * @since 1.7.0
  */
 class WPM_Site_Options {
 
