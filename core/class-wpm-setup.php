@@ -119,6 +119,7 @@ class WPM_Setup {
 		add_action( 'parse_request', array( $this, 'setup_query_var' ), 0 );
 		add_action( 'wp', array( $this, 'redirect_to_user_language' ) );
 		add_action( 'request', array( $this, 'set_home_page' ) );
+		add_filter( 'rest_url', array( $this, 'fix_rest_url' ) );
 	}
 
 
@@ -612,5 +613,20 @@ class WPM_Setup {
 		}
 
 		return $query_vars;
+	}
+
+	/**
+	 * Fix REST url
+	 *
+	 * @param $url
+	 *
+	 * @return string
+	 */
+	public function fix_rest_url( $url ) {
+		if ( get_locale() != wpm_get_default_locale() ) {
+			$url = str_replace( '/' . wpm_get_language() . '/', '/', $url );
+		}
+
+		return $url;
 	}
 }

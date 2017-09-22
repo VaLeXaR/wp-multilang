@@ -160,6 +160,7 @@ If you have opened several browser tabs for editing this post in different langu
 + add filters for widgets config
 * fix deleting translations when uninstalling plugin
 * fix post filters config
+* fix REST url
 
 = 1.6.4 =
 + add dependence check ACF PRO from version
