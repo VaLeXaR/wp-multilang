@@ -119,9 +119,9 @@ Update translation occurs at PHP. Therefore plugin has high adaptability, compat
 
 Translation uses the following syntax:
 
-`[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut[:]`
+`[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut`
 
-Supports syntax qTranslate-X, WPGlobus, etc.
+Supports syntax qTranslate-, qTranslate-X, WPGlobus, etc.
 
 Compatible with REST-API.
 Supports transfer the required translation through option `lang` in the GET request to REST.
@@ -158,6 +158,7 @@ If you have opened several browser tabs for editing this post in different langu
 + add support site in subfolders
 + add support WordPress MU Domain Mapping
 + add filters for widgets config
++ change syntax for translate. Now without last brackets.
 * fix deleting translations when uninstalling plugin
 * fix post filters config
 * fix REST url

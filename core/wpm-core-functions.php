@@ -148,7 +148,7 @@ function wpm_get_current_url() {
  * @return string
  */
 function wpm_show_notice( $echo = true ) {
-	$notise = '<div class="notice notice-info inline"><p>' . sprintf( esc_attr__( 'For multilingual string, use syntax like %s.', 'wpm' ), '<code>[:en]Text on english[:de]Text auf Deutsch[:]</code>' ) . '</p></div>';
+	$notise = '<div class="notice notice-info inline"><p>' . sprintf( esc_attr__( 'For multilingual string, use syntax like %s.', 'wpm' ), '<code>[:en]Text on english[:de]Text auf Deutsch</code>' ) . '</p></div>';
 	if ( $echo ) {
 		echo $notise;
 	} else {

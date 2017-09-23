@@ -113,9 +113,9 @@ Update translation occurs at PHP. Therefore plugin has high adaptability, compat
 
 Translation uses the following syntax:
 ```
-[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut[:]
+[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut
 ```
-Supports syntax qTranslate-X, WPGlobus, etc.
+Supports syntax qTranslate, qTranslate-X, WPGlobus, etc.
 
 Compatible with REST-API.   
 Supports transfer the required translation through option `lang` in the GET request to REST.   
@@ -231,9 +231,9 @@ wpm_translate_value( $value, $language = '' ); // translate multidimensional arr
 
 Використовує такий синтаксис перекладу:
 ```
-[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut[:]
+[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut
 ```
-Підтримує синтаксису qTranslate-X, WPGlobus та подібних.
+Підтримує синтаксис qTranslate, qTranslate-X, WPGlobus та подібних.
 
 *Сумісний з REST-API.*   
 Підтримує передачу потрібного перекладу через параметр `lang` у GET запиті до REST.   

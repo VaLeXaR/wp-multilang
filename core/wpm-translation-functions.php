@@ -258,12 +258,6 @@ function wpm_ml_array_to_string( $strings ) {
 		}
 	}
 
-	if ( ! $string ) {
-		return '';
-	}
-
-	$string .= '[:]';
-
 	return $string;
 }
 
