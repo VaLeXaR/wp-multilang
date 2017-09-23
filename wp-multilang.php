@@ -98,7 +98,6 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		 */
 		private function init_hooks() {
 			register_activation_hook( __FILE__, array( 'WPM\Core\WPM_Install', 'install' ) );
-			add_action( 'clear_auth_cookie', array( $this, 'destroy_cookies' ) );
 			add_action( 'init', array( $this, 'init' ), 0 );
 			add_action( 'plugins_loaded', array( $this, 'translate_options' ), 0 );
 		}
