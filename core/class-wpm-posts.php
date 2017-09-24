@@ -40,6 +40,7 @@ class WPM_Posts extends \WPM_Object {
 		add_filter( 'the_title', 'wpm_translate_string', 0 );
 		add_filter( 'the_content', 'wpm_translate_string', 0 );
 		add_filter( 'the_excerpt', 'wpm_translate_string', 0 );
+		add_filter( 'the_editor_content', 'wpm_translate_string', 0 );
 		add_filter( 'attribute_escape', array( __CLASS__, 'escaping_text' ), 0 );
 		add_filter( 'esc_textarea', array( __CLASS__, 'escaping_text' ), 0 );
 		add_filter( 'esc_html', array( __CLASS__, 'escaping_text' ), 0 );

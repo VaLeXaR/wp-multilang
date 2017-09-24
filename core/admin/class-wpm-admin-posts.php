@@ -26,7 +26,6 @@ class WPM_Admin_Posts {
 	 * Constructor.
 	 */
 	public function __construct() {
-		add_action( 'dbx_post_advanced', array( $this, 'translate_post' ), 0 );
 		add_action( 'admin_init', array( $this, 'init' ) );
 		add_action( 'post_submitbox_misc_actions', array( $this, 'add_lang_indicator' ) );
 		add_filter( 'preview_post_link', array( $this, 'translate_post_link' ), 0 );
