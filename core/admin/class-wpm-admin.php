@@ -64,9 +64,10 @@ class WPM_Admin {
 	 * Add cookie for 'edit_lang'
 	 */
 	public function set_edit_lang() {
+		$user_id = get_current_user_id();
 
-		if ( isset( $_GET['edit_lang'] ) || ! isset( $_COOKIE['edit_lang'] ) ) {
-			setcookie( 'edit_lang',  wpm_get_language(), time() + MONTH_IN_SECONDS,ADMIN_COOKIE_PATH, null, is_ssl() );
+		if ( isset( $_GET['edit_lang'] ) || ! get_user_meta( $user_id, 'edit_lang', true ) ) {
+			update_user_meta( $user_id, 'edit_lang', wpm_get_language() );
 		}
 	}
 }

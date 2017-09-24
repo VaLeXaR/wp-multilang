@@ -154,7 +154,9 @@ function wpm_get_language() {
 			}
 		}
 
-		$lang = ( isset( $_GET['edit_lang'] ) && in_array( wpm_clean( $_GET['edit_lang'] ), $languages, true ) ) ? wpm_clean( $_GET['edit_lang'] ) : ( ( isset( $_COOKIE['edit_lang'] ) && in_array( wpm_clean( $_COOKIE['edit_lang'] ), $languages, true ) ) ? wpm_clean( $_COOKIE['edit_lang'] ) : wpm_get_user_language() );
+		$edit_lang = get_user_meta( get_current_user_id(), 'edit_lang', true );
+
+		$lang = ( isset( $_GET['edit_lang'] ) && in_array( wpm_clean( $_GET['edit_lang'] ), $languages, true ) ) ? wpm_clean( $_GET['edit_lang'] ) : ( ( $edit_lang && in_array( $edit_lang, $languages, true ) ) ? $edit_lang : wpm_get_user_language() );
 	} else {
 		$lang = wpm_get_user_language();
 	}
