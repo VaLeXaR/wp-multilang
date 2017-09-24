@@ -61,7 +61,7 @@ class WPM_Admin {
 	}
 
 	/**
-	 * Add cookie for 'edit_lang'
+	 * Add meta for 'edit_lang'
 	 */
 	public function set_edit_lang() {
 		$user_id = get_current_user_id();
