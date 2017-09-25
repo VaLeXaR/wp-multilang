@@ -39,8 +39,9 @@ class WPM_CF7 {
 		return $output;
 	}
 
-	public function add_lang_field($fields) {
+	public function add_lang_field( $fields ) {
 		$fields['lang'] = wpm_get_language();
+
 		return $fields;
 	}
 }
