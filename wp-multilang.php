@@ -99,7 +99,7 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		private function init_hooks() {
 			register_activation_hook( __FILE__, array( 'WPM\Core\WPM_Install', 'install' ) );
 			add_action( 'init', array( $this, 'init' ), 0 );
-			add_action( 'plugins_loaded', array( $this, 'translate_options' ), 1 );
+			add_action( 'after_setup_theme', array( $this, 'translate_options' ), 1 );
 		}
 
 		/**
