@@ -124,7 +124,7 @@ function wpm_setcookie( $name, $value, $expire = 0, $secure = false ) {
  * @return string
  */
 function wpm_get_current_url() {
-	$url = set_url_scheme( $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+	$url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
 
 	return $url;
 }
