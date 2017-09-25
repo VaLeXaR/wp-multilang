@@ -44,6 +44,7 @@ Features of the plugin WP Multilang:
 * BuddyPress
 * Meta Slider
 * TablePress
+* WordPress MU Domain Mapping
 
 Supports configuration via json.
 
@@ -161,6 +162,7 @@ Compatible with multisite not tested.
 * BuddyPress
 * Meta Slider
 * TablePress
+* WordPress MU Domain Mapping
 
 Підтримує налаштування через json.
 

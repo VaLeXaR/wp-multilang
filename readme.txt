@@ -52,6 +52,7 @@ WP Multilang compatible with plugins:
 * BuddyPress
 * Meta Slider
 * TablePress
+* WordPress MU Domain Mapping
 
 Supports configuration via json.
 
