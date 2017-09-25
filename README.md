@@ -30,7 +30,7 @@ Features of the plugin WP Multilang:
 * ACF, ACF Pro
 * WooCommerce
 * Yoast Seo
-* Contact Form 7
+* Contact Form 7 (added mail tag [_language] for send user lang in mail)
 * WPBakery Visual Composer
 * Page Builder by SiteOrigin
 * NextGEN Gallery
@@ -148,7 +148,7 @@ Compatible with multisite not tested.
 * ACF, ACF Pro
 * WooCommerce
 * Yoast Seo
-* Contact Form 7
+* Contact Form 7 (доданий теґ [_language], що виводить мову користувача у листі)
 * WPBakery Visual Composer
 * Page Builder by SiteOrigin
 * NextGEN Gallery

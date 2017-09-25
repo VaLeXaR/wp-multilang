@@ -314,7 +314,7 @@ function wpm_set_language_value( $localize_array, $value, $config = array(), $la
 			}
 
 			if ( ! isset( $localize_array[ $key ] ) ) {
-				$new_value[ $key ] = array();
+				$new_value[ $key ] = wpm_set_language_value( array(), $value[ $key ], $config_key, $lang );
 			} else {
 				$new_value[ $key ] = wpm_set_language_value( $localize_array[ $key ], $value[ $key ], $config_key, $lang );
 			}

@@ -38,7 +38,7 @@ WP Multilang compatible with plugins:
 * ACF, ACF Pro
 * WooCommerce
 * Yoast Seo
-* Contact Form 7
+* Contact Form 7 (added mail tag [_language] for send user lang in mail)
 * WPBakery Visual Composer
 * Page Builder by SiteOrigin
 * NextGEN Gallery
@@ -159,10 +159,12 @@ If you have opened several browser tabs for editing this post in different langu
 + add support site in subfolders
 + add support WordPress MU Domain Mapping
 + add filters for widgets config
++ add mail tag [_language] for CF7
 + change syntax for translate. Now without last brackets.
 * fix deleting translations when uninstalling plugin
 * fix post filters config
 * fix REST url
+* fix compatibility with CF7
 
 = 1.6.4 =
 + add dependence check ACF PRO from version
