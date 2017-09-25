@@ -271,7 +271,8 @@ class WPM_Setup {
 		}
 
 		if ( $url ) {
-			$this->site_request_uri = str_replace( $this->get_original_home_url(), '', $url );
+			$site_request_uri       = str_replace( $this->get_original_home_url(), '', $url );
+			$this->site_request_uri = $site_request_uri ? $site_request_uri : '/';
 
 			if ( preg_match( '!^/([a-z]{2})(/|$)!i', $this->site_request_uri, $match ) ) {
 				$this->user_language = $match[1];
@@ -501,26 +502,9 @@ class WPM_Setup {
 				if ( $redirect_to_browser_language ) {
 
 					$browser_language = $this->get_browser_language();
-					$default_locale   = $this->get_default_locale();
-					$languages        = $this->get_languages();
 
 					if ( $browser_language && ( $browser_language !== $this->user_language ) ) {
-
-						$base_url = $this->get_original_home_url();
-
-						$b_home_url = $base_url . '/' . $browser_language;
-
-						if ( $browser_language === $languages[ $default_locale ] ) {
-							$b_home_url = $base_url;
-						}
-
-						if ( $this->user_language !== $languages[ $default_locale ] ) {
-							$base_url = $base_url . '/' . $this->user_language;
-						}
-
-						$url = str_replace( $base_url, $b_home_url, wpm_get_current_url() );
-
-						wp_redirect( $url );
+						wp_redirect( wpm_translate_url( wpm_get_current_url(), $browser_language ) );
 						exit;
 					}
 				}
@@ -608,7 +592,7 @@ class WPM_Setup {
 	 * @return array
 	 */
 	public function set_home_page( $query_vars ) {
-		if ( isset( $_GET['lang'] ) && count( $_GET['lang'] ) == 1 && wp_parse_url( wpm_get_site_request_uri(), PHP_URL_PATH ) == '/' ) {
+		if ( isset( $_GET['lang'] ) && count( $_GET['lang'] ) == 1 && wpm_get_site_request_uri() == '/' ) {
 			$query_vars = array();
 		}
 

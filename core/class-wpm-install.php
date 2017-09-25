@@ -19,7 +19,7 @@ class WPM_Install {
 	 * Hook in tabs.
 	 */
 	public static function init() {
-		add_action( 'init', array( __CLASS__, 'check_version' ), 5 );
+		add_action( 'plugins_loaded', array( __CLASS__, 'check_version' ), 0 );
 	}
 
 	/**
