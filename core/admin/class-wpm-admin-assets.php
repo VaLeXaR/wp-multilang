@@ -6,7 +6,7 @@
  * @category    Admin
  * @package     WPM/Core/Admin
  * @class       WPM_Admin_Assets
- * @version     1.0.1
+ * @version     1.0.2
  */
 
 namespace WPM\Core\Admin;
@@ -99,13 +99,13 @@ class WPM_Admin_Assets {
 
 			$posts_config = $config['post_types'];
 
-			if ( isset( $posts_config[ $screen->post_type ] ) && ! is_null( $posts_config [ $screen->post_type ] ) && ! $screen->taxonomy ) {
+			if ( $screen->post_type && ! is_null( $posts_config [ $screen->post_type ] ) && ! $screen->taxonomy ) {
 				$show_switcher = true;
 			}
 
-			$taxonomies_config                      = $config['taxonomies'];
+			$taxonomies_config = $config['taxonomies'];
 
-			if ( isset( $taxonomies_config[ $screen->taxonomy ] ) && ! is_null( $taxonomies_config[ $screen->taxonomy ] ) ) {
+			if ( $screen->taxonomy && ! is_null( $taxonomies_config[ $screen->taxonomy ] ) ) {
 				$show_switcher = true;
 			}
 		}

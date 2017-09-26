@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.8.1
-Stable tag: 1.6.4
+Stable tag: 1.7.0
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -30,13 +30,15 @@ Features of the plugin WP Multilang:
 * Many filters for dynamic applying translation settings
 * No duplicate posts
 * No subdomains for language version
+* Support multisite
+* Support WordPress in subfolder
 
 WP Multilang compatible with plugins:
 
 * ACF, ACF Pro
 * WooCommerce
 * Yoast Seo
-* Contact Form 7
+* Contact Form 7 (added mail tag [_language] for send user lang in mail)
 * WPBakery Visual Composer
 * Page Builder by SiteOrigin
 * NextGEN Gallery
@@ -50,6 +52,7 @@ WP Multilang compatible with plugins:
 * BuddyPress
 * Meta Slider
 * TablePress
+* WordPress MU Domain Mapping
 
 Supports configuration via json.
 
@@ -117,15 +120,13 @@ Update translation occurs at PHP. Therefore plugin has high adaptability, compat
 
 Translation uses the following syntax:
 
-`[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut[:]`
+`[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut`
 
-Supports syntax qTranslate-X, WPGlobus, etc.
+Supports syntax qTranslate-, qTranslate-X, WPGlobus, etc.
 
 Compatible with REST-API.
 Supports transfer the required translation through option `lang` in the GET request to REST.
 Has the ability to keep recording the target language through the transmission parameter `lang` in the POST request.
-
-Compatible with multisite not tested.
 
 == Installation ==
 
@@ -152,6 +153,18 @@ If you have opened several browser tabs for editing this post in different langu
 5. Post edit page
 
 == Changelog ==
+
+= 1.7.0 =
++ add support multisite
++ add support site in subfolders
++ add support WordPress MU Domain Mapping
++ add filters for widgets config
++ add mail tag [_language] for CF7
++ change syntax for translate. Now without last brackets.
+* fix deleting translations when uninstalling plugin
+* fix post filters config
+* fix REST url
+* fix compatibility with CF7
 
 = 1.6.4 =
 + add dependence check ACF PRO from version

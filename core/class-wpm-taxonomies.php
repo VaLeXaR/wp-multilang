@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
+include_once( 'abstracts/abstract-wpm-object.php' );
+
 /**
  * Class WPM_Taxonomies
  * @package  WPM\Core
@@ -81,7 +83,7 @@ class WPM_Taxonomies extends \WPM_Object {
 					$config            = wpm_get_config();
 					$taxonomies_config = $config['taxonomies'];
 
-					if ( ! isset( $taxonomies_config[ $taxonomy ] ) || is_null( $taxonomies_config[ $taxonomy ] ) ) {
+					if ( is_null( $taxonomies_config[ $taxonomy ] ) ) {
 						return $args;
 					}
 				}
@@ -160,7 +162,7 @@ class WPM_Taxonomies extends \WPM_Object {
 		$config            = wpm_get_config();
 		$taxonomies_config = $config['taxonomies'];
 
-		if ( ! isset( $taxonomies_config[ $taxonomy ] ) || is_null( $taxonomies_config[ $taxonomy ] ) ) {
+		if ( is_null( $taxonomies_config[ $taxonomy ] ) ) {
 			return $data;
 		}
 
@@ -190,7 +192,7 @@ class WPM_Taxonomies extends \WPM_Object {
 		$config            = wpm_get_config();
 		$taxonomies_config = $config['taxonomies'];
 
-		if ( ! isset( $taxonomies_config[ $taxonomy ] ) || is_null( $taxonomies_config[ $taxonomy ] ) ) {
+		if ( is_null( $taxonomies_config[ $taxonomy ] ) ) {
 			return;
 		}
 
@@ -226,7 +228,7 @@ class WPM_Taxonomies extends \WPM_Object {
 		$config            = wpm_get_config();
 		$taxonomies_config = $config['taxonomies'];
 
-		if ( ! isset( $taxonomies_config[ $taxonomy ] ) || is_null( $taxonomies_config[ $taxonomy ] ) ) {
+		if ( is_null( $taxonomies_config[ $taxonomy ] ) ) {
 			return $data;
 		}
 
@@ -262,7 +264,7 @@ class WPM_Taxonomies extends \WPM_Object {
 		$config            = wpm_get_config();
 		$taxonomies_config = $config['taxonomies'];
 
-		if ( ! isset( $taxonomies_config[ $taxonomy ] ) || is_null( $taxonomies_config[ $taxonomy ] ) ) {
+		if ( is_null( $taxonomies_config[ $taxonomy ] ) ) {
 			return;
 		}
 

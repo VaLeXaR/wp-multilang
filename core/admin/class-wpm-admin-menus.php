@@ -53,9 +53,7 @@ class WPM_Admin_Menus {
 	 */
 	public function admin_bar_menu( \WP_Admin_Bar $wp_admin_bar ) {
 
-		$user_id = get_current_user_id();
-
-		if ( ! $user_id || get_user_meta( $user_id, 'locale', true ) ) {
+		if ( ! get_current_user_id() ) {
 			return;
 		}
 

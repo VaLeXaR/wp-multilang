@@ -19,7 +19,7 @@ class WPM_Install {
 	 * Hook in tabs.
 	 */
 	public static function init() {
-		add_action( 'init', array( __CLASS__, 'check_version' ), 5 );
+		add_action( 'after_setup_theme', array( __CLASS__, 'check_version' ), 0 );
 	}
 
 	/**
@@ -45,7 +45,7 @@ class WPM_Install {
 
 		self::create_options();
 		WPM_Config::load_config_run();
-		self::update_gp_version();
+		self::update_wpm_version();
 
 		/*
 		 * Deletes all expired transients. The multi-table delete syntax is used
@@ -68,7 +68,7 @@ class WPM_Install {
 	/**
 	 * Update WPM version to current.
 	 */
-	private static function update_gp_version() {
+	private static function update_wpm_version() {
 		delete_option( 'wpm_version' );
 		add_option( 'wpm_version', WPM()->version );
 	}
@@ -100,6 +100,6 @@ class WPM_Install {
 			);
 		}
 
-		add_option( 'wpm_languages', $languages, '', 'yes' );
+		add_option( 'wpm_languages', $languages );
 	}
 }

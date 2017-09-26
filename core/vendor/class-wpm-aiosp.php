@@ -76,7 +76,7 @@ class WPM_AIOSP {
 		$posts_config = $config['post_types'];
 		$post_type    = get_post_type( $object_id );
 
-		if ( ! isset( $posts_config[ $post_type ] ) || is_null( $posts_config[ $post_type ] ) ) {
+		if ( is_null( $posts_config[ $post_type ] ) ) {
 			return $check;
 		}
 
@@ -112,7 +112,7 @@ class WPM_AIOSP {
 		$posts_config = $config['post_types'];
 		$post_type    = get_post_type( $object_id );
 
-		if ( ! isset( $posts_config[ $post_type ] ) || is_null( $posts_config[ $post_type ] ) ) {
+		if ( is_null( $posts_config[ $post_type ] ) ) {
 			return $check;
 		}
 

@@ -116,7 +116,7 @@ abstract class WPM_Object {
 		switch ( $this->object_type ) {
 
 			case 'post':
-				if ( ! isset( $config['post_types'][ get_post_type( $object_id ) ] ) ) {
+				if ( is_null( $config['post_types'][ get_post_type( $object_id ) ] ) ) {
 					return $check;
 				}
 
@@ -124,7 +124,7 @@ abstract class WPM_Object {
 
 			case 'term':
 				$term = get_term( $object_id );
-				if ( ! isset( $config['taxonomies'][ $term->taxonomy ] ) ) {
+				if ( is_null( $config['taxonomies'][ $term->taxonomy ] ) ) {
 					return $check;
 				}
 		}
@@ -282,14 +282,14 @@ abstract class WPM_Object {
 		switch ( $this->object_type ) {
 
 			case 'post':
-				if ( ! isset( $config['post_types'][ get_post_type( $object_id ) ] ) ) {
+				if ( is_null( $config['post_types'][ get_post_type( $object_id ) ] ) ) {
 					return $check;
 				}
 				break;
 
 			case 'term':
 				$term = get_term( $object_id );
-				if ( ! isset( $config['taxonomies'][ $term->taxonomy ] ) ) {
+				if ( is_null( $config['taxonomies'][ $term->taxonomy ] ) ) {
 					return $check;
 				}
 		}

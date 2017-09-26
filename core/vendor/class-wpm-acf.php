@@ -188,7 +188,7 @@ class WPM_Acf {
 				$posts_config = $config['post_types'];
 				$post_type    = get_post_type( $info['id'] );
 
-				if ( ! isset( $posts_config[ $post_type ] ) || is_null( $posts_config[ $post_type ] ) ) {
+				if ( is_null( $posts_config[ $post_type ] ) ) {
 					return $value;
 				}
 
@@ -198,7 +198,7 @@ class WPM_Acf {
 				$taxonomies_config = $config['taxonomies'];
 				$term              = get_term( $info['id'] );
 
-				if ( ! isset( $taxonomies_config[ $term->taxonomy ] ) || is_null( $taxonomies_config[ $term->taxonomy ] ) ) {
+				if ( is_null( $taxonomies_config[ $term->taxonomy ] ) ) {
 					return $value;
 				}
 		}
@@ -247,7 +247,7 @@ class WPM_Acf {
 				$posts_config = $config['post_types'];
 				$post_type    = get_post_type( $post_id );
 
-				if ( ! isset( $posts_config[ $post_type ] ) || is_null( $posts_config[ $post_type ] ) ) {
+				if ( is_null( $posts_config[ $post_type ] ) ) {
 					$translate = false;
 				}
 
@@ -258,7 +258,7 @@ class WPM_Acf {
 				$taxonomies_config = $config['taxonomies'];
 				$term              = get_term( $term_id );
 
-				if ( isset( $taxonomies_config[ $term->taxonomy ] ) || is_null( $taxonomies_config[ $term->taxonomy ] ) ) {
+				if ( is_null( $taxonomies_config[ $term->taxonomy ] ) ) {
 					$translate = false;
 				}
 		}
