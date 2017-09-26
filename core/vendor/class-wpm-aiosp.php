@@ -72,11 +72,9 @@ class WPM_AIOSP {
 			return $check;
 		}
 
-		$config                     = wpm_get_config();
-		$posts_config               = $config['post_types'];
-		$posts_config               = apply_filters( 'wpm_posts_config', $posts_config );
-		$post_type                  = get_post_type( $object_id );
-		$posts_config[ $post_type ] = apply_filters( "wpm_post_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
+		$config       = wpm_get_config();
+		$posts_config = $config['post_types'];
+		$post_type    = get_post_type( $object_id );
 
 		if ( is_null( $posts_config[ $post_type ] ) ) {
 			return $check;
@@ -110,11 +108,9 @@ class WPM_AIOSP {
 	public function update_old_fields( $check, $object_id, $meta_key, $meta_value ) {
 		global $wpdb;
 
-		$config                     = wpm_get_config();
-		$posts_config               = $config['post_types'];
-		$posts_config               = apply_filters( 'wpm_posts_config', $posts_config );
-		$post_type                  = get_post_type( $object_id );
-		$posts_config[ $post_type ] = apply_filters( "wpm_post_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
+		$config       = wpm_get_config();
+		$posts_config = $config['post_types'];
+		$post_type    = get_post_type( $object_id );
 
 		if ( is_null( $posts_config[ $post_type ] ) ) {
 			return $check;

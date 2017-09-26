@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
+include_once( 'abstracts/abstract-wpm-object.php' );
+
 /**
  * Class WPM_Taxonomies
  * @package  WPM\Core
@@ -78,10 +80,8 @@ class WPM_Taxonomies extends \WPM_Object {
 				if ( count( $taxonomies ) === 1 ) {
 					$taxonomy = current( $taxonomies );
 
-					$config                         = wpm_get_config();
-					$taxonomies_config              = $config['taxonomies'];
-					$taxonomies_config              = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
-					$taxonomies_config[ $taxonomy ] = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
+					$config            = wpm_get_config();
+					$taxonomies_config = $config['taxonomies'];
 
 					if ( is_null( $taxonomies_config[ $taxonomy ] ) ) {
 						return $args;
@@ -159,11 +159,8 @@ class WPM_Taxonomies extends \WPM_Object {
 	 */
 	public function insert_term( $data, $taxonomy, $args ) {
 
-		$config = wpm_get_config();
-
-		$taxonomies_config              = $config['taxonomies'];
-		$taxonomies_config              = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
-		$taxonomies_config[ $taxonomy ] = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
+		$config            = wpm_get_config();
+		$taxonomies_config = $config['taxonomies'];
 
 		if ( is_null( $taxonomies_config[ $taxonomy ] ) ) {
 			return $data;
@@ -192,10 +189,8 @@ class WPM_Taxonomies extends \WPM_Object {
 	public function insert_description( $term_id, $tt_id, $taxonomy ) {
 		global $wpdb;
 
-		$config                         = wpm_get_config();
-		$taxonomies_config              = $config['taxonomies'];
-		$taxonomies_config              = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
-		$taxonomies_config[ $taxonomy ] = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
+		$config            = wpm_get_config();
+		$taxonomies_config = $config['taxonomies'];
 
 		if ( is_null( $taxonomies_config[ $taxonomy ] ) ) {
 			return;
@@ -229,11 +224,9 @@ class WPM_Taxonomies extends \WPM_Object {
 	 * @return mixed
 	 */
 	public function update_term( $data, $term_id, $taxonomy, $args ) {
-		$config = wpm_get_config();
 
-		$taxonomies_config              = $config['taxonomies'];
-		$taxonomies_config              = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
-		$taxonomies_config[ $taxonomy ] = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
+		$config            = wpm_get_config();
+		$taxonomies_config = $config['taxonomies'];
 
 		if ( is_null( $taxonomies_config[ $taxonomy ] ) ) {
 			return $data;
@@ -268,10 +261,8 @@ class WPM_Taxonomies extends \WPM_Object {
 	public function update_description( $tt_id, $taxonomy ) {
 		global $wpdb;
 
-		$config                         = wpm_get_config();
-		$taxonomies_config              = $config['taxonomies'];
-		$taxonomies_config              = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
-		$taxonomies_config[ $taxonomy ] = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
+		$config            = wpm_get_config();
+		$taxonomies_config = $config['taxonomies'];
 
 		if ( is_null( $taxonomies_config[ $taxonomy ] ) ) {
 			return;

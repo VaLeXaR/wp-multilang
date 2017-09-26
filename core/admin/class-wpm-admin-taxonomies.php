@@ -35,17 +35,18 @@ class WPM_Admin_Taxonomies {
 	 * Add language column to taxonomies list
 	 */
 	public function init() {
-		$config            = wpm_get_config();
-		$taxonomies_config = apply_filters( 'wpm_taxonomies_config', $config['taxonomies'] );
+		$config = wpm_get_config();
 
-		foreach ( $taxonomies_config as $taxonomy => $config ) {
-			$taxonomy_config = apply_filters( "wpm_taxonomy_{$taxonomy}_config", $config );
-			if ( ! is_null( $taxonomy_config ) ) {
-				add_filter( "manage_edit-{$taxonomy}_columns", array( $this, 'language_columns' ) );
-				add_filter( "manage_{$taxonomy}_custom_column", array( $this, 'render_language_column' ), 0, 3 );
-				add_action( "{$taxonomy}_add_form_fields", array( $this, 'add_taxonomy_fields' ) );
-				add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_taxonomy_fields' ), 10 );
+		foreach ( $config['taxonomies'] as $taxonomy => $taxonomy_config ) {
+
+			if ( is_null( $taxonomy_config ) ) {
+				continue;
 			}
+
+			add_filter( "manage_edit-{$taxonomy}_columns", array( $this, 'language_columns' ) );
+			add_filter( "manage_{$taxonomy}_custom_column", array( $this, 'render_language_column' ), 0, 3 );
+			add_action( "{$taxonomy}_add_form_fields", array( $this, 'add_taxonomy_fields' ) );
+			add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_taxonomy_fields' ), 10 );
 		}
 	}
 
@@ -113,13 +114,10 @@ class WPM_Admin_Taxonomies {
 			return;
 		}
 
-		$taxonomy                       = $screen->taxonomy;
-		$config                         = wpm_get_config();
-		$taxonomies_config              = $config['taxonomies'];
-		$taxonomies_config              = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
-		$taxonomies_config[ $taxonomy ] = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
+		$config            = wpm_get_config();
+		$taxonomies_config = $config['taxonomies'];
 
-		if ( is_null( $taxonomies_config[ $taxonomy ] ) ) {
+		if ( is_null( $taxonomies_config[ $screen->taxonomy ] ) ) {
 			return;
 		}
 
@@ -155,13 +153,10 @@ class WPM_Admin_Taxonomies {
 			return;
 		}
 
-		$taxonomy                       = $screen->taxonomy;
-		$config                         = wpm_get_config();
-		$taxonomies_config              = $config['taxonomies'];
-		$taxonomies_config              = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
-		$taxonomies_config[ $taxonomy ] = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
+		$config            = wpm_get_config();
+		$taxonomies_config = $config['taxonomies'];
 
-		if ( is_null( $taxonomies_config[ $taxonomy ] ) ) {
+		if ( is_null( $taxonomies_config[ $screen->taxonomy ] ) ) {
 			return;
 		}
 
@@ -206,10 +201,8 @@ class WPM_Admin_Taxonomies {
 			return;
 		}
 
-		$config                         = wpm_get_config();
-		$taxonomies_config              = $config['taxonomies'];
-		$taxonomies_config              = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
-		$taxonomies_config[ $taxonomy ] = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
+		$config            = wpm_get_config();
+		$taxonomies_config = $config['taxonomies'];
 
 		if ( is_null( $taxonomies_config[ $taxonomy ] ) ) {
 			return;

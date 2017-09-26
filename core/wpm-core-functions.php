@@ -52,18 +52,8 @@ function wpm_asset_path( $filename ) {
 	$dist_path = str_replace( array( 'http:', 'https:' ), '', WPM()->plugin_url() ) . '/assets/';
 	$directory = dirname( $filename ) . '/';
 	$file      = basename( $filename );
-	static $manifest;
 
-	if ( empty( $manifest ) ) {
-		$manifest_path = WPM()->plugin_path() . '/assets/assets.json';
-		$manifest      = new WPM\Core\Libraries\Json_Manifest( $manifest_path );
-	}
-
-	if ( array_key_exists( $file, $manifest->get() ) ) {
-		return $dist_path . $directory . $manifest->get()[ $file ];
-	} else {
-		return $dist_path . $directory . $file;
-	}
+	return $dist_path . $directory . $file;
 }
 
 /**
@@ -112,54 +102,21 @@ function wpm_print_js() {
  * @param  string  $name   Name of the cookie being set.
  * @param  string  $value  Value of the cookie.
  * @param  integer $expire Expiry of the cookie.
- * @param  string  $secure Whether the cookie should be served only over https.
+ * @param  bool  $secure Whether the cookie should be served only over https.
  */
 function wpm_setcookie( $name, $value, $expire = 0, $secure = false ) {
 	if ( ! headers_sent() ) {
-		setcookie( $name, $value, $expire, COOKIEPATH ? COOKIEPATH : '/', COOKIE_DOMAIN, $secure );
+		if ( COOKIEPATH == SITECOOKIEPATH ) {
+			setcookie( $name, $value, $expire,  COOKIEPATH ? COOKIEPATH : '/', null, $secure );
+		} else {
+			setcookie( $name, $value, $expire, SITECOOKIEPATH, null, $secure );
+		}
 	} elseif ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 		headers_sent( $file, $line );
 		trigger_error( "{$name} cookie cannot be set - headers already sent by {$file} on line {$line}", E_USER_NOTICE );
 	}
 }
 
-/**
- * Run a MySQL transaction query, if supported.
- *
- * @param string $type start (default), commit, rollback
- */
-function wpm_transaction_query( $type = 'start' ) {
-	global $wpdb;
-
-	$wpdb->hide_errors();
-
-	if ( ! defined( 'GP_USE_TRANSACTIONS' ) ) {
-		define( 'GP_USE_TRANSACTIONS', true );
-	}
-
-	if ( GP_USE_TRANSACTIONS ) {
-		switch ( $type ) {
-			case 'commit' :
-				$wpdb->query( 'COMMIT' );
-				break;
-			case 'rollback' :
-				$wpdb->query( 'ROLLBACK' );
-				break;
-			default :
-				$wpdb->query( 'START TRANSACTION' );
-				break;
-		}
-	}
-}
-
-/**
- * Wrapper for set_time_limit to see if it is enabled.
- */
-function wpm_set_time_limit( $limit = 0 ) {
-	if ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
-		@set_time_limit( $limit );
-	}
-}
 
 /**
  * Get current url from $_SERVER
@@ -167,10 +124,11 @@ function wpm_set_time_limit( $limit = 0 ) {
  * @return string
  */
 function wpm_get_current_url() {
-	$url = set_url_scheme( $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], is_ssl() ? 'https' : 'http' );
+	$url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
 
 	return $url;
 }
+
 
 /**
  * Show notice for strings that cant`t be translated for displaying in admin.
@@ -180,7 +138,7 @@ function wpm_get_current_url() {
  * @return string
  */
 function wpm_show_notice( $echo = true ) {
-	$notise = '<div class="notice notice-info inline"><p>' . sprintf( esc_attr__( 'For multilingual string, use syntax like %s.', 'wpm' ), '<code>[:en]Text on english[:de]Text auf Deutsch[:]</code>' ) . '</p></div>';
+	$notise = '<div class="notice notice-info inline"><p>' . sprintf( esc_attr__( 'For multilingual string, use syntax like %s.', 'wpm' ), '<code>[:en]Text on english[:de]Text auf Deutsch</code>' ) . '</p></div>';
 	if ( $echo ) {
 		echo $notise;
 	} else {

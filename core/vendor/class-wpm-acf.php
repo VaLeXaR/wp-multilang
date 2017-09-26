@@ -28,6 +28,8 @@ class WPM_Acf {
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'init_filters' ), 5 );
+		add_filter( 'acf/load_field', 'wpm_translate_value', 5 );
+		add_filter( 'acf/load_value', 'wpm_translate_value', 5 );
 		add_filter( 'wpm_acf_field_text_config', array( $this, 'add_text_field_config' ) );
 		add_filter( 'wpm_acf_field_textarea_config', array( $this, 'add_text_field_config' ) );
 		add_filter( 'wpm_acf_field_wysiwyg_config', array( $this, 'add_text_field_config' ) );
@@ -41,24 +43,20 @@ class WPM_Acf {
 	 */
 	public function init_filters() {
 		if ( version_compare( acf()->settings['version'], 5, 'ge' ) ) {
-			add_filter( 'acf/load_field', 'wpm_translate_value', 0 );
-			add_filter( 'acf/load_value', 'wpm_translate_value', 0 );
 			add_filter( 'wpm_post_acf-field-group_config', array( $this, 'add_config' ) );
 			add_filter( 'acf/translate_field_group', 'wpm_translate_string', 0 );
 			add_filter( 'acf/update_field', array( $this, 'update_field_pro' ), 99 );
 			add_filter( 'acf/update_value', array( $this, 'update_value_pro' ), 99, 3 );
 		} else {
-			add_filter( 'acf/load_field', 'wpm_translate_value', 5 );
-			add_filter( 'acf/load_value', 'wpm_translate_value', 5 );
 			add_filter( 'wpm_post_acf_config', array( $this, 'add_config' ) );
+			add_filter( 'acf/field_group/get_fields', 'wpm_translate_value' );
+			remove_class_action( 'acf/update_field', 'acf_field_functions', 'update_field', 5 );
+			add_filter( 'acf/update_field', array( $this, 'update_field' ), 5, 2 );
 			remove_class_action( 'acf/update_value', 'acf_field_functions', 'update_value', 5 );
 			add_action( 'acf/update_value', array( $this, 'update_value' ), 5, 3 );
 			add_filter( 'attribute_escape', array( $this, 'translate_value' ) );
 			add_filter( 'esc_textarea', array( $this, 'translate_value' ) );
 			add_filter( 'acf_the_editor_content', 'wpm_translate_value', 0 );
-			remove_class_action( 'acf/update_field', 'acf_field_functions', 'update_field', 5 );
-			add_filter( 'acf/update_field', array( $this, 'update_field' ), 5, 2 );
-			add_filter( 'acf/field_group/get_fields', 'wpm_translate_value' );
 		}
 	}
 
@@ -187,10 +185,8 @@ class WPM_Acf {
 		switch ( $info['type'] ) {
 
 			case 'post':
-				$posts_config               = $config['post_types'];
-				$posts_config               = apply_filters( 'wpm_posts_config', $posts_config );
-				$post_type                  = get_post_type( $info['id'] );
-				$posts_config[ $post_type ] = apply_filters( "wpm_post_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
+				$posts_config = $config['post_types'];
+				$post_type    = get_post_type( $info['id'] );
 
 				if ( is_null( $posts_config[ $post_type ] ) ) {
 					return $value;
@@ -199,10 +195,8 @@ class WPM_Acf {
 				break;
 
 			case 'term':
-				$taxonomies_config                    = $config['taxonomies'];
-				$taxonomies_config                    = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
-				$term                                 = get_term( $info['id'] );
-				$taxonomies_config[ $term->taxonomy ] = apply_filters( "wpm_taxonomy_{$term->taxonomy}_config", isset( $taxonomies_config[ $term->taxonomy ] ) ? $taxonomies_config[ $term->taxonomy ] : null );
+				$taxonomies_config = $config['taxonomies'];
+				$term              = get_term( $info['id'] );
 
 				if ( is_null( $taxonomies_config[ $term->taxonomy ] ) ) {
 					return $value;
@@ -250,10 +244,8 @@ class WPM_Acf {
 		switch ( $field_type ) {
 
 			case 'post':
-				$posts_config               = $config['post_types'];
-				$posts_config               = apply_filters( 'wpm_posts_config', $posts_config );
-				$post_type                  = get_post_type( $post_id );
-				$posts_config[ $post_type ] = apply_filters( "wpm_post_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
+				$posts_config = $config['post_types'];
+				$post_type    = get_post_type( $post_id );
 
 				if ( is_null( $posts_config[ $post_type ] ) ) {
 					$translate = false;
@@ -262,11 +254,9 @@ class WPM_Acf {
 				break;
 
 			case 'term':
-				$term_id                              = substr( $post_id, strripos( $post_id, '_' ) + 1 );
-				$taxonomies_config                    = $config['taxonomies'];
-				$taxonomies_config                    = apply_filters( 'wpm_taxonomies_config', $taxonomies_config );
-				$term                                 = get_term( $term_id );
-				$taxonomies_config[ $term->taxonomy ] = apply_filters( "wpm_taxonomy_{$term->taxonomy}_config", isset( $taxonomies_config[ $term->taxonomy ] ) ? $taxonomies_config[ $term->taxonomy ] : null );
+				$term_id           = substr( $post_id, strripos( $post_id, '_' ) + 1 );
+				$taxonomies_config = $config['taxonomies'];
+				$term              = get_term( $term_id );
 
 				if ( is_null( $taxonomies_config[ $term->taxonomy ] ) ) {
 					$translate = false;

@@ -4,7 +4,6 @@
  *
  * Functions for getting params from WPM_Setup.
  *
- * @author        VaLeXaR
  * @category      Core
  * @package       WPM/Functions
  * @version       1.0.2
@@ -112,7 +111,35 @@ function wpm_get_translations() {
 }
 
 /**
+ * Get original home url
+ *
+ * @see WPM_Setup::get_original_home_url()
+ *
+ * @since 1.7.0
+ *
+ * @return string
+ */
+function wpm_get_orig_home_url() {
+	return WPM_Setup::instance()->get_original_home_url();
+}
+
+/**
+ * Get available translation
+ *
+ * @see WPM_Setup::get_translations()
+ *
+ * @since 1.7.0
+ *
+ * @return string
+ */
+function wpm_get_site_request_uri() {
+	return WPM_Setup::instance()->get_site_request_uri();
+}
+
+/**
  * Get language for translation
+ *
+ * @since 1.7.0
  *
  * @return string
  */
@@ -127,7 +154,9 @@ function wpm_get_language() {
 			}
 		}
 
-		$lang = ( isset( $_GET['edit_lang'] ) && in_array( wpm_clean( $_GET['edit_lang'] ), $languages, true ) ) ? wpm_clean( $_GET['edit_lang'] ) : ( ( isset( $_COOKIE['edit_language'] ) && in_array( wpm_clean( $_COOKIE['edit_language'] ), $languages, true ) ) ? wpm_clean( $_COOKIE['edit_language'] ) : wpm_get_user_language() );
+		$edit_lang = get_user_meta( get_current_user_id(), 'edit_lang', true );
+
+		$lang = ( isset( $_GET['edit_lang'] ) && in_array( wpm_clean( $_GET['edit_lang'] ), $languages, true ) ) ? wpm_clean( $_GET['edit_lang'] ) : ( ( $edit_lang && in_array( $edit_lang, $languages, true ) ) ? $edit_lang : wpm_get_user_language() );
 	} else {
 		$lang = wpm_get_user_language();
 	}

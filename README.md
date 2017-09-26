@@ -23,12 +23,14 @@ Features of the plugin WP Multilang:
 * Many filters for dynamic applying translation settings
 * No duplicate posts
 * No subdomains for language version
+* Support multisite
+* Support WordPress in subfolder
 
 **WP Multilang** compatible out of the box with the plugin:
 * ACF, ACF Pro
 * WooCommerce
 * Yoast Seo
-* Contact Form 7
+* Contact Form 7 (added mail tag [_language] for send user lang in mail)
 * WPBakery Visual Composer
 * Page Builder by SiteOrigin
 * NextGEN Gallery
@@ -42,6 +44,7 @@ Features of the plugin WP Multilang:
 * BuddyPress
 * Meta Slider
 * TablePress
+* WordPress MU Domain Mapping
 
 Supports configuration via json.
 
@@ -111,9 +114,9 @@ Update translation occurs at PHP. Therefore plugin has high adaptability, compat
 
 Translation uses the following syntax:
 ```
-[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut[:]
+[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut
 ```
-Supports syntax qTranslate-X, WPGlobus, etc.
+Supports syntax qTranslate, qTranslate-X, WPGlobus, etc.
 
 Compatible with REST-API.   
 Supports transfer the required translation through option `lang` in the GET request to REST.   
@@ -138,12 +141,14 @@ Compatible with multisite not tested.
 * Багато фільтрів для динамічної зміни конфігурації перекладу.
 * Без дублювання записів
 * Без субдоменів для мовних версій
+* Підтримка багатосайтовості
+* Пітдтримка роботи WordPress з підпапки
 
 **WP Multilang** сумісний з коробки з плаґінами:
 * ACF, ACF Pro
 * WooCommerce
 * Yoast Seo
-* Contact Form 7
+* Contact Form 7 (доданий теґ [_language], що виводить мову користувача у листі)
 * WPBakery Visual Composer
 * Page Builder by SiteOrigin
 * NextGEN Gallery
@@ -157,6 +162,7 @@ Compatible with multisite not tested.
 * BuddyPress
 * Meta Slider
 * TablePress
+* WordPress MU Domain Mapping
 
 Підтримує налаштування через json.
 
@@ -227,9 +233,9 @@ wpm_translate_value( $value, $language = '' ); // translate multidimensional arr
 
 Використовує такий синтаксис перекладу:
 ```
-[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut[:]
+[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut
 ```
-Підтримує синтаксису qTranslate-X, WPGlobus та подібних.
+Підтримує синтаксис qTranslate, qTranslate-X, WPGlobus та подібних.
 
 *Сумісний з REST-API.*   
 Підтримує передачу потрібного перекладу через параметр `lang` у GET запиті до REST.   

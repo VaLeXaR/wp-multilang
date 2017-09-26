@@ -7,7 +7,7 @@
  * @author        VaLeXaR
  * @category      Core
  * @package       WPM/Functions
- * @version       1.0.2
+ * @version       1.0.3
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -23,7 +23,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function wpm_translate_url( $url, $language = '' ) {
 
-	if ( strpos( $url, wp_parse_url( get_site_url(), PHP_URL_HOST ) ) === false ) {
+	$host = wpm_get_orig_home_url();
+
+	if ( strpos( $url, $host ) === false ) {
 		return $url;
 	}
 
@@ -38,10 +40,7 @@ function wpm_translate_url( $url, $language = '' ) {
 	}
 
 	$url_lang = '';
-
-	$path_url = wp_parse_url( $url, PHP_URL_PATH );
-	$host     = wp_parse_url( $url, PHP_URL_HOST );
-	$path     = $path_url ? $path_url : '/';
+	$path     = wpm_get_site_request_uri();
 
 	if ( preg_match( '!^/([a-z]{2})(/|$)!i', $path, $match ) ) {
 		$url_lang = $match[1];
@@ -258,12 +257,6 @@ function wpm_ml_array_to_string( $strings ) {
 		}
 	}
 
-	if ( ! $string ) {
-		return '';
-	}
-
-	$string .= '[:]';
-
 	return $string;
 }
 
@@ -298,7 +291,7 @@ function wpm_ml_value_to_string( $value ) {
  *
  * @param        $localize_array
  * @param mixed  $value
- * @param null   $config
+ * @param array  $config
  * @param string $lang
  *
  * @return array|bool
@@ -320,7 +313,7 @@ function wpm_set_language_value( $localize_array, $value, $config = array(), $la
 			}
 
 			if ( ! isset( $localize_array[ $key ] ) ) {
-				$new_value[ $key ] = array();
+				$localize_array[ $key ] = array();
 			}
 
 			$new_value[ $key ] = wpm_set_language_value( $localize_array[ $key ], $value[ $key ], $config_key, $lang );
@@ -395,12 +388,14 @@ function wpm_untranslate_post( $post ) {
 
 	if ( $post instanceof WP_Post ) {
 
+		$orig_post = get_post( $post->ID );
+
 		foreach ( get_object_vars( $post ) as $key => $content ) {
 			switch ( $key ) {
 				case 'post_title':
 				case 'post_content':
 				case 'post_excerpt':
-					$post->$key = get_post_field( $key, $post->ID, 'edit' );
+					$post->$key = $orig_post->$key;
 					break;
 			}
 		}

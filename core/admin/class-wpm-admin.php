@@ -61,12 +61,13 @@ class WPM_Admin {
 	}
 
 	/**
-	 * Add cookie for 'edit_lang'
+	 * Add meta for 'edit_lang'
 	 */
 	public function set_edit_lang() {
+		$user_id = get_current_user_id();
 
-		if ( isset( $_GET['edit_lang'] ) || ! isset( $_COOKIE['edit_language'] ) ) {
-			wpm_setcookie( 'edit_language', wpm_get_language(), time() + MONTH_IN_SECONDS );
+		if ( isset( $_GET['edit_lang'] ) || ! get_user_meta( $user_id, 'edit_lang', true ) ) {
+			update_user_meta( $user_id, 'edit_lang', wpm_get_language() );
 		}
 	}
 }

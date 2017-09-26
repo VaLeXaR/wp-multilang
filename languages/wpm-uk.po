@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-09-14 16:52+0300\n"
-"PO-Revision-Date: 2017-09-14 16:52+0300\n"
+"POT-Creation-Date: 2017-09-23 18:35+0300\n"
+"PO-Revision-Date: 2017-09-23 18:35+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: uk\n"
@@ -24,17 +24,17 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-2: assets\n"
 "X-Poedit-SearchPathExcluded-3: vendor\n"
 
-#: core/admin/class-wpm-admin-assets.php:59
+#: core/admin/class-wpm-admin-assets.php:60
 msgid "Are you sure you want to delete this language?"
 msgstr "Ви впевнені, що хочете видалити цю мову?"
 
 #: core/admin/class-wpm-admin-edit-menus.php:38
-#: core/admin/class-wpm-admin-menus.php:107
-#: core/admin/class-wpm-admin-menus.php:122
-#: core/admin/class-wpm-admin-menus.php:125
+#: core/admin/class-wpm-admin-menus.php:105
+#: core/admin/class-wpm-admin-menus.php:120
+#: core/admin/class-wpm-admin-menus.php:123
 #: core/admin/class-wpm-admin-meta-boxes.php:99
 #: core/admin/class-wpm-admin-posts.php:86
-#: core/admin/class-wpm-admin-taxonomies.php:65
+#: core/admin/class-wpm-admin-taxonomies.php:66
 #: core/widgets/class-wpm-widget-language-switcher.php:30
 msgid "Languages"
 msgstr "Мови"
@@ -43,33 +43,33 @@ msgstr "Мови"
 msgid "Show item only in:"
 msgstr "Показувати пункт лише у:"
 
-#: core/admin/class-wpm-admin-menus.php:133
+#: core/admin/class-wpm-admin-menus.php:131
 msgid "Add to menu"
 msgstr ""
 
-#: core/admin/class-wpm-admin-menus.php:161
+#: core/admin/class-wpm-admin-menus.php:159
 #: core/widgets/class-wpm-widget-language-switcher.php:37
 msgid "Both"
 msgstr "Обидва"
 
-#: core/admin/class-wpm-admin-menus.php:162
-#: core/admin/class-wpm-admin-settings.php:90
-#: core/admin/class-wpm-admin-settings.php:130
-#: core/admin/class-wpm-admin-settings.php:165
+#: core/admin/class-wpm-admin-menus.php:160
+#: core/admin/class-wpm-admin-settings.php:93
+#: core/admin/class-wpm-admin-settings.php:133
+#: core/admin/class-wpm-admin-settings.php:168
 #: core/widgets/class-wpm-widget-language-switcher.php:38
 msgid "Flag"
 msgstr "Прапор"
 
-#: core/admin/class-wpm-admin-menus.php:163
-#: core/admin/class-wpm-admin-settings.php:89
-#: core/admin/class-wpm-admin-settings.php:126
-#: core/admin/class-wpm-admin-settings.php:127
-#: core/admin/class-wpm-admin-settings.php:164
+#: core/admin/class-wpm-admin-menus.php:161
+#: core/admin/class-wpm-admin-settings.php:92
+#: core/admin/class-wpm-admin-settings.php:129
+#: core/admin/class-wpm-admin-settings.php:130
+#: core/admin/class-wpm-admin-settings.php:167
 #: core/widgets/class-wpm-widget-language-switcher.php:39
 msgid "Name"
 msgstr "Назва"
 
-#: core/admin/class-wpm-admin-menus.php:167
+#: core/admin/class-wpm-admin-menus.php:165
 #: core/widgets/class-wpm-widget-language-switcher.php:41
 msgid "Show"
 msgstr "Показати"
@@ -83,80 +83,80 @@ msgstr "Поточна мова редагування:"
 msgid "Multilingual Settings"
 msgstr "Налаштування багатомовності"
 
-#: core/admin/class-wpm-admin-settings.php:48
-msgid "Delete translations when uninstalling plugin"
-msgstr "Видалити переклади при видаленні плагіна"
-
-#: core/admin/class-wpm-admin-settings.php:55
+#: core/admin/class-wpm-admin-settings.php:49
 msgid "Show untranslated strings"
 msgstr "Показати неперекладені рядки"
 
-#: core/admin/class-wpm-admin-settings.php:85
-#: core/admin/class-wpm-admin-settings.php:160
+#: core/admin/class-wpm-admin-settings.php:57
+msgid "Delete translations when uninstalling plugin"
+msgstr "Видалити переклади при видаленні плагіна"
+
+#: core/admin/class-wpm-admin-settings.php:88
+#: core/admin/class-wpm-admin-settings.php:163
 msgid "Order"
 msgstr "Порядок"
 
-#: core/admin/class-wpm-admin-settings.php:86
-#: core/admin/class-wpm-admin-settings.php:104
-#: core/admin/class-wpm-admin-settings.php:161
+#: core/admin/class-wpm-admin-settings.php:89
+#: core/admin/class-wpm-admin-settings.php:107
+#: core/admin/class-wpm-admin-settings.php:164
 msgid "Enable"
 msgstr "Увімкнено"
 
-#: core/admin/class-wpm-admin-settings.php:87
-#: core/admin/class-wpm-admin-settings.php:115
-#: core/admin/class-wpm-admin-settings.php:116
-#: core/admin/class-wpm-admin-settings.php:162
+#: core/admin/class-wpm-admin-settings.php:90
+#: core/admin/class-wpm-admin-settings.php:118
+#: core/admin/class-wpm-admin-settings.php:119
+#: core/admin/class-wpm-admin-settings.php:165
 msgid "Locale"
 msgstr "Локалізація"
 
-#: core/admin/class-wpm-admin-settings.php:88
-#: core/admin/class-wpm-admin-settings.php:121
-#: core/admin/class-wpm-admin-settings.php:122
-#: core/admin/class-wpm-admin-settings.php:163
+#: core/admin/class-wpm-admin-settings.php:91
+#: core/admin/class-wpm-admin-settings.php:124
+#: core/admin/class-wpm-admin-settings.php:125
+#: core/admin/class-wpm-admin-settings.php:166
 msgid "Slug *"
 msgstr "Ланка *"
 
-#: core/admin/class-wpm-admin-settings.php:91
-#: core/admin/class-wpm-admin-settings.php:151
-#: core/admin/class-wpm-admin-settings.php:166
+#: core/admin/class-wpm-admin-settings.php:94
+#: core/admin/class-wpm-admin-settings.php:154
+#: core/admin/class-wpm-admin-settings.php:169
 msgid "Delete"
 msgstr "Видалити"
 
-#: core/admin/class-wpm-admin-settings.php:131
+#: core/admin/class-wpm-admin-settings.php:134
 msgid "&mdash; Select &mdash;"
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:144
+#: core/admin/class-wpm-admin-settings.php:147
 msgid "Current"
 msgstr "Поточна"
 
-#: core/admin/class-wpm-admin-settings.php:146
+#: core/admin/class-wpm-admin-settings.php:149
 msgid "Default"
 msgstr "Усталено"
 
-#: core/admin/class-wpm-admin-settings.php:148
+#: core/admin/class-wpm-admin-settings.php:151
 msgid "Built-in"
 msgstr "Вбудовано"
 
-#: core/admin/class-wpm-admin-settings.php:175
+#: core/admin/class-wpm-admin-settings.php:178
 msgid "Site Language"
 msgstr ""
 
-#: core/admin/class-wpm-admin-settings.php:210
-#: core/admin/class-wpm-admin-settings.php:214
+#: core/admin/class-wpm-admin-settings.php:213
+#: core/admin/class-wpm-admin-settings.php:217
 msgid "Translating settings"
 msgstr "Налаштування перекладу"
 
-#: core/admin/class-wpm-admin-settings.php:220
+#: core/admin/class-wpm-admin-settings.php:223
 msgid "Show untranslated strings in default language"
 msgstr "Показати неперекладені рядки на усталеній мові"
 
-#: core/admin/class-wpm-admin-settings.php:226
 #: core/admin/class-wpm-admin-settings.php:230
+#: core/admin/class-wpm-admin-settings.php:234
 msgid "Uninstalling"
 msgstr "Видалення"
 
-#: core/admin/class-wpm-admin-settings.php:236
+#: core/admin/class-wpm-admin-settings.php:240
 msgid ""
 "Delete translations when uninstalling plugin (some translations may not be "
 "deleted and you must delete them manually)."
@@ -164,20 +164,20 @@ msgstr ""
 "Видалити переклади, при видаленні плаґіна (деякі переклади можуть не "
 "видалитися і ви маєте їх видалити вручну)."
 
-#: core/admin/class-wpm-admin-settings.php:295
+#: core/admin/class-wpm-admin-settings.php:302
 msgid "New language package installed"
 msgstr "Новий мовний пакет втсановлений"
 
-#: core/admin/class-wpm-admin-settings.php:299
+#: core/admin/class-wpm-admin-settings.php:306
 msgid "Language slug is required"
 msgstr "Ланка мови обов'язкова"
 
-#: core/admin/class-wpm-admin-settings.php:318
+#: core/admin/class-wpm-admin-settings.php:326
 msgid "No name"
 msgstr ""
 
-#: core/admin/class-wpm-admin-taxonomies.php:130
-#: core/admin/class-wpm-admin-taxonomies.php:178
+#: core/admin/class-wpm-admin-taxonomies.php:128
+#: core/admin/class-wpm-admin-taxonomies.php:173
 msgid "Show term only in:"
 msgstr "Показувати term лише у:"
 
@@ -224,7 +224,7 @@ msgstr "Спадний список"
 msgid "Switcher Type"
 msgstr "Тип перемикача"
 
-#: core/wpm-core-functions.php:288
+#: core/wpm-core-functions.php:151
 #, php-format
 msgid "For multilingual string, use syntax like %s."
 msgstr "Для багатомовності, використовуйте синтаксис %s."

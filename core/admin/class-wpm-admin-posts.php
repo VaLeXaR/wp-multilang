@@ -26,7 +26,6 @@ class WPM_Admin_Posts {
 	 * Constructor.
 	 */
 	public function __construct() {
-		add_action( 'dbx_post_advanced', array( $this, 'translate_post' ), 0 );
 		add_action( 'admin_init', array( $this, 'init' ) );
 		add_action( 'post_submitbox_misc_actions', array( $this, 'add_lang_indicator' ) );
 		add_filter( 'preview_post_link', array( $this, 'translate_post_link' ), 0 );
@@ -40,22 +39,22 @@ class WPM_Admin_Posts {
 	public function init() {
 
 		$config       = wpm_get_config();
-		$posts_config = apply_filters( 'wpm_posts_config', $config['post_types'] );
+		$posts_config = $config['post_types'];
 
 		foreach ( $posts_config as $post_type => $post_config ) {
 
-			$post_config = apply_filters( "wpm_post_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
-
-			if ( ! is_null( $post_config ) ) {
-				if ( 'attachment' === $post_type ) {
-					add_filter( 'manage_media_columns', array( $this, 'language_columns' ) );
-					add_action( 'manage_media_custom_column', array( $this, 'render_language_column' ) );
-					continue;
-				}
-
-				add_filter( "manage_{$post_type}_posts_columns", array( $this, 'language_columns' ) );
-				add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'render_language_column' ) );
+			if ( is_null( $post_config ) ) {
+				continue;
 			}
+
+			if ( 'attachment' === $post_type ) {
+				add_filter( 'manage_media_columns', array( $this, 'language_columns' ) );
+				add_action( 'manage_media_custom_column', array( $this, 'render_language_column' ) );
+				continue;
+			}
+
+			add_filter( "manage_{$post_type}_posts_columns", array( $this, 'language_columns' ) );
+			add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'render_language_column' ) );
 		}
 
 	}
@@ -136,20 +135,26 @@ class WPM_Admin_Posts {
 
 	/**
 	 * Add indicator for editing post
+	 *
+	 * @param \WP_Post $post
 	 */
-	public function add_lang_indicator() {
+	public function add_lang_indicator( $post ) {
 		$options   = wpm_get_options();
 		$languages = wpm_get_all_languages();
 		$locales   = array_flip( $languages );
 		$lang      = wpm_get_language();
-		?>
-		<div class="misc-pub-section language">
-			<?php esc_html_e( 'Current edit language:', 'wpm' ); ?>
-			<?php if ( $options[ $locales[ $lang ] ]['flag'] ) { ?>
-				<img src="<?php echo esc_url( WPM()->flag_dir() . $options[ $locales[ $lang ] ]['flag'] . '.png' ); ?>">
-			<?php } else { ?>
-				<b><?php echo $options[ $locales[ $lang ] ]['name']; ?></b>
-			<?php } ?>
-		</div>
-	<?php }
+		$config    = wpm_get_config();
+		if ( is_null( $config['post_types'][ $post->post_type ] ) && ( wpm_is_ml_string( $post->post_title ) || wpm_is_ml_value( $post->post_content ) ) ) {
+			?>
+			<div class="misc-pub-section language">
+				<?php esc_html_e( 'Current edit language:', 'wpm' ); ?>
+				<?php if ( $options[ $locales[ $lang ] ]['flag'] ) { ?>
+					<img src="<?php echo esc_url( WPM()->flag_dir() . $options[ $locales[ $lang ] ]['flag'] . '.png' ); ?>">
+				<?php } else { ?>
+					<b><?php echo $options[ $locales[ $lang ] ]['name']; ?></b>
+				<?php } ?>
+			</div>
+			<?php
+		}
+	}
 }

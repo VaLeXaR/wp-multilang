@@ -8,7 +8,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:     wpm
  * Domain Path:     /languages
- * Version:         1.6.4
+ * Version:         1.7.0
  *
  * @package  WPM
  * @category Core
@@ -42,7 +42,7 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		 *
 		 * @var string
 		 */
-		public $version = '1.6.4';
+		public $version = '1.7.0';
 
 		/**
 		 * The single instance of the class.
@@ -99,7 +99,7 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		private function init_hooks() {
 			register_activation_hook( __FILE__, array( 'WPM\Core\WPM_Install', 'install' ) );
 			add_action( 'init', array( $this, 'init' ), 0 );
-			add_action( 'plugins_loaded', array( $this, 'translate_options' ), 0 );
+			add_action( 'after_setup_theme', array( $this, 'translate_options' ), 1 );
 		}
 
 		/**
@@ -151,8 +151,8 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		public function includes() {
 			include_once( 'core/wpm-core-functions.php' );
 			include_once( 'core/wpm-widget-functions.php' );
-			include_once( 'core/abstracts/abstract-wpm-object.php' );
 
+			Core\WPM_Install::init();
 			Core\WPM_Setup::instance();
 
 			if ( $this->is_request( 'frontend' ) ) {
@@ -166,6 +166,10 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		 */
 		public function translate_options() {
 			new Core\WPM_Options();
+
+			if ( is_multisite() ) {
+				new Core\WPM_Site_Options();
+			}
 		}
 
 		/**

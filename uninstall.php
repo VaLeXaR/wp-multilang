@@ -28,7 +28,6 @@ if ( $uninstall_translations ) {
 	}
 
 	$config    = wpm_get_config();
-	$config    = apply_filters( 'wpm_load_config', $config );
 	$languages = wpm_get_languages();
 	$lang      = $languages[ wpm_get_default_locale() ];
 
@@ -38,14 +37,7 @@ if ( $uninstall_translations ) {
 
 			case 'post_types':
 
-				$posts_config = apply_filters( 'wpm_posts_config', $item_config );
-				$post_types = get_post_types( '', 'names' );
-
-				foreach ( $post_types as $pt ) {
-					$posts_config[ $pt ] = apply_filters( "wpm_post_{$pt}_config", isset( $posts_config[ $pt ] ) ? $posts_config[ $pt ] : null );
-				}
-
-				foreach ( $posts_config as $post_type => $post_config ) {
+				foreach ( $item_config as $post_type => $post_config ) {
 
 					if ( is_null( $post_config ) ) {
 						continue;
@@ -54,9 +46,9 @@ if ( $uninstall_translations ) {
 					$results = $wpdb->get_results( $wpdb->prepare( "SELECT ID, post_content, post_title, post_excerpt FROM {$wpdb->posts} WHERE post_type = '%s';", esc_sql( $post_type ) ) );
 
 					foreach ( $results as $result ) {
-						$post_content = maybe_serialize( wpm_translate_value( maybe_unserialize( $result->post_content ), $lang ) );
 						$post_title   = wpm_translate_string( $result->post_title, $lang );
 						$post_excerpt = wpm_translate_string( $result->post_excerpt, $lang );
+						$post_content = maybe_serialize( wpm_translate_value( maybe_unserialize( $result->post_content ), $lang ) );
 						$wpdb->update( $wpdb->posts, compact( 'post_content', 'post_title', 'post_excerpt' ), array( 'ID' => $result->ID ) );
 					}
 				}
@@ -65,7 +57,8 @@ if ( $uninstall_translations ) {
 
 			case 'post_fields' :
 
-				$results = $wpdb->get_results( "SELECT meta_id, meta_value FROM {$wpdb->postmeta};" );
+				$like    = '%' . $wpdb->esc_like( esc_sql( 's:' . strlen( $lang ) . ':"' . $lang . '";' ) ) . '%';
+				$results = $wpdb->get_results( $wpdb->prepare( "SELECT meta_id, meta_value FROM {$wpdb->postmeta} WHERE meta_value LIKE '%s';", $like ) );
 				foreach ( $results as $result ) {
 					$meta_value = maybe_serialize( wpm_translate_value( maybe_unserialize( $result->meta_value ), $lang ) );
 					$wpdb->update( $wpdb->postmeta, compact( 'meta_value' ), array( 'meta_id' => $result->meta_id ) );
@@ -75,13 +68,7 @@ if ( $uninstall_translations ) {
 
 			case 'taxonomies' :
 
-				$taxonomies_config = apply_filters( 'wpm_taxonomies_config', $item_config );
-				$taxonomies        = get_taxonomies();
-				foreach ( $taxonomies as $taxonomy ) {
-					$taxonomies_config[ $taxonomy ] = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
-				}
-
-				foreach ( $taxonomies_config as $term => $taxonomy_config ) {
+				foreach ( $item_config as $term => $taxonomy_config ) {
 
 					if ( is_null( $taxonomy_config ) ) {
 						continue;
@@ -102,10 +89,33 @@ if ( $uninstall_translations ) {
 
 			case 'term_fields' :
 
-				$results = $wpdb->get_results( "SELECT meta_id, meta_value FROM {$wpdb->termmeta};" );
+				$like    = '%' . $wpdb->esc_like( esc_sql( 's:' . strlen( $lang ) . ':"' . $lang . '";' ) ) . '%';
+				$results = $wpdb->get_results( $wpdb->prepare( "SELECT meta_id, meta_value FROM {$wpdb->termmeta} WHERE meta_value LIKE '%s';", $like ) );
 				foreach ( $results as $result ) {
 					$meta_value = maybe_serialize( wpm_translate_value( maybe_unserialize( $result->meta_value ), $lang ) );
 					$wpdb->update( $wpdb->termmeta, compact( 'meta_value' ), array( 'meta_id' => $result->meta_id ) );
+				}
+
+				break;
+
+			case 'comment_fields' :
+
+				$like    = '%' . $wpdb->esc_like( esc_sql( 's:' . strlen( $lang ) . ':"' . $lang . '";' ) ) . '%';
+				$results = $wpdb->get_results( $wpdb->prepare( "SELECT meta_id, meta_value FROM {$wpdb->commentmeta} WHERE meta_value LIKE '%s';", $like ) );
+				foreach ( $results as $result ) {
+					$meta_value = maybe_serialize( wpm_translate_value( maybe_unserialize( $result->meta_value ), $lang ) );
+					$wpdb->update( $wpdb->commentmeta, compact( 'meta_value' ), array( 'meta_id' => $result->meta_id ) );
+				}
+
+				break;
+
+			case 'user_fields' :
+
+				$like    = '%' . $wpdb->esc_like( esc_sql( 's:' . strlen( $lang ) . ':"' . $lang . '";' ) ) . '%';
+				$results = $wpdb->get_results( $wpdb->prepare( "SELECT umeta_id, meta_value FROM {$wpdb->usermeta} WHERE meta_value LIKE '%s';", $like ) );
+				foreach ( $results as $result ) {
+					$meta_value = maybe_serialize( wpm_translate_value( maybe_unserialize( $result->meta_value ), $lang ) );
+					$wpdb->update( $wpdb->usermeta, compact( 'meta_value' ), array( 'umeta_id' => $result->umeta_id ) );
 				}
 
 				break;

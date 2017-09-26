@@ -22,11 +22,21 @@
     "upload",
     "nav-menus",
     "options-general",
-    "widgets"
+    "widgets",
+    "settings-network",
+    "site-settings-network"
   ],
   "options": {
     "blogname": {},
     "blogdescription": {}
+  },
+  "site_options": {
+    "site_name": {},
+    "welcome_email": {},
+    "first_post": {},
+    "welcome_user_email": {},
+    "first_page": {},
+    "first_comment": {}
   },
   "widgets": {
     "media_image": {
