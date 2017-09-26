@@ -154,6 +154,9 @@ If you have opened several browser tabs for editing this post in different langu
 
 == Changelog ==
 
+= 1.7.1 =
+* fix apply config filters
+
 = 1.7.0 =
 + add support multisite
 + add support site in subfolders
