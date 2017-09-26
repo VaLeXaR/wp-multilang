@@ -135,20 +135,26 @@ class WPM_Admin_Posts {
 
 	/**
 	 * Add indicator for editing post
+	 *
+	 * @param \WP_Post $post
 	 */
-	public function add_lang_indicator() {
+	public function add_lang_indicator( $post ) {
 		$options   = wpm_get_options();
 		$languages = wpm_get_all_languages();
 		$locales   = array_flip( $languages );
 		$lang      = wpm_get_language();
-		?>
-		<div class="misc-pub-section language">
-			<?php esc_html_e( 'Current edit language:', 'wpm' ); ?>
-			<?php if ( $options[ $locales[ $lang ] ]['flag'] ) { ?>
-				<img src="<?php echo esc_url( WPM()->flag_dir() . $options[ $locales[ $lang ] ]['flag'] . '.png' ); ?>">
-			<?php } else { ?>
-				<b><?php echo $options[ $locales[ $lang ] ]['name']; ?></b>
-			<?php } ?>
-		</div>
-	<?php }
+		$config    = wpm_get_config();
+		if ( is_null( $config['post_types'][ $post->post_type ] ) && ( wpm_is_ml_string( $post->post_title ) || wpm_is_ml_value( $post->post_content ) ) ) {
+			?>
+			<div class="misc-pub-section language">
+				<?php esc_html_e( 'Current edit language:', 'wpm' ); ?>
+				<?php if ( $options[ $locales[ $lang ] ]['flag'] ) { ?>
+					<img src="<?php echo esc_url( WPM()->flag_dir() . $options[ $locales[ $lang ] ]['flag'] . '.png' ); ?>">
+				<?php } else { ?>
+					<b><?php echo $options[ $locales[ $lang ] ]['name']; ?></b>
+				<?php } ?>
+			</div>
+			<?php
+		}
+	}
 }
