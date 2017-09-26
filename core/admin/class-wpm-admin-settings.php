@@ -42,7 +42,6 @@ class WPM_Admin_Settings {
 			'show_in_rest'      => true,
 		) );
 
-
 		register_setting( 'general', 'wpm_show_untranslated_strings', array(
 			'type'         => 'integer',
 			'group'        => 'general',
