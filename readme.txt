@@ -122,7 +122,7 @@ Translation uses the following syntax:
 
 `[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut`
 
-Supports syntax qTranslate-, qTranslate-X, WPGlobus, etc.
+Supports syntax qTranslate, qTranslate-X, WPGlobus, etc.
 
 Compatible with REST-API.
 Supports transfer the required translation through option `lang` in the GET request to REST.
