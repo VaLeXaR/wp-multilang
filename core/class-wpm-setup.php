@@ -359,7 +359,8 @@ class WPM_Setup {
 
 		if ( ! $this->config ) {
 			$config       = get_option( 'wpm_config' );
-			$this->config = $config;
+			$theme_config = WPM_Config::load_theme_config();
+			$this->config = wpm_array_merge_recursive( $config, $theme_config );
 		}
 
 		$config = apply_filters( 'wpm_load_config', $this->config );

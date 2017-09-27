@@ -26,7 +26,6 @@ class WPM_Config {
 	static public function load_config_run() {
 		self::load_plugins_config();
 		self::load_core_configs();
-		self::load_theme_config();
 		self::parse_config_files();
 		update_option( 'wpm_config', self::$config );
 	}
@@ -35,6 +34,7 @@ class WPM_Config {
 	 * Load configs from plugins
 	 */
 	static public function load_plugins_config() {
+		self::$config_files[] = dirname( WPM_PLUGIN_FILE ) . '/core-config.json';
 
 		$plugins = get_option( 'active_plugins' );
 		if ( ! empty( $plugins ) ) {
@@ -66,7 +66,6 @@ class WPM_Config {
 
 	/**
 	 * Load configs from WPM
-	 * @return array
 	 */
 	static public function load_core_configs() {
 		$config_path = dirname( WPM_PLUGIN_FILE ) . '/configs/';
@@ -76,8 +75,22 @@ class WPM_Config {
 				self::$config_files[ $config_name ] = $config_file;
 			}
 		}
+	}
 
-		return self::$config_files;
+	/**
+	 * Parsing config files to config array
+	 */
+	static public function parse_config_files() {
+
+		foreach ( self::$config_files as $file ) {
+			if ( $file && is_readable( $file ) ) {
+				$config = json_decode( file_get_contents( $file ), true );
+
+				if ( is_array( $config ) && ! empty( $config ) ) {
+					self::$config = wpm_array_merge_recursive( self::$config, $config );
+				}
+			}
+		}
 	}
 
 	/**
@@ -96,23 +109,9 @@ class WPM_Config {
 				self::$config_files[] = $config_file;
 			}
 		}
-	}
 
-	/**
-	 * Parsing config files to config array
-	 */
-	static public function parse_config_files() {
-		$core_config = dirname( WPM_PLUGIN_FILE ) . '/core-config.json';
-		array_unshift( self::$config_files, $core_config );
+		self::parse_config_files();
 
-		foreach ( self::$config_files as $file ) {
-			if ( $file && is_readable( $file ) ) {
-				$config = json_decode( file_get_contents( $file ), true );
-
-				if ( is_array( $config ) && ! empty( $config ) ) {
-					self::$config = wpm_array_merge_recursive( self::$config, $config );
-				}
-			}
-		}
+		return self::$config;
 	}
 }
