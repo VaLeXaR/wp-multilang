@@ -108,7 +108,6 @@ class WPM_Setup {
 		if ( defined( 'DOMAIN_MAPPING' ) ) {
 			add_filter( 'pre_option_home', array( $this, 'set_home_url' ), 99 );
 		}
-		add_action( 'change_locale', array( $this, 'change_locale' ), 0 );
 		add_action( 'after_switch_theme', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
 		add_action( 'activated_plugin', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
 		add_action( 'upgrader_process_complete', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
@@ -394,16 +393,6 @@ class WPM_Setup {
 		$config['widgets'] = apply_filters( 'wpm_widgets_config', $config['widgets'] );
 
 		return $config;
-	}
-
-	/**
-	 * Set global $locale when change locale
-	 *
-	 * @param $new_locale
-	 */
-	public function change_locale( $new_locale ) {
-		global $locale;
-		$locale = $new_locale;
 	}
 
 
