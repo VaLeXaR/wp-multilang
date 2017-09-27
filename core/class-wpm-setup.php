@@ -118,6 +118,7 @@ class WPM_Setup {
 		add_action( 'wp', array( $this, 'redirect_to_user_language' ) );
 		add_action( 'request', array( $this, 'set_home_page' ) );
 		add_filter( 'rest_url', array( $this, 'fix_rest_url' ) );
+		add_filter( 'get_available_languages', array( $this, 'get_available_languages' ) );
 	}
 
 
@@ -602,5 +603,22 @@ class WPM_Setup {
 		}
 
 		return $url;
+	}
+
+	/**
+	 * Fix REST url
+	 *
+	 * @param $languages
+	 *
+	 * @return array
+	 */
+	public function get_available_languages( $languages ) {
+		foreach ( $this->get_options() as $locale => $language ) {
+			if ( 'en_US' != $locale && in_array( $locale, $languages ) ) {
+				$languages[] = $locale;
+			}
+		}
+
+		return $languages;
 	}
 }
