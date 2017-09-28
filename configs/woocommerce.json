@@ -72,6 +72,26 @@
       "heading_full" : {},
       "subject_partial" : {},
       "heading_partial" : {}
+    },
+    "woocommerce_paypal_settings": {
+      "title" : {},
+      "description" : {},
+      "instructions" : {}
+    },
+    "woocommerce_cheque_settings": {
+      "title" : {},
+      "description" : {},
+      "instructions" : {}
+    },
+    "woocommerce_bacs_settings": {
+      "title" : {},
+      "description" : {},
+      "instructions" : {}
+    },
+    "woocommerce_cod_settings": {
+      "title" : {},
+      "description" : {},
+      "instructions" : {}
     }
   }
 }
