@@ -32,16 +32,19 @@ class WPM_Admin_Settings {
 	 */
 	public function add_section() {
 
-		add_settings_section( 'wpm_options', __( 'Multilingual Settings', 'wpm' ), array( $this, 'view_settings' ), 'general' );
+		add_settings_section( 'wpm_setting_section', __( 'Multilingual Settings', 'wpm' ),  array( $this, 'view_settings' ), 'general' );
+		add_settings_field( 'wpm_site_language', __( 'Site Language' ), array( $this, 'site_language_setting' ), 'general', 'wpm_setting_section' );
 
+		add_settings_field( 'wpm_languages', __( 'Languages', 'wpm' ), array( $this, 'languages_setting' ), 'general', 'wpm_setting_section' );
 		register_setting( 'general', 'wpm_languages', array(
 			'type'              => 'array',
 			'group'             => 'general',
 			'description'       => __( 'Multilingual Settings', 'wpm' ),
-			'sanitize_callback' => array( $this, 'save_options' ),
+			'sanitize_callback' => array( $this, 'save_languages' ),
 			'show_in_rest'      => true,
 		) );
 
+		add_settings_field( 'wpm_show_untranslated_strings', __( 'Translating settings', 'wpm' ), array( $this, 'translating_setting' ), 'general', 'wpm_setting_section' );
 		register_setting( 'general', 'wpm_show_untranslated_strings', array(
 			'type'         => 'integer',
 			'group'        => 'general',
@@ -50,6 +53,7 @@ class WPM_Admin_Settings {
 		) );
 
 		if ( ! is_multisite() || ( is_main_site() ) ) {
+			add_settings_field( 'wpm_uninstall_translations', __( 'Uninstalling', 'wpm' ), array( $this, 'uninstalling_setting' ), 'general', 'wpm_setting_section' );
 			register_setting( 'general', 'wpm_uninstall_translations', array(
 				'type'         => 'integer',
 				'group'        => 'general',
@@ -64,6 +68,50 @@ class WPM_Admin_Settings {
 	 * Display WPM options
 	 */
 	public function view_settings() {
+		wp_nonce_field( 'wpm_save_settings', 'wpm_save_settings_nonce' );
+	}
+
+	/**
+	 * Show site language from DB
+	 */
+	public function site_language_setting() {
+		$languages      = wpm_get_options();
+		$translations   = wp_get_available_translations();
+		$enable_locales = array();
+
+		foreach ( $languages as $key => $language ) {
+			if ( ! isset( $translations[ $key ] ) &&  'en_US' !== $key ) {
+				$translations[ $key ] = array(
+					'language'    => $key,
+					'native_name' => $language['name'],
+					'iso'         => array( $language['slug'] ),
+				);
+			}
+
+			if ( $language['enable'] && 'en_US' !== $key ) {
+				$enable_locales[] = $key;
+			}
+		}
+
+		$locale = wpm_get_default_locale();
+		if ( ! in_array( $locale, $enable_locales ) ) {
+			$locale = '';
+		}
+
+		wp_dropdown_languages( array(
+			'name'         => 'WPLANG',
+			'id'           => 'wpm-install-language',
+			'selected'     => $locale,
+			'languages'    => $enable_locales,
+			'translations' => $translations,
+			'show_available_translations' => ( ! is_multisite() || is_super_admin() ) && wp_can_install_language_pack(),
+		) );
+	}
+
+	/**
+	 * Display languages
+	 */
+	public function languages_setting() {
 
 		$options             = wpm_get_options();
 		$installed_languages = wpm_get_installed_languages();
@@ -169,98 +217,64 @@ class WPM_Admin_Settings {
 			</tr>
 			</tfoot>
 		</table>
-
-		<table class="form-table">
-			<tr>
-				<th scope="row">
-					<label for="wpm-install-language">
-						<?php esc_html_e( 'Site Language' ); ?>
-					</label>
-				</th>
-				<td>
-					<?php
-					$enable_locales = array_keys( $languages );
-					$translations = wp_get_available_translations();
-
-					foreach ( $languages as $key => $language ) {
-						if ( ! isset( $translations[ $key ] ) &&  'en_US' !== $key ) {
-							$translations[ $key ] = array(
-								'language'    => $key,
-								'native_name' => $language['name'],
-								'iso'         => array( $language['slug'] ),
-							);
-						}
-					}
-
-					$locale = wpm_get_default_locale();
-					if ( ! in_array( $locale, $enable_locales ) ) {
-						$locale = '';
-					}
-
-					wp_dropdown_languages( array(
-						'name'         => 'WPLANG',
-						'id'           => 'wpm-install-language',
-						'selected'     => $locale,
-						'languages'    => array_diff( $enable_locales, array( 'en_US' ) ),
-						'translations' => $translations,
-						'show_available_translations' => ( ! is_multisite() || is_super_admin() ) && wp_can_install_language_pack(),
-					) );
-					?>
-				</td>
-			</tr>
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Translating settings', 'wpm' ); ?></th>
-				<td>
-					<fieldset>
-						<legend class="screen-reader-text">
-							<span><?php esc_html_e( 'Translating settings', 'wpm' ); ?></span>
-						</legend>
-						<label for="wpm_show_untranslated_strings">
-							<input type="hidden" name="wpm_show_untranslated_strings" value="0">
-							<input name="wpm_show_untranslated_strings" type="checkbox" id="wpm_show_untranslated_strings"
-							       value="1"<?php checked( get_option( 'wpm_show_untranslated_strings' ) ); ?>>
-							<?php esc_attr_e( 'Show untranslated strings in default language', 'wpm' ); ?>
-						</label>
-					</fieldset>
-				</td>
-			</tr>
-			<?php if ( ! is_multisite() || ( is_main_site() ) ) { ?>
-				<tr>
-					<th scope="row"><?php esc_html_e( 'Uninstalling', 'wpm' ); ?></th>
-					<td>
-						<fieldset>
-							<legend class="screen-reader-text">
-								<span><?php esc_html_e( 'Uninstalling', 'wpm' ); ?></span>
-							</legend>
-							<label for="wpm_uninstall_translations">
-								<input type="hidden" name="wpm_uninstall_translations" value="0">
-								<input name="wpm_uninstall_translations" type="checkbox" id="wpm_uninstall_translations"
-								       value="1"<?php checked( get_option( 'wpm_uninstall_translations' ) ); ?>>
-								<?php esc_attr_e( 'Delete translations when uninstalling plugin (some translations may not be deleted and you must delete them manually).', 'wpm' ); ?>
-							</label>
-						</fieldset>
-					</td>
-				</tr>
-			<?php } ?>
-		</table>
 		<?php
 	}
 
 	/**
-	 * Save WPM options
+	 * Display translation setting
+	 */
+	public function translating_setting() {
+		?>
+		<fieldset>
+			<legend class="screen-reader-text">
+				<span><?php esc_html_e( 'Translating settings', 'wpm' ); ?></span>
+			</legend>
+			<label for="wpm_show_untranslated_strings">
+				<input type="hidden" name="wpm_show_untranslated_strings" value="0">
+				<input name="wpm_show_untranslated_strings" type="checkbox" id="wpm_show_untranslated_strings"
+				       value="1"<?php checked( get_option( 'wpm_show_untranslated_strings' ) ); ?>>
+				<?php esc_attr_e( 'Show untranslated strings in default language', 'wpm' ); ?>
+			</label>
+		</fieldset>
+		<?php
+	}
+
+	/**
+	 * Display ininstall setting
+	 */
+	public function uninstalling_setting() {
+		?>
+		<fieldset>
+			<legend class="screen-reader-text">
+				<span><?php esc_html_e( 'Uninstalling', 'wpm' ); ?></span>
+			</legend>
+			<label for="wpm_uninstall_translations">
+				<input type="hidden" name="wpm_uninstall_translations" value="0">
+				<input name="wpm_uninstall_translations" type="checkbox" id="wpm_uninstall_translations"
+				       value="1"<?php checked( get_option( 'wpm_uninstall_translations' ) ); ?>>
+				<?php esc_attr_e( 'Delete translations when uninstalling plugin (some translations may not be deleted and you must delete them manually).', 'wpm' ); ?>
+			</label>
+		</fieldset>
+		<?php
+	}
+
+	/**
+	 * Save WPM languages
 	 *
 	 * @param $value
 	 *
 	 * @return array
 	 */
-	public function save_options( $value ) {
+	public function save_languages( $value ) {
+
+		check_admin_referer( 'wpm_save_settings', 'wpm_save_settings_nonce' );
 
 		$option_name = 'wpm_languages';
 		$languages   = array();
 
 		if ( isset( $_POST[ $option_name ] ) ) {
 
-			$type        = '';
+			$type = '';
 
 			foreach ( $value as $key => $item ) {
 
