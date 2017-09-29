@@ -113,10 +113,22 @@ class WPM_Admin_Settings {
 	 */
 	public function languages_setting() {
 
-		$options             = wpm_get_options();
+		$languages           = wpm_get_options();
 		$installed_languages = wpm_get_installed_languages();
-		$languages           = apply_filters( 'wpm_languages', $options );
-		$languages           = array_map( array( $this, 'set_default_settings' ), $languages );
+		$new_languages       = apply_filters( 'wpm_languages', array() );
+
+		$default = array(
+			'name'   => __( 'No name', 'wpm' ),
+			'slug'   => '',
+			'flag'   => '',
+			'enable' => 1,
+		);
+
+		foreach ( $new_languages as $new_locale => $new_language ) {
+			if ( ! isset( $languages[ $new_locale ] ) ) {
+				$languages[ $new_locale ] = wp_parse_args( $new_language, $default );
+			}
+		}
 
 		$flags    = array();
 		$flag_dir = WPM()->plugin_path() . '/flags/';
@@ -324,24 +336,5 @@ class WPM_Admin_Settings {
 		}// End if().
 
 		return $languages;
-	}
-
-	/**
-	 * Set default language params
-	 *
-	 * @param $language
-	 *
-	 * @return array
-	 */
-	private function set_default_settings( $language ) {
-
-		$default = array(
-			'name'   => __( 'No name', 'wpm' ),
-			'slug'   => '',
-			'flag'   => '',
-			'enable' => 1,
-		);
-
-		return wp_parse_args( $language, $default );
 	}
 }

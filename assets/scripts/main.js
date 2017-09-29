@@ -20,7 +20,7 @@
           data: data,
           dataType: 'json',
           complete: function () {
-            button.parents('tr').fadeOut('slow', function () {
+            button.parent().parent().fadeOut('slow', function () {
               $(this).remove();
             });
           },
