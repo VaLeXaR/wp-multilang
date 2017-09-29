@@ -614,7 +614,7 @@ class WPM_Setup {
 	 */
 	public function get_available_languages( $languages ) {
 		foreach ( $this->get_options() as $locale => $language ) {
-			if ( 'en_US' != $locale && in_array( $locale, $languages ) ) {
+			if ( 'en_US' != $locale && ! in_array( $locale, $languages ) ) {
 				$languages[] = $locale;
 			}
 		}
