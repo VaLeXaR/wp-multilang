@@ -26,7 +26,7 @@ class WPM_WooCommerce {
 	 */
 	public function __construct() {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_js_frontend' ) );
-		add_filter( 'woocommerce_cart_shipping_method_full_label', 'wpm_translate_string');
+		add_filter( 'woocommerce_cart_shipping_method_full_label', 'wpm_translate_string' );
 		add_filter( 'woocommerce_shipping_instance_form_fields_flat_rate', 'wpm_translate_value' );
 		add_filter( 'woocommerce_shipping_instance_form_fields_free_shipping', 'wpm_translate_value' );
 		add_filter( 'woocommerce_shipping_instance_form_fields_legacy_flat_rate', 'wpm_translate_value' );
@@ -35,17 +35,23 @@ class WPM_WooCommerce {
 		add_filter( 'woocommerce_shipping_instance_form_fields_legacy_local_delivery', 'wpm_translate_value' );
 		add_filter( 'woocommerce_shipping_instance_form_fields_legacy_local_pickup', 'wpm_translate_value' );
 		add_filter( 'woocommerce_shipping_instance_form_fields_local_pickup', 'wpm_translate_value' );
-		add_filter( 'woocommerce_shipping_free_shipping_instance_settings_values', array($this, 'update_shipping_settings'), 10, 2 );
-		add_filter( 'woocommerce_shipping_flat_rate_instance_settings_values', array($this, 'update_shipping_settings'), 10, 2 );
-		add_filter( 'woocommerce_shipping_legacy_flat_rate_instance_settings_values', array($this, 'update_shipping_settings'), 10, 2 );
-		add_filter( 'woocommerce_shipping_legacy_free_shipping_instance_settings_values', array($this, 'update_shipping_settings'), 10, 2 );
-		add_filter( 'woocommerce_shipping_legacy_international_delivery_instance_settings_values', array($this, 'update_shipping_settings'), 10, 2 );
-		add_filter( 'woocommerce_shipping_legacy_local_delivery_instance_settings_values', array($this, 'update_shipping_settings'), 10, 2 );
-		add_filter( 'woocommerce_shipping_legacy_local_pickup_instance_settings_values', array($this, 'update_shipping_settings'), 10, 2 );
-		add_filter( 'woocommerce_shipping_local_pickup_instance_settings_values', array($this, 'update_shipping_settings'), 10, 2 );
-		add_filter( 'woocommerce_shipping_zone_shipping_methods', array($this, 'translate_zone_shipping_methods') );
+		add_filter( 'woocommerce_shipping_free_shipping_instance_settings_values', array( $this, 'update_shipping_settings' ), 10, 2 );
+		add_filter( 'woocommerce_shipping_flat_rate_instance_settings_values', array ($this, 'update_shipping_settings'), 10, 2 );
+		add_filter( 'woocommerce_shipping_legacy_flat_rate_instance_settings_values', array( $this, 'update_shipping_settings' ), 10, 2 );
+		add_filter( 'woocommerce_shipping_legacy_free_shipping_instance_settings_values', array( $this, 'update_shipping_settings' ), 10, 2 );
+		add_filter( 'woocommerce_shipping_legacy_international_delivery_instance_settings_values', array( $this, 'update_shipping_settings' ), 10, 2 );
+		add_filter( 'woocommerce_shipping_legacy_local_delivery_instance_settings_values', array( $this, 'update_shipping_settings' ), 10, 2 );
+		add_filter( 'woocommerce_shipping_legacy_local_pickup_instance_settings_values', array( $this, 'update_shipping_settings' ), 10, 2 );
+		add_filter( 'woocommerce_shipping_local_pickup_instance_settings_values', array( $this, 'update_shipping_settings' ), 10, 2 );
+		add_filter( 'woocommerce_shipping_zone_shipping_methods', array( $this, 'translate_zone_shipping_methods') );
+		add_filter( 'woocommerce_gateway_method_title', 'wpm_translate_string' );
+		add_filter( 'woocommerce_gateway_method_description', 'wpm_translate_string' );
 	}
 
+
+	/**
+	 * Add script for reload cart after change language
+	 */
 	public function enqueue_js_frontend() {
 		if ( did_action( 'wpm_changed_language' ) ) {
 			wp_add_inline_script( 'wc-cart-fragments', "
