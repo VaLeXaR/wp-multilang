@@ -281,6 +281,7 @@ class WPM_Admin_Settings {
 
 		check_admin_referer( 'wpm_save_settings', 'wpm_save_settings_nonce' );
 
+		$value       = wpm_clean( $value );
 		$option_name = 'wpm_languages';
 		$languages   = array();
 
@@ -293,7 +294,7 @@ class WPM_Admin_Settings {
 				$locale = $key;
 
 				if ( isset( $item['locale'] ) ) {
-					$locale = wpm_clean( $item['locale'] );
+					$locale = $item['locale'];
 				}
 
 				if ( empty( $item['slug'] ) ) {
@@ -304,8 +305,8 @@ class WPM_Admin_Settings {
 				$languages[ $locale ] = array(
 					'enable' => $_POST[ $option_name ][ $key ]['enable'] ? 1 : 0,
 					'slug'   => sanitize_title( $item['slug'] ),
-					'name'   => wpm_clean( $item['name'] ),
-					'flag'   => wpm_clean( $item['flag'] ),
+					'name'   => $item['name'],
+					'flag'   => $item['flag'],
 				);
 
 				$translations        = wpm_get_translations();
