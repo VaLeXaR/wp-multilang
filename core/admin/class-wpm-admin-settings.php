@@ -303,7 +303,7 @@ class WPM_Admin_Settings {
 
 				$languages[ $locale ] = array(
 					'enable' => $_POST[ $option_name ][ $key ]['enable'] ? 1 : 0,
-					'slug'   => wpm_clean( $item['slug'] ),
+					'slug'   => sanitize_title( $item['slug'] ),
 					'name'   => wpm_clean( $item['name'] ),
 					'flag'   => wpm_clean( $item['flag'] ),
 				);
