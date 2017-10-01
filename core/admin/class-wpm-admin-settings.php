@@ -229,6 +229,41 @@ class WPM_Admin_Settings {
 			</tr>
 			</tfoot>
 		</table>
+		<p class="submit">
+			<input type="button" id="add_lang" class="button button-primary" value="<?php esc_attr_e( 'Add language', 'wpm' ); ?>">
+		</p>
+		<script>
+			var wpm_lang_count = <?php echo $i; ?>;
+		</script>
+		<script id="tmpl-wpm-add-lang" type="text/template">
+			<tr>
+				<td class="wpm-lang-order">{{ data.count }}</td>
+				<td class="wpm-lang-status">
+					<input type="hidden" name="wpm_languages[{{ data.count }}][enable]" value="0">
+					<input name="wpm_languages[{{ data.count }}][enable]" type="checkbox" value="1" title="<?php esc_attr_e( 'Enable', 'wpm' ); ?>" checked="checked">
+				</td>
+				<td class="wpm-lang-locale">
+					<input type="text" name="wpm_languages[{{ data.count }}][locale]" value="" title="<?php esc_attr_e( 'Locale', 'wpm' ); ?>" placeholder="<?php esc_attr_e( 'Locale', 'wpm' ); ?>">
+				</td>
+				<td class="wpm-lang-slug">
+					<input type="text" name="wpm_languages[{{ data.count }}][slug]" value="" title="<?php esc_attr_e( 'Slug *', 'wpm' ); ?>" placeholder="<?php esc_attr_e( 'Slug *', 'wpm' ); ?>" required>
+				</td>
+				<td class="wpm-lang-name">
+					<input type="text" name="wpm_languages[{{ data.count }}][name]" value="" title="<?php esc_attr_e( 'Name', 'wpm' ); ?>" placeholder="<?php esc_attr_e( 'Name', 'wpm' ); ?>">
+				</td>
+				<td class="wpm-lang-flag">
+					<select class="wpm-flags" name="wpm_languages[{{ data.count }}][flag]" title="<?php esc_attr_e( 'Flag', 'wpm' ); ?>">
+						<option value=""><?php esc_attr_e( '&mdash; Select &mdash;' ); ?></option>
+						<?php foreach ( $flags as $flag ) { ?>
+						<option value="<?php esc_attr_e( pathinfo( $flag, PATHINFO_FILENAME ) ); ?>"><?php esc_attr_e( pathinfo( $flag, PATHINFO_FILENAME ) ); ?></option>
+						<?php } ?>
+					</select>
+				</td>
+				<td class="wpm-lang-delete">
+					<button type="button" class="button button-link delete-language"><?php esc_attr_e( 'Delete', 'wpm' ); ?></button>
+				</td>
+			</tr>
+		</script>
 		<?php
 	}
 

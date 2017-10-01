@@ -3,7 +3,7 @@
 
   $(function () {
 
-    $('.delete-language').click(function () {
+    $(document).on('click', '.delete-language', function () {
 
       var button = $(this);
 
@@ -35,7 +35,7 @@
       handle: 'td:first-child'
     });
 
-    $('.wpm-flags').on('change', function () {
+    $(document).on('change', '.wpm-flags', function () {
       var select = $(this);
       if (select.val()) {
         var flag = wpm_params.plugin_url + '/flags/' + select.val() + '.png';
@@ -50,6 +50,14 @@
     });
 
     $('#WPLANG').parents('tr').hide();
+
+    $('#add_lang').click(function(){
+      var language = wp.template( 'wpm-add-lang' );
+      $('#wpm-languages tbody').append(language({count: wpm_lang_count})).sortable({
+        handle: 'td:first-child'
+      });
+      wpm_lang_count++;
+    });
 
   });
 }(jQuery));
