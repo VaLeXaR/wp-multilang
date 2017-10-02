@@ -81,7 +81,7 @@ class WPM_Install {
 	private static function create_options() {
 
 		$languages              = array();
-		$available_translations = wpm_get_translations();
+		$available_translations = wpm_get_available_translations();
 
 		foreach ( wpm_get_installed_languages() as $language ) {
 			$languages[ $language ] = array(

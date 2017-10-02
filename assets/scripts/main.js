@@ -52,10 +52,23 @@
     $('#WPLANG').parents('tr').hide();
 
     $('#add_lang').click(function(){
-      var language = wp.template( 'wpm-add-lang' );
-      $('#wpm-languages tbody').append(language({count: wpm_lang_count})).sortable({
+      var t_language = wp.template( 'wpm-add-lang' );
+      var language = wpm_params.available_translations[$('#wpm-available-translations').val()];
+      if (typeof language === 'undefined') {
+        language = {
+          language: '',
+          native_name: '',
+          iso: {
+            0: ''
+          }
+        };
+      }
+      language['count'] = wpm_lang_count;
+      $('#wpm-languages tbody').append(t_language(language)).sortable({
         handle: 'td:first-child'
       });
+      $('[name="wpm_languages[' + wpm_lang_count + '][flag]"]').val(language.iso[Object.keys(language.iso)[0]]).trigger('change');
+      $('#wpm-available-translations').val('');
       wpm_lang_count++;
     });
 

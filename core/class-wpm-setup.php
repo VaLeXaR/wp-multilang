@@ -185,7 +185,6 @@ class WPM_Setup {
 	 */
 	public function get_languages() {
 		if ( ! $this->languages ) {
-
 			$options = $this->get_options();
 
 			foreach ( $options as $locale => $language ) {
