@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Class WPM_Setup
  * @package  WPM\Core
- * @version  1.3.1
+ * @version  1.3.2
  */
 class WPM_Setup {
 
@@ -108,7 +108,6 @@ class WPM_Setup {
 		if ( defined( 'DOMAIN_MAPPING' ) ) {
 			add_filter( 'pre_option_home', array( $this, 'set_home_url' ), 99 );
 		}
-		add_action( 'change_locale', array( $this, 'change_locale' ), 0 );
 		add_action( 'after_switch_theme', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
 		add_action( 'activated_plugin', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
 		add_action( 'upgrader_process_complete', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
@@ -119,6 +118,7 @@ class WPM_Setup {
 		add_action( 'wp', array( $this, 'redirect_to_user_language' ) );
 		add_action( 'request', array( $this, 'set_home_page' ) );
 		add_filter( 'rest_url', array( $this, 'fix_rest_url' ) );
+		add_filter( 'get_available_languages', array( $this, 'get_available_languages' ) );
 	}
 
 
@@ -185,32 +185,12 @@ class WPM_Setup {
 	 */
 	public function get_languages() {
 		if ( ! $this->languages ) {
-
-			$options             = $this->get_options();
-			$installed_languages = $this->get_installed_languages();
+			$options = $this->get_options();
 
 			foreach ( $options as $locale => $language ) {
 				if ( $language['enable'] ) {
 					$this->languages[ $locale ] = $language['slug'];
 				}
-			}
-
-			foreach ( $installed_languages as $language ) {
-				if ( ! isset( $this->languages[ $language ] ) && ! isset( $options[ $language ] ) ) {
-					$translations                 = $this->get_translations();
-					$this->languages[ $language ] = current( $translations[ $language ]['iso'] );
-					$options[ $language ]         = array(
-						'name'   => $translations[ $language ]['native_name'],
-						'slug'   => current( $translations[ $language ]['iso'] ),
-						'flag'   => current( $translations[ $language ]['iso'] ),
-						'enable' => 1,
-					);
-				}
-			}
-
-			if ( wpm_array_diff_recursive( $options, $this->get_options() ) ) {
-				update_option( 'wpm_languages', $options );
-				$this->options = $options;
 			}
 		}
 
@@ -359,7 +339,8 @@ class WPM_Setup {
 
 		if ( ! $this->config ) {
 			$config       = get_option( 'wpm_config' );
-			$this->config = $config;
+			$theme_config = WPM_Config::load_theme_config();
+			$this->config = wpm_array_merge_recursive( $config, $theme_config );
 		}
 
 		$config = apply_filters( 'wpm_load_config', $this->config );
@@ -393,16 +374,6 @@ class WPM_Setup {
 		$config['widgets'] = apply_filters( 'wpm_widgets_config', $config['widgets'] );
 
 		return $config;
-	}
-
-	/**
-	 * Set global $locale when change locale
-	 *
-	 * @param $new_locale
-	 */
-	public function change_locale( $new_locale ) {
-		global $locale;
-		$locale = $new_locale;
 	}
 
 
@@ -612,5 +583,22 @@ class WPM_Setup {
 		}
 
 		return $url;
+	}
+
+	/**
+	 * Fix REST url
+	 *
+	 * @param $languages
+	 *
+	 * @return array
+	 */
+	public function get_available_languages( $languages ) {
+		foreach ( $this->get_options() as $locale => $language ) {
+			if ( 'en_US' != $locale && ! in_array( $locale, $languages ) ) {
+				$languages[] = $locale;
+			}
+		}
+
+		return $languages;
 	}
 }

@@ -106,7 +106,7 @@ function wpm_get_installed_languages() {
  *
  * @return array
  */
-function wpm_get_translations() {
+function wpm_get_available_translations() {
 	return WPM_Setup::instance()->get_translations();
 }
 

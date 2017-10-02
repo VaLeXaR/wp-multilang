@@ -6,7 +6,7 @@
  * @category    Admin
  * @package     WPM/Core/Admin
  * @class       WPM_Admin_Assets
- * @version     1.0.2
+ * @version     1.0.3
  */
 
 namespace WPM\Core\Admin;
@@ -54,10 +54,11 @@ class WPM_Admin_Assets {
 		), WPM_VERSION );
 
 		$main_params = array(
-			'plugin_url'        => WPM()->plugin_url(),
-			'ajax_url'          => admin_url( 'admin-ajax.php' ),
-			'delete_lang_nonce' => wp_create_nonce( 'delete-lang' ),
-			'confirm_question'  => __( 'Are you sure you want to delete this language?', 'wpm' ),
+			'plugin_url'             => WPM()->plugin_url(),
+			'ajax_url'               => admin_url( 'admin-ajax.php' ),
+			'delete_lang_nonce'      => wp_create_nonce( 'delete-lang' ),
+			'confirm_question'       => __( 'Are you sure you want to delete this language?', 'wpm' ),
+			'available_translations' => wpm_get_available_translations(),
 		);
 		wp_localize_script( 'wpm_main', 'wpm_params', $main_params );
 

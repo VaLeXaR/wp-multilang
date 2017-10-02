@@ -122,31 +122,19 @@ if ( $uninstall_translations ) {
 
 			case 'options' :
 
-				foreach ( $item_config as $option => $option_config ) {
-					$result = $wpdb->get_row( $wpdb->prepare( "SELECT option_id, option_value FROM {$wpdb->options} WHERE option_name = '%s';", esc_sql( $option ) ) );
-					if ( $result ) {
-						$option_value = maybe_serialize( wpm_translate_value( maybe_unserialize( $result->option_value ), $lang ) );
-						$wpdb->update( $wpdb->options, compact( 'option_value' ), array( 'option_id' => $result->option_id ) );
-					}
-				}
-
-				break;
-
-			case 'widgets' :
-
-				$results = $wpdb->get_results( "SELECT option_id, option_value FROM {$wpdb->options} WHERE option_name LIKE 'widget\_%';" );
-
+				$like    = '%' . $wpdb->esc_like( esc_sql( 's:' . strlen( $lang ) . ':"' . $lang . '";' ) ) . '%';
+				$results = $wpdb->get_results( $wpdb->prepare( "SELECT option_id, option_value FROM {$wpdb->options} WHERE option_value LIKE '%s';", $like ) );
 				foreach ( $results as $result ) {
 					$option_value = maybe_serialize( wpm_translate_value( maybe_unserialize( $result->option_value ), $lang ) );
 					$wpdb->update( $wpdb->options, compact( 'option_value' ), array( 'option_id' => $result->option_id ) );
 				}
 
 				break;
-		}
-	}
+		} // End switch().
+	} // End foreach().
 
 	// Clear any cached data that has been removed
 	wp_cache_flush();
-}
+} // End if().
 
 $wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE 'wpm\_%';" );

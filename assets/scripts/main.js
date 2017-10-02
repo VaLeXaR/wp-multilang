@@ -3,7 +3,7 @@
 
   $(function () {
 
-    $('.delete-language').click(function () {
+    $(document).on('click', '.delete-language', function () {
 
       var button = $(this);
 
@@ -20,7 +20,7 @@
           data: data,
           dataType: 'json',
           complete: function () {
-            button.parents('tr').fadeOut('slow', function () {
+            button.parent().parent().fadeOut('slow', function () {
               $(this).remove();
             });
           },
@@ -35,7 +35,7 @@
       handle: 'td:first-child'
     });
 
-    $('.wpm-flags').on('change', function () {
+    $(document).on('change', '.wpm-flags', function () {
       var select = $(this);
       if (select.val()) {
         var flag = wpm_params.plugin_url + '/flags/' + select.val() + '.png';
@@ -50,6 +50,27 @@
     });
 
     $('#WPLANG').parents('tr').hide();
+
+    $('#add_lang').click(function(){
+      var t_language = wp.template( 'wpm-add-lang' );
+      var language = wpm_params.available_translations[$('#wpm-available-translations').val()];
+      if (typeof language === 'undefined') {
+        language = {
+          language: '',
+          native_name: '',
+          iso: {
+            0: ''
+          }
+        };
+      }
+      language['count'] = wpm_lang_count;
+      $('#wpm-languages tbody').append(t_language(language)).sortable({
+        handle: 'td:first-child'
+      });
+      $('[name="wpm_languages[' + wpm_lang_count + '][flag]"]').val(language.iso[Object.keys(language.iso)[0]]).trigger('change');
+      $('#wpm-available-translations').val('');
+      wpm_lang_count++;
+    });
 
   });
 }(jQuery));

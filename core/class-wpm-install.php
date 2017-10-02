@@ -80,22 +80,14 @@ class WPM_Install {
 	 */
 	private static function create_options() {
 
-		$languages           = array();
-		$installed_languages = wp_parse_args( get_available_languages(), array( 'en_US' ) );
-		require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
-		$available_translations          = wp_get_available_translations();
-		$available_translations['en_US'] = array(
-			'native_name' => 'English (US)',
-			'iso'         => array( 'en' ),
-		);
+		$languages              = array();
+		$available_translations = wpm_get_available_translations();
 
-		$translations = $available_translations;
-
-		foreach ( $installed_languages as $language ) {
+		foreach ( wpm_get_installed_languages() as $language ) {
 			$languages[ $language ] = array(
-				'name'   => $translations[ $language ]['native_name'],
-				'slug'   => current( $translations[ $language ]['iso'] ),
-				'flag'   => current( $translations[ $language ]['iso'] ),
+				'name'   => $available_translations[ $language ]['native_name'],
+				'slug'   => current( $available_translations[ $language ]['iso'] ),
+				'flag'   => current( $available_translations[ $language ]['iso'] ),
 				'enable' => 1,
 			);
 		}

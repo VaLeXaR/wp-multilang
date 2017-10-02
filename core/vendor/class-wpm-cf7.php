@@ -39,6 +39,14 @@ class WPM_CF7 {
 		return $output;
 	}
 
+
+	/**
+	 * Add current user language hidden field
+	 *
+	 * @param $fields
+	 *
+	 * @return mixed
+	 */
 	public function add_lang_field( $fields ) {
 		$fields['lang'] = wpm_get_language();
 
