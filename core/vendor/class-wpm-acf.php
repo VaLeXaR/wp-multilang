@@ -141,9 +141,9 @@ class WPM_Acf {
 
 		$acf_field_config = apply_filters( "wpm_acf_field_{$field['type']}_config", $default_config );
 
+		$field = apply_filters( 'acf/update_field/type=' . $field['type'], $field, $post_id );
 		$field = wpm_set_language_value( $old_field, $field, $acf_field_config );
 		$field = wpm_ml_value_to_string( $field );
-		$field = apply_filters( 'acf/update_field/type=' . $field['type'], $field, $post_id );
 
 		wp_cache_delete( 'load_field/key=' . $field['key'], 'acf' );
 
