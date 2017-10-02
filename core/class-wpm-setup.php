@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Class WPM_Setup
  * @package  WPM\Core
- * @version  1.3.1
+ * @version  1.3.2
  */
 class WPM_Setup {
 
