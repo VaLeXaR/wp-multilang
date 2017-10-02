@@ -186,31 +186,12 @@ class WPM_Setup {
 	public function get_languages() {
 		if ( ! $this->languages ) {
 
-			$options             = $this->get_options();
-			$installed_languages = $this->get_installed_languages();
+			$options = $this->get_options();
 
 			foreach ( $options as $locale => $language ) {
 				if ( $language['enable'] ) {
 					$this->languages[ $locale ] = $language['slug'];
 				}
-			}
-
-			foreach ( $installed_languages as $language ) {
-				if ( ! isset( $this->languages[ $language ] ) && ! isset( $options[ $language ] ) ) {
-					$translations                 = $this->get_translations();
-					$this->languages[ $language ] = current( $translations[ $language ]['iso'] );
-					$options[ $language ]         = array(
-						'name'   => $translations[ $language ]['native_name'],
-						'slug'   => current( $translations[ $language ]['iso'] ),
-						'flag'   => current( $translations[ $language ]['iso'] ),
-						'enable' => 1,
-					);
-				}
-			}
-
-			if ( wpm_array_diff_recursive( $options, $this->get_options() ) ) {
-				update_option( 'wpm_languages', $options );
-				$this->options = $options;
 			}
 		}
 
