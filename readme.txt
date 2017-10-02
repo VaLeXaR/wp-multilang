@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.8.1
-Stable tag: 1.7.1
+Stable tag: 1.7.2
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -153,6 +153,14 @@ If you have opened several browser tabs for editing this post in different langu
 5. Post edit page
 
 == Changelog ==
+
+= 1.7.2 =
++ add adding language from admin
++ load config from theme dynamically
++ add translating for WooCommerce shipping and payment default methods
+* fix translating ACF
+* fix translating in customizer
+* fix delete translation during uninstall WP Multilang
 
 = 1.7.1 =
 * fix apply config filters
