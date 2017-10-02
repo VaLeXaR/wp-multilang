@@ -27,7 +27,7 @@ class WPM_Admin {
 		add_action( 'init', array( $this, 'includes' ) );
 		add_action( 'admin_init', array( $this, 'buffer' ), 1 );
 		add_action( 'admin_init', array( $this, 'init' ), 1 );
-		add_action( 'admin_head', array( $this, 'set_edit_lang' ), 0 );
+		add_action( 'admin_init', array( $this, 'set_edit_lang' ), 0 );
 		add_action( 'admin_footer', 'wpm_print_js', 25 );
 	}
 
