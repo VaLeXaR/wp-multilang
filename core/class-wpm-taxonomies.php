@@ -233,8 +233,8 @@ class WPM_Taxonomies extends \WPM_Object {
 		}
 
 		remove_filter( 'get_term', 'wpm_translate_object', 0 );
-		$old_name        = get_term_field( 'name', $term_id );
-		$old_description = get_term_field( 'description', $term_id );
+		$old_name        = get_term_field( 'name', $term_id, $taxonomy, 'edit' );
+		$old_description = get_term_field( 'description', $term_id, $taxonomy, 'edit' );
 		add_filter( 'get_term', 'wpm_translate_object', 0 );
 
 		if ( ! wpm_is_ml_value( $data['name'] ) ) {

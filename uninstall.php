@@ -74,13 +74,12 @@ if ( $uninstall_translations ) {
 						continue;
 					}
 
-					$results = $wpdb->get_results( $wpdb->prepare( "SELECT term_id, description FROM {$wpdb->term_taxonomy} WHERE taxonomy = '%s';", esc_sql( $term ) ) );
+					$results = $wpdb->get_results( $wpdb->prepare( "SELECT t.term_id, `name`, description FROM {$wpdb->terms} t LEFT JOIN {$wpdb->term_taxonomy} tt ON t.term_id = tt.term_id WHERE tt.taxonomy = '%s';", esc_sql( $term ) ) );
 
 					foreach ( $results as $result ) {
 						$description = maybe_serialize( wpm_translate_value( maybe_unserialize( $result->description ), $lang ) );
 						$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_id' => $result->term_id ) );
-						$name = $wpdb->get_var( $wpdb->prepare( "SELECT `name` FROM {$wpdb->terms} WHERE term_id = '%s';", $result->term_id ) );
-						$name = wpm_translate_string( $name, $lang );
+						$name = wpm_translate_string( $result->name, $lang );
 						$wpdb->update( $wpdb->terms, compact( 'name' ), array( 'term_id' => $result->term_id ) );
 					}
 				}

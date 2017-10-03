@@ -90,7 +90,7 @@ class WPM_Acf {
 	 */
 	public function update_field_pro( $field ) {
 
-		$old_field = maybe_unserialize( get_post_field( 'post_content', $field['ID'] ) );
+		$old_field = maybe_unserialize( get_post_field( 'post_content', $field['ID'], 'edit' ) );
 
 		if ( ! $old_field ) {
 			return $field;
@@ -98,7 +98,7 @@ class WPM_Acf {
 
 		$old_field          = wpm_array_merge_recursive( $field, $old_field );
 		$old_field          = wpm_value_to_ml_array( $old_field );
-		$field_name         = get_post_field( 'post_title', $field['ID'] );
+		$field_name         = get_post_field( 'post_title', $field['ID'], 'edit' );
 		$old_field['label'] = wpm_value_to_ml_array( $field_name );
 
 		$default_config = array(
@@ -141,9 +141,9 @@ class WPM_Acf {
 
 		$acf_field_config = apply_filters( "wpm_acf_field_{$field['type']}_config", $default_config );
 
+		$field = apply_filters( 'acf/update_field/type=' . $field['type'], $field, $post_id );
 		$field = wpm_set_language_value( $old_field, $field, $acf_field_config );
 		$field = wpm_ml_value_to_string( $field );
-		$field = apply_filters( 'acf/update_field/type=' . $field['type'], $field, $post_id );
 
 		wp_cache_delete( 'load_field/key=' . $field['key'], 'acf' );
 
