@@ -144,7 +144,7 @@ class WPM_Admin_Settings {
 							<?php esc_attr_e( $key ); ?>
 							<input type="hidden" name="wpm_languages[<?php echo $i; ?>][locale]" value="<?php esc_attr_e( $key ); ?>">
 						<?php } else { ?>
-							<input type="text" name="wpm_languages[<?php echo $i; ?>][locale]" value="<?php esc_attr_e( $key ); ?>" title="<?php esc_attr_e( 'Locale', 'wpm' ); ?>" placeholder="<?php esc_attr_e( 'Locale', 'wpm' ); ?>">
+							<input type="text" name="wpm_languages[<?php echo $i; ?>][locale]" value="<?php esc_attr_e( $key ); ?>" title="<?php esc_attr_e( 'Locale', 'wpm' ); ?>" placeholder="<?php esc_attr_e( 'Locale', 'wpm' ); ?>" required>
 						<?php } ?>
 					</td>
 					<td class="wpm-lang-slug"><input type="text" name="wpm_languages[<?php echo $i; ?>][slug]" value="<?php esc_attr_e( $language['slug'] ); ?>" title="<?php esc_attr_e( 'Slug *', 'wpm' ); ?>" placeholder="<?php esc_attr_e( 'Slug *', 'wpm' ); ?>" required>
@@ -231,7 +231,7 @@ class WPM_Admin_Settings {
 						{{ data.language }}
 						<input type="hidden" name="wpm_languages[{{ data.count }}][locale]" value="{{ data.language }}">
 					<# } else { #>
-						<input type="text" name="wpm_languages[{{ data.count }}][locale]" value="{{ data.language }}" title="<?php esc_attr_e( 'Locale', 'wpm' ); ?>" placeholder="<?php esc_attr_e( 'Locale', 'wpm' ); ?>">
+						<input type="text" name="wpm_languages[{{ data.count }}][locale]" value="{{ data.language }}" title="<?php esc_attr_e( 'Locale', 'wpm' ); ?>" placeholder="<?php esc_attr_e( 'Locale', 'wpm' ); ?>" required>
 					<# } #>
 				</td>
 				<td class="wpm-lang-slug">
