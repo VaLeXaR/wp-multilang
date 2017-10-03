@@ -106,9 +106,8 @@ function wpm_print_js() {
  */
 function wpm_setcookie( $name, $value, $expire = 0, $secure = false ) {
 	if ( ! headers_sent() ) {
-		if ( COOKIEPATH == SITECOOKIEPATH ) {
-			setcookie( $name, $value, $expire,  COOKIEPATH ? COOKIEPATH : '/', null, $secure );
-		} else {
+		setcookie( $name, $value, $expire,  COOKIEPATH ? COOKIEPATH : '/', null, $secure );
+		if ( COOKIEPATH != SITECOOKIEPATH ) {
 			setcookie( $name, $value, $expire, SITECOOKIEPATH, null, $secure );
 		}
 	} elseif ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
