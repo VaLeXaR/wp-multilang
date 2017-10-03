@@ -90,7 +90,7 @@ class WPM_Acf {
 	 */
 	public function update_field_pro( $field ) {
 
-		$old_field = maybe_unserialize( get_post_field( 'post_content', $field['ID'] ) );
+		$old_field = maybe_unserialize( get_post_field( 'post_content', $field['ID'], 'edit' ) );
 
 		if ( ! $old_field ) {
 			return $field;
@@ -98,7 +98,7 @@ class WPM_Acf {
 
 		$old_field          = wpm_array_merge_recursive( $field, $old_field );
 		$old_field          = wpm_value_to_ml_array( $old_field );
-		$field_name         = get_post_field( 'post_title', $field['ID'] );
+		$field_name         = get_post_field( 'post_title', $field['ID'], 'edit' );
 		$old_field['label'] = wpm_value_to_ml_array( $field_name );
 
 		$default_config = array(
