@@ -36,10 +36,9 @@ class WPM_Config {
 	static public function load_plugins_config() {
 		self::$config_files[] = dirname( WPM_PLUGIN_FILE ) . '/core-config.json';
 
-		$plugins = get_option( 'active_plugins' );
-		if ( ! empty( $plugins ) ) {
-			foreach ( $plugins as $p ) {
-				$plugin_slug            = dirname( $p );
+		foreach ( get_plugins() as $pf => $pd ) {
+			if ( is_plugin_active( $pf ) ) {
+				$plugin_slug            = dirname( $pf );
 				self::$active_plugins[] = $plugin_slug;
 				$config_file            = WP_PLUGIN_DIR . '/' . $plugin_slug . '/wpm-config.json';
 				if ( trim( $plugin_slug, '\/.' ) && file_exists( $config_file ) ) {
@@ -48,18 +47,14 @@ class WPM_Config {
 			}
 		}
 
-		$mu_plugins = wp_get_mu_plugins();
-
-		if ( ! empty( $mu_plugins ) ) {
-			foreach ( $mu_plugins as $mup ) {
-				$plugin_dir_name        = dirname( $mup );
-				$plugin_base_name       = basename( $mup, '.php' );
-				self::$active_plugins[] = $plugin_base_name;
-				$plugin_sub_dir         = $plugin_dir_name . '/' . $plugin_base_name;
-				if ( file_exists( $plugin_sub_dir . '/wpm-config.json' ) ) {
-					$config_file                             = $plugin_sub_dir . '/wpm-config.json';
-					self::$config_files[ $plugin_base_name ] = $config_file;
-				}
+		foreach ( wp_get_mu_plugins() as $mup ) {
+			$plugin_dir_name        = dirname( $mup );
+			$plugin_base_name       = basename( $mup, '.php' );
+			self::$active_plugins[] = $plugin_base_name;
+			$plugin_sub_dir         = $plugin_dir_name . '/' . $plugin_base_name;
+			if ( file_exists( $plugin_sub_dir . '/wpm-config.json' ) ) {
+				$config_file                             = $plugin_sub_dir . '/wpm-config.json';
+				self::$config_files[ $plugin_base_name ] = $config_file;
 			}
 		}
 	}
