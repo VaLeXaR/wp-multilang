@@ -92,7 +92,7 @@ class WPM_Admin_Posts {
 			return wpm_array_insert_after( $columns, 'name', $language );
 		}
 
-		$columns['languages'] = __( 'Languages', 'wpm' );
+		$columns = array_merge( $columns, $language );
 
 		return $columns;
 	}
