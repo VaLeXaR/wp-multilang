@@ -61,16 +61,6 @@ class WPM_Admin_Posts {
 
 
 	/**
-	 * Fix for translate post in edit post page
-	 * use get_post
-	 */
-	public function translate_post() {
-		global $post;
-		$post = wpm_translate_object( $post );
-	}
-
-
-	/**
 	 * Define language columns for post_types.
 	 *
 	 * @param  array $columns
@@ -121,7 +111,7 @@ class WPM_Admin_Posts {
 			}
 
 			if ( ! empty( $output ) ) {
-				echo implode( '<br />', $output );
+				echo implode( ' ', $output );
 			}
 		}
 	}
@@ -137,8 +127,8 @@ class WPM_Admin_Posts {
 	public function translate_post_link( $link ) {
 		$languages = wpm_get_languages();
 		$lang      = wpm_get_language();
-		if ( in_array( $lang, $languages, true ) && $lang !== $languages[ wpm_get_default_locale() ] ) {
-			$link = str_replace( home_url(), home_url( '/' . $lang ), $link );
+		if ( $lang !== $languages[ wpm_get_default_locale() ] ) {
+			$link = wpm_translate_url( $link, $lang );
 		}
 
 		return $link;
