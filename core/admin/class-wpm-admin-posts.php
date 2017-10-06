@@ -82,7 +82,19 @@ class WPM_Admin_Posts {
 			$columns = array();
 		}
 
-		return wpm_array_insert_after( $columns, 'title', array( 'languages' => __( 'Languages', 'wpm' ) ) );
+		$language = array( 'languages' => __( 'Languages', 'wpm' ) );
+
+		if ( isset( $columns['title'] ) ) {
+			return wpm_array_insert_after( $columns, 'title', $language );
+		}
+
+		if ( isset( $columns['name'] ) ) {
+			return wpm_array_insert_after( $columns, 'name', $language );
+		}
+
+		$columns['languages'] = __( 'Languages', 'wpm' );
+
+		return $columns;
 	}
 
 
