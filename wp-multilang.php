@@ -154,6 +154,12 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 			include_once( WPM_ABSPATH . 'core/autoload.php' );
 
 			/**
+			 * Abstract classes.
+			 */
+			include_once( WPM_ABSPATH . 'core/abstracts/abstract-wpm-object.php' );
+			include_once( WPM_ABSPATH . 'core/abstracts/abstract-wpm-widget.php' );
+
+			/**
 			 * Core classes.
 			 */
 			include_once( WPM_ABSPATH . 'core/wpm-core-functions.php' );
@@ -162,7 +168,7 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 			Core\WPM_Setup::instance();
 
 			if ( $this->is_request( 'frontend' ) ) {
-				include_once( 'core/wpm-template-hooks.php' );
+				include_once( WPM_ABSPATH . 'core/wpm-template-hooks.php' );
 				Core\WPM_Frontend_Scripts::init();               // Frontend Scripts
 			}
 		}

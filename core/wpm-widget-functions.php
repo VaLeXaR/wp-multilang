@@ -13,9 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Include widget classes.
-include_once( 'abstracts/abstract-wpm-widget.php' );
-
 /**
  * Register Widgets.
  */
