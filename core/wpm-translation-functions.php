@@ -440,7 +440,7 @@ function wpm_is_ml_array( $array ) {
  */
 function wpm_is_ml_string( $string ) {
 
-	if ( ! is_string( $string ) || is_serialized_string( $string ) || json_decode( $string ) ) {
+	if ( is_array( $string ) || is_bool( $string ) || is_serialized_string( $string ) || json_decode( $string ) ) {
 		return false;
 	}
 
