@@ -32,9 +32,10 @@ class WPM_Admin_Assets {
 	 * Enqueue styles.
 	 */
 	public function admin_styles() {
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		// Register admin styles
-		wp_enqueue_style( 'wpm_language_switcher', wpm_asset_path( 'styles/admin/admin.css' ), array(), WPM_VERSION );
+		wp_enqueue_style( 'wpm_language_switcher', wpm_asset_path( 'styles/admin/admin' . $suffix . '.css' ), array(), WPM_VERSION );
 	}
 
 

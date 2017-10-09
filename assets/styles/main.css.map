@@ -1,7 +1,17 @@
 {
-"version": 3,
-"mappings": "AAAA,sBAAuB;EACrB,UAAU,EAAE,IAAI;EAChB,aAAa,EAAE,CAAC;EAChB,YAAY,EAAE,CAAC;EAEf,wBAAE;IACA,KAAK,EAAE,OAAoB;IAE3B,8BAAQ;MACN,KAAK,ECNH,IAAI;IDSR,4BAAI;MACF,OAAO,EAAE,YAAY;MACrB,YAAY,EAAE,GAAG;EAMnB,gCAAE;IACA,KAAK,EClBH,IAAI",
-"sources": ["components/_lang-switcher.scss","common/_variables.scss"],
-"names": [],
-"file": "main.css"
+	"version": 3,
+	"file": "main.css",
+	"sources": [
+		"main.scss",
+		"common/_variables.scss",
+		"common/_global.scss",
+		"components/_lang-switcher.scss",
+		"layouts/_header.scss",
+		"layouts/_footer.scss",
+		"layouts/_pages.scss",
+		"layouts/_posts.scss",
+		"layouts/_customizer.scss"
+	],
+	"names": [],
+	"mappings": "AGAA,AAAA,sBAAsB,CAAC;EACrB,UAAU,EAAE,IAAI;EAChB,aAAa,EAAE,CAAC;EAChB,YAAY,EAAE,CAAC,GAqBhB;EAxBD,AAKE,sBALoB,CAKpB,CAAC,CAAC;IACA,KAAK,EAAE,OAAoB,GAU5B;IAhBH,AAKE,sBALoB,CAKpB,CAAC,AAGC,MAAO,CAAC;MACN,KAAK,EFNH,IAAI,GEOP;IAVL,AAYI,sBAZkB,CAKpB,CAAC,CAOC,GAAG,CAAC;MACF,OAAO,EAAE,YAAY;MACrB,YAAY,EAAE,GAAG,GAClB;EAfL,AAoBI,sBApBkB,CAkBpB,OAAO,CAEL,CAAC,CAAC;IACA,KAAK,EFlBH,IAAI,GEmBP"
 }

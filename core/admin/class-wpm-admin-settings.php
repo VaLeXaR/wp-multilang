@@ -210,7 +210,7 @@ class WPM_Admin_Settings {
 		?>
 		<p class="submit">
 			<select id="wpm-available-translations" title="<?php esc_attr_e( 'Available translations' ); ?>">
-				<option value=""><?php esc_attr_e( '&mdash; Select &mdash;' ); ?></option>
+				<option value=""><?php esc_attr_e( '&mdash; Select language &mdash;', 'wpm' ); ?></option>
 				<?php foreach ( $available_translations as $translation ) { ?>
 					<option value="<?php esc_attr_e( $translation['language'] ); ?>"><?php esc_attr_e( $translation['native_name'] ); ?></option>
 				<?php } ?>
