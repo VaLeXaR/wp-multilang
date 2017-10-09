@@ -370,7 +370,7 @@ function wpm_translate_object( $object, $lang = '' ) {
 						$object->$key = maybe_serialize( wpm_translate_value( maybe_unserialize( $content ), $lang ) );
 					}
 					if ( json_decode( $content ) ) {
-						$object->$key = json_encode( wpm_translate_value( json_decode( $content, true ), $lang ) );
+						$object->$key = wp_json_encode( wpm_translate_value( json_decode( $content, true ), $lang ) );
 					}
 					break;
 			}
