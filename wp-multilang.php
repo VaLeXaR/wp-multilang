@@ -168,7 +168,6 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 			Core\WPM_Setup::instance();
 
 			if ( $this->is_request( 'frontend' ) ) {
-				include_once( WPM_ABSPATH . 'core/wpm-template-hooks.php' );
 				Core\WPM_Frontend_Scripts::init(); // Frontend Scripts
 			}
 		}
