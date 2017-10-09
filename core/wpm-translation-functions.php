@@ -368,7 +368,12 @@ function wpm_translate_object( $object, $lang = '' ) {
 					$object->$key = wpm_translate_string( $content, $lang );
 					break;
 				case 'post_content':
-					$object->$key = maybe_serialize( wpm_translate_value( maybe_unserialize( $content ), $lang ) );
+					if ( is_serialized_string( $content ) ) {
+						$object->$key = maybe_serialize( wpm_translate_value( maybe_unserialize( $content ), $lang ) );
+					}
+					if ( json_decode( $content ) ) {
+						$object->$key = json_encode( wpm_translate_value( json_decode( $content, true ), $lang ) );
+					}
 					break;
 			}
 		}
