@@ -197,7 +197,7 @@ class WPM_Admin_Settings {
 		}
 
 		array_unshift( $available_translations, array(
-			'language'    => '',
+			'language'    => 1,
 			'native_name' => __( 'Custom language', 'wpm' ),
 			'iso'         => array(),
 		) );
@@ -210,6 +210,7 @@ class WPM_Admin_Settings {
 		?>
 		<p class="submit">
 			<select id="wpm-available-translations" title="<?php esc_attr_e( 'Available translations' ); ?>">
+				<option value=""><?php esc_attr_e( '&mdash; Select &mdash;' ); ?></option>
 				<?php foreach ( $available_translations as $translation ) { ?>
 					<option value="<?php esc_attr_e( $translation['language'] ); ?>"><?php esc_attr_e( $translation['native_name'] ); ?></option>
 				<?php } ?>
