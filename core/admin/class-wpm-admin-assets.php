@@ -89,27 +89,27 @@ class WPM_Admin_Assets {
 			} );
 		}
 
-		$show_switcher = false;
+		if ( is_null( $screen ) ) {
+			return;
+		}
 
-		$admin_pages_config = apply_filters( 'wpm_admin_pages', $config['admin_pages'] );
+		$show_switcher      = false;
+		$admin_pages_config = $config['admin_pages'];
 
 		if ( in_array( $screen_id, $admin_pages_config, true ) ) {
 			$show_switcher = true;
 		}
 
-		if ( ! is_null( $screen ) ) {
+		$posts_config = $config['post_types'];
 
-			$posts_config = $config['post_types'];
+		if ( $screen->post_type && ! is_null( $posts_config [ $screen->post_type ] ) && ! $screen->taxonomy ) {
+			$show_switcher = true;
+		}
 
-			if ( $screen->post_type && ! is_null( $posts_config [ $screen->post_type ] ) && ! $screen->taxonomy ) {
-				$show_switcher = true;
-			}
+		$taxonomies_config = $config['taxonomies'];
 
-			$taxonomies_config = $config['taxonomies'];
-
-			if ( $screen->taxonomy && ! is_null( $taxonomies_config[ $screen->taxonomy ] ) ) {
-				$show_switcher = true;
-			}
+		if ( $screen->taxonomy && ! is_null( $taxonomies_config[ $screen->taxonomy ] ) ) {
+			$show_switcher = true;
 		}
 
 		if ( $show_switcher ) {
@@ -118,6 +118,26 @@ class WPM_Admin_Assets {
 
 		if ( 'options-general' === $screen_id ) {
 			wp_enqueue_script( 'wpm_main' );
+		}
+
+		$admin_html_tags = $config['admin_html_tags'];
+
+		foreach ( $admin_html_tags as $html_screen => $html_config ) {
+			if ( $html_screen === $screen_id ) {
+				wp_enqueue_script( 'wpm_translator' );
+				$js_code = '(function ( $ ) {';
+				foreach ( $html_config as $attr => $selector ) {
+					$js_code .= '$( "' . implode( ', ', $selector ) . '" ).each( function () {';
+					if ( 'text' == $attr ) {
+						$js_code .= 'var text = wpm_translator.translate_string($(this).text());$(this).text(text);';
+					} else {
+						$js_code .= 'var ' . $selector . ' = wpm_translator.translate_string($(this).attr("' . $selector . '"));$(this).attr("' . $selector . '", text);';
+					}
+					$js_code .= '} );';
+				}
+				$js_code .= '})( window.jQuery );';
+				wpm_enqueue_js( $js_code );
+			}
 		}
 	}
 

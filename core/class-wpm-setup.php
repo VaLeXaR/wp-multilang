@@ -371,7 +371,9 @@ class WPM_Setup {
 			unset( $config['site_options'] );
 		}
 
-		$config['widgets'] = apply_filters( 'wpm_widgets_config', $config['widgets'] );
+		$config['widgets']         = apply_filters( 'wpm_widgets_config', $config['widgets'] );
+		$config['admin_pages']     = apply_filters( 'wpm_admin_pages', $config['admin_pages'] );
+		$config['admin_html_tags'] = apply_filters( 'wpm_admin_html_tags', $config['admin_html_tags'] );
 
 		return $config;
 	}
