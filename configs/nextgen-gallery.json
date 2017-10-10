@@ -1,5 +1,12 @@
 {
   "post_types": {
     "displayed_gallery": {}
+  },
+  "options": {
+    "ngg_options": {
+      "relatedHeading": {},
+      "galTextSlide": {},
+      "galTextGallery": {}
+    }
   }
 }

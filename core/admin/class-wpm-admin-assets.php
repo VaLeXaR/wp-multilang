@@ -6,7 +6,7 @@
  * @category    Admin
  * @package     WPM/Core/Admin
  * @class       WPM_Admin_Assets
- * @version     1.0.3
+ * @version     1.0.4
  */
 
 namespace WPM\Core\Admin;
@@ -32,9 +32,10 @@ class WPM_Admin_Assets {
 	 * Enqueue styles.
 	 */
 	public function admin_styles() {
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		// Register admin styles
-		wp_enqueue_style( 'wpm_language_switcher', wpm_asset_path( 'styles/admin/admin.css' ), array(), WPM_VERSION );
+		wp_enqueue_style( 'wpm_language_switcher', wpm_asset_path( 'styles/admin/admin' . $suffix . '.css' ), array(), WPM_VERSION );
 	}
 
 
@@ -75,40 +76,38 @@ class WPM_Admin_Assets {
 		);
 		wp_localize_script( 'wpm_translator', 'wpm_translator_params', $translator_params );
 
+		if ( is_null( $screen ) ) {
+			return;
+		}
+
 		if ( 'customize' === $screen_id ) {
 
 			$languages = wpm_get_languages();
-			if ( count( $languages ) <= 1 ) {
-				return;
+			if ( count( $languages ) > 1 ) {
+				wp_enqueue_script( 'wpm_language_switcher_customizer' );
+				add_action( 'admin_print_footer_scripts', function () {
+					echo wpm_get_template_html( 'language-switcher-customizer.php' );
+				} );
 			}
-
-			wp_enqueue_script( 'wpm_language_switcher_customizer' );
-			add_action( 'admin_print_footer_scripts', function () {
-				echo wpm_get_template_html( 'language-switcher-customizer.php' );
-			} );
 		}
 
 		$show_switcher = false;
+		$posts_config  = $config['post_types'];
+
+		if ( $screen->post_type && ! is_null( $posts_config [ $screen->post_type ] ) && ( ( $screen_id == $screen->post_type ) || ( 'edit-' . $screen->post_type == $screen_id ) ) ) {
+			$show_switcher = true;
+		}
+
+		$taxonomies_config = $config['taxonomies'];
+
+		if ( $screen->taxonomy && ! is_null( $taxonomies_config[ $screen->taxonomy ] ) && ( 'edit-' . $screen->taxonomy == $screen_id ) ) {
+			$show_switcher = true;
+		}
 
 		$admin_pages_config = apply_filters( 'wpm_admin_pages', $config['admin_pages'] );
 
 		if ( in_array( $screen_id, $admin_pages_config, true ) ) {
 			$show_switcher = true;
-		}
-
-		if ( ! is_null( $screen ) ) {
-
-			$posts_config = $config['post_types'];
-
-			if ( $screen->post_type && ! is_null( $posts_config [ $screen->post_type ] ) && ! $screen->taxonomy ) {
-				$show_switcher = true;
-			}
-
-			$taxonomies_config = $config['taxonomies'];
-
-			if ( $screen->taxonomy && ! is_null( $taxonomies_config[ $screen->taxonomy ] ) ) {
-				$show_switcher = true;
-			}
 		}
 
 		if ( $show_switcher ) {
@@ -117,6 +116,28 @@ class WPM_Admin_Assets {
 
 		if ( 'options-general' === $screen_id ) {
 			wp_enqueue_script( 'wpm_main' );
+		}
+
+		$admin_html_tags = apply_filters( 'wpm_admin_html_tags', $config['admin_html_tags'] );
+
+		foreach ( $admin_html_tags as $html_screen => $html_config ) {
+			if ( $html_screen === $screen_id ) {
+				wp_enqueue_script( 'wpm_translator' );
+				$js_code = '(function ( $ ) {';
+				foreach ( $html_config as $attr => $selector ) {
+					$js_code .= '$( "' . implode( ', ', $selector ) . '" ).each( function () {';
+					if ( 'text' == $attr ) {
+						$js_code .= '$(this).text(wpm_translator.translate_string($(this).text()));';
+					} elseif ( 'value' == $attr ) {
+						$js_code .= '$(this).val(wpm_translator.translate_string($(this).val()));';
+					} else {
+						$js_code .= '$(this).attr("' . $attr . '", wpm_translator.translate_string($(this).attr("' . $attr . '")));';
+					}
+					$js_code .= '} );';
+				}
+				$js_code .= '})( window.jQuery );';
+				wpm_enqueue_js( $js_code );
+			}
 		}
 	}
 

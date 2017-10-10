@@ -6,7 +6,8 @@
     "nav_menu_item": {
       "attr_title": {},
       "title": {}
-    }
+    },
+    "any": {}
   },
   "post_fields": {
     "_wp_attachment_image_alt": {}
@@ -44,5 +45,6 @@
       "alt": {},
       "image_title": {}
     }
-  }
+  },
+  "admin_html_tags": {}
 }

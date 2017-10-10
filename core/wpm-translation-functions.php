@@ -150,14 +150,12 @@ function wpm_translate_value( $value, $language = '' ) {
  */
 function wpm_string_to_ml_array( $string ) {
 
-	if ( ! is_string( $string ) ) {
+	if ( ! is_string( $string ) || is_serialized_string( $string ) || json_decode( $string ) ) {
 		return $string;
 	}
 
 	$string = htmlspecialchars_decode( $string );
-
-	$split_regex = '#(<!--:[a-z]{2}-->|<!--:-->|\[:[a-z]{2}\]|\[:\]|\{:[a-z]{2}\}|\{:\})#ism';
-	$blocks      = preg_split( $split_regex, $string, - 1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
+	$blocks = preg_split( '#(<!--:[a-z]{2}-->|<!--:-->|\[:[a-z]{2}\]|\[:\]|\{:[a-z]{2}\}|\{:\})#ism', $string, - 1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
 
 	if ( empty( $blocks ) || count( $blocks ) === 1 ) {
 		return $string;
@@ -368,8 +366,20 @@ function wpm_translate_object( $object, $lang = '' ) {
 					$object->$key = wpm_translate_string( $content, $lang );
 					break;
 				case 'post_content':
-					$object->$key = maybe_serialize( wpm_translate_value( maybe_unserialize( $content ), $lang ) );
-					break;
+					if ( is_serialized_string( $content ) ) {
+						$object->$key = serialize( wpm_translate_value( unserialize( $content ), $lang ) );
+						break;
+					}
+
+					if ( json_decode( $content ) ) {
+						$object->$key = wp_json_encode( wpm_translate_value( json_decode( $content, true ), $lang ) );
+						break;
+					}
+
+					if ( wpm_is_ml_string( $content ) ) {
+						$object->$key = wpm_translate_string( $content, $lang );
+						break;
+					}
 			}
 		}
 	}
@@ -437,7 +447,7 @@ function wpm_is_ml_array( $array ) {
  */
 function wpm_is_ml_string( $string ) {
 
-	if ( is_array( $string ) || is_bool( $string ) ) {
+	if ( is_array( $string ) || is_bool( $string ) || is_serialized_string( $string ) || json_decode( $string ) ) {
 		return false;
 	}
 

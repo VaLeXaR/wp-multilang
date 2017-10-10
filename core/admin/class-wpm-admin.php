@@ -25,9 +25,8 @@ class WPM_Admin {
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'includes' ) );
-		add_action( 'admin_init', array( $this, 'buffer' ), 1 );
-		add_action( 'admin_init', array( $this, 'init' ), 1 );
-		add_action( 'admin_init', array( $this, 'set_edit_lang' ), 0 );
+		add_action( 'admin_init', array( $this, 'buffer' ), 0 );
+		add_action( 'admin_init', array( $this, 'init' ), 0 );
 		add_action( 'admin_footer', 'wpm_print_js', 25 );
 	}
 
@@ -50,6 +49,12 @@ class WPM_Admin {
 	 * Include any classes we need within admin.
 	 */
 	public function init() {
+		$user_id = get_current_user_id();
+
+		if ( isset( $_GET['edit_lang'] ) || ! get_user_meta( $user_id, 'edit_lang', true ) ) {
+			update_user_meta( $user_id, 'edit_lang', wpm_get_language() );
+		}
+
 		new WPM_Admin_Menus();
 		new WPM_Admin_Edit_Menus();
 		new WPM_Admin_Posts();
@@ -58,16 +63,5 @@ class WPM_Admin {
 		new WPM_Admin_Widgets();
 		new WPM_Admin_Assets();
 		new WPM_Admin_Customizer();
-	}
-
-	/**
-	 * Add meta for 'edit_lang'
-	 */
-	public function set_edit_lang() {
-		$user_id = get_current_user_id();
-
-		if ( isset( $_GET['edit_lang'] ) || ! get_user_meta( $user_id, 'edit_lang', true ) ) {
-			update_user_meta( $user_id, 'edit_lang', wpm_get_language() );
-		}
 	}
 }

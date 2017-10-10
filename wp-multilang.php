@@ -8,7 +8,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:     wpm
  * Domain Path:     /languages
- * Version:         1.7.3
+ * Version:         1.7.4
  *
  * @package  WPM
  * @category Core
@@ -20,8 +20,6 @@ use WPM\Core;
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-
-require_once __DIR__ . '/lib/autoload.php';
 
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	require_once __DIR__ . '/vendor/autoload.php';
@@ -42,7 +40,7 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		 *
 		 * @var string
 		 */
-		public $version = '1.7.3';
+		public $version = '1.7.4';
 
 		/**
 		 * The single instance of the class.
@@ -107,6 +105,7 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		 */
 		private function define_constants() {
 			$this->define( 'WPM_PLUGIN_FILE', __FILE__ );
+			$this->define( 'WPM_ABSPATH', dirname( __FILE__ ) . '/' );
 			$this->define( 'WPM_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 			$this->define( 'WPM_VERSION', $this->version );
 		}
@@ -149,15 +148,27 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		 * Include required core files used in admin and on the frontend.
 		 */
 		public function includes() {
-			include_once( 'core/wpm-core-functions.php' );
-			include_once( 'core/wpm-widget-functions.php' );
+			/**
+			 * Class autoloader.
+			 */
+			include_once( WPM_ABSPATH . 'core/autoload.php' );
 
+			/**
+			 * Abstract classes.
+			 */
+			include_once( WPM_ABSPATH . 'core/abstracts/abstract-wpm-object.php' );
+			include_once( WPM_ABSPATH . 'core/abstracts/abstract-wpm-widget.php' );
+
+			/**
+			 * Core classes.
+			 */
+			include_once( WPM_ABSPATH . 'core/wpm-core-functions.php' );
+			include_once( WPM_ABSPATH . 'core/wpm-widget-functions.php' );
 			Core\WPM_Install::init();
 			Core\WPM_Setup::instance();
 
 			if ( $this->is_request( 'frontend' ) ) {
-				include_once( 'core/wpm-template-hooks.php' );
-				Core\WPM_Frontend_Scripts::init();               // Frontend Scripts
+				Core\WPM_Frontend_Scripts::init(); // Frontend Scripts
 			}
 		}
 

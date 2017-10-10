@@ -53,7 +53,11 @@
 
     $('#add_lang').click(function(){
       var t_language = wp.template( 'wpm-add-lang' );
-      var language = wpm_params.available_translations[$('#wpm-available-translations').val()];
+      var language_val = $('#wpm-available-translations').val();
+      if (!language_val) {
+        return false;
+      }
+      var language = wpm_params.available_translations[language_val];
       if (typeof language === 'undefined') {
         language = {
           language: '',

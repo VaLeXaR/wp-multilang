@@ -9,5 +9,12 @@
   },
   "admin_pages": [
     "users_page_bp-profile-setup"
-  ]
+  ],
+  "admin_html_tags": {
+    "users_page_bp-profile-setup": {
+      "text": [
+        ".field-wrapper .description"
+      ]
+    }
+  }
 }

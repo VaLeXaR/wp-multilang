@@ -52,7 +52,6 @@ class WPM_BuddyPress {
 		add_filter( 'xprofile_field_name_before_save', array( $this, 'save_field_name' ), 10, 2 );
 		add_filter( 'xprofile_field_description_before_save', array( $this, 'save_field_description' ), 10, 2 );
 		add_filter( 'bp_xprofile_field_get_children', array( $this, 'remove_filter' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'add_translator_script' ), 11 );
 		add_action( 'bp_xprofile_admin_new_field_additional_settings', 'wpm_show_notice' );
 	}
 
@@ -220,27 +219,6 @@ class WPM_BuddyPress {
 		remove_filter( 'attribute_escape', 'WPM\Core\WPM_Posts::escaping_text', 0 );
 
 		return $children;
-	}
-
-
-	/**
-	 * Translate some texts without PHP filters by javascript for displaying
-	 */
-	public function add_translator_script() {
-		$screen    = get_current_screen();
-		$screen_id = $screen ? $screen->id : '';
-
-		if ( 'users_page_bp-profile-setup' === $screen_id ) {
-			wp_enqueue_script( 'wpm_translator' );
-			wpm_enqueue_js( "
-				(function ( $ ) {
-					$( '.field-wrapper .description' ).each( function () {
-						var text = wpm_translator.translate_string($(this).text());
-						$(this).text(text);
-					} );
-				})( window.jQuery );
-			" );
-		}
 	}
 }
 

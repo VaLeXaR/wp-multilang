@@ -52,9 +52,10 @@ class WPM_Frontend_Scripts {
 	 * @return array
 	 */
 	public static function get_styles() {
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$styles = array(
 			'wpm-main' => array(
-				'src'     => wpm_asset_path( 'styles/main.css' ),
+				'src'     => wpm_asset_path( 'styles/main' . $suffix . '.css' ),
 				'deps'    => '',
 				'version' => WPM_VERSION,
 				'media'   => 'all',
@@ -180,9 +181,9 @@ class WPM_Frontend_Scripts {
 	 */
 	private static function get_script_data( $handle ) {
 
-		switch ( $handle ) {
+		/*switch ( $handle ) {
 
-		}
+		}*/
 
 		return false;
 	}

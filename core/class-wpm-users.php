@@ -6,8 +6,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-include_once( 'abstracts/abstract-wpm-object.php' );
-
 /**
  * Class WPM_Users
  * @package  WPM\Core
