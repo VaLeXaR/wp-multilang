@@ -371,7 +371,7 @@ class WPM_Setup {
 			unset( $config['site_options'] );
 		}
 
-		$config['widgets']         = apply_filters( 'wpm_widgets_config', $config['widgets'] );
+		$config['widgets'] = apply_filters( 'wpm_widgets_config', $config['widgets'] );
 
 		return $config;
 	}
