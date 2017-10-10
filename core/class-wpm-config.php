@@ -36,6 +36,8 @@ class WPM_Config {
 	static public function load_plugins_config() {
 		self::$config_files[] = dirname( WPM_PLUGIN_FILE ) . '/core-config.json';
 
+		require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+
 		foreach ( get_plugins() as $pf => $pd ) {
 			if ( is_plugin_active( $pf ) ) {
 				$plugin_slug            = dirname( $pf );
