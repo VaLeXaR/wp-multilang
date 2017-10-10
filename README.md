@@ -112,7 +112,24 @@ Supports automatically redirect to the user's browser language, if he went to th
 
 Update translation occurs at PHP. Therefore plugin has high adaptability, compatibility and easily integrates with other plugins. This is what distinguishes it among similar.
 
-Translation uses the following syntax:
+Available translation html tags by JS for strings what do not have WP filters before output.
+
+Add your tags in config:
+```
+"admin_html_tags": {
+    "admin_screen_id": {
+      "attribute": [
+        "selector"
+      ]
+    }
+}
+```
+Where:  
+`admin_screen_id` - admin screen id.   
+`attribute` - attribute what need to translate. Available `text` - for translate text node, `value` - for translate form values. Or other tag attribute, like `title`, `alt`.   
+`selector` - javascript selector for search needed tag. Each selector is a new array item.   
+   
+Translation uses the syntax:
 ```
 [:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut
 ```
@@ -230,6 +247,23 @@ wpm_translate_value( $value, $language = '' ); // translate multidimensional arr
 Підтримує автоматичну переадресацію на мову браузера користувача, якщо він зайшов на сайт вперше.
 
 Оновлення перекладів відбувається на рівні PHP. Тому плаґін має високу адаптивність, сумісність та легко інтегрується з іншими плаґінами. Саме це вирізняє його серед подібних.
+
+Є можливість перекладати html теґи через JS для рядків, що не мають WP фільтрів перед виводом.
+
+Додайте ваші теґи у конфіґ:
+```
+"admin_html_tags": {
+    "admin_screen_id": {
+      "attribute": [
+        "selector"
+      ]
+    }
+}
+```
+Де:
+`admin_screen_id` - screen_id екрану адмін панелі.
+`attribute` - атрибут, що потрібно перекласти. Доступні `text` - для перекладу текстового вузла, `value` - для перекладу значень елементів форми. Або інші атрибути теґів , як `title`, `alt`.
+`selector` - javascript селектор для пошуку потрібного теґу. Кожен теґ це новий елемент масиву.
 
 Використовує такий синтаксис перекладу:
 ```
