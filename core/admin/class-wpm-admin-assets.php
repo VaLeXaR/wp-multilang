@@ -94,7 +94,7 @@ class WPM_Admin_Assets {
 		}
 
 		$show_switcher      = false;
-		$admin_pages_config = $config['admin_pages'];
+		$admin_pages_config = apply_filters( 'wpm_admin_pages', $config['admin_pages'] );
 
 		if ( in_array( $screen_id, $admin_pages_config, true ) ) {
 			$show_switcher = true;
@@ -120,7 +120,7 @@ class WPM_Admin_Assets {
 			wp_enqueue_script( 'wpm_main' );
 		}
 
-		$admin_html_tags = $config['admin_html_tags'];
+		$admin_html_tags = apply_filters( 'wpm_admin_html_tags', $config['admin_html_tags'] );
 
 		foreach ( $admin_html_tags as $html_screen => $html_config ) {
 			if ( $html_screen === $screen_id ) {
