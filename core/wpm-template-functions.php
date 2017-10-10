@@ -53,14 +53,12 @@ function wpm_language_switcher( $args = array(), $echo = true ) {
 				</li>
 			<?php } ?>
 		</ul>
-	<? }
+	<?php }
 
 	if ( 'dropdown' === $args['type'] ) { ?>
-		<select class="wpm-language-switcher switcher-<?php esc_attr_e( $args['type'] ); ?>" onchange="location = this.value;"
-		    title="<?php esc_html_e( __( 'Language Switcher', 'wpm' ) ); ?>">
+		<select class="wpm-language-switcher switcher-<?php esc_attr_e( $args['type'] ); ?>" onchange="location = this.value;" title="<?php esc_html_e( __( 'Language Switcher', 'wpm' ) ); ?>">
 			<?php foreach ( $languages as $key => $language ) { ?>
-				<option
-					value="<?php echo esc_url( wpm_translate_url( $current_url, $language ) ); ?>"<?php if ( $key === $locale ) { ?> selected="selected"<?php } ?>>
+				<option value="<?php echo esc_url( wpm_translate_url( $current_url, $language ) ); ?>"<?php if ( $key === $locale ) { ?> selected="selected"<?php } ?>>
 					<?php echo $options[ $key ]['name']; ?>
 				</option>
 			<?php } ?>
@@ -163,11 +161,9 @@ function wpm_generate_widget_media_image( $html, $attr, $content ) {
 	}
 
 	if ( $html5 ) {
-		$html = '<figure ' . $atts['id'] . $style . ' class="' . esc_attr( $class ) . '">'
-		        . do_shortcode( $content ) . '<figcaption class="wp-caption-text">' . $atts['caption'] . '</figcaption></figure>';
+		$html = '<figure ' . $atts['id'] . $style . ' class="' . esc_attr( $class ) . '">' . do_shortcode( $content ) . '<figcaption class="wp-caption-text">' . $atts['caption'] . '</figcaption></figure>';
 	} else {
-		$html = '<div ' . $atts['id'] . $style . ' class="' . esc_attr( $class ) . '">'
-		        . do_shortcode( $content ) . '<p class="wp-caption-text">' . $atts['caption'] . '</p></div>';
+		$html = '<div ' . $atts['id'] . $style . ' class="' . esc_attr( $class ) . '">' . do_shortcode( $content ) . '<p class="wp-caption-text">' . $atts['caption'] . '</p></div>';
 	}
 
 	return $html;
