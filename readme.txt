@@ -3,8 +3,8 @@
 Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
-Tested up to: 4.8.1
-Stable tag: 1.7.3
+Tested up to: 4.8.2
+Stable tag: 1.7.4
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -118,7 +118,24 @@ Supports automatically redirect to the user's browser language, if he visits for
 
 Update translation occurs at PHP. Therefore plugin has high adaptability, compatibility and easily integrates with other plugins. This is what distinguishes it among similar.
 
-Translation uses the following syntax:
+Available translation html tags by JS for strings what do not have WP filters before output.
+
+Add your tags in config:
+`
+"admin_html_tags": {
+    "admin_screen_id": {
+      "attribute": [
+        "selector"
+      ]
+    }
+}
+`
+Where:
+`admin_screen_id` - admin screen id.
+`attribute` - attribute what need to translate. Available `text` - for translate text node, `value` - for translate form values. Or other tag attribute, like `title`, `alt`.
+`selector` - javascript selector for search needed tag. Each selector is a new array item.
+
+Translation uses the syntax:
 
 `[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut`
 
@@ -154,11 +171,21 @@ If you have opened several browser tabs for editing this post in different langu
 
 == Changelog ==
 
+= 1.7.4 =
++ add config for translate html tags by js
++ add class for current language to body
+* fix NGG support
+* fix add admin pages
+* update flags
+* fix translation post content
+* fix config for any post type
+
 = 1.7.3 =
 + add required param to locale input
 + optimized uninstall function
 * fix set lang cookie for different sitepath
 * fix update term and posts
+* fix lang column for WC in admin
 
 = 1.7.2 =
 + add adding language from admin
