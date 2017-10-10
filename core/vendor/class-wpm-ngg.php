@@ -27,10 +27,10 @@ class WPM_NGG {
 	 */
 	public function __construct() {
 		add_filter( 'wpm_admin_pages', array( $this, 'add_admin_pages' ) );
+		add_filter( 'wpm_admin_html_tags', array( $this, 'add_admin_html_tags' ) );
 		add_filter( 'ngg_manage_gallery_fields', array( $this, 'filter_fields' ), 11 );
 		add_filter( 'ngg_manage_images_row', array( $this, 'translate_gallery_object' ) );
 		add_action( 'admin_init', array( $this, 'save_gallery' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'add_translator_script' ), 11 );
 	}
 
 
@@ -113,7 +113,6 @@ class WPM_NGG {
 				}
 			}// End if().
 		}// End if().
-
 	}
 
 
@@ -132,6 +131,7 @@ class WPM_NGG {
 		$admin_pages = array(
 			'_page_nggallery-manage-gallery',
 			'_page_nggallery-manage-album',
+			'_page_ngg_display_settings',
 		);
 
 		foreach ( $admin_pages as $admin_page ) {
@@ -141,6 +141,57 @@ class WPM_NGG {
 		}
 
 		return $pages_config;
+	}
+
+
+	/**
+	 * Translate some field without PHP filters by javascript for displaying
+	 *
+	 * @param array $admin_html_tags
+	 *
+	 * @return array
+	 */
+	public function add_admin_html_tags( $admin_html_tags ) {
+		$screen    = get_current_screen();
+		$screen_id = $screen ? $screen->id : '';
+
+		$admin_pages = array(
+			'_page_nggallery-manage-gallery',
+			'_page_nggallery-manage-album',
+		);
+
+		foreach ( $admin_pages as $admin_page ) {
+			if ( strpos( $screen_id, $admin_page ) !== false ) {
+
+				$html_tags = array();
+
+				if ( '_page_nggallery-manage-album' === $admin_page ) {
+					if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['act_album'] ) ) {
+						$html_tags = array(
+							'value' => array(
+								'#album_name',
+								'#album_desc',
+							)
+						);
+					}
+				}
+
+				if ( '_page_nggallery-manage-gallery' === $admin_page ) {
+					if ( 'POST' === $_SERVER['REQUEST_METHOD'] && ( isset( $_POST['page'] ) && 'manage-images' === $_POST['page'] ) && isset( $_POST['updatepictures'] ) ) {
+						$html_tags = array(
+							'value' => array(
+								'#gallery_title',
+								'#gallery_description',
+							)
+						);
+					}
+				}
+
+				$admin_html_tags[ $screen_id ] = $html_tags;
+			}
+		}
+
+		return $admin_html_tags;
 	}
 
 
@@ -189,54 +240,6 @@ class WPM_NGG {
 		}
 
 		return $object;
-	}
-
-
-	/**
-	 * Translate some field without PHP filters by javascript for displaying
-	 */
-	public function add_translator_script() {
-		$screen    = get_current_screen();
-		$screen_id = $screen ? $screen->id : '';
-
-		$admin_pages = array(
-			'_page_nggallery-manage-gallery',
-			'_page_nggallery-manage-album',
-		);
-
-		foreach ( $admin_pages as $admin_page ) {
-			if ( strpos( $screen_id, $admin_page ) !== false ) {
-
-				if ( '_page_nggallery-manage-album' === $admin_page ) {
-					if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['act_album'] ) ) {
-						wp_enqueue_script( 'wpm_translator' );
-						wpm_enqueue_js( "
-							(function ( $ ) {
-								$( '#album_name, #album_desc' ).each( function () {
-									var text = wpm_translator.translate_string($(this).val());
-									$(this).val(text);
-								} );
-							})( window.jQuery );
-						" );
-					}
-				}
-
-				if ( '_page_nggallery-manage-gallery' === $admin_page ) {
-					if ( 'POST' === $_SERVER['REQUEST_METHOD'] && ( isset( $_POST['page'] ) && 'manage-images' === $_POST['page'] ) && isset( $_POST['updatepictures'] ) ) {
-						wp_enqueue_script( 'wpm_translator' );
-						wpm_enqueue_js( "
-							(function ( $ ) {
-								$( '#gallery_title, #gallery_description' ).each( function () {
-									var text = wpm_translator.translate_string($(this).val());
-									$(this).val(text);
-								} );
-							})( window.jQuery );
-						" );
-					}
-				}
-			}
-		}
-
 	}
 }
 
