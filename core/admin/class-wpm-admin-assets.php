@@ -129,9 +129,11 @@ class WPM_Admin_Assets {
 				foreach ( $html_config as $attr => $selector ) {
 					$js_code .= '$( "' . implode( ', ', $selector ) . '" ).each( function () {';
 					if ( 'text' == $attr ) {
-						$js_code .= 'var text = wpm_translator.translate_string($(this).text());$(this).text(text);';
+						$js_code .= '$(this).text(wpm_translator.translate_string($(this).text()));';
+					} elseif ( 'value' == $attr ) {
+						$js_code .= '$(this).val(wpm_translator.translate_string($(this).val()));';
 					} else {
-						$js_code .= 'var ' . $selector . ' = wpm_translator.translate_string($(this).attr("' . $selector . '"));$(this).attr("' . $selector . '", text);';
+						$js_code .= '$(this).attr("' . $attr . '", wpm_translator.translate_string($(this).attr("' . $attr . '")));';
 					}
 					$js_code .= '} );';
 				}
