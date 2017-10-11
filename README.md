@@ -95,8 +95,8 @@ if ( function_exists ( 'wpm_language_switcher' ) ) wpm_language_switcher ();
 Function accepts two parameters:
 
 $args - array  
-  'type' - 'list', 'dropdown'. Default - 'list'.  
-  'show' - 'flag', 'name', 'both'. Default - 'both'.
+  `type` - `list`, `dropdown`, `select`. Default - `list`.  
+  `show` - `flag`, `name`, `both`. Default - `both`.
 
 $echo - bool
 
@@ -231,8 +231,8 @@ Compatible with multisite not tested.
 Фукція приймає два параметри:
 
 $args - array  
-  'type' - 'list', 'dropdown'. Усталено - 'list'.  
-  'show' - 'flag', 'name', 'both'. Усталено - 'both'.
+  `type` - `list`, `dropdown`, `select`. Усталено - `list`.  
+  `show` - `flag`, `name`, `both`. Усталено - `both`.
 
 $echo - bool
 

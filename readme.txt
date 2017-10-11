@@ -101,7 +101,7 @@ For a switch as add code to your template
 Function accepts two parameters:
 
 $args - array
-  `type` - `list`, `dropdown`. Default - `list`.
+  `type` - `list`, `dropdown`, `select`. Default - `list`.
   `show` - `flag`, `name`, `both`. Default - `both`.
 
 $echo - bool
