@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="Roots">
+<ruleset name="WPM">
   <description>Wordpress Coding Standards</description>
 
   <!-- Scan all files in directory -->
