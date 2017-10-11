@@ -374,4 +374,33 @@ abstract class WPM_Object {
 		return $mid;
 	}
 
+	public function delete_meta_field( $meta_ids, $object_id, $meta_key ) {
+
+		$config = wpm_get_config();
+
+		switch ( $this->object_type ) {
+
+			case 'post':
+				if ( is_null( $config['post_types'][ get_post_type( $object_id ) ] ) ) {
+					return;
+				}
+				break;
+
+			case 'term':
+				$term = get_term( $object_id );
+				if ( is_null( $config['taxonomies'][ $term->taxonomy ] ) ) {
+					return;
+				}
+		}
+
+		$object_fields_config = $config[ $this->object_type . '_fields' ];
+		$object_fields_config = apply_filters( "wpm_{$this->object_type}_meta_config", $object_fields_config );
+
+		if ( ! isset( $object_fields_config[ $meta_key ] ) ) {
+			return;
+		}
+
+		wp_cache_delete( $object_id, $this->object_type . '_wpm_meta' );
+	}
+
 }
