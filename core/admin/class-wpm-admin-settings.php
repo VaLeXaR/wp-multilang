@@ -32,7 +32,7 @@ class WPM_Admin_Settings {
 	 */
 	public function add_section() {
 
-		add_settings_section( 'wpm_setting_section', __( 'Multilingual Settings', 'wpm' ),  array( $this, 'view_settings' ), 'general' );
+		add_settings_section( 'wpm_setting_section', __( 'Multilingual Settings', 'wpm' ),  '', 'general' );
 		add_settings_field( 'wpm_site_language', __( 'Site Language' ), array( $this, 'site_language_setting' ), 'general', 'wpm_setting_section' );
 
 		add_settings_field( 'wpm_languages', __( 'Languages', 'wpm' ), array( $this, 'languages_setting' ), 'general', 'wpm_setting_section' );
@@ -61,14 +61,6 @@ class WPM_Admin_Settings {
 				'show_in_rest' => true,
 			) );
 		}
-	}
-
-
-	/**
-	 * Display WPM options
-	 */
-	public function view_settings() {
-		wp_nonce_field( 'wpm_save_settings', 'wpm_save_settings_nonce' );
 	}
 
 	/**
@@ -302,7 +294,7 @@ class WPM_Admin_Settings {
 	 */
 	public function save_languages( $value ) {
 
-		check_admin_referer( 'wpm_save_settings', 'wpm_save_settings_nonce' );
+		check_admin_referer( 'general-options' );
 
 		$value       = wpm_clean( $value );
 		$option_name = 'wpm_languages';

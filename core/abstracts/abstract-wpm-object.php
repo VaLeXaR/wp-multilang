@@ -64,7 +64,7 @@ abstract class WPM_Object {
 		$column    = sanitize_key( $this->object_type . '_id' );
 		$id_column = 'user' === $this->object_type ? 'umeta_id' : 'meta_id';
 
-		$meta_values = wp_cache_get( $object_id . '_' . $meta_key, $this->object_type . '_wpm_meta' );
+		$meta_values = wp_cache_get( $object_id, $this->object_type . '_wpm_meta' );
 		$values      = array();
 
 		if ( ! $meta_values ) {
@@ -73,7 +73,7 @@ abstract class WPM_Object {
 				"SELECT {$id_column}, meta_value FROM {$wpdb->{$this->object_table}} WHERE meta_key = %s AND {$column} = %d;",
 				$meta_key, $object_id ), ARRAY_A );
 
-			wp_cache_set( $object_id . '_' . $meta_key, $meta_values, $this->object_type . '_wpm_meta' );
+			wp_cache_set( $object_id, $meta_values, $this->object_type . '_wpm_meta' );
 		}
 
 		if ( $meta_values ) {
@@ -233,7 +233,7 @@ abstract class WPM_Object {
 			return false;
 		}
 
-		wp_cache_delete( $object_id . '_' . $meta_key, $this->object_type . '_wpm_meta' );
+		wp_cache_delete( $object_id, $this->object_type . '_wpm_meta' );
 
 		foreach ( $meta_ids as $meta_id ) {
 			/**
