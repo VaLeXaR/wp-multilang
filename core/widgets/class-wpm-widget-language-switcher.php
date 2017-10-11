@@ -46,6 +46,7 @@ class WPM_Widget_Language_Switcher extends \WPM_Widget {
 				'options' => array(
 					'list'     => __( 'List', 'wpm' ),
 					'dropdown' => __( 'Dropdown', 'wpm' ),
+					'select'   => __( 'Select', 'wpm' ),
 				),
 				'label'   => __( 'Switcher Type', 'wpm' ),
 			),
