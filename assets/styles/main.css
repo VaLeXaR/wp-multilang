@@ -39,5 +39,7 @@
     position: relative; }
     .switcher-dropdown > li:hover .language-dropdown {
       display: block; }
+  .switcher-dropdown .item-language-main > span:hover {
+    cursor: pointer; }
 
 /*# sourceMappingURL=main.css.map */

@@ -71,4 +71,14 @@
       }
     }
   }
+
+  .item-language-main {
+
+    > span {
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
 }

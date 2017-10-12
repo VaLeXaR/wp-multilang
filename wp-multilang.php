@@ -59,7 +59,7 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		 * @return WP_Multilang - Main instance.
 		 */
 		public static function instance() {
-			if ( is_null( self::$_instance ) ) {
+			if ( null === self::$_instance ) {
 				self::$_instance = new self();
 			}
 
@@ -105,7 +105,7 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		 */
 		private function define_constants() {
 			$this->define( 'WPM_PLUGIN_FILE', __FILE__ );
-			$this->define( 'WPM_ABSPATH', dirname( __FILE__ ) . '/' );
+			$this->define( 'WPM_ABSPATH', __DIR__ . '/' );
 			$this->define( 'WPM_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 			$this->define( 'WPM_VERSION', $this->version );
 		}
@@ -215,7 +215,7 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		 * Note: the first-loaded translation file overrides any following ones if the same translation is present.
 		 */
 		public function load_plugin_textdomain() {
-			load_plugin_textdomain( 'wpm', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' );
+			load_plugin_textdomain( 'wpm', false, plugin_basename( __DIR__ ) . '/languages' );
 		}
 
 		/**
