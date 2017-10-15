@@ -144,8 +144,8 @@ class WPM_Posts extends \WPM_Object {
 	 */
 	public function save_post( $data, $postarr ) {
 
-		$config                             = wpm_get_config();
-		$posts_config                       = $config['post_types'];
+		$config       = wpm_get_config();
+		$posts_config = $config['post_types'];
 
 		if ( is_null( $posts_config[ $data['post_type'] ] ) ) {
 			return $data;

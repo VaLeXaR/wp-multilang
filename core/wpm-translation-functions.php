@@ -88,6 +88,10 @@ function wpm_translate_url( $url, $language = '' ) {
  */
 function wpm_translate_string( $string, $language = '' ) {
 
+	if ( json_decode( $string ) ) {
+		return $string;
+	}
+
 	$strings = wpm_string_to_ml_array( $string );
 
 	if ( ! is_array( $strings ) || empty( $strings ) ) {
