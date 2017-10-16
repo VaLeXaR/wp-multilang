@@ -60,6 +60,11 @@
       "wpm_each": {}
     }
   },
+  "widgets": {
+    "newsletterwidgetminimal": {
+      "button": {}
+    }
+  },
   "admin_pages": [
     "newsletter_page_newsletter_subscription_options",
     "admin_page_newsletter_wp_index",
