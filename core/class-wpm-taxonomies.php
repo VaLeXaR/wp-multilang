@@ -109,7 +109,7 @@ class WPM_Taxonomies extends \WPM_Object {
 				if ( count( $taxonomies ) === 1 ) {
 					$taxonomy = current( $taxonomies );
 
-					if ( is_null( $this->term_config[ $taxonomy ] ) ) {
+					if ( ! isset( $this->term_config[ $taxonomy ] ) || is_null( $this->term_config[ $taxonomy ] ) ) {
 						return $args;
 					}
 				}
@@ -160,7 +160,7 @@ class WPM_Taxonomies extends \WPM_Object {
 	public function pre_insert_term( $term, $taxonomy ) {
 		global $wpdb;
 
-		if ( is_null( $this->term_config[ $taxonomy ] ) ) {
+		if ( ! isset( $this->term_config[ $taxonomy ] ) || is_null( $this->term_config[ $taxonomy ] ) ) {
 			return $term;
 		}
 
@@ -189,7 +189,7 @@ class WPM_Taxonomies extends \WPM_Object {
 	 */
 	public function insert_term( $data, $taxonomy, $args ) {
 
-		if ( is_null( $this->term_config[ $taxonomy ] ) ) {
+		if ( ! isset( $this->term_config[ $taxonomy ] ) || is_null( $this->term_config[ $taxonomy ] ) ) {
 			return $data;
 		}
 
@@ -216,7 +216,7 @@ class WPM_Taxonomies extends \WPM_Object {
 	public function insert_description( $term_id, $tt_id, $taxonomy ) {
 		global $wpdb;
 
-		if ( is_null( $this->term_config[ $taxonomy ] ) ) {
+		if ( ! isset( $this->term_config[ $taxonomy ] ) || is_null( $this->term_config[ $taxonomy ] ) ) {
 			return;
 		}
 
@@ -249,7 +249,7 @@ class WPM_Taxonomies extends \WPM_Object {
 	 */
 	public function update_term( $data, $term_id, $taxonomy, $args ) {
 
-		if ( is_null( $this->term_config[ $taxonomy ] ) ) {
+		if ( ! isset( $this->term_config[ $taxonomy ] ) || is_null( $this->term_config[ $taxonomy ] ) ) {
 			return $data;
 		}
 
@@ -282,7 +282,7 @@ class WPM_Taxonomies extends \WPM_Object {
 	public function update_description( $tt_id, $taxonomy ) {
 		global $wpdb;
 
-		if ( is_null( $this->term_config[ $taxonomy ] ) ) {
+		if ( ! isset( $this->term_config[ $taxonomy ] ) || is_null( $this->term_config[ $taxonomy ] ) ) {
 			return;
 		}
 

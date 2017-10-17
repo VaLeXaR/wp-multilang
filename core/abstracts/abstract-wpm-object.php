@@ -132,7 +132,7 @@ abstract class WPM_Object {
 
 			case 'term':
 				$term = get_term( $object_id );
-				if ( is_null( $this->config['taxonomies'][ $term->taxonomy ] ) ) {
+				if ( ! isset( $this->config['taxonomies'][ $term->taxonomy ] ) || is_null( $this->config['taxonomies'][ $term->taxonomy ] ) ) {
 					return $check;
 				}
 		}
@@ -295,7 +295,7 @@ abstract class WPM_Object {
 
 			case 'term':
 				$term = get_term( $object_id );
-				if ( is_null( $this->config['taxonomies'][ $term->taxonomy ] ) ) {
+				if ( ! isset( $this->config['taxonomies'][ $term->taxonomy ] ) || is_null( $this->config['taxonomies'][ $term->taxonomy ] ) ) {
 					return $check;
 				}
 		}
@@ -392,7 +392,7 @@ abstract class WPM_Object {
 
 			case 'term':
 				$term = get_term( $object_id );
-				if ( is_null( $this->config['taxonomies'][ $term->taxonomy ] ) ) {
+				if ( ! isset( $this->config['taxonomies'][ $term->taxonomy ] ) || is_null( $this->config['taxonomies'][ $term->taxonomy ] ) ) {
 					return;
 				}
 		}
