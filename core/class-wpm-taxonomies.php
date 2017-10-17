@@ -72,7 +72,7 @@ class WPM_Taxonomies extends \WPM_Object {
 	 * @return object
 	 */
 	public function translate_term( $term ) {
-		if ( ! is_object( $term ) || is_null( $this->term_config[ $term->taxonomy ] ) ) {
+		if ( ! is_object( $term ) || ! $term->public || is_null( $this->term_config[ $term->taxonomy ] ) ) {
 			return $term;
 		}
 
