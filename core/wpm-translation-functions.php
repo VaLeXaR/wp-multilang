@@ -40,7 +40,7 @@ function wpm_translate_url( $url, $language = '' ) {
 	}
 
 	$url_lang = '';
-	$path     = str_replace( wpm_get_orig_home_url(), '', $url );
+	$path     = str_replace( $host, '', $url );
 	$path     = $path ? $path : '/';
 
 	if ( preg_match( '!^/([a-z]{2})(/|$)!i', $path, $match ) ) {

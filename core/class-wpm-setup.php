@@ -563,7 +563,7 @@ class WPM_Setup {
 	 * @return array
 	 */
 	public function set_home_page( $query_vars ) {
-		if ( isset( $_GET['lang'] ) && count( $_GET['lang'] ) == 1 && wpm_get_site_request_uri() == '/' ) {
+		if ( isset( $_GET['lang'] ) && ( count( $_GET['lang'] ) == 1 ) && ( '/' == $this->site_request_uri ) ) {
 			$query_vars = array();
 		}
 
