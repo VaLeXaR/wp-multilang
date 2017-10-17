@@ -10,27 +10,38 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WPM_Posts
  * @package  WPM\Core
  * @author   VaLeXaR
- * @version  1.1.5
+ * @version  1.1.6
  */
 class WPM_Posts extends \WPM_Object {
 
 	/**
 	 * Object name
+	 *
 	 * @var string
 	 */
 	public $object_type = 'post';
 
 	/**
 	 * Table name for meta
+	 *
 	 * @var string
 	 */
 	public $object_table = 'postmeta';
+
+	/**
+	 * Post config
+	 *
+	 * @var array
+	 */
+	public $post_config = array();
 
 
 	/**
 	 * WPM_Posts constructor.
 	 */
 	public function __construct() {
+		parent::__construct();
+		$this->post_config = $this->config['post_types'];
 		add_filter( 'get_pages', array( $this, 'translate_posts' ), 0 );
 		add_filter( 'posts_results', array( $this, 'translate_posts' ), 0 );
 		add_action( 'parse_query', array( $this, 'filter_posts_by_language' ) );
@@ -80,10 +91,7 @@ class WPM_Posts extends \WPM_Object {
 
 				if ( is_string( $post_type ) ) {
 
-					$config       = wpm_get_config();
-					$posts_config = $config['post_types'];
-
-					if ( is_null( $posts_config[ $post_type ] ) ) {
+					if ( is_null( $this->post_config[ $post_type ] ) ) {
 						return $query;
 					}
 				}
@@ -144,10 +152,7 @@ class WPM_Posts extends \WPM_Object {
 	 */
 	public function save_post( $data, $postarr ) {
 
-		$config       = wpm_get_config();
-		$posts_config = $config['post_types'];
-
-		if ( is_null( $posts_config[ $data['post_type'] ] ) ) {
+		if ( is_null( $this->post_config[ $data['post_type'] ] ) ) {
 			return $data;
 		}
 
@@ -162,9 +167,8 @@ class WPM_Posts extends \WPM_Object {
 			}
 		}
 
-		$post_id = isset( $data['ID'] ) ? wpm_clean( $data['ID'] ) : ( isset( $postarr['ID'] ) ? wpm_clean( $postarr['ID'] ) : 0 );
-
-		$post_config = $posts_config[ $data['post_type'] ];
+		$post_id     = isset( $data['ID'] ) ? wpm_clean( $data['ID'] ) : ( isset( $postarr['ID'] ) ? wpm_clean( $postarr['ID'] ) : 0 );
+		$post_config = $this->post_config[ $data['post_type'] ];
 
 		$default_fields = array(
 			'post_title'   => array(),
