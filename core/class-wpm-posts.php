@@ -45,7 +45,7 @@ class WPM_Posts extends \WPM_Object {
 		add_filter( 'get_pages', array( $this, 'translate_posts' ), 0 );
 		add_filter( 'posts_results', array( $this, 'translate_posts' ), 0 );
 		add_action( 'parse_query', array( $this, 'filter_posts_by_language' ) );
-		add_filter( 'the_post', 'wpm_translate_object', 0 );
+		add_filter( 'the_post', array( $this, 'translate_post' ), 0 );
 		add_filter( 'the_title', 'wpm_translate_string', 0 );
 		add_filter( 'the_content', 'wpm_translate_string', 0 );
 		add_filter( 'the_excerpt', 'wpm_translate_string', 0 );
@@ -65,6 +65,22 @@ class WPM_Posts extends \WPM_Object {
 
 
 	/**
+	 * Translate post
+	 *
+	 * @param $post
+	 *
+	 * @return object
+	 */
+	public function translate_post( $post ) {
+		if ( ! is_object( $post ) || is_null( $this->post_config[ $post->post_type ] ) ) {
+			return $post;
+		}
+
+		return wpm_translate_object( $post );
+	}
+
+
+	/**
 	 * Translate all posts
 	 *
 	 * @param $posts
@@ -72,8 +88,9 @@ class WPM_Posts extends \WPM_Object {
 	 * @return array
 	 */
 	public function translate_posts( $posts ) {
-		return array_map( 'wpm_translate_object', $posts );
+		return array_map( array( $this, 'translate_post' ), $posts );
 	}
+
 
 	/**
 	 * Separate posts py languages
@@ -214,6 +231,7 @@ class WPM_Posts extends \WPM_Object {
 		return $data;
 	}
 
+
 	/**
 	 * Translate attachment link
 	 *
@@ -227,6 +245,7 @@ class WPM_Posts extends \WPM_Object {
 
 		return str_replace( $text, $translated_text, $link );
 	}
+
 
 	/**
 	 * Translate escaping text
