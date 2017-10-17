@@ -18,8 +18,10 @@ if ( ! defined( 'WPSEO_VERSION' ) ) {
  * @package  WPM\Core\Vendor
  * @category Vendor
  * @author   VaLeXaR
+ * @version  1.0.1
  */
 class WPM_Yoast_Seo {
+
 
 	/**
 	 * WPM_Yoast_Seo constructor.
@@ -28,7 +30,10 @@ class WPM_Yoast_Seo {
 		add_filter( 'wpm_option_wpseo_titles_config', array( $this, 'set_posts_config' ) );
 		add_filter( 'wpseo_title', 'wpm_translate_string', 0 );
 		remove_filter( 'update_post_metadata', array( 'WPSEO_Meta', 'remove_meta_if_default' ), 10 );
+		add_filter( 'wpseo_enable_xml_sitemap_transient_caching', '__return_false' );
+		add_filter( 'wpseo_sitemap_url', array( $this, 'add_alternate_sitemaplinks' ), 10, 2 );
 	}
+
 
 	/**
 	 * Add dynamically title setting for post types
@@ -65,6 +70,28 @@ class WPM_Yoast_Seo {
 		}
 
 		return $config;
+	}
+
+
+	/**
+	 * Add alternate links to sitemap
+	 *
+	 * @param string $output
+	 * @param array $url
+	 *
+	 * @return string
+	 */
+	public function add_alternate_sitemaplinks( $output, $url ) {
+		$alternate = '';
+		foreach ( wpm_get_languages() as $locale => $language ) {
+			$alternate .= sprintf( "\t<xhtml:link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />\n\t",
+				esc_attr( str_replace( '_', '-', strtolower( $locale ) ) ),
+				esc_url( wpm_translate_url( $url['loc'], $language ) ) );
+		}
+		$alternate .= '</url>';
+		$output    = str_replace( '</url>', $alternate, $output );
+
+		return $output;
 	}
 }
 
