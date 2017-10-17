@@ -124,7 +124,7 @@ abstract class WPM_Object {
 		switch ( $this->object_type ) {
 
 			case 'post':
-				if ( is_null( $this->config['post_types'][ get_post_type( $object_id ) ] ) ) {
+				if ( ! isset( $this->config['post_types'][ get_post_type( $object_id ) ] ) || is_null( $this->config['post_types'][ get_post_type( $object_id ) ] ) ) {
 					return $check;
 				}
 
@@ -288,7 +288,7 @@ abstract class WPM_Object {
 		switch ( $this->object_type ) {
 
 			case 'post':
-				if ( is_null( $this->config['post_types'][ get_post_type( $object_id ) ] ) ) {
+				if ( ! isset( $this->config['post_types'][ get_post_type( $object_id ) ] ) || is_null( $this->config['post_types'][ get_post_type( $object_id ) ] ) ) {
 					return $check;
 				}
 				break;
@@ -385,7 +385,7 @@ abstract class WPM_Object {
 		switch ( $this->object_type ) {
 
 			case 'post':
-				if ( is_null( $this->config['post_types'][ get_post_type( $object_id ) ] ) ) {
+				if ( ! isset( $this->config['post_types'][ get_post_type( $object_id ) ] ) || is_null( $this->config['post_types'][ get_post_type( $object_id ) ] ) ) {
 					return;
 				}
 				break;

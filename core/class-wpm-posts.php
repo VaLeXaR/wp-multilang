@@ -72,7 +72,7 @@ class WPM_Posts extends \WPM_Object {
 	 * @return object
 	 */
 	public function translate_post( $post ) {
-		if ( ! is_object( $post ) || is_null( $this->post_config[ $post->post_type ] ) ) {
+		if ( ! is_object( $post ) || ! isset( $this->post_config[ $post->post_type ] ) || is_null( $this->post_config[ $post->post_type ] ) ) {
 			return $post;
 		}
 
@@ -108,7 +108,7 @@ class WPM_Posts extends \WPM_Object {
 
 				if ( is_string( $post_type ) ) {
 
-					if ( is_null( $this->post_config[ $post_type ] ) ) {
+					if ( ! isset( $this->post_config[ $post_type ] ) || is_null( $this->post_config[ $post_type ] ) ) {
 						return $query;
 					}
 				}
@@ -169,7 +169,7 @@ class WPM_Posts extends \WPM_Object {
 	 */
 	public function save_post( $data, $postarr ) {
 
-		if ( is_null( $this->post_config[ $data['post_type'] ] ) ) {
+		if ( ! isset( $this->post_config[ $data['post_type'] ] ) || is_null( $this->post_config[ $data['post_type'] ] ) ) {
 			return $data;
 		}
 
