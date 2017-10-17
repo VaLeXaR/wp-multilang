@@ -188,7 +188,7 @@ class WPM_Acf {
 				$posts_config = $config['post_types'];
 				$post_type    = get_post_type( $info['id'] );
 
-				if ( is_null( $posts_config[ $post_type ] ) ) {
+				if ( ! isset( $posts_config[ $post_type ] ) || is_null( $posts_config[ $post_type ] ) ) {
 					return $value;
 				}
 
@@ -247,7 +247,7 @@ class WPM_Acf {
 				$posts_config = $config['post_types'];
 				$post_type    = get_post_type( $post_id );
 
-				if ( is_null( $posts_config[ $post_type ] ) ) {
+				if ( ! isset( $posts_config[ $post_type ] ) || is_null( $posts_config[ $post_type ] ) ) {
 					$translate = false;
 				}
 
