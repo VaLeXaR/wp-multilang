@@ -153,7 +153,7 @@ class WPM_Posts extends \WPM_Object {
 	 */
 	public function translate_queried_object() {
 		global $wp_query;
-		if ( is_singular() && ! isset( $this->post_config[ $wp_query->queried_object->post_type ] ) || is_null( $this->post_config[ $wp_query->queried_object->post_type ] ) ) {
+		if ( is_singular() && ( null != $wp_query->queried_object ) && isset( $this->post_config[ $wp_query->queried_object->post_type ] ) && ! is_null( $this->post_config[ $wp_query->queried_object->post_type ] ) ) {
 			$wp_query->queried_object = wpm_translate_object( $wp_query->queried_object );
 		}
 	}
