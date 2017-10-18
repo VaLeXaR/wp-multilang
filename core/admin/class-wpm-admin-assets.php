@@ -51,7 +51,8 @@ class WPM_Admin_Assets {
 
 		// Register scripts
 		wp_register_script( 'wpm_main', wpm_asset_path( 'scripts/main' . $suffix . '.js' ), array(
-			'jquery-ui-sortable'
+			'wp-util',
+			'jquery-ui-sortable',
 		), WPM_VERSION );
 
 		$main_params = array(

@@ -1,4 +1,4 @@
-.wpm-language-switcher {
+.switcher-list {
   list-style: none;
   margin-bottom: 0;
   padding-left: 0;
@@ -20,6 +20,65 @@
 
     a {
       color: $black;
+    }
+  }
+}
+
+.switcher-dropdown {
+  list-style: none;
+  margin-bottom: 0;
+  padding-left: 0;
+
+  span {
+
+    img {
+      display: inline-block;
+      margin-right: 3px;
+    }
+  }
+
+  a {
+    color: lighten($black, 20%);
+
+    &:hover {
+      color: $black;
+    }
+
+    img {
+      display: inline-block;
+      margin-right: 3px;
+    }
+  }
+
+  .language-dropdown {
+    display: none;
+    left: 0;
+    list-style: none;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-left: 0;
+    position: absolute;
+    top: 100%;
+  }
+
+  > li {
+    position: relative;
+
+    &:hover {
+
+      .language-dropdown {
+        display: block;
+      }
+    }
+  }
+
+  .item-language-main {
+
+    > span {
+
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
 }

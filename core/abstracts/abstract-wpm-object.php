@@ -11,15 +11,26 @@ abstract class WPM_Object {
 
 	/**
 	 * Object type
-	 * @var
+	 * @string
 	 */
 	public $object_type;
 
 	/**
 	 * Object meta table
-	 * @var
+	 * @string
 	 */
 	public $object_table;
+
+	/**
+	 *  WPM config
+	 * @array
+	 */
+	public $config;
+
+
+	public function __construct() {
+		$this->config = wpm_get_config();
+	}
 
 
 	/**
@@ -46,8 +57,7 @@ abstract class WPM_Object {
 			return wpm_translate_value( $meta_cache );
 		}
 
-		$config               = wpm_get_config();
-		$object_fields_config = $config[ $this->object_type . '_fields' ];
+		$object_fields_config = $this->config[ $this->object_type . '_fields' ];
 		$object_fields_config = apply_filters( "wpm_{$this->object_type}_meta_config", $object_fields_config );
 
 		if ( ! isset( $object_fields_config[ $meta_key ] ) ) {
@@ -64,7 +74,7 @@ abstract class WPM_Object {
 		$column    = sanitize_key( $this->object_type . '_id' );
 		$id_column = 'user' === $this->object_type ? 'umeta_id' : 'meta_id';
 
-		$meta_values = wp_cache_get( $object_id . '_' . $meta_key, $this->object_type . '_wpm_meta' );
+		$meta_values = wp_cache_get( $object_id, $this->object_type . '_' . $meta_key . '_wpm_meta' );
 		$values      = array();
 
 		if ( ! $meta_values ) {
@@ -73,7 +83,7 @@ abstract class WPM_Object {
 				"SELECT {$id_column}, meta_value FROM {$wpdb->{$this->object_table}} WHERE meta_key = %s AND {$column} = %d;",
 				$meta_key, $object_id ), ARRAY_A );
 
-			wp_cache_set( $object_id . '_' . $meta_key, $meta_values, $this->object_type . '_wpm_meta' );
+			wp_cache_set( $object_id, $meta_values, $this->object_type . '_' . $meta_key . '_wpm_meta' );
 		}
 
 		if ( $meta_values ) {
@@ -111,12 +121,10 @@ abstract class WPM_Object {
 	public function update_meta_field( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
 		global $wpdb;
 
-		$config = wpm_get_config();
-
 		switch ( $this->object_type ) {
 
 			case 'post':
-				if ( is_null( $config['post_types'][ get_post_type( $object_id ) ] ) ) {
+				if ( ! isset( $this->config['post_types'][ get_post_type( $object_id ) ] ) || is_null( $this->config['post_types'][ get_post_type( $object_id ) ] ) ) {
 					return $check;
 				}
 
@@ -124,12 +132,12 @@ abstract class WPM_Object {
 
 			case 'term':
 				$term = get_term( $object_id );
-				if ( is_null( $config['taxonomies'][ $term->taxonomy ] ) ) {
+				if ( ! isset( $this->config['taxonomies'][ $term->taxonomy ] ) || is_null( $this->config['taxonomies'][ $term->taxonomy ] ) ) {
 					return $check;
 				}
 		}
 
-		$object_fields_config = $config[ $this->object_type . '_fields' ];
+		$object_fields_config = $this->config[ $this->object_type . '_fields' ];
 		$object_fields_config = apply_filters( "wpm_{$this->object_type}_meta_config", $object_fields_config );
 
 		if ( ! isset( $object_fields_config[ $meta_key ] ) ) {
@@ -233,7 +241,7 @@ abstract class WPM_Object {
 			return false;
 		}
 
-		wp_cache_delete( $object_id . '_' . $meta_key, $this->object_type . '_wpm_meta' );
+		wp_cache_delete( $object_id, $this->object_type . '_' . $meta_key . '_wpm_meta' );
 
 		foreach ( $meta_ids as $meta_id ) {
 			/**
@@ -277,24 +285,22 @@ abstract class WPM_Object {
 			return $check;
 		}
 
-		$config = wpm_get_config();
-
 		switch ( $this->object_type ) {
 
 			case 'post':
-				if ( is_null( $config['post_types'][ get_post_type( $object_id ) ] ) ) {
+				if ( ! isset( $this->config['post_types'][ get_post_type( $object_id ) ] ) || is_null( $this->config['post_types'][ get_post_type( $object_id ) ] ) ) {
 					return $check;
 				}
 				break;
 
 			case 'term':
 				$term = get_term( $object_id );
-				if ( is_null( $config['taxonomies'][ $term->taxonomy ] ) ) {
+				if ( ! isset( $this->config['taxonomies'][ $term->taxonomy ] ) || is_null( $this->config['taxonomies'][ $term->taxonomy ] ) ) {
 					return $check;
 				}
 		}
 
-		$object_fields_config = $config[ $this->object_type . '_fields' ];
+		$object_fields_config = $this->config[ $this->object_type . '_fields' ];
 		$object_fields_config = apply_filters( "wpm_{$this->object_type}_meta_config", $object_fields_config );
 
 		if ( ! isset( $object_fields_config[ $meta_key ] ) ) {
@@ -372,6 +378,33 @@ abstract class WPM_Object {
 		do_action( "added_{$this->object_type}_meta", $mid, $object_id, $meta_key, $_meta_value );
 
 		return $mid;
+	}
+
+	public function delete_meta_field( $meta_ids, $object_id, $meta_key ) {
+
+		switch ( $this->object_type ) {
+
+			case 'post':
+				if ( ! isset( $this->config['post_types'][ get_post_type( $object_id ) ] ) || is_null( $this->config['post_types'][ get_post_type( $object_id ) ] ) ) {
+					return;
+				}
+				break;
+
+			case 'term':
+				$term = get_term( $object_id );
+				if ( ! isset( $this->config['taxonomies'][ $term->taxonomy ] ) || is_null( $this->config['taxonomies'][ $term->taxonomy ] ) ) {
+					return;
+				}
+		}
+
+		$object_fields_config = $this->config[ $this->object_type . '_fields' ];
+		$object_fields_config = apply_filters( "wpm_{$this->object_type}_meta_config", $object_fields_config );
+
+		if ( ! isset( $object_fields_config[ $meta_key ] ) ) {
+			return;
+		}
+
+		wp_cache_delete( $object_id, $this->object_type . '_' . $meta_key . '_wpm_meta' );
 	}
 
 }

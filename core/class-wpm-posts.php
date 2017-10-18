@@ -10,31 +10,42 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WPM_Posts
  * @package  WPM\Core
  * @author   VaLeXaR
- * @version  1.1.5
+ * @version  1.1.6
  */
 class WPM_Posts extends \WPM_Object {
 
 	/**
 	 * Object name
+	 *
 	 * @var string
 	 */
 	public $object_type = 'post';
 
 	/**
 	 * Table name for meta
+	 *
 	 * @var string
 	 */
 	public $object_table = 'postmeta';
+
+	/**
+	 * Post config
+	 *
+	 * @var array
+	 */
+	public $post_config = array();
 
 
 	/**
 	 * WPM_Posts constructor.
 	 */
 	public function __construct() {
+		parent::__construct();
+		$this->post_config = $this->config['post_types'];
 		add_filter( 'get_pages', array( $this, 'translate_posts' ), 0 );
 		add_filter( 'posts_results', array( $this, 'translate_posts' ), 0 );
 		add_action( 'parse_query', array( $this, 'filter_posts_by_language' ) );
-		add_filter( 'the_post', 'wpm_translate_object', 0 );
+		add_filter( 'the_post', array( $this, 'translate_post' ), 0 );
 		add_filter( 'the_title', 'wpm_translate_string', 0 );
 		add_filter( 'the_content', 'wpm_translate_string', 0 );
 		add_filter( 'the_excerpt', 'wpm_translate_string', 0 );
@@ -45,10 +56,27 @@ class WPM_Posts extends \WPM_Object {
 		add_filter( "get_{$this->object_type}_metadata", array( $this, 'get_meta_field' ), 0, 3 );
 		add_filter( "update_{$this->object_type}_metadata", array( $this, 'update_meta_field' ), 99, 5 );
 		add_filter( "add_{$this->object_type}_metadata", array( $this, 'add_meta_field' ), 99, 5 );
+		add_action( "delete_{$this->object_type}_metadata", array( $this, 'delete_meta_field' ), 99, 3 );
 		add_action( 'wp', array( $this, 'translate_queried_object' ), 0 );
 		add_filter( 'wp_insert_post_data', array( $this, 'save_post' ), 99, 2 );
 		add_filter( 'wp_insert_attachment_data', array( $this, 'save_post' ), 99, 2 );
 		add_filter( 'wp_get_attachment_link', array( $this, 'translate_attachment_link' ), 0 );
+	}
+
+
+	/**
+	 * Translate post
+	 *
+	 * @param $post
+	 *
+	 * @return object
+	 */
+	public function translate_post( $post ) {
+		if ( ! is_object( $post ) || ! isset( $this->post_config[ $post->post_type ] ) || is_null( $this->post_config[ $post->post_type ] ) ) {
+			return $post;
+		}
+
+		return wpm_translate_object( $post );
 	}
 
 
@@ -60,8 +88,9 @@ class WPM_Posts extends \WPM_Object {
 	 * @return array
 	 */
 	public function translate_posts( $posts ) {
-		return array_map( 'wpm_translate_object', $posts );
+		return array_map( array( $this, 'translate_post' ), $posts );
 	}
+
 
 	/**
 	 * Separate posts py languages
@@ -79,10 +108,7 @@ class WPM_Posts extends \WPM_Object {
 
 				if ( is_string( $post_type ) ) {
 
-					$config       = wpm_get_config();
-					$posts_config = $config['post_types'];
-
-					if ( is_null( $posts_config[ $post_type ] ) ) {
+					if ( ! isset( $this->post_config[ $post_type ] ) || is_null( $this->post_config[ $post_type ] ) ) {
 						return $query;
 					}
 				}
@@ -127,7 +153,7 @@ class WPM_Posts extends \WPM_Object {
 	 */
 	public function translate_queried_object() {
 		global $wp_query;
-		if ( is_singular() ) {
+		if ( is_singular() && ( null != $wp_query->queried_object ) && isset( $this->post_config[ $wp_query->queried_object->post_type ] ) && ! is_null( $this->post_config[ $wp_query->queried_object->post_type ] ) ) {
 			$wp_query->queried_object = wpm_translate_object( $wp_query->queried_object );
 		}
 	}
@@ -143,10 +169,7 @@ class WPM_Posts extends \WPM_Object {
 	 */
 	public function save_post( $data, $postarr ) {
 
-		$config                             = wpm_get_config();
-		$posts_config                       = $config['post_types'];
-
-		if ( is_null( $posts_config[ $data['post_type'] ] ) ) {
+		if ( ! isset( $this->post_config[ $data['post_type'] ] ) || is_null( $this->post_config[ $data['post_type'] ] ) ) {
 			return $data;
 		}
 
@@ -161,9 +184,8 @@ class WPM_Posts extends \WPM_Object {
 			}
 		}
 
-		$post_id = isset( $data['ID'] ) ? wpm_clean( $data['ID'] ) : ( isset( $postarr['ID'] ) ? wpm_clean( $postarr['ID'] ) : 0 );
-
-		$post_config = $posts_config[ $data['post_type'] ];
+		$post_id     = isset( $data['ID'] ) ? wpm_clean( $data['ID'] ) : ( isset( $postarr['ID'] ) ? wpm_clean( $postarr['ID'] ) : 0 );
+		$post_config = $this->post_config[ $data['post_type'] ];
 
 		$default_fields = array(
 			'post_title'   => array(),
@@ -209,6 +231,7 @@ class WPM_Posts extends \WPM_Object {
 		return $data;
 	}
 
+
 	/**
 	 * Translate attachment link
 	 *
@@ -222,6 +245,7 @@ class WPM_Posts extends \WPM_Object {
 
 		return str_replace( $text, $translated_text, $link );
 	}
+
 
 	/**
 	 * Translate escaping text

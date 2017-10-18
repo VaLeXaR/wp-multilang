@@ -18,7 +18,7 @@ if ( ! defined( 'NEWSLETTER_VERSION' ) ) {
  * @package  WPM\Core\Vendor
  * @category Vendor
  * @author   VaLeXaR
- * @since    1.2.0
+ * @since    1.2.1
  */
 class WPM_Newsletter {
 
@@ -30,6 +30,7 @@ class WPM_Newsletter {
 		add_filter( 'newsletter_message_subject', 'wpm_translate_string' );
 		add_filter( 'newsletter_message_html', 'wpm_translate_string' );
 		add_action( 'admin_notices', array( $this, 'add_notice' ) );
+		add_action( 'init', array( $this, 'translate_options' ) );
 	}
 
 
@@ -56,6 +57,11 @@ class WPM_Newsletter {
 			remove_filter( 'esc_html', 'WPM\Core\WPM_Posts::escaping_text', 0 );
 			wpm_show_notice();
 		}
+	}
+
+
+	public function translate_options(){
+		\NewsletterSubscription::instance()->options = wpm_translate_value( \NewsletterSubscription::instance()->options );
 	}
 }
 

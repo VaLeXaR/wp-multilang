@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.8.2
-Stable tag: 1.7.4
+Stable tag: 1.7.5
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -101,8 +101,8 @@ For a switch as add code to your template
 Function accepts two parameters:
 
 $args - array
-  'type' - 'list', 'dropdown'. Default - 'list'.
-  'show' - 'flag', 'name', 'both'. Default - 'both'.
+  `type` - `list`, `dropdown`, `select`. Default - `list`.
+  `show` - `flag`, `name`, `both`. Default - `both`.
 
 $echo - bool
 
@@ -111,8 +111,6 @@ Available features for translation:
 `wpm_translate_url ($url, $language = '');` - translate url
 `wpm_translate_string ($string, $language = '');` - translate multilingual string
 `wpm_translate_value ($value, $language = '');` - translate multidimensional array with multilingual strings
-
-Standard translates all record types, taxonomies, custom fields. Even if you turn off translation for a particular post type, display only translated text.
 
 Supports automatically redirect to the user's browser language, if he visits for the first time.
 
@@ -170,6 +168,15 @@ If you have opened several browser tabs for editing this post in different langu
 5. Post edit page
 
 == Changelog ==
+
+= 1.7.5 =
++ add links on other languages to Yoast Sitemap
++ add translating gallery widget from WP4.9
++ add dropdown language switcher type
+* fix deleting cache on delete mata
+* fix translate products shortcodes in WooCommerce
+* fix translate items in cart in WooCommerce
+* fix compatibility with Newsletter
 
 = 1.7.4 =
 + add config for translate html tags by js

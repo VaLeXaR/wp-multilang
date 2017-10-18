@@ -18,6 +18,7 @@ if ( ! defined( 'WC_VERSION' ) ) {
  * @package  WPM\Core\Vendor
  * @category Vendor
  * @author   VaLeXaR
+ * @version 1.0.1
  */
 class WPM_WooCommerce {
 
@@ -25,6 +26,10 @@ class WPM_WooCommerce {
 	 * WPM_WooCommerce constructor.
 	 */
 	public function __construct() {
+		add_filter( 'woocommerce_product_get_name', 'wpm_translate_string', 0 );
+		add_filter( 'woocommerce_product_get_description', 'wpm_translate_string', 0 );
+		add_filter( 'woocommerce_product_get_short_description', 'wpm_translate_string', 0 );
+		add_filter( 'woocommerce_shortcode_products_query', array( $this, 'remove_filter' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_js_frontend' ) );
 		add_filter( 'woocommerce_cart_shipping_method_full_label', 'wpm_translate_string' );
 		add_filter( 'woocommerce_shipping_instance_form_fields_flat_rate', 'wpm_translate_value' );
@@ -104,6 +109,19 @@ class WPM_WooCommerce {
 		}
 
 		return $methods;
+	}
+
+	/**
+	 * Remove translation result query for products in shortcode
+	 *
+	 * @param array $query_args
+	 *
+	 * @return array
+	 */
+	public function remove_filter( $query_args ) {
+		$query_args['suppress_filters'] = true;
+
+		return $query_args;
 	}
 }
 

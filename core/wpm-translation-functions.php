@@ -40,7 +40,8 @@ function wpm_translate_url( $url, $language = '' ) {
 	}
 
 	$url_lang = '';
-	$path     = wpm_get_site_request_uri();
+	$path     = str_replace( $host, '', $url );
+	$path     = $path ? $path : '/';
 
 	if ( preg_match( '!^/([a-z]{2})(/|$)!i', $path, $match ) ) {
 		$url_lang = $match[1];
@@ -87,6 +88,10 @@ function wpm_translate_url( $url, $language = '' ) {
  * @return array|mixed|string
  */
 function wpm_translate_string( $string, $language = '' ) {
+
+	if ( json_decode( $string ) ) {
+		return $string;
+	}
 
 	$strings = wpm_string_to_ml_array( $string );
 

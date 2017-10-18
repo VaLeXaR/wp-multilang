@@ -10,29 +10,73 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WPM_Taxonomies
  * @package  WPM\Core
  * @author   VaLeXaR
+ * @version  1.0.1
  */
 class WPM_Taxonomies extends \WPM_Object {
 
+	/**
+	 * Object name
+	 *
+	 * @var string
+	 */
 	public $object_type = 'term';
+
+	/**
+	 *Table name for meta
+	 *
+	 * @var string
+	 */
 	public $object_table = 'termmeta';
+
+	/**
+	 * Term description
+	 *
+	 * @var array
+	 */
 	private $description = array();
+
+	/**
+	 * Term config
+	 *
+	 * @var array
+	 */
+	public $term_config = array();
 
 
 	/**
 	 * WPM_Taxonomies constructor.
 	 */
 	public function __construct() {
-		add_filter( 'get_term', 'wpm_translate_object', 0 );
+		parent::__construct();
+		$this->term_config = $this->config['taxonomies'];
+		add_filter( 'get_term', array( $this, 'translate_term' ), 0 );
 		add_filter( 'get_terms', array( $this, 'translate_terms' ), 0 );
 		add_filter( 'get_terms_args', array( $this, 'filter_terms_by_language' ), 10, 2 );
 		add_filter( "get_{$this->object_type}_metadata", array( $this, 'get_meta_field' ), 0, 3 );
 		add_filter( "update_{$this->object_type}_metadata", array( $this, 'update_meta_field' ), 99, 5 );
 		add_filter( "add_{$this->object_type}_metadata", array( $this, 'add_meta_field' ), 99, 5 );
+		add_action( "delete_{$this->object_type}_metadata", array( $this, 'delete_meta_field' ), 99, 3 );
 		add_filter( 'pre_insert_term', array( $this, 'pre_insert_term' ), 0, 2 );
 		add_filter( 'wp_insert_term_data', array( $this, 'insert_term' ), 99, 3 );
 		add_action( 'created_term', array( $this, 'insert_description' ), 99, 3 );
 		add_filter( 'wp_update_term_data', array( $this, 'update_term' ), 99, 4 );
 		add_action( 'edited_term_taxonomy', array( $this, 'update_description' ), 0, 2 );
+	}
+
+
+	/**
+	 * Translate term
+	 *
+	 * @param $term
+	 *
+	 * @return object
+	 */
+	public function translate_term( $term ) {
+		if ( ! is_object( $term ) || ! isset( $this->term_config[ $term->taxonomy ] ) || is_null( $this->term_config[ $term->taxonomy ] ) ) {
+			return $term;
+		}
+
+		return wpm_translate_object( $term );
 	}
 
 
@@ -44,20 +88,7 @@ class WPM_Taxonomies extends \WPM_Object {
 	 * @return array
 	 */
 	public function translate_terms( $terms ) {
-
-		if ( is_array( $terms ) ) {
-			$_terms = array();
-			foreach ( $terms as $term ) {
-				if ( is_object( $term ) ) {
-					$_terms[] = $term;
-				} else {
-					$_terms[] = wpm_translate_value( $term );
-				}
-			}
-			$terms = $_terms;
-		}
-
-		return $terms;
+		return array_map( array( $this, 'translate_term' ), $terms );
 	}
 
 
@@ -78,10 +109,7 @@ class WPM_Taxonomies extends \WPM_Object {
 				if ( count( $taxonomies ) === 1 ) {
 					$taxonomy = current( $taxonomies );
 
-					$config            = wpm_get_config();
-					$taxonomies_config = $config['taxonomies'];
-
-					if ( is_null( $taxonomies_config[ $taxonomy ] ) ) {
+					if ( ! isset( $this->term_config[ $taxonomy ] ) || is_null( $this->term_config[ $taxonomy ] ) ) {
 						return $args;
 					}
 				}
@@ -132,6 +160,10 @@ class WPM_Taxonomies extends \WPM_Object {
 	public function pre_insert_term( $term, $taxonomy ) {
 		global $wpdb;
 
+		if ( ! isset( $this->term_config[ $taxonomy ] ) || is_null( $this->term_config[ $taxonomy ] ) ) {
+			return $term;
+		}
+
 		$like    = '%' . $wpdb->esc_like( esc_sql( $term ) ) . '%';
 		$results = $wpdb->get_results( $wpdb->prepare( "SELECT t.name AS `name` FROM {$wpdb->terms} AS t INNER JOIN {$wpdb->term_taxonomy} AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy = '%s' AND `name` LIKE '%s'", $taxonomy, $like ) );
 
@@ -157,15 +189,12 @@ class WPM_Taxonomies extends \WPM_Object {
 	 */
 	public function insert_term( $data, $taxonomy, $args ) {
 
-		$config            = wpm_get_config();
-		$taxonomies_config = $config['taxonomies'];
-
-		if ( is_null( $taxonomies_config[ $taxonomy ] ) ) {
+		if ( ! isset( $this->term_config[ $taxonomy ] ) || is_null( $this->term_config[ $taxonomy ] ) ) {
 			return $data;
 		}
 
 		if ( ! wpm_is_ml_value( $data['name'] ) ) {
-			$data['name'] = wpm_set_language_value( array(), $data['name'], $taxonomies_config[ $taxonomy ] );
+			$data['name'] = wpm_set_language_value( array(), $data['name'], $this->term_config[ $taxonomy ] );
 			$data['name'] = wpm_ml_value_to_string( $data['name'] );
 		}
 
@@ -187,10 +216,7 @@ class WPM_Taxonomies extends \WPM_Object {
 	public function insert_description( $term_id, $tt_id, $taxonomy ) {
 		global $wpdb;
 
-		$config            = wpm_get_config();
-		$taxonomies_config = $config['taxonomies'];
-
-		if ( is_null( $taxonomies_config[ $taxonomy ] ) ) {
+		if ( ! isset( $this->term_config[ $taxonomy ] ) || is_null( $this->term_config[ $taxonomy ] ) ) {
 			return;
 		}
 
@@ -204,7 +230,7 @@ class WPM_Taxonomies extends \WPM_Object {
 			return;
 		}
 
-		$value       = wpm_set_language_value( array(), $value, $taxonomies_config[ $taxonomy ] );
+		$value       = wpm_set_language_value( array(), $value, $this->term_config[ $taxonomy ] );
 		$description = wpm_ml_value_to_string( $value );
 
 		$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_taxonomy_id' => $tt_id ) );
@@ -223,10 +249,7 @@ class WPM_Taxonomies extends \WPM_Object {
 	 */
 	public function update_term( $data, $term_id, $taxonomy, $args ) {
 
-		$config            = wpm_get_config();
-		$taxonomies_config = $config['taxonomies'];
-
-		if ( is_null( $taxonomies_config[ $taxonomy ] ) ) {
+		if ( ! isset( $this->term_config[ $taxonomy ] ) || is_null( $this->term_config[ $taxonomy ] ) ) {
 			return $data;
 		}
 
@@ -237,7 +260,7 @@ class WPM_Taxonomies extends \WPM_Object {
 
 		if ( ! wpm_is_ml_value( $data['name'] ) ) {
 			$strings      = wpm_value_to_ml_array( $old_name );
-			$value        = wpm_set_language_value( $strings, $data['name'], $taxonomies_config[ $taxonomy ] );
+			$value        = wpm_set_language_value( $strings, $data['name'], $this->term_config[ $taxonomy ] );
 			$data['name'] = wpm_ml_value_to_string( $value );
 		}
 
@@ -259,10 +282,7 @@ class WPM_Taxonomies extends \WPM_Object {
 	public function update_description( $tt_id, $taxonomy ) {
 		global $wpdb;
 
-		$config            = wpm_get_config();
-		$taxonomies_config = $config['taxonomies'];
-
-		if ( is_null( $taxonomies_config[ $taxonomy ] ) ) {
+		if ( ! isset( $this->term_config[ $taxonomy ] ) || is_null( $this->term_config[ $taxonomy ] ) ) {
 			return;
 		}
 
@@ -278,7 +298,7 @@ class WPM_Taxonomies extends \WPM_Object {
 
 		$old_value   = $this->description['old'];
 		$strings     = wpm_value_to_ml_array( $old_value );
-		$value       = wpm_set_language_value( $strings, $value, $taxonomies_config[ $taxonomy ] );
+		$value       = wpm_set_language_value( $strings, $value, $this->term_config[ $taxonomy ] );
 		$description = wpm_ml_value_to_string( $value );
 
 		$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_taxonomy_id' => $tt_id ) );
