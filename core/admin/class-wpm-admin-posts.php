@@ -146,7 +146,7 @@ class WPM_Admin_Posts {
 		$locales   = array_flip( $languages );
 		$lang      = wpm_get_language();
 		$config    = wpm_get_config();
-		if ( is_null( $config['post_types'][ $post->post_type ] ) && ( wpm_is_ml_string( $post->post_title ) || wpm_is_ml_value( $post->post_content ) ) ) {
+		if ( isset( $config['post_types'][ $post->post_type ] ) && is_null( $config['post_types'][ $post->post_type ] ) && ( wpm_is_ml_string( $post->post_title ) || wpm_is_ml_value( $post->post_content ) ) ) {
 			?>
 			<div class="misc-pub-section language">
 				<?php esc_html_e( 'Current edit language:', 'wpm' ); ?>
