@@ -18,6 +18,7 @@ if ( ! defined( 'WC_VERSION' ) ) {
  * @package  WPM\Core\Vendor
  * @category Vendor
  * @author   VaLeXaR
+ * @version 1.0.1
  */
 class WPM_WooCommerce {
 

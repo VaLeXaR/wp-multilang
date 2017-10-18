@@ -18,7 +18,7 @@ if ( ! defined( 'WPSEO_VERSION' ) ) {
  * @package  WPM\Core\Vendor
  * @category Vendor
  * @author   VaLeXaR
- * @version  1.0.1
+ * @version  1.0.2
  */
 class WPM_Yoast_Seo {
 
