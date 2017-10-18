@@ -30,7 +30,6 @@ class WPM_Yoast_Seo {
 		add_filter( 'wpm_option_wpseo_titles_config', array( $this, 'set_posts_config' ) );
 		add_filter( 'wpseo_title', 'wpm_translate_string', 0 );
 		remove_filter( 'update_post_metadata', array( 'WPSEO_Meta', 'remove_meta_if_default' ), 10 );
-		add_filter( 'wpseo_enable_xml_sitemap_transient_caching', '__return_false' );
 		add_filter( 'wpseo_sitemap_url', array( $this, 'add_alternate_sitemaplinks' ), 10, 2 );
 	}
 
@@ -82,16 +81,20 @@ class WPM_Yoast_Seo {
 	 * @return string
 	 */
 	public function add_alternate_sitemaplinks( $output, $url ) {
-		$alternate = '';
+		$loc        = $output;
+		$new_output = '';
 		foreach ( wpm_get_languages() as $locale => $language ) {
-			$alternate .= sprintf( "\t<xhtml:link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />\n\t",
-				esc_attr( str_replace( '_', '-', strtolower( $locale ) ) ),
-				esc_url( wpm_translate_url( $url['loc'], $language ) ) );
+			$alternate = '';
+			$new_loc   = str_replace( $url['loc'], esc_url( wpm_translate_url( $url['loc'], $language ) ), $loc );
+			foreach ( wpm_get_languages() as $lc => $lg ) {
+				$alternate .= sprintf( "\t<xhtml:link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />\n\t", esc_attr( str_replace( '_', '-', strtolower( $lc ) ) ), esc_url( wpm_translate_url( $url['loc'], $lg ) ) );
+			}
+			$alternate  .= '</url>';
+			$new_loc    = str_replace( '</url>', $alternate, $new_loc );
+			$new_output .= $new_loc;
 		}
-		$alternate .= '</url>';
-		$output    = str_replace( '</url>', $alternate, $output );
 
-		return $output;
+		return $new_output;
 	}
 }
 

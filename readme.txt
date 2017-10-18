@@ -112,8 +112,6 @@ Available features for translation:
 `wpm_translate_string ($string, $language = '');` - translate multilingual string
 `wpm_translate_value ($value, $language = '');` - translate multidimensional array with multilingual strings
 
-Standard translates all record types, taxonomies, custom fields. Even if you turn off translation for a particular post type, display only translated text.
-
 Supports automatically redirect to the user's browser language, if he visits for the first time.
 
 Update translation occurs at PHP. Therefore plugin has high adaptability, compatibility and easily integrates with other plugins. This is what distinguishes it among similar.
