@@ -417,17 +417,24 @@ function wpm_translate_post( $post ) {
  *
  * @param $term
  *
+ * @param $taxonomy
+ *
  * @return object WP_Term
  */
-function wpm_translate_term( $term ) {
+function wpm_translate_term( $term, $taxonomy ) {
 	$config      = wpm_get_config();
 	$term_config = $config['taxonomies'];
 
-	if ( ! is_object( $term ) || ! isset( $term_config[ $term->taxonomy ] ) || is_null( $term_config[ $term->taxonomy ] ) ) {
+	if ( ! isset( $term_config[ $taxonomy ] ) || is_null( $term_config[ $taxonomy ] ) ) {
 		return $term;
 	}
 
-	return wpm_translate_object( $term );
+	if ( is_object( $term ) ) {
+		return wpm_translate_object( $term );
+	}
+
+	return wpm_translate_value( $term );
+
 }
 
 

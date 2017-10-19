@@ -49,7 +49,7 @@ class WPM_Taxonomies extends \WPM_Object {
 	public function __construct() {
 		parent::__construct();
 		$this->term_config = $this->config['taxonomies'];
-		add_filter( 'get_term', 'wpm_translate_term', 0 );
+		add_filter( 'get_term', 'wpm_translate_term', 0, 2 );
 		add_filter( 'get_terms', array( $this, 'translate_terms' ), 0 );
 		add_filter( 'get_terms_args', array( $this, 'filter_terms_by_language' ), 10, 2 );
 		add_filter( "get_{$this->object_type}_metadata", array( $this, 'get_meta_field' ), 0, 3 );
@@ -72,7 +72,20 @@ class WPM_Taxonomies extends \WPM_Object {
 	 * @return array
 	 */
 	public function translate_terms( $terms ) {
-		return array_map( 'wpm_translate_term', $terms );
+
+		if ( is_array( $terms ) ) {
+			$_terms = array();
+			foreach ( $terms as $term ) {
+				if ( is_object( $term ) ) {
+					$_terms[] = $term;
+				} else {
+					$_terms[] = wpm_translate_value( $term );
+				}
+			}
+			$terms = $_terms;
+		}
+
+		return $terms;
 	}
 
 
