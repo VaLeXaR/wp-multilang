@@ -60,8 +60,25 @@ class WPM_Newsletter {
 	}
 
 
+	/**
+	 * Translate options
+	 */
 	public function translate_options(){
 		\NewsletterSubscription::instance()->options = wpm_translate_value( \NewsletterSubscription::instance()->options );
+
+		/**
+		 * Compatibility with extension WP Users Integration
+		 */
+		if ( class_exists( 'NewsletterWpUsers' ) ) {
+			\NewsletterWpUsers::$instance->options = wpm_translate_value( \NewsletterWpUsers::$instance->options );
+		}
+
+		/**
+		 * Compatibility with extension Locked Content
+		 */
+		if (class_exists( 'NewsletterLock')) {
+			\NewsletterLock::$instance->options = wpm_translate_value( \NewsletterLock::$instance->options );
+		}
 	}
 }
 
