@@ -136,6 +136,7 @@ class WPM_Admin_Taxonomies {
 				<?php $i ++;
 			} ?>
 		</div>
+		<input type="hidden" name="lang" value="<?php echo wpm_get_language(); ?>">
 		<?php
 	}
 
