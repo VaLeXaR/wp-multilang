@@ -75,6 +75,8 @@
     "admin_page_newsletter_subscription_forms",
     "admin_page_newsletter_subscription_template",
     "newsletter_page_newsletter_main_main",
-    "admin_page_newsletter_main_info"
+    "admin_page_newsletter_main_info",
+    "newsletter_page_newsletter_wpusers_index",
+    "newsletter_page_newsletter_lock_index"
   ]
 }
