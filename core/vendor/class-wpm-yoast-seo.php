@@ -30,7 +30,6 @@ class WPM_Yoast_Seo {
 		add_filter( 'wpm_option_wpseo_titles_config', array( $this, 'set_posts_config' ) );
 		add_filter( 'wpseo_title', 'wpm_translate_string', 0 );
 		remove_filter( 'update_post_metadata', array( 'WPSEO_Meta', 'remove_meta_if_default' ), 10 );
-		add_filter( 'wpseo_enable_xml_sitemap_transient_caching', '__return_false' );
 		add_filter( 'wpseo_sitemap_url', array( $this, 'add_alternate_sitemaplinks' ), 10, 2 );
 		add_filter( 'wpseo_sitemap_entry', function($url, $type, $object){
 			switch ($type) {
