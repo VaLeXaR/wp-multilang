@@ -17,6 +17,9 @@
     "woocommerce_page_wc-settings"
   ],
   "options": {
+    "woocommerce_store_address": {},
+    "woocommerce_store_address_2": {},
+    "woocommerce_store_city": {},
     "woocommerce_email_footer_text": {},
     "woocommerce_demo_store_notice": {},
     "woocommerce_price_thousand_sep": {},

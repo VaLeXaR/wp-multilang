@@ -52,16 +52,33 @@ class WPM_Newsletter {
 		$screen_id = $screen ? $screen->id : '';
 
 		if ( 'admin_page_newsletter_emails_edit' === $screen_id ) {
-			remove_filter( 'attribute_escape', 'WPM\Core\WPM_Posts::escaping_text', 0 );
-			remove_filter( 'esc_textarea', 'WPM\Core\WPM_Posts::escaping_text', 0 );
-			remove_filter( 'esc_html', 'WPM\Core\WPM_Posts::escaping_text', 0 );
+			remove_filter( 'attribute_escape', array( 'WPM\Core\WPM_Posts', 'escaping_text' ), 0 );
+			remove_filter( 'esc_textarea', array( 'WPM\Core\WPM_Posts', 'escaping_text' ), 0 );
+			remove_filter( 'esc_html', array( 'WPM\Core\WPM_Posts', 'escaping_text' ), 0 );
 			wpm_show_notice();
 		}
 	}
 
 
+	/**
+	 * Translate options
+	 */
 	public function translate_options(){
 		\NewsletterSubscription::instance()->options = wpm_translate_value( \NewsletterSubscription::instance()->options );
+
+		/**
+		 * Compatibility with extension WP Users Integration
+		 */
+		if ( class_exists( 'NewsletterWpUsers' ) ) {
+			\NewsletterWpUsers::$instance->options = wpm_translate_value( \NewsletterWpUsers::$instance->options );
+		}
+
+		/**
+		 * Compatibility with extension Locked Content
+		 */
+		if (class_exists( 'NewsletterLock')) {
+			\NewsletterLock::$instance->options = wpm_translate_value( \NewsletterLock::$instance->options );
+		}
 	}
 }
 
