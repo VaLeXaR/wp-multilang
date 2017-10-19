@@ -35,13 +35,13 @@ class WPM_Yoast_Seo {
 		add_filter( 'wpseo_sitemap_entry', function($url, $type, $object){
 			switch ($type) {
 				case 'post':
-					$languages = get_post_meta( $object->ID, '_languages', true);
+					$languages = get_post_meta( $object->ID, '_languages', true );
 					if ($languages) {
 						$url['languages'] = $languages;
 					}
 					break;
 				case 'term':
-					$languages = get_term_meta( $object->ID, '_languages', true);
+					$languages = get_term_meta( $object->term_id, '_languages', true );
 					if ($languages) {
 						$url['languages'] = $languages;
 					}
