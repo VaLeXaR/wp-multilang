@@ -79,9 +79,9 @@ class WPM_Admin_Taxonomies {
 	public function render_language_column( $columns, $column, $term_id ) {
 
 		if ( 'languages' === $column ) {
-			remove_filter( 'get_term', 'wpm_translate_object', 0 );
+			remove_filter( 'get_term', 'wpm_translate_term', 0 );
 			$term = get_term( $term_id );
-			add_filter( 'get_term', 'wpm_translate_object', 0 );
+			add_filter( 'get_term', 'wpm_translate_term', 0 );
 			$output    = array();
 			$text      = $term->name . $term->description;
 			$strings   = wpm_value_to_ml_array( $text );

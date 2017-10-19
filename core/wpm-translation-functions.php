@@ -392,6 +392,45 @@ function wpm_translate_object( $object, $lang = '' ) {
 	return $object;
 }
 
+
+/**
+ * Translate post
+ *
+ * @param $post
+ *
+ * @return object WP_Post
+ */
+function wpm_translate_post( $post ) {
+	$config      = wpm_get_config();
+	$post_config = $config['post_types'];
+
+	if ( ! is_object( $post ) || ! isset( $post_config[ $post->post_type ] ) || is_null( $post_config[ $post->post_type ] ) ) {
+		return $post;
+	}
+
+	return wpm_translate_object( $post );
+}
+
+
+/**
+ * Translate term
+ *
+ * @param $term
+ *
+ * @return object WP_Term
+ */
+function wpm_translate_term( $term ) {
+	$config      = wpm_get_config();
+	$term_config = $config['taxonomies'];
+
+	if ( ! is_object( $term ) || ! isset( $term_config[ $term->taxonomy ] ) || is_null( $term_config[ $term->taxonomy ] ) ) {
+		return $term;
+	}
+
+	return wpm_translate_object( $term );
+}
+
+
 /**
  * Untranslate WP_Post object
  *

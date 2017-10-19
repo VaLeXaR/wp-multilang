@@ -49,7 +49,7 @@ class WPM_Taxonomies extends \WPM_Object {
 	public function __construct() {
 		parent::__construct();
 		$this->term_config = $this->config['taxonomies'];
-		add_filter( 'get_term', array( $this, 'translate_term' ), 0 );
+		add_filter( 'get_term', 'wpm_translate_term', 0 );
 		add_filter( 'get_terms', array( $this, 'translate_terms' ), 0 );
 		add_filter( 'get_terms_args', array( $this, 'filter_terms_by_language' ), 10, 2 );
 		add_filter( "get_{$this->object_type}_metadata", array( $this, 'get_meta_field' ), 0, 3 );
@@ -65,22 +65,6 @@ class WPM_Taxonomies extends \WPM_Object {
 
 
 	/**
-	 * Translate term
-	 *
-	 * @param $term
-	 *
-	 * @return object
-	 */
-	public function translate_term( $term ) {
-		if ( ! is_object( $term ) || ! isset( $this->term_config[ $term->taxonomy ] ) || is_null( $this->term_config[ $term->taxonomy ] ) ) {
-			return $term;
-		}
-
-		return wpm_translate_object( $term );
-	}
-
-
-	/**
 	 * Translate all terms
 	 *
 	 * @param $terms
@@ -88,7 +72,7 @@ class WPM_Taxonomies extends \WPM_Object {
 	 * @return array
 	 */
 	public function translate_terms( $terms ) {
-		return array_map( array( $this, 'translate_term' ), $terms );
+		return array_map( 'wpm_translate_term', $terms );
 	}
 
 
@@ -253,10 +237,10 @@ class WPM_Taxonomies extends \WPM_Object {
 			return $data;
 		}
 
-		remove_filter( 'get_term', 'wpm_translate_object', 0 );
+		remove_filter( 'get_term', 'wpm_translate_term', 0 );
 		$old_name        = get_term_field( 'name', $term_id, $taxonomy, 'edit' );
 		$old_description = get_term_field( 'description', $term_id, $taxonomy, 'edit' );
-		add_filter( 'get_term', 'wpm_translate_object', 0 );
+		add_filter( 'get_term', 'wpm_translate_term', 0 );
 
 		if ( ! wpm_is_ml_value( $data['name'] ) ) {
 			$strings      = wpm_value_to_ml_array( $old_name );
