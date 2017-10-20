@@ -32,27 +32,27 @@ class WPM_Megamenu {
 
 	/**
 	 * Add language switcher
+	 *
+	 * @param $hook
 	 */
-	public function add_language_switcher() {
+	public function add_language_switcher( $hook ) {
 
-		$languages = wpm_get_languages();
-		if ( count( $languages ) <= 1 ) {
+		if ( count( wpm_get_languages() ) <= 1 || ( 'mega-menu_page_maxmegamenu_theme_editor' !== $hook ) ) {
 			return;
 		}
 
-		$screen    = get_current_screen();
-		$screen_id = $screen ? $screen->id : '';
+		add_action( 'admin_print_footer_scripts', function () {
+			echo wpm_get_template_html( 'language-switcher.php' );
+		} );
 
-		if ( 'mega-menu_page_maxmegamenu_theme_editor' === $screen_id ) {
-			wpm_enqueue_js( "
-					(function ( $ ) {
-					    if ($('#wpm-language-switcher').length === 0) {
-					      var language_switcher = _.template(wpm_language_switcher_params.switcher);
-					      $('#wpbody-content .megamenu_outer_wrap').first().prepend(language_switcher);
-					    }
-					})( window.jQuery );
-				" );
-		}
+		wpm_enqueue_js( "
+			(function ( $ ) {
+			    if ($('#wpm-language-switcher').length === 0) {
+					var language_switcher = wp.template( 'wpm-ls' );
+					$('#wpbody-content .megamenu_outer_wrap').first().prepend(language_switcher);
+			    }
+			})( window.jQuery );
+		" );
 	}
 }
 

@@ -1,0 +1,38 @@
+.editor-header__settings {
+
+  .wpm-language-switcher {
+    position: relative;
+    left: 0 !important;
+
+    .lang-main {
+      padding-left: 10px;
+      padding-right: 10px;
+
+      img {
+        top: 2px;
+      }
+    }
+  }
+
+  .lang-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    z-index: 1;
+
+    ul {
+      list-style: none;
+
+      a {
+        padding: 10px 10px;
+        display: block;
+
+        &:hover,
+        &:focus {
+          background-color: #ccc;
+        }
+      }
+    }
+  }
+}
