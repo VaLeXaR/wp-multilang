@@ -238,12 +238,8 @@ class WPM_Setup {
 			$url = wpm_get_current_url();
 		}
 
-		if ( wp_doing_ajax() ) {
-			if ( $referrer = wp_get_raw_referer() ) {
-				if ( strpos( $referrer, '/wp-admin/' ) === false ) {
-					$url = $referrer;
-				}
-			}
+		if ( wp_doing_ajax() && ( $referrer = wp_get_raw_referer() ) && ( strpos( $referrer, '/wp-admin/' ) === false ) ) {
+			$url = $referrer;
 		}
 
 		if ( $url ) {
