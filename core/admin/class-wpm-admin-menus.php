@@ -91,7 +91,7 @@ class WPM_Admin_Menus {
 				            '<img src="' . esc_url( WPM()->flag_dir() . $options[ $key ]['flag'] . '.png' ) . '" />' .
 							'</span>' .
 				            '<span class="ab-label">' . $options[ $key ]['name'] . '</span>',
-				'href'   => add_query_arg( 'lang', $language, $current_url ),
+				'href'   => wpm_translate_url( $current_url, $language ),
 			) );
 		}
 	}

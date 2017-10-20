@@ -43,7 +43,7 @@ class WPM_VC {
 	 * @return string
 	 */
 	public function append_lang_to_url( $link ) {
-		return add_query_arg( 'lang', wpm_get_language(), $link );
+		return wpm_translate_url( $link,  wpm_get_language() );
 	}
 
 	public function enqueue_js_frontend() {
