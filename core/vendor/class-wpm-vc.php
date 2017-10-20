@@ -28,9 +28,7 @@ class WPM_VC {
 	public function __construct() {
 		add_action( 'vc_frontend_editor_render', array( $this, 'enqueue_js_frontend' ) );
 		add_filter( 'vc_frontend_editor_iframe_url', array( $this, 'append_lang_to_url' ) );
-
 		add_filter( 'vc_nav_front_controls', array( $this, 'nav_controls_frontend' ) );
-
 		if ( ! vc_is_frontend_editor() ) {
 			add_filter( 'vc_get_inline_url', array( $this, 'render_edit_button_link' ) );
 		}
@@ -50,22 +48,22 @@ class WPM_VC {
 
 	public function enqueue_js_frontend() {
 		wpm_enqueue_js( "
-				(function ( $ ) {
-					$( '#vc_vendor_wpm_langs_front' ).change( function () {
-						vc.closeActivePanel();
-						$( '#vc_logo' ).addClass( 'vc_ui-wp-spinner' );
-						window.location.href = $( this ).val();
-					} );
-					
-					var nativeGetContent = vc.ShortcodesBuilder.prototype.getContent;
-					vc.ShortcodesBuilder.prototype.getContent = function () {
-						var content = nativeGetContent();
-						jQuery( '#content' ).val( content );
-						return content;
-					};
+			(function ( $ ) {
+				$( '#vc_vendor_wpm_langs_front' ).change( function () {
+					vc.closeActivePanel();
+					$( '#vc_logo' ).addClass( 'vc_ui-wp-spinner' );
+					window.location.href = $( this ).val();
+				} );
 				
-				})( window.jQuery );
-			" );
+				var nativeGetContent = vc.ShortcodesBuilder.prototype.getContent;
+				vc.ShortcodesBuilder.prototype.getContent = function () {
+					var content = nativeGetContent();
+					jQuery( '#content' ).val( content );
+					return content;
+				};
+			
+			})( window.jQuery );
+		" );
 	}
 
 	/**

@@ -83,9 +83,7 @@ class WPM_AIOSP {
 		if ( isset( $this->meta_fields[ $meta_key ] ) ) {
 			global $wpdb;
 
-			$old_value = $wpdb->get_var( $wpdb->prepare(
-				"SELECT meta_value FROM {$wpdb->postmeta} WHERE meta_key = %s AND post_id = %d;",
-				$meta_key, $object_id ) );
+			$old_value = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->postmeta} WHERE meta_key = %s AND post_id = %d;", $meta_key, $object_id ) );
 
 			if ( $old_value ) {
 				$this->meta_fields[ $meta_key ] = $old_value;
