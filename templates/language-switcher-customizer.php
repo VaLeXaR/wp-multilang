@@ -6,7 +6,7 @@ $options     = wpm_get_options();
 $current_url = wpm_get_current_url();
 ?>
 <script id="tmpl-wpm-ls" type="text/template">
-	<div id="wpm-language-switcher" class="wpm-language-switcher customize-controls-close">
+	<div id="wpm-language-switcher" class="wpm-language-switcher">
 		<div class="lang-main">
 			<?php if ( $options[ $locales[ $lang ] ]['flag'] ) { ?>
 				<img src="<?php echo esc_url( WPM()->flag_dir() . $options[ $locales[ $lang ] ]['flag'] . '.png' ); ?>">

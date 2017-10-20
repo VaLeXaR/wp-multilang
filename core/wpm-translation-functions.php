@@ -47,7 +47,7 @@ function wpm_translate_url( $url, $language = '' ) {
 		return add_query_arg( 'lang', $language, $path );
 	}
 
-	if ( preg_match( '/^/([a-z]{2})(/|$)/i', $path, $match ) ) {
+	if ( preg_match( '!^/([a-z]{2})(/|$)!i', $path, $match ) ) {
 		$url_lang = $match[1];
 	}
 

@@ -43,7 +43,7 @@ class WPM_VC {
 	 * @return string
 	 */
 	public function append_lang_to_url( $link ) {
-		return wpm_translate_url( $link,  wpm_get_language() );
+		return add_query_arg( 'lang', wpm_get_language(), $link );
 	}
 
 	public function enqueue_js_frontend() {
@@ -72,11 +72,11 @@ class WPM_VC {
 	 * @return string
 	 */
 	public function generate_select_frontend() {
-		$output             = '';
-		$output             .= '<select id="vc_vendor_wpm_langs_front" class="vc_select vc_select-navbar">';
-		$inline_url         = vc_frontend_editor()->getInlineUrl();
+		$output              = '';
+		$output              .= '<select id="vc_vendor_wpm_langs_front" class="vc_select vc_select-navbar">';
+		$inline_url          = vc_frontend_editor()->getInlineUrl();
 		$active_language     = wpm_get_language();
-		$options            = wpm_get_options();
+		$options             = wpm_get_options();
 		$available_languages = wpm_get_languages();
 		foreach ( $available_languages as $locale => $lang ) {
 			$output .= '<option value="' . add_query_arg( 'edit_lang', $lang, $inline_url ) . '" ' . selected( $lang, $active_language, false ) . ' >' . $options[ $locale ]['name'] . '</option >';
