@@ -88,4 +88,26 @@ table.wpm-languages {
 #languages {
   width: 100px; }
 
+#customize-controls .wpm-language-switcher {
+  display: block;
+  position: absolute;
+  top: 0;
+  width: 45px;
+  height: 41px;
+  padding: 0 2px 0 0;
+  background: #eee;
+  border: none;
+  border-top: 4px solid #eee;
+  border-right: 1px solid #ddd;
+  color: #444;
+  cursor: pointer;
+  transition: color .15s ease-in-out, border-color .15s ease-in-out, background .15s ease-in-out;
+  box-sizing: content-box; }
+  #customize-controls .wpm-language-switcher:hover, #customize-controls .wpm-language-switcher:focus {
+    background: #fff;
+    color: #0073aa;
+    border-top-color: #0073aa;
+    outline: none;
+    box-shadow: none; }
+
 /*# sourceMappingURL=admin.css.map */
