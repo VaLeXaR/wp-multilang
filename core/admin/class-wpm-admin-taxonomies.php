@@ -130,13 +130,10 @@ class WPM_Admin_Taxonomies {
 				if ( ! $language['enable'] ) {
 					continue;
 				} ?>
-				<label><input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]"
-				              id="wpm-languages-<?php echo $language['slug']; ?>"
-				              value="<?php esc_attr_e( $language['slug'] ); ?>"><?php echo $language['name']; ?></label>
+				<label><input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $language['slug']; ?>" value="<?php esc_attr_e( $language['slug'] ); ?>"><?php echo $language['name']; ?></label>
 				<?php $i ++;
 			} ?>
 		</div>
-		<input type="hidden" name="lang" value="<?php echo wpm_get_language(); ?>">
 		<?php
 	}
 

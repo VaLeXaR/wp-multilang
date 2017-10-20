@@ -145,18 +145,20 @@ function wpm_get_site_request_uri() {
  */
 function wpm_get_language() {
 	if ( is_admin() || ( defined( 'REST_REQUEST' ) && 'GET' !== $_SERVER['REQUEST_METHOD'] ) ) {
+
 		$languages = wpm_get_languages();
+		$edit_lang = get_user_meta( get_current_user_id(), 'edit_lang', true );
+		$query     = $_GET;
 
 		if ( wp_doing_ajax() && ( $referrer = wp_get_raw_referer() ) ) {
-
-			if ( strpos( $referrer, admin_url() ) === false ) {
+			if ( strpos( $referrer, '/wp-admin/' ) !== false ) {
+				$query = wp_parse_url( $referrer, PHP_URL_QUERY );
+			} else {
 				return wpm_get_user_language();
 			}
 		}
 
-		$edit_lang = get_user_meta( get_current_user_id(), 'edit_lang', true );
-
-		$lang = ( isset( $_GET['edit_lang'] ) && in_array( wpm_clean( $_GET['edit_lang'] ), $languages, true ) ) ? wpm_clean( $_GET['edit_lang'] ) : ( ( $edit_lang && in_array( $edit_lang, $languages, true ) ) ? $edit_lang : wpm_get_user_language() );
+		$lang = ( isset( $query['edit_lang'] ) && in_array( wpm_clean( $query['edit_lang'] ), $languages, true ) ) ? wpm_clean( $query['edit_lang'] ) : ( ( $edit_lang && in_array( $edit_lang, $languages, true ) ) ? $edit_lang : wpm_get_user_language() );
 	} else {
 		$lang = wpm_get_user_language();
 	}
