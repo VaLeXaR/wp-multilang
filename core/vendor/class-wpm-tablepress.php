@@ -31,7 +31,14 @@ class WPM_Tablepress {
 		add_filter( 'wp_insert_post_data', array( $this, 'save_table' ), 10, 2 );
 	}
 
-
+	/**
+	 * Translate table
+	 *
+	 * @param $data
+	 * @param $action
+	 *
+	 * @return mixed
+	 */
 	public function translate_edit_table( $data, $action ) {
 		if ( 'edit' == $action ) {
 			$data['table'] = wpm_translate_value( $data['table'] );
@@ -40,6 +47,15 @@ class WPM_Tablepress {
 		return $data;
 	}
 
+
+	/**
+	 * Save table
+	 *
+	 * @param $data
+	 * @param $postarr
+	 *
+	 * @return mixed
+	 */
 	public function save_table( $data, $postarr ) {
 
 		if ( ! $postarr['ID'] || ( 'tablepress_table' != $postarr['post_type'] ) ) {
