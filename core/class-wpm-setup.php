@@ -238,8 +238,16 @@ class WPM_Setup {
 			$url = wpm_get_current_url();
 		}
 
-		if ( wp_doing_ajax() && ( $referrer = wp_get_raw_referer() ) && ( strpos( $referrer, '/wp-admin/' ) === false ) ) {
-			$url = $referrer;
+		if ( wp_doing_ajax() ) {
+
+			if ( $referrer = wp_get_raw_referer() ) {
+				if ( strpos( $referrer, '/wp-admin/' ) === false ) {
+					$url = $referrer;
+					add_filter( 'get_user_metadata', array( $this, 'set_user_locale' ), 10, 4 );
+				}
+			} else {
+				add_filter( 'get_user_metadata', array( $this, 'set_user_locale' ), 10, 4 );
+			}
 		}
 
 		if ( $url ) {
@@ -537,6 +545,30 @@ class WPM_Setup {
 
 		return $query_vars;
 	}
+
+
+	/**
+	 * Set user locale for AJAX front requests
+
+	 * @param $check
+	 * @param $object_id
+	 * @param $meta_key
+	 * @param $single
+	 *
+	 * @return array|string
+	 */
+	public function set_user_locale( $check, $object_id, $meta_key, $single ) {
+		if ( 'locale' == $meta_key ) {
+			if ( $single ) {
+				$check = get_locale();
+			} else {
+				$check = array( get_locale() );
+			}
+		}
+
+		return $check;
+	}
+
 
 	/**
 	 * Fix REST url
