@@ -172,6 +172,7 @@ If you have opened several browser tabs for editing this post in different langu
 = 1.7.7 =
 + add translation for network name
 * fix save posts with status 'auto-draft'
+* fix switch language in customizer
 * fix uninstalling
 * fix set lang for ajax requests from admin
 * fix compatibility with Gutenberg
