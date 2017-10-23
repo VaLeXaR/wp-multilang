@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.8.2
-Stable tag: 1.7.6
+Stable tag: 1.7.7
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -168,6 +168,16 @@ If you have opened several browser tabs for editing this post in different langu
 5. Post edit page
 
 == Changelog ==
+
+= 1.7.7 =
++ add translation for network name
+* fix save posts with status 'auto-draft'
+* fix switch language in customizer
+* fix uninstalling
+* fix set lang for ajax requests from admin
+* fix compatibility with Gutenberg
+* fix compatibility with Max MegaMenu
+* fix translation Newsletter options
 
 = 1.7.6 =
 + add check for alternate metalinks in head for separated term and posts
