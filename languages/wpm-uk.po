@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-10-18 15:57+0300\n"
-"PO-Revision-Date: 2017-10-18 15:57+0300\n"
+"POT-Creation-Date: 2017-10-20 00:16+0300\n"
+"PO-Revision-Date: 2017-10-20 00:17+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: uk\n"
@@ -24,7 +24,7 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-2: assets\n"
 "X-Poedit-SearchPathExcluded-3: vendor\n"
 
-#: core/admin/class-wpm-admin-assets.php:61
+#: core/admin/class-wpm-admin-assets.php:62
 msgid "Are you sure you want to delete this language?"
 msgstr "Ви впевнені, що хочете видалити цю мову?"
 
@@ -195,9 +195,9 @@ msgid "Language slug and locale is required"
 msgstr "Ланка мови та локаль обов'язкові"
 
 #: core/admin/class-wpm-admin-taxonomies.php:128
-#: core/admin/class-wpm-admin-taxonomies.php:173
+#: core/admin/class-wpm-admin-taxonomies.php:174
 msgid "Show term only in:"
-msgstr "Показувати term лише у:"
+msgstr "Показувати елемент таксономії лише у:"
 
 #: core/admin/class-wpm-admin-widgets.php:78
 msgid "Show widget only in:"

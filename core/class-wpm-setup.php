@@ -204,7 +204,8 @@ class WPM_Setup {
 	 */
 	public function get_default_locale() {
 		if ( ! $this->default_locale ) {
-			$this->default_locale = get_option( 'WPLANG' ) ? get_option( 'WPLANG' ) : 'en_US';
+			$option_lang          = get_option( 'WPLANG' );
+			$this->default_locale = $option_lang ? $option_lang : 'en_US';
 		}
 
 		return $this->default_locale;
@@ -233,21 +234,20 @@ class WPM_Setup {
 		$default_locale = $this->get_default_locale();
 		$url            = '';
 
-		if ( wp_doing_ajax() ) {
-			$referrer = wp_get_raw_referer();
+		if ( ! is_admin() ) {
+			$url = wpm_get_current_url();
+		}
 
-			if ( $referrer ) {
-				if ( strpos( $referrer, admin_url() ) === false ) {
+		if ( wp_doing_ajax() ) {
+
+			if ( $referrer = wp_get_raw_referer() ) {
+				if ( strpos( $referrer, '/wp-admin/' ) === false ) {
 					$url = $referrer;
 					add_filter( 'get_user_metadata', array( $this, 'set_user_locale' ), 10, 4 );
 				}
 			} else {
 				add_filter( 'get_user_metadata', array( $this, 'set_user_locale' ), 10, 4 );
 			}
-		}
-
-		if ( ! is_admin() ) {
-			$url = wpm_get_current_url();
 		}
 
 		if ( $url ) {
@@ -279,6 +279,10 @@ class WPM_Setup {
 				} else {
 					update_user_meta( get_current_user_id(), 'locale', $default_locale );
 				}
+			} elseif ( ! is_admin() && preg_match( '/^.*\.php$/i', wp_parse_url( $url, PHP_URL_PATH ) ) ) {
+				if ( isset( $_COOKIE['language'] ) ) {
+					$this->user_language = wpm_clean( $_COOKIE['language'] );
+				}
 			}
 		}
 	}
@@ -297,7 +301,7 @@ class WPM_Setup {
 		foreach ( $languages as $key => $value ) {
 			if ( ( $value === $user_language ) ) {
 				$locale = $key;
-				if ( $key === $default_locale && ! is_admin() && ! isset( $_REQUEST['lang'] ) ) {
+				if ( $key === $default_locale && ! is_admin() && ! isset( $_REQUEST['lang'] ) && ! preg_match( '/^.*\.php$/i', wp_parse_url( $this->site_request_uri, PHP_URL_PATH ) ) ) {
 					wp_redirect( home_url( str_replace( '/' . $user_language . '/', '/', $this->site_request_uri ) ) );
 					exit;
 				}
@@ -480,7 +484,7 @@ class WPM_Setup {
 					}
 				}
 			} else {
-				if ( $_COOKIE['language'] != $this->user_language ) {
+				if ( wpm_clean( $_COOKIE['language'] ) != $this->user_language ) {
 					wpm_setcookie( 'language', $this->user_language, time() + YEAR_IN_SECONDS );
 					do_action( 'wpm_changed_language' );
 				}
@@ -532,30 +536,6 @@ class WPM_Setup {
 	}
 
 	/**
-	 * Set user locale for AJAX front requests
-
-	 * @param $check
-	 * @param $object_id
-	 * @param $meta_key
-	 * @param $single
-	 *
-	 * @return array|string
-	 */
-	public function set_user_locale( $check, $object_id, $meta_key, $single ) {
-		if ( 'locale' == $meta_key ) {
-			$locale = get_locale();
-
-			if ( $single ) {
-				$check = $locale;
-			} else {
-				$check = array( $locale );
-			}
-		}
-
-		return $check;
-	}
-
-	/**
 	 * Fix home page if isset 'lang' GET parameter
 	 *
 	 * @param $query_vars
@@ -569,6 +549,30 @@ class WPM_Setup {
 
 		return $query_vars;
 	}
+
+
+	/**
+	 * Set user locale for AJAX front requests
+
+	 * @param $check
+	 * @param $object_id
+	 * @param $meta_key
+	 * @param $single
+	 *
+	 * @return array|string
+	 */
+	public function set_user_locale( $check, $object_id, $meta_key, $single ) {
+		if ( 'locale' == $meta_key ) {
+			if ( $single ) {
+				$check = get_locale();
+			} else {
+				$check = array( get_locale() );
+			}
+		}
+
+		return $check;
+	}
+
 
 	/**
 	 * Fix REST url

@@ -77,7 +77,7 @@ class WPM_Taxonomies extends \WPM_Object {
 			$_terms = array();
 			foreach ( $terms as $term ) {
 				if ( is_object( $term ) ) {
-					$_terms[] = $term;
+					$_terms[] = wpm_translate_object( $term );
 				} else {
 					$_terms[] = wpm_translate_value( $term );
 				}

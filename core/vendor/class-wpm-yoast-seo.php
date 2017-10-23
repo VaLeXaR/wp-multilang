@@ -30,25 +30,8 @@ class WPM_Yoast_Seo {
 		add_filter( 'wpm_option_wpseo_titles_config', array( $this, 'set_posts_config' ) );
 		add_filter( 'wpseo_title', 'wpm_translate_string', 0 );
 		remove_filter( 'update_post_metadata', array( 'WPSEO_Meta', 'remove_meta_if_default' ), 10 );
-		add_filter( 'wpseo_enable_xml_sitemap_transient_caching', '__return_false' );
 		add_filter( 'wpseo_sitemap_url', array( $this, 'add_alternate_sitemaplinks' ), 10, 2 );
-		add_filter( 'wpseo_sitemap_entry', function($url, $type, $object){
-			switch ($type) {
-				case 'post':
-					$languages = get_post_meta( $object->ID, '_languages', true );
-					if ($languages) {
-						$url['languages'] = $languages;
-					}
-					break;
-				case 'term':
-					$languages = get_term_meta( $object->term_id, '_languages', true );
-					if ($languages) {
-						$url['languages'] = $languages;
-					}
-					break;
-			}
-			return $url;
-		},10,3);
+		add_filter( 'wpseo_sitemap_entry', array( $this, 'add_lang_to_url' ), 10, 3 );
 	}
 
 
@@ -91,6 +74,36 @@ class WPM_Yoast_Seo {
 
 
 	/**
+	 * Add separating by language to url
+	 *
+	 * @param array $url
+	 * @param string $type
+	 * @param object $object
+	 *
+	 * @return array
+	 */
+	public function add_lang_to_url($url, $type, $object) {
+
+		$languages = array();
+
+		switch ( $type ) {
+			case 'post':
+				$languages = get_post_meta( $object->ID, '_languages', true );
+				break;
+			case 'term':
+				$languages = get_term_meta( $object->term_id, '_languages', true );
+				break;
+		}
+
+		if ( $languages ) {
+			$url['languages'] = $languages;
+		}
+
+		return $url;
+	}
+
+
+	/**
 	 * Add alternate links to sitemap
 	 *
 	 * @param string $output
@@ -119,8 +132,7 @@ class WPM_Yoast_Seo {
 				$alternate .= sprintf( "\t<xhtml:link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />\n\t", esc_attr( str_replace( '_', '-', strtolower( $lc ) ) ), esc_url( wpm_translate_url( $url['loc'], $lg ) ) );
 			}
 
-			$alternate  .= '</url>';
-			$new_loc    = str_replace( '</url>', $alternate, $new_loc );
+			$new_loc    = str_replace( '</url>', $alternate . '</url>', $new_loc );
 			$new_output .= $new_loc;
 		}
 

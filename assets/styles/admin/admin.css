@@ -88,4 +88,49 @@ table.wpm-languages {
 #languages {
   width: 100px; }
 
+#customize-controls .wpm-language-switcher {
+  display: block;
+  position: absolute;
+  top: 0;
+  width: 45px;
+  height: 41px;
+  padding: 0 2px 0 0;
+  background-color: #eee;
+  border: none;
+  border-top: 4px solid #eee;
+  border-right: 1px solid #ddd;
+  color: #444;
+  cursor: pointer;
+  transition: color .15s ease-in-out, border-color .15s ease-in-out, background .15s ease-in-out;
+  box-sizing: content-box; }
+  #customize-controls .wpm-language-switcher:hover, #customize-controls .wpm-language-switcher:focus {
+    background-color: #fff;
+    color: #0073aa;
+    border-top-color: #0073aa;
+    outline: none;
+    box-shadow: none; }
+
+.editor-header__settings .wpm-language-switcher {
+  position: relative;
+  left: 0 !important; }
+  .editor-header__settings .wpm-language-switcher .lang-main {
+    padding-left: 10px;
+    padding-right: 10px; }
+    .editor-header__settings .wpm-language-switcher .lang-main img {
+      top: 2px; }
+
+.editor-header__settings .lang-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  z-index: 1; }
+  .editor-header__settings .lang-dropdown ul {
+    list-style: none; }
+    .editor-header__settings .lang-dropdown ul a {
+      padding: 10px 10px;
+      display: block; }
+      .editor-header__settings .lang-dropdown ul a:hover, .editor-header__settings .lang-dropdown ul a:focus {
+        background-color: #ccc; }
+
 /*# sourceMappingURL=admin.css.map */

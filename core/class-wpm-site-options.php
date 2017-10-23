@@ -19,6 +19,7 @@ class WPM_Site_Options {
 	 * WPM_Options constructor.
 	 */
 	public function __construct() {
+		add_filter( 'get_network', array( $this, 'translate_network_name' ) );
 		$this->init();
 	}
 
@@ -35,6 +36,20 @@ class WPM_Site_Options {
 			add_filter( "pre_update_site_option_{$key}", array( $this, 'wpm_update_site_option' ), 99, 3 );
 			add_filter( "pre_add_site_option_{$key}",  array( $this, 'wpm_add_site_option' ), 99, 2 );
 		}
+	}
+
+
+	/**
+	 * Translate network name
+	 *
+	 * @param $_network
+	 *
+	 * @return mixed
+	 */
+	public function translate_network_name( $_network ) {
+		$_network->site_name = wpm_translate_string( $_network->site_name );
+
+		return $_network;
 	}
 
 

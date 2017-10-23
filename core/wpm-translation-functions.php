@@ -39,6 +39,10 @@ function wpm_translate_url( $url, $language = '' ) {
 		}
 	}
 
+	if ( preg_match( '/^.*\.php$/i', wp_parse_url( $url, PHP_URL_PATH ) ) ) {
+		return add_query_arg( 'lang', $language, $url );
+	}
+
 	$url_lang = '';
 	$path     = str_replace( $host, '', $url );
 	$path     = $path ? $path : '/';
@@ -89,7 +93,7 @@ function wpm_translate_url( $url, $language = '' ) {
  */
 function wpm_translate_string( $string, $language = '' ) {
 
-	if ( json_decode( $string ) ) {
+	if ( is_serialized_string( $string ) || json_decode( $string ) ) {
 		return $string;
 	}
 

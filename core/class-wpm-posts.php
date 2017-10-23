@@ -153,6 +153,10 @@ class WPM_Posts extends \WPM_Object {
 	 */
 	public function save_post( $data, $postarr ) {
 
+		if ( 'auto-draft' == $data['post_status'] ) {
+			return $data;
+		}
+
 		if ( ! isset( $this->post_config[ $data['post_type'] ] ) || is_null( $this->post_config[ $data['post_type'] ] ) ) {
 			return $data;
 		}
