@@ -95,7 +95,7 @@ class WPM_Admin_Taxonomies {
 			}
 
 			if ( ! empty( $output ) ) {
-				$columns .= implode( '<br />', $output );
+				$columns .= implode( ' ', $output );
 			}
 		}
 
@@ -174,9 +174,7 @@ class WPM_Admin_Taxonomies {
 					if ( ! $language['enable'] ) {
 						continue;
 					} ?>
-					<label><input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]"
-					              id="wpm-languages-<?php echo $language['slug']; ?>"
-					              value="<?php esc_attr_e( $language['slug'] ); ?>"<?php if ( in_array( $language['slug'], $term_languages ) ) { ?> checked="checked"<?php } ?>><?php echo $language['name']; ?>
+					<label><input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $language['slug']; ?>" value="<?php esc_attr_e( $language['slug'] ); ?>"<?php if ( in_array( $language['slug'], $term_languages ) ) { ?> checked="checked"<?php } ?>><?php echo $language['name']; ?>
 					</label><br>
 					<?php $i ++;
 				} ?>
