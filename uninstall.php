@@ -17,9 +17,7 @@ global $wpdb;
 
 require_once __DIR__ . '/core/autoload.php';
 
-$uninstall_translations = get_option( 'wpm_uninstall_translations', '' );
-
-if ( $uninstall_translations ) {
+if ( get_option( 'wpm_uninstall_translations', '' ) ) {
 
 	require_once 'core/wpm-core-functions.php';
 
