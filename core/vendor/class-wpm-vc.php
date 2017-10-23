@@ -95,10 +95,7 @@ class WPM_VC {
 	 */
 	public function nav_controls_frontend( $list ) {
 		if ( is_array( $list ) ) {
-			$list[] = array(
-				'wpm',
-				'<li class="vc_pull-right" > ' . $this->generate_select_frontend() . '</li > ',
-			);
+			$list[] = array( 'wpm', '<li class="vc_pull-right" > ' . $this->generate_select_frontend() . '</li > ' );
 		}
 
 		return $list;

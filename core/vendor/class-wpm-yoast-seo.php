@@ -83,19 +83,20 @@ class WPM_Yoast_Seo {
 	 * @return array
 	 */
 	public function add_lang_to_url($url, $type, $object) {
-		switch ($type) {
+
+		$languages = array();
+
+		switch ( $type ) {
 			case 'post':
 				$languages = get_post_meta( $object->ID, '_languages', true );
-				if ($languages) {
-					$url['languages'] = $languages;
-				}
 				break;
 			case 'term':
 				$languages = get_term_meta( $object->term_id, '_languages', true );
-				if ($languages) {
-					$url['languages'] = $languages;
-				}
 				break;
+		}
+
+		if ( $languages ) {
+			$url['languages'] = $languages;
 		}
 
 		return $url;
@@ -131,8 +132,7 @@ class WPM_Yoast_Seo {
 				$alternate .= sprintf( "\t<xhtml:link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />\n\t", esc_attr( str_replace( '_', '-', strtolower( $lc ) ) ), esc_url( wpm_translate_url( $url['loc'], $lg ) ) );
 			}
 
-			$alternate  .= '</url>';
-			$new_loc    = str_replace( '</url>', $alternate, $new_loc );
+			$new_loc    = str_replace( '</url>', $alternate . '</url>', $new_loc );
 			$new_output .= $new_loc;
 		}
 

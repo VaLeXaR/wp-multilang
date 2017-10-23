@@ -128,8 +128,8 @@ add_filter( 'document_title_parts', 'wpm_translate_value', 0 );
  */
 function wpm_set_meta_languages() {
 	$current_url = wpm_get_current_url();
+	$languages   = array();
 
-	$languages = array();
 	if ( is_single() ) {
 		$languages = get_post_meta( get_the_ID(), '_languages', true );
 	}
