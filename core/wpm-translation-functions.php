@@ -93,7 +93,7 @@ function wpm_translate_url( $url, $language = '' ) {
  */
 function wpm_translate_string( $string, $language = '' ) {
 
-	if ( json_decode( $string ) ) {
+	if ( is_serialized_string( $string ) || json_decode( $string ) ) {
 		return $string;
 	}
 
