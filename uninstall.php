@@ -48,7 +48,7 @@ if ( get_option( 'wpm_uninstall_translations', '' ) ) {
 						$post_excerpt = wpm_translate_string( $result->post_excerpt, $lang );
 						$post_content = $result->post_content;
 
-						if ( is_serialized( $post_content ) ) {
+						if ( is_serialized_string( $post_content ) ) {
 							$post_content = maybe_serialize( wpm_translate_value( maybe_unserialize( $post_content ), $lang ) );
 						}
 
@@ -69,7 +69,7 @@ if ( get_option( 'wpm_uninstall_translations', '' ) ) {
 				foreach ( $results as $result ) {
 					$meta_value = $result->meta_value;
 
-					if ( is_serialized( $meta_value ) ) {
+					if ( is_serialized_string( $meta_value ) ) {
 						$meta_value = maybe_serialize( wpm_translate_value( maybe_unserialize( $meta_value ), $lang ) );
 					}
 
@@ -95,7 +95,7 @@ if ( get_option( 'wpm_uninstall_translations', '' ) ) {
 					foreach ( $results as $result ) {
 						$description = $result->description;
 
-						if ( is_serialized( $description ) ) {
+						if ( is_serialized_string( $description ) ) {
 							$description = maybe_serialize( wpm_translate_value( maybe_unserialize( $description ), $lang ) );
 						}
 
@@ -118,7 +118,7 @@ if ( get_option( 'wpm_uninstall_translations', '' ) ) {
 				foreach ( $results as $result ) {
 					$meta_value = $result->meta_value;
 
-					if ( is_serialized( $meta_value ) ) {
+					if ( is_serialized_string( $meta_value ) ) {
 						$meta_value = maybe_serialize( wpm_translate_value( maybe_unserialize( $meta_value ), $lang ) );
 					}
 
@@ -138,7 +138,7 @@ if ( get_option( 'wpm_uninstall_translations', '' ) ) {
 				foreach ( $results as $result ) {
 					$meta_value = $result->meta_value;
 
-					if ( is_serialized( $meta_value ) ) {
+					if ( is_serialized_string( $meta_value ) ) {
 						$meta_value = maybe_serialize( wpm_translate_value( maybe_unserialize( $meta_value ), $lang ) );
 					}
 
@@ -158,7 +158,7 @@ if ( get_option( 'wpm_uninstall_translations', '' ) ) {
 				foreach ( $results as $result ) {
 					$meta_value = $result->meta_value;
 
-					if ( is_serialized( $meta_value ) ) {
+					if ( is_serialized_string( $meta_value ) ) {
 						$meta_value = maybe_serialize( wpm_translate_value( maybe_unserialize( $meta_value ), $lang ) );
 					}
 
@@ -178,7 +178,7 @@ if ( get_option( 'wpm_uninstall_translations', '' ) ) {
 				foreach ( $results as $result ) {
 					$option_value = $result->option_value;
 
-					if ( is_serialized( $option_value ) ) {
+					if ( is_serialized_string( $option_value ) ) {
 						$option_value = maybe_serialize( wpm_translate_value( maybe_unserialize( $option_value ), $lang ) );
 					}
 
