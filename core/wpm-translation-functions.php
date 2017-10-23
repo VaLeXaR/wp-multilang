@@ -39,13 +39,13 @@ function wpm_translate_url( $url, $language = '' ) {
 		}
 	}
 
+	if ( preg_match( '/^.*\.php$/i', wp_parse_url( $url, PHP_URL_PATH ) ) ) {
+		return add_query_arg( 'lang', $language, $url );
+	}
+
 	$url_lang = '';
 	$path     = str_replace( $host, '', $url );
 	$path     = $path ? $path : '/';
-
-	if ( preg_match( '/^.*\.php$/i', wp_parse_url( $path, PHP_URL_PATH ) ) ) {
-		return add_query_arg( 'lang', $language, $path );
-	}
 
 	if ( preg_match( '!^/([a-z]{2})(/|$)!i', $path, $match ) ) {
 		$url_lang = $match[1];
