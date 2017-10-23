@@ -28,6 +28,7 @@ class WPM_Admin_Taxonomies {
 		add_action( 'admin_init', array( $this, 'init' ) );
 		add_action( 'created_term', array( $this, 'save_taxonomy_fields' ), 10, 3 );
 		add_action( 'edit_term', array( $this, 'save_taxonomy_fields' ), 10, 3 );
+		add_action( 'term_link', array( $this, 'translate_term_link' ), 10, 3 );
 	}
 
 
@@ -209,5 +210,17 @@ class WPM_Admin_Taxonomies {
 		} else {
 			delete_term_meta( $term_id, '_languages' );
 		}
+	}
+
+
+	public function translate_term_link( $termlink, $term, $taxonomy ) {
+		$config      = wpm_get_config();
+		$term_config = $config['taxonomies'];
+
+		if ( ! isset( $term_config[ $taxonomy ] ) || is_null( $term_config[ $taxonomy ] ) ) {
+			return $termlink;
+		}
+
+		return wpm_translate_url( $termlink, wpm_get_language() );
 	}
 }
