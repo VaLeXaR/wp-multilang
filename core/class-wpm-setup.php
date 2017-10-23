@@ -279,6 +279,10 @@ class WPM_Setup {
 				} else {
 					update_user_meta( get_current_user_id(), 'locale', $default_locale );
 				}
+			} elseif ( ! is_admin() && preg_match( '/^.*\.php$/i', wp_parse_url( $url, PHP_URL_PATH ) ) ) {
+				if ( isset( $_COOKIE['language'] ) ) {
+					$this->user_language = wpm_clean( $_COOKIE['language'] );
+				}
 			}
 		}
 	}
@@ -297,7 +301,7 @@ class WPM_Setup {
 		foreach ( $languages as $key => $value ) {
 			if ( ( $value === $user_language ) ) {
 				$locale = $key;
-				if ( $key === $default_locale && ! is_admin() && ! isset( $_REQUEST['lang'] ) ) {
+				if ( $key === $default_locale && ! is_admin() && ! isset( $_REQUEST['lang'] ) && ! preg_match( '/^.*\.php$/i', wp_parse_url( $this->site_request_uri, PHP_URL_PATH ) ) ) {
 					wp_redirect( home_url( str_replace( '/' . $user_language . '/', '/', $this->site_request_uri ) ) );
 					exit;
 				}
@@ -480,7 +484,7 @@ class WPM_Setup {
 					}
 				}
 			} else {
-				if ( $_COOKIE['language'] != $this->user_language ) {
+				if ( wpm_clean( $_COOKIE['language'] ) != $this->user_language ) {
 					wpm_setcookie( 'language', $this->user_language, time() + YEAR_IN_SECONDS );
 					do_action( 'wpm_changed_language' );
 				}
