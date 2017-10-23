@@ -301,7 +301,7 @@ class WPM_Setup {
 		foreach ( $languages as $key => $value ) {
 			if ( ( $value === $user_language ) ) {
 				$locale = $key;
-				if ( $key === $default_locale && ! is_admin() && ! isset( $_REQUEST['lang'] ) && ! preg_match( '/^.*\.php$/i', $this->site_request_uri ) ) {
+				if ( $key === $default_locale && ! is_admin() && ! isset( $_REQUEST['lang'] ) && ! preg_match( '/^.*\.php$/i', wp_parse_url( $this->site_request_uri, PHP_URL_PATH ) ) ) {
 					wp_redirect( home_url( str_replace( '/' . $user_language . '/', '/', $this->site_request_uri ) ) );
 					exit;
 				}
