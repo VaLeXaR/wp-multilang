@@ -33,12 +33,17 @@ class WPM_Meta_Box_Languages {
 		$languages = wpm_get_options();
 		$i = 0;
 		?>
-		<p>
-			<strong><?php _e( 'Show post only in:', 'wpm' ); ?></strong><br>
+		<h4><?php _e( 'Show post only in:', 'wpm' ); ?></h4>
+		<ul class="languagechecklist">
 			<?php foreach ( $languages as $language ) { if ( ! $language['enable'] ) continue; ?>
-				<label><input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $language['slug']; ?>" value="<?php esc_attr_e( $language['slug'] ); ?>"<?php if ( in_array( $language['slug'], $post_languages ) ) { ?> checked="checked"<?php } ?>><?php echo $language['name']; ?></label><br>
+				<li>
+					<label>
+						<input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $language['slug']; ?>" value="<?php esc_attr_e( $language['slug'] ); ?>"<?php if ( in_array( $language['slug'], $post_languages ) ) { ?> checked="checked"<?php } ?>>
+						<?php echo $language['name']; ?>
+					</label>
+				</li>
 				<?php $i++; } ?>
-		</p>
+		</ul>
 		<?php
 		wp_nonce_field( 'wpm_save_data', 'wpm_meta_nonce' );
 	}

@@ -28,7 +28,8 @@ class WPM_Admin_Posts {
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'init' ) );
 		add_action( 'post_submitbox_misc_actions', array( $this, 'add_lang_indicator' ) );
-		add_filter( 'preview_post_link', array( $this, 'translate_post_link' ), 0 );
+		add_filter( 'post_link', array( $this, 'translate_post_link' ), 10, 2 );
+		add_filter( 'page_link', array( $this, 'translate_page_link' ), 10, 2 );
 		new WPM_Admin_Meta_Boxes();
 	}
 
@@ -118,24 +119,6 @@ class WPM_Admin_Posts {
 
 
 	/**
-	 * Translate preview url for posts
-	 *
-	 * @param $link
-	 *
-	 * @return mixed
-	 */
-	public function translate_post_link( $link ) {
-		$languages = wpm_get_languages();
-		$lang      = wpm_get_language();
-		if ( $lang !== $languages[ wpm_get_default_locale() ] ) {
-			$link = wpm_translate_url( $link, $lang );
-		}
-
-		return $link;
-	}
-
-
-	/**
 	 * Add indicator for editing post
 	 *
 	 * @param \WP_Post $post
@@ -158,5 +141,38 @@ class WPM_Admin_Posts {
 			</div>
 			<?php
 		}
+	}
+
+	/**
+	 * Translate pages link
+	 *
+	 * @param $permalink
+	 * @param $page_id
+	 *
+	 * @return string
+	 */
+	public function translate_page_link( $permalink, $page_id ) {
+		$post = get_post( $page_id );
+
+		return $this->translate_post_link( $permalink, $post );
+	}
+
+	/**
+	 * Translate posts link
+	 *
+	 * @param $permalink
+	 * @param $post
+	 *
+	 * @return string
+	 */
+	public function translate_post_link( $permalink, $post ) {
+		$config      = wpm_get_config();
+		$post_config = $config['post_types'];
+
+		if ( ! isset( $post_config[ $post->post_type ] ) || is_null( $post_config[ $post->post_type ] ) ) {
+			return $permalink;
+		}
+
+		return wpm_translate_url( $permalink, wpm_get_language() );
 	}
 }

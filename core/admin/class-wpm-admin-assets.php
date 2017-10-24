@@ -95,13 +95,13 @@ class WPM_Admin_Assets {
 		$show_switcher = false;
 		$posts_config  = $config['post_types'];
 
-		if ( $screen->post_type && ! is_null( $posts_config [ $screen->post_type ] ) && ( ( $screen_id == $screen->post_type ) || ( 'edit-' . $screen->post_type == $screen_id ) ) ) {
+		if ( $screen->post_type && isset( $posts_config [ $screen->post_type ] ) && ! is_null( $posts_config [ $screen->post_type ] ) && ( ( $screen_id == $screen->post_type ) || ( 'edit-' . $screen->post_type == $screen_id ) ) ) {
 			$show_switcher = true;
 		}
 
 		$taxonomies_config = $config['taxonomies'];
 
-		if ( $screen->taxonomy && ! is_null( $taxonomies_config[ $screen->taxonomy ] ) && ( 'edit-' . $screen->taxonomy == $screen_id ) ) {
+		if ( $screen->taxonomy && isset( $taxonomies_config [ $screen->taxonomy ] ) && ! is_null( $taxonomies_config[ $screen->taxonomy ] ) && ( 'edit-' . $screen->taxonomy == $screen_id ) ) {
 			$show_switcher = true;
 		}
 

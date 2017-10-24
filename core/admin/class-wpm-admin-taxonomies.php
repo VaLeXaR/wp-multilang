@@ -28,6 +28,7 @@ class WPM_Admin_Taxonomies {
 		add_action( 'admin_init', array( $this, 'init' ) );
 		add_action( 'created_term', array( $this, 'save_taxonomy_fields' ), 10, 3 );
 		add_action( 'edit_term', array( $this, 'save_taxonomy_fields' ), 10, 3 );
+		add_action( 'term_link', array( $this, 'translate_term_link' ), 10, 3 );
 	}
 
 
@@ -95,7 +96,7 @@ class WPM_Admin_Taxonomies {
 			}
 
 			if ( ! empty( $output ) ) {
-				$columns .= implode( '<br />', $output );
+				$columns .= implode( ' ', $output );
 			}
 		}
 
@@ -170,16 +171,20 @@ class WPM_Admin_Taxonomies {
 		<tr class="form-field">
 			<th scope="row" valign="top"><?php _e( 'Show term only in:', 'wpm' ); ?></th>
 			<td>
-				<?php foreach ( $languages as $language ) {
-					if ( ! $language['enable'] ) {
-						continue;
+				<ul class="languagechecklist">
+					<?php foreach ( $languages as $language ) {
+						if ( ! $language['enable'] ) {
+							continue;
+						} ?>
+						<li>
+							<label>
+								<input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $language['slug']; ?>" value="<?php esc_attr_e( $language['slug'] ); ?>"<?php if ( in_array( $language['slug'], $term_languages ) ) { ?> checked="checked"<?php } ?>>
+								<?php echo $language['name']; ?>
+							</label>
+						</li>
+						<?php $i ++;
 					} ?>
-					<label><input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]"
-					              id="wpm-languages-<?php echo $language['slug']; ?>"
-					              value="<?php esc_attr_e( $language['slug'] ); ?>"<?php if ( in_array( $language['slug'], $term_languages ) ) { ?> checked="checked"<?php } ?>><?php echo $language['name']; ?>
-					</label><br>
-					<?php $i ++;
-				} ?>
+				</ul>
 			</td>
 		</tr>
 		<?php
@@ -211,5 +216,25 @@ class WPM_Admin_Taxonomies {
 		} else {
 			delete_term_meta( $term_id, '_languages' );
 		}
+	}
+
+	/**
+	 * Translate taxonomies link
+	 *
+	 * @param $termlink
+	 * @param $term
+	 * @param $taxonomy
+	 *
+	 * @return string
+	 */
+	public function translate_term_link( $termlink, $term, $taxonomy ) {
+		$config      = wpm_get_config();
+		$term_config = $config['taxonomies'];
+
+		if ( ! isset( $term_config[ $taxonomy ] ) || is_null( $term_config[ $taxonomy ] ) ) {
+			return $termlink;
+		}
+
+		return wpm_translate_url( $termlink, wpm_get_language() );
 	}
 }
