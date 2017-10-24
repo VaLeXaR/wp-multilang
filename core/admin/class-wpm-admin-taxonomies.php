@@ -212,7 +212,15 @@ class WPM_Admin_Taxonomies {
 		}
 	}
 
-
+	/**
+	 * Translate taxonomies link
+	 *
+	 * @param $termlink
+	 * @param $term
+	 * @param $taxonomy
+	 *
+	 * @return string
+	 */
 	public function translate_term_link( $termlink, $term, $taxonomy ) {
 		$config      = wpm_get_config();
 		$term_config = $config['taxonomies'];

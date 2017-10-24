@@ -143,14 +143,28 @@ class WPM_Admin_Posts {
 		}
 	}
 
-
+	/**
+	 * Translate pages link
+	 *
+	 * @param $permalink
+	 * @param $page_id
+	 *
+	 * @return string
+	 */
 	public function translate_page_link( $permalink, $page_id ) {
 		$post = get_post( $page_id );
 
 		return $this->translate_post_link( $permalink, $post );
 	}
 
-
+	/**
+	 * Translate posts link
+	 *
+	 * @param $permalink
+	 * @param $post
+	 *
+	 * @return string
+	 */
 	public function translate_post_link( $permalink, $post ) {
 		$config      = wpm_get_config();
 		$post_config = $config['post_types'];
