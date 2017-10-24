@@ -19,12 +19,11 @@ if ( ! defined( 'GUTENBERG_VERSION' ) ) {
  * @category Vendor
  * @author   VaLeXaR
  * @since 1.4.11
- * @version 1.1.0
  */
 class WPM_Gutenberg {
 
 	/**
-	 * WPM_CF7 constructor.
+	 * WPM_Gutenberg constructor.
 	 */
 	public function __construct() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_language_switcher' ), 11 );
@@ -33,12 +32,18 @@ class WPM_Gutenberg {
 
 	/**
 	 * Translate some field without PHP filters by javascript for displaying
-	 *
-	 * @param $hook
 	 */
-	public function add_language_switcher( $hook ) {
+	public function add_language_switcher() {
+		$screen       = get_current_screen();
+		$screen_id    = $screen ? $screen->id : '';
+		$config       = wpm_get_config();
+		$posts_config = $config['post_types'];
 
-		if ( count( wpm_get_languages() ) <= 1 || ! preg_match( '/(toplevel|gutenberg)_page_gutenberg(-demo)?/', $hook, $page_match ) ) {
+		if ( is_null( $screen ) || ! $screen->post_type || ! isset( $posts_config [ $screen->post_type ] ) || is_null( $posts_config [ $screen->post_type ] ) || ( $screen_id !== $screen->post_type ) ) {
+			return;
+		}
+
+		if ( count( wpm_get_languages() ) <= 1 ) {
 			return;
 		}
 
@@ -53,8 +58,8 @@ class WPM_Gutenberg {
 			  $(function() {
 				wp.api.init().done( function() {
 				if ($('#wpm-language-switcher').length === 0) {
-				      var language_switcher = wp.template( 'wpm-ls' );
-				      $('.editor-header__settings > .editor-publish-button').before(language_switcher);
+				      var language_switcher = wp.template( 'wpm-ls-customizer' );
+				      $('.editor-header__settings > .editor-publish-with-dropdown').before(language_switcher);
 				    }
 			    });
 			    

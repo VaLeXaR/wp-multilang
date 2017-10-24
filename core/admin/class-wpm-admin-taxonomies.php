@@ -171,14 +171,20 @@ class WPM_Admin_Taxonomies {
 		<tr class="form-field">
 			<th scope="row" valign="top"><?php _e( 'Show term only in:', 'wpm' ); ?></th>
 			<td>
-				<?php foreach ( $languages as $language ) {
-					if ( ! $language['enable'] ) {
-						continue;
+				<ul class="languagechecklist">
+					<?php foreach ( $languages as $language ) {
+						if ( ! $language['enable'] ) {
+							continue;
+						} ?>
+						<li>
+							<label>
+								<input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $language['slug']; ?>" value="<?php esc_attr_e( $language['slug'] ); ?>"<?php if ( in_array( $language['slug'], $term_languages ) ) { ?> checked="checked"<?php } ?>>
+								<?php echo $language['name']; ?>
+							</label>
+						</li>
+						<?php $i ++;
 					} ?>
-					<label><input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $language['slug']; ?>" value="<?php esc_attr_e( $language['slug'] ); ?>"<?php if ( in_array( $language['slug'], $term_languages ) ) { ?> checked="checked"<?php } ?>><?php echo $language['name']; ?>
-					</label><br>
-					<?php $i ++;
-				} ?>
+				</ul>
 			</td>
 		</tr>
 		<?php
