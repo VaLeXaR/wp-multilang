@@ -63,9 +63,9 @@ if ( get_option( 'wpm_uninstall_translations', '' ) ) {
 				break;
 
 			case 'post_fields' :
+				$wpdb->delete( $wpdb->postmeta, array( 'meta_key' => '_languages' ) );
 
-				$like    = '%' . $wpdb->esc_like( esc_sql( 's:' . strlen( $lang ) . ':"' . $lang . '";' ) ) . '%';
-				$results = $wpdb->get_results( $wpdb->prepare( "SELECT meta_id, meta_value FROM {$wpdb->postmeta} WHERE meta_value LIKE '%s';", $like ) );
+				$results = $wpdb->get_results( "SELECT meta_id, meta_value FROM {$wpdb->postmeta} WHERE meta_value LIKE '%![:__!]%' ESCAPE '!' OR meta_value LIKE '%{:__}%' OR meta_value LIKE '%<!--:__-->%';" );
 				foreach ( $results as $result ) {
 					$meta_value = $result->meta_value;
 
@@ -112,9 +112,10 @@ if ( get_option( 'wpm_uninstall_translations', '' ) ) {
 				break;
 
 			case 'term_fields' :
+				$wpdb->delete( $wpdb->termmeta, array( 'meta_key' => '_languages' ) );
 
-				$like    = '%' . $wpdb->esc_like( esc_sql( 's:' . strlen( $lang ) . ':"' . $lang . '";' ) ) . '%';
-				$results = $wpdb->get_results( $wpdb->prepare( "SELECT meta_id, meta_value FROM {$wpdb->termmeta} WHERE meta_value LIKE '%s';", $like ) );
+				$results = $wpdb->get_results( "SELECT meta_id, meta_value FROM {$wpdb->termmeta} WHERE meta_value LIKE '%![:__!]%' ESCAPE '!' OR meta_value LIKE '%{:__}%' OR meta_value LIKE '%<!--:__-->%';" );
+
 				foreach ( $results as $result ) {
 					$meta_value = $result->meta_value;
 
@@ -133,8 +134,8 @@ if ( get_option( 'wpm_uninstall_translations', '' ) ) {
 
 			case 'comment_fields' :
 
-				$like    = '%' . $wpdb->esc_like( esc_sql( 's:' . strlen( $lang ) . ':"' . $lang . '";' ) ) . '%';
-				$results = $wpdb->get_results( $wpdb->prepare( "SELECT meta_id, meta_value FROM {$wpdb->commentmeta} WHERE meta_value LIKE '%s';", $like ) );
+				$results = $wpdb->get_results( "SELECT meta_id, meta_value FROM {$wpdb->commentmeta} WHERE meta_value LIKE '%s' OR meta_value LIKE '%![:__!]%' ESCAPE '!' OR meta_value LIKE '%{:__}%' OR meta_value LIKE '%<!--:__-->%';" );
+
 				foreach ( $results as $result ) {
 					$meta_value = $result->meta_value;
 
@@ -153,8 +154,8 @@ if ( get_option( 'wpm_uninstall_translations', '' ) ) {
 
 			case 'user_fields' :
 
-				$like    = '%' . $wpdb->esc_like( esc_sql( 's:' . strlen( $lang ) . ':"' . $lang . '";' ) ) . '%';
-				$results = $wpdb->get_results( $wpdb->prepare( "SELECT umeta_id, meta_value FROM {$wpdb->usermeta} WHERE meta_value LIKE '%s';", $like ) );
+				$results = $wpdb->get_results( "SELECT umeta_id, meta_value FROM {$wpdb->usermeta} WHERE meta_value LIKE '%![:__!]%' ESCAPE '!' OR meta_value LIKE '%{:__}%' OR meta_value LIKE '%<!--:__-->%';" );
+
 				foreach ( $results as $result ) {
 					$meta_value = $result->meta_value;
 
@@ -173,8 +174,8 @@ if ( get_option( 'wpm_uninstall_translations', '' ) ) {
 
 			case 'options' :
 
-				$like    = '%' . $wpdb->esc_like( esc_sql( 's:' . strlen( $lang ) . ':"' . $lang . '";' ) ) . '%';
-				$results = $wpdb->get_results( $wpdb->prepare( "SELECT option_id, option_value FROM {$wpdb->options} WHERE option_value LIKE '%s';", $like ) );
+				$results = $wpdb->get_results( "SELECT option_id, option_value FROM {$wpdb->options} WHERE option_value LIKE '%![:__!]%' ESCAPE '!' OR option_value LIKE '%{:__}%' OR option_value LIKE '%<!--:__-->%';" );
+
 				foreach ( $results as $result ) {
 					$option_value = $result->option_value;
 
