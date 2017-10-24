@@ -26,25 +26,14 @@ class WPM_Options {
 	 * WPM_Options constructor.
 	 */
 	public function __construct() {
-		$config = wpm_get_config();
+		$config               = wpm_get_config();
 		$this->options_config = $config['options'];
-		$this->init();
-	}
-
-
-	/**
-	 * Set filters for options in config
-	 */
-	public function init() {
 
 		foreach ( $this->options_config as $key => $option ) {
 			add_filter( "option_{$key}", 'wpm_translate_value', 0 );
 			add_action( "add_option_{$key}", 'update_option', 99, 2 );
 			add_filter( "pre_update_option_{$key}", array( $this, 'wpm_update_option' ), 99, 3 );
 		}
-
-		add_filter( 'option_date_format', array( $this, 'set_date_format' ) );
-		add_filter( 'option_time_format', array( $this, 'set_time_format' ) );
 	}
 
 
@@ -77,43 +66,5 @@ class WPM_Options {
 		$new_value = wpm_ml_value_to_string( $new_value );
 
 		return $new_value;
-	}
-
-
-	/**
-	 * Set date format for current language
-	 *
-	 * @param $value
-	 *
-	 * @return string
-	 */
-	public function set_date_format( $value ) {
-		$options = wpm_get_options();
-		$locale  = get_locale();
-
-		if ( ( ! is_admin() || wp_doing_ajax() ) && $options[ $locale ]['date'] ) {
-			return $options[ $locale ]['date'];
-		}
-
-		return $value;
-	}
-
-
-	/**
-	 * Set time format for current language
-	 *
-	 * @param $value
-	 *
-	 * @return string
-	 */
-	public function set_time_format( $value ) {
-		$options = wpm_get_options();
-		$locale  = get_locale();
-
-		if ( ( ! is_admin() || wp_doing_ajax() ) && $options[ $locale ]['time'] ) {
-			return $options[ $locale ]['time'];
-		}
-
-		return $value;
 	}
 }

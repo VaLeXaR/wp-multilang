@@ -119,6 +119,8 @@ class WPM_Setup {
 		add_action( 'request', array( $this, 'set_home_page' ) );
 		add_filter( 'rest_url', array( $this, 'fix_rest_url' ) );
 		add_filter( 'get_available_languages', array( $this, 'get_available_languages' ) );
+		add_filter( 'option_date_format', array( $this, 'set_date_format' ) );
+		add_filter( 'option_time_format', array( $this, 'set_time_format' ) );
 	}
 
 
@@ -604,5 +606,43 @@ class WPM_Setup {
 		}
 
 		return $languages;
+	}
+
+
+	/**
+	 * Set date format for current language
+	 *
+	 * @param $value
+	 *
+	 * @return string
+	 */
+	public function set_date_format( $value ) {
+		$options = $this->get_options();
+		$locale  = get_locale();
+
+		if ( ( ! is_admin() || wp_doing_ajax() ) && $options[ $locale ]['date'] ) {
+			return $options[ $locale ]['date'];
+		}
+
+		return $value;
+	}
+
+
+	/**
+	 * Set time format for current language
+	 *
+	 * @param $value
+	 *
+	 * @return string
+	 */
+	public function set_time_format( $value ) {
+		$options = $this->get_options();
+		$locale  = get_locale();
+
+		if ( ( ! is_admin() || wp_doing_ajax() ) && $options[ $locale ]['time'] ) {
+			return $options[ $locale ]['time'];
+		}
+
+		return $value;
 	}
 }
