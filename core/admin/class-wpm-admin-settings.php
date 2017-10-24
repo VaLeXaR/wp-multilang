@@ -112,8 +112,10 @@ class WPM_Admin_Settings {
 				<th class="wpm-lang-locale"><?php esc_attr_e( 'Locale', 'wpm' ); ?></th>
 				<th class="wpm-lang-slug"><?php esc_attr_e( 'Slug *', 'wpm' ); ?></th>
 				<th class="wpm-lang-name"><?php esc_attr_e( 'Name', 'wpm' ); ?></th>
+				<th class="wpm-lang-locale"><?php esc_attr_e( 'Date Format' ); ?></th>
+				<th class="wpm-lang-locale"><?php esc_attr_e( 'Time Format' ); ?></th>
 				<th class="wpm-lang-flag"><?php esc_attr_e( 'Flag', 'wpm' ); ?></th>
-				<th class="wpm-lang-delete"><?php esc_attr_e( 'Delete', 'wpm' ); ?></th>
+				<th class="wpm-lang-delete"><?php esc_attr_e( 'Delete' ); ?></th>
 			</tr>
 			</thead>
 			<tbody>
@@ -144,6 +146,12 @@ class WPM_Admin_Settings {
 					<td class="wpm-lang-name">
 						<input type="text" name="wpm_languages[<?php echo $i; ?>][name]" value="<?php esc_attr_e( $language['name'] ); ?>" title="<?php esc_attr_e( 'Name', 'wpm' ); ?>" placeholder="<?php esc_attr_e( 'Name', 'wpm' ); ?>">
 					</td>
+					<td class="wpm-lang-date">
+						<input type="text" name="wpm_languages[<?php echo $i; ?>][date]" value="<?php esc_attr_e( $language['date'] ); ?>" title="<?php esc_attr_e( 'Date Format' ); ?>" placeholder="<?php esc_attr_e( get_option( 'date_format' ) ); ?>">
+					</td>
+					<td class="wpm-lang-time">
+						<input type="text" name="wpm_languages[<?php echo $i; ?>][time]" value="<?php esc_attr_e( $language['time'] ); ?>" title="<?php esc_attr_e( 'Time Format' ); ?>" placeholder="<?php esc_attr_e( get_option( 'time_format' ) ); ?>">
+					</td>
 					<td class="wpm-lang-flag">
 						<select class="wpm-flags" name="wpm_languages[<?php echo $i; ?>][flag]" title="<?php esc_attr_e( 'Flag', 'wpm' ); ?>">
 							<option value=""><?php esc_attr_e( '&mdash; Select &mdash;' ); ?></option>
@@ -163,7 +171,7 @@ class WPM_Admin_Settings {
 						<?php } elseif ( 'en_US' === $key ) { ?>
 							<?php esc_html_e( 'Built-in', 'wpm' ); ?>
 						<?php } elseif ( ! is_multisite() || is_super_admin() ) { ?>
-							<button type="button" class="button button-link delete-language" data-locale="<?php echo $key; ?>"><?php esc_attr_e( 'Delete', 'wpm' ); ?></button>
+							<button type="button" class="button button-link delete-language" data-locale="<?php echo $key; ?>"><?php esc_attr_e( 'Delete' ); ?></button>
 						<?php } ?>
 					</td>
 				</tr>
@@ -177,8 +185,10 @@ class WPM_Admin_Settings {
 				<th class="wpm-lang-locale"><?php esc_attr_e( 'Locale', 'wpm' ); ?></th>
 				<th class="wpm-lang-slug"><?php esc_attr_e( 'Slug *', 'wpm' ); ?></th>
 				<th class="wpm-lang-name"><?php esc_attr_e( 'Name', 'wpm' ); ?></th>
+				<th class="wpm-lang-locale"><?php esc_attr_e( 'Date Format' ); ?></th>
+				<th class="wpm-lang-locale"><?php esc_attr_e( 'Time Format' ); ?></th>
 				<th class="wpm-lang-flag"><?php esc_attr_e( 'Flag', 'wpm' ); ?></th>
-				<th class="wpm-lang-delete"><?php esc_attr_e( 'Delete', 'wpm' ); ?></th>
+				<th class="wpm-lang-delete"><?php esc_attr_e( 'Delete' ); ?></th>
 			</tr>
 			</tfoot>
 		</table>
@@ -232,6 +242,12 @@ class WPM_Admin_Settings {
 				</td>
 				<td class="wpm-lang-name">
 					<input type="text" name="wpm_languages[{{ data.count }}][name]" value="{{ data.native_name }}" title="<?php esc_attr_e( 'Name', 'wpm' ); ?>" placeholder="<?php esc_attr_e( 'Name', 'wpm' ); ?>">
+				</td>
+				<td class="wpm-lang-date">
+					<input type="text" name="wpm_languages[{{ data.count }}][date]" value="" title="<?php esc_attr_e( 'Date Format' ); ?>" placeholder="<?php esc_attr_e( get_option( 'date_format' ) ); ?>">
+				</td>
+				<td class="wpm-lang-time">
+					<input type="text" name="wpm_languages[{{ data.count }}][time]" value="" title="<?php esc_attr_e( 'Time Format' ); ?>" placeholder="<?php esc_attr_e( get_option( 'time_format' ) ); ?>">
 				</td>
 				<td class="wpm-lang-flag">
 					<select class="wpm-flags" name="wpm_languages[{{ data.count }}][flag]" title="<?php esc_attr_e( 'Flag', 'wpm' ); ?>">
@@ -325,6 +341,8 @@ class WPM_Admin_Settings {
 					'enable' => $item['enable'] ? 1 : 0,
 					'slug'   => sanitize_title( $item['slug'] ),
 					'name'   => $item['name'],
+					'date'   => $item['date'],
+					'time'   => $item['time'],
 					'flag'   => $item['flag'],
 				);
 
