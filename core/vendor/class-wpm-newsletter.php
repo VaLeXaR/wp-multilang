@@ -27,10 +27,10 @@ class WPM_Newsletter {
 	 */
 	public function __construct() {
 		add_filter( 'wpm_option_newsletter_profile_config', array( $this, 'add_options_config' ) );
-		add_filter( 'newsletter_message_subject', 'wpm_translate_string' );
-		add_filter( 'newsletter_message_html', 'wpm_translate_string' );
 		add_action( 'admin_notices', array( $this, 'add_notice' ) );
 		add_action( 'init', array( $this, 'translate_options' ) );
+		add_filter( 'newsletter_user_subscribe', array( $this, 'save_profile_20' ) );
+		add_filter( 'newsletter_replace', array($this, 'translate_email'), 10, 2 );
 	}
 
 
@@ -80,6 +80,23 @@ class WPM_Newsletter {
 		if (class_exists( 'NewsletterLock')) {
 			\NewsletterLock::$instance->options = wpm_translate_value( \NewsletterLock::$instance->options );
 		}
+	}
+
+
+	public function save_profile_20( $data ) {
+		$data['profile_20'] = wpm_get_language();
+
+		return $data;
+	}
+
+
+	public function translate_email( $text, $user ) {
+
+		if ( is_object( $user) && $user->profile_20 ) {
+			$text = wpm_translate_string( $text, $user->profile_20 );
+		}
+
+		return $text;
 	}
 }
 
