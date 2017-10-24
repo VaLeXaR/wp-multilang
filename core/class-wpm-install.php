@@ -86,6 +86,8 @@ class WPM_Install {
 		foreach ( wpm_get_installed_languages() as $language ) {
 			$languages[ $language ] = array(
 				'name'   => $available_translations[ $language ]['native_name'],
+				'date'   => '',
+				'time'   => '',
 				'slug'   => current( $available_translations[ $language ]['iso'] ),
 				'flag'   => current( $available_translations[ $language ]['iso'] ),
 				'enable' => 1,
