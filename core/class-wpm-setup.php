@@ -619,7 +619,7 @@ class WPM_Setup {
 		$options = $this->get_options();
 		$locale  = get_locale();
 
-		if ( $options[ $locale ]['date'] ) {
+		if ( isset( $options[ $locale ]['date'] ) && $options[ $locale ]['date'] ) {
 			return $options[ $locale ]['date'];
 		}
 
@@ -638,7 +638,7 @@ class WPM_Setup {
 		$options = $this->get_options();
 		$locale  = get_locale();
 
-		if ( $options[ $locale ]['time'] ) {
+		if ( isset( $options[ $locale ]['time'] ) && $options[ $locale ]['time'] ) {
 			return $options[ $locale ]['time'];
 		}
 
