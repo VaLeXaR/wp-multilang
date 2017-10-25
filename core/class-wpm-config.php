@@ -65,12 +65,19 @@ class WPM_Config {
 	 * Load configs from WPM
 	 */
 	static public function load_core_configs() {
-		$config_path = dirname( WPM_PLUGIN_FILE ) . '/configs/';
-		foreach ( glob( $config_path . '*.json' ) as $config_file ) {
+		$plugins_config_path = dirname( WPM_PLUGIN_FILE ) . '/configs/plugins/';
+		foreach ( glob( $plugins_config_path . '*.json' ) as $config_file ) {
 			$config_name = pathinfo( $config_file, PATHINFO_FILENAME );
 			if ( in_array( $config_name, self::$active_plugins, true ) && ! isset( $config_files[ $config_name ] ) ) {
 				self::$config_files[ $config_name ] = $config_file;
 			}
+		}
+
+		$theme             = wp_get_theme();
+		$theme_name        = $theme->get_template();
+		$theme_config_file = dirname( WPM_PLUGIN_FILE ) . '/configs/themes/' . $theme_name . '.json';
+		if ( file_exists( $theme_config_file ) ) {
+			self::$config_files[ 'theme_' . $theme_name ] = $theme_config_file;
 		}
 	}
 
