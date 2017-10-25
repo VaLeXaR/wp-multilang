@@ -29,12 +29,11 @@ function wpm_translate_url( $url, $language = '' ) {
 		return $url;
 	}
 
-	$locale         = get_locale();
-	$default_locale = wpm_get_default_locale();
-	$languages      = wpm_get_languages();
+	$locale    = get_locale();
+	$languages = wpm_get_languages();
 
 	if ( $language ) {
-		if ( ( $language === $languages[ $locale ] ) || ! in_array( $language, $languages, true ) ) {
+		if ( ( ( $language === $languages[ $locale ] ) && ! is_admin() ) || ! in_array( $language, $languages, true ) ) {
 			return $url;
 		}
 	}
@@ -51,7 +50,8 @@ function wpm_translate_url( $url, $language = '' ) {
 		$url_lang = $match[1];
 	}
 
-	$new_path = '';
+	$default_locale = wpm_get_default_locale();
+	$new_path       = '';
 
 	if ( $language ) {
 
