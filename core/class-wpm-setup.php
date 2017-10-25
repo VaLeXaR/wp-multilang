@@ -619,7 +619,7 @@ class WPM_Setup {
 		$options = $this->get_options();
 		$locale  = get_locale();
 
-		if ( ( ! is_admin() || wp_doing_ajax() ) && $options[ $locale ]['date'] ) {
+		if ( $options[ $locale ]['date'] ) {
 			return $options[ $locale ]['date'];
 		}
 
@@ -638,7 +638,7 @@ class WPM_Setup {
 		$options = $this->get_options();
 		$locale  = get_locale();
 
-		if ( ( ! is_admin() || wp_doing_ajax() ) && $options[ $locale ]['time'] ) {
+		if ( $options[ $locale ]['time'] ) {
 			return $options[ $locale ]['time'];
 		}
 
