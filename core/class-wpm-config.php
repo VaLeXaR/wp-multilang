@@ -34,7 +34,7 @@ class WPM_Config {
 	 * Load configs from plugins
 	 */
 	static public function load_plugins_config() {
-		self::$config_files[] = dirname( WPM_PLUGIN_FILE ) . '/core-config.json';
+		self::$config_files[] = WPM_ABSPATH . 'core-config.json';
 
 		require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
@@ -65,7 +65,7 @@ class WPM_Config {
 	 * Load configs from WPM
 	 */
 	static public function load_core_configs() {
-		$plugins_config_path = dirname( WPM_PLUGIN_FILE ) . '/configs/plugins/';
+		$plugins_config_path = WPM_ABSPATH . 'configs/plugins/';
 		foreach ( glob( $plugins_config_path . '*.json' ) as $config_file ) {
 			$config_name = pathinfo( $config_file, PATHINFO_FILENAME );
 			if ( in_array( $config_name, self::$active_plugins, true ) && ! isset( $config_files[ $config_name ] ) ) {
@@ -75,7 +75,7 @@ class WPM_Config {
 
 		$theme             = wp_get_theme();
 		$theme_name        = $theme->get_template();
-		$theme_config_file = dirname( WPM_PLUGIN_FILE ) . '/configs/themes/' . $theme_name . '.json';
+		$theme_config_file = WPM_ABSPATH . 'configs/themes/' . $theme_name . '.json';
 		if ( file_exists( $theme_config_file ) ) {
 			self::$config_files[ 'theme_' . $theme_name ] = $theme_config_file;
 		}
