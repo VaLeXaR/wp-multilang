@@ -1,59 +1,59 @@
 table.wpm-languages {
-  text-align: center;
+	text-align: center;
 
-  th {
-    text-align: center;
-  }
+	th {
+		text-align: center;
+	}
 
-  tbody {
+	tbody {
 
-    tr > td:first-child {
-      cursor: move;
-    }
-  }
+		tr > td:first-child {
+			cursor: move;
+		}
+	}
 
-  .ui-sortable-helper {
-    background-color: $white;
-    display: flex;
-  }
+	.ui-sortable-helper {
+		background-color: $white;
+		display: flex;
+	}
 
-  .wpm-lang-order {
-    width: 6%;
-  }
+	.wpm-lang-order {
+		width: 6%;
+	}
 
-  .wpm-lang-default {
-    width: 6%;
-  }
+	.wpm-lang-default {
+		width: 6%;
+	}
 
-  .wpm-lang-status {
-    width: 6%;
-  }
+	.wpm-lang-status {
+		width: 6%;
+	}
 
-  .wpm-lang-locale {
-    width: 10%;
-  }
+	.wpm-lang-locale {
+		width: 10%;
+	}
 
-  .wpm-lang-slug {
-    width: 20%;
-  }
+	.wpm-lang-slug {
+		width: 20%;
+	}
 
-  .wpm-lang-name {
-    width: 20%;
-  }
+	.wpm-lang-name {
+		width: 20%;
+	}
 
-  .wpm-lang-flag {
-    width: 20%;
-  }
+	.wpm-lang-flag {
+		width: 20%;
+	}
 
-  .wpm-lang-delete {
-    width: 10%;
-  }
+	.wpm-lang-delete {
+		width: 10%;
+	}
 }
 
 .wp-core-ui .button-link.delete-language {
-  color: $red;
+	color: $red;
 }
 
 #languages {
-  width: 100px;
+	width: 100px;
 }

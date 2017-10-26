@@ -1,84 +1,84 @@
 .switcher-list {
-  list-style: none;
-  margin-bottom: 0;
-  padding-left: 0;
+	list-style: none;
+	margin-bottom: 0;
+	padding-left: 0;
 
-  a {
-    color: lighten($black, 20%);
+	a {
+		color: lighten($black, 20%);
 
-    &:hover {
-      color: $black;
-    }
+		&:hover {
+			color: $black;
+		}
 
-    img {
-      display: inline-block;
-      margin-right: 3px;
-    }
-  }
+		img {
+			display: inline-block;
+			margin-right: 3px;
+		}
+	}
 
-  .active {
+	.active {
 
-    a {
-      color: $black;
-    }
-  }
+		a {
+			color: $black;
+		}
+	}
 }
 
 .switcher-dropdown {
-  list-style: none;
-  margin-bottom: 0;
-  padding-left: 0;
+	list-style: none;
+	margin-bottom: 0;
+	padding-left: 0;
 
-  span {
+	span {
 
-    img {
-      display: inline-block;
-      margin-right: 3px;
-    }
-  }
+		img {
+			display: inline-block;
+			margin-right: 3px;
+		}
+	}
 
-  a {
-    color: lighten($black, 20%);
+	a {
+		color: lighten($black, 20%);
 
-    &:hover {
-      color: $black;
-    }
+		&:hover {
+			color: $black;
+		}
 
-    img {
-      display: inline-block;
-      margin-right: 3px;
-    }
-  }
+		img {
+			display: inline-block;
+			margin-right: 3px;
+		}
+	}
 
-  .language-dropdown {
-    display: none;
-    left: 0;
-    list-style: none;
-    margin-bottom: 0;
-    margin-left: 0;
-    padding-left: 0;
-    position: absolute;
-    top: 100%;
-  }
+	.language-dropdown {
+		display: none;
+		left: 0;
+		list-style: none;
+		margin-bottom: 0;
+		margin-left: 0;
+		padding-left: 0;
+		position: absolute;
+		top: 100%;
+	}
 
-  > li {
-    position: relative;
+	> li {
+		position: relative;
 
-    &:hover {
+		&:hover {
 
-      .language-dropdown {
-        display: block;
-      }
-    }
-  }
+			.language-dropdown {
+				display: block;
+			}
+		}
+	}
 
-  .item-language-main {
+	.item-language-main {
 
-    > span {
+		> span {
 
-      &:hover {
-        cursor: pointer;
-      }
-    }
-  }
+			&:hover {
+				cursor: pointer;
+			}
+		}
+	}
 }

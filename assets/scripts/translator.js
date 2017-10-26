@@ -26,7 +26,7 @@ var wpm_translator = {
 
   string_to_ml_array: function (text) {
 
-    if( Object.prototype.toString.call(text) !== '[object String]' ) {
+    if (Object.prototype.toString.call(text) !== '[object String]') {
       return text;
     }
 

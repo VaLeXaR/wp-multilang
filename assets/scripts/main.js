@@ -51,8 +51,8 @@
 
     $('#WPLANG').parents('tr').hide();
 
-    $('#add_lang').click(function(){
-      var t_language = wp.template( 'wpm-add-lang' );
+    $('#add_lang').click(function () {
+      var t_language = wp.template('wpm-add-lang');
       var language_val = $('#wpm-available-translations').val();
       if (!language_val) {
         return false;
