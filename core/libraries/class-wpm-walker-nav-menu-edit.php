@@ -1,5 +1,9 @@
 <?php
 namespace WPM\Core\Libraries;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
+}
 /**
  * Custom Walker for Nav Menu Editor
  *

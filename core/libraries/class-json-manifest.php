@@ -1,6 +1,10 @@
 <?php
 namespace WPM\Core\Libraries;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
+}
+
 /**
  * Get paths for assets
  */
