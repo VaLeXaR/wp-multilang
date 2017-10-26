@@ -106,7 +106,6 @@ wpm_translate_url ($url, $language = ''); // translate url
 wpm_translate_string ($string, $language = ''); // translate multilingual string
 wpm_translate_value ($value, $language = ''); // translate multidimensional array with multilingual strings   
 ```
-Standard translates all record types, taxonomies, custom fields. Even if you turn off translation for a particular type of account, you will only see its translation.
 
 Supports automatically redirect to the user's browser language, if he went to the site for the first time.
 
@@ -242,7 +241,6 @@ wpm_translate_url( $url, $language = '' ); // translate url
 wpm_translate_string( $string, $language = '' ); // translate multilingual string
 wpm_translate_value( $value, $language = '' ); // translate multidimensional array with multilingual strings
 ```
-Стандартно перекладає всі типи записів, таксономій, користувацьких полів. Навіть якщо ви вимкнете переклад для певного типу запису, ви будете бачити лише його переклад.
 
 Підтримує автоматичну переадресацію на мову браузера користувача, якщо він зайшов на сайт вперше.
 
