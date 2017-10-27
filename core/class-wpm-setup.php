@@ -500,40 +500,28 @@ class WPM_Setup {
 	 * @return null|string
 	 */
 	private function get_browser_language() {
-		if ( ! isset( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) ) {
-			return null;
-		}
 
-		if ( ! preg_match_all( '#([^;,]+)(;[^,0-9]*([0-9\.]+)[^,]*)?#i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches, PREG_SET_ORDER ) ) {
-			return null;
-		}
+		$detect = '';
 
-		$prefered_languages = array();
-		$priority           = 1.0;
+		if ( isset( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) && $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) {
+			$browser_languages = explode( ',', $_SERVER['HTTP_ACCEPT_LANGUAGE'] );
+			$languages         = $this->get_languages();
 
-		foreach ( $matches as $match ) {
-			if ( ! isset( $match[3] ) ) {
-				$pr       = $priority;
-				$priority -= 0.001;
-			} else {
-				$pr = floatval( $match[3] );
-			}
-			$prefered_languages[ str_replace( '-', '_', $match[1] ) ] = $pr;
-		}
+			foreach ( $browser_languages as $browser_language ) {
 
-		arsort( $prefered_languages, SORT_NUMERIC );
+				if ( in_array( $browser_language, $languages, true ) ) {
+					$detect = $browser_language;
+					break;
+				}
 
-		$languages = $this->get_languages();
-
-		foreach ( $prefered_languages as $language => $priority ) {
-			if ( in_array( $language, $languages, true ) ) {
-				return $language;
-			} elseif ( isset( $languages[ $language ] ) ) {
-				return $languages[ $language ];
+				if ( isset( $languages[ $browser_language ] ) ) {
+					$detect = $languages[ $browser_language ];
+					break;
+				}
 			}
 		}
 
-		return null;
+		return $detect;
 	}
 
 	/**
