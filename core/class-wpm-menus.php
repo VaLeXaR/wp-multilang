@@ -27,7 +27,7 @@ class WPM_Menus {
 		add_filter( 'wp_setup_nav_menu_item', array( $this, 'translate_menu_url' ) );
 		add_filter( 'customize_nav_menu_available_items', array( $this, 'filter_menus' ), 0 );
 		add_filter( 'customize_nav_menu_searched_items', array( $this, 'filter_menus' ), 0 );
-		add_filter( 'wp_nav_menu_items', array( $this, 'add_languages_to_menu' ) );
+		add_filter( 'wp_nav_menu_items', array( $this, 'add_languages_to_menu' ), 5 );
 	}
 
 	/**
@@ -189,24 +189,14 @@ class WPM_Menus {
 
 		foreach ( $menu_items as $key => $item ) {
 
-			if ( strstr( $item, '#wpm-languages' ) ) {
+			if ( preg_match( '/^.*href="#wpm-languages".*$/u', $item ) ) {
 
-				$doc = new \DOMDocument();
-				// start libxml error managent
-				// modify state
-				$libxml_previous_state = libxml_use_internal_errors( true );
-				@$doc->loadHTML( '<?xml encoding="' . strtolower( get_bloginfo( 'charset' ) ) . '" ?>' . $item );
-				// handle errors
-				libxml_clear_errors();
-				// restore
-				libxml_use_internal_errors( $libxml_previous_state );
-				// end libxml error management
+				$menu_id = 0;
 
-				$list_item   = $doc->getElementsByTagName( 'li' )->item( 0 );
-				$list_id     = $list_item->getAttribute( 'id' );
-				$menu_id     = preg_replace( '/[^0-9]+/', '', $list_id );
-				$link        = $doc->getElementsByTagName( 'a' )->item( 0 );
-				$link_text   = $link->textContent;
+				if ( preg_match( '/<li id=".+?(\d+)"/u', $item, $matches ) ) {
+					$menu_id = $matches[1];
+				}
+
 				$languages   = wpm_get_languages();
 				$options     = wpm_get_options();
 				$current_url = wpm_get_current_url();
@@ -225,13 +215,11 @@ class WPM_Menus {
 						$language_string .= '<span>' . esc_attr( $options[ $locale ]['name'] ) . '</span>';
 					}
 
-					$new_item    = str_replace( $link_text, $language_string, $item );
-					$new_item    = str_replace( $list_id, 'menu-item-language-' . $language, $new_item );
-					$new_items[] = str_replace( '#wpm-languages', esc_url( wpm_translate_url( $current_url, $language ) ), $new_item );
+					$new_item = preg_replace( '/<a href="[^"]+">[^@]+<\/a>/', '<a href="' . esc_url( wpm_translate_url( $current_url, $language ) ) . '">' . $language_string . '</a>', $item );
+					$new_items[] = str_replace( $menu_id, 'language-' . $language, $new_item );
 				}
 
 				$menu_items = wpm_array_insert_after( $menu_items, $key, $new_items );
-				unset( $doc );
 				unset( $menu_items[ $key ] );
 			}// End if().
 		}// End foreach().
