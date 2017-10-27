@@ -9,7 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Installation related functions and actions.
  *
- * @author   VaLeXaR
  * @category Admin
  * @package  WPMPlugin/Classes
  */

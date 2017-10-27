@@ -2,10 +2,8 @@
 /**
  * Translate WP menus.
  *
- * @author   VaLeXaR
  * @category Class
  * @package  WPM/Core
- * @version  1.1.0
  */
 
 namespace WPM\Core;
