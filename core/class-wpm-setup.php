@@ -426,7 +426,7 @@ class WPM_Setup {
 	public function load_integrations() {
 		$integrations_path = ( dirname( WPM_PLUGIN_FILE ) . '/core/integrations/' );
 		foreach ( glob( $integrations_path . '*.php' ) as $integration_file ) {
-			if ( apply_filters( 'wpm_load_integrations_' . str_replace( '-', '_', basename( $integration_file, '.php' ) ), true ) ) {
+			if ( apply_filters( 'wpm_load_integration_' . str_replace( '-', '_', basename( $integration_file, '.php' ) ), true ) ) {
 				if ( $integration_file && is_readable( $integration_file ) ) {
 					include_once( $integration_file );
 				}
