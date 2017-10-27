@@ -3,7 +3,7 @@
  * Class for capability with Max Mega Menu
  */
 
-namespace WPM\Core\Vendor;
+namespace WPM\Core\Integrations;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -15,10 +15,9 @@ if ( ! defined( 'MEGAMENU_VERSION' ) ) {
 
 /**
  * Class WPM_Megamenu
- * @package  WPM\Core\Vendor
- * @category Vendor
+ * @package  WPM\Core\Integrations
+ * @category Integrations
  * @author   VaLeXaR
- * @since    1.3.0
  */
 class WPM_Megamenu {
 

@@ -3,7 +3,7 @@
  * Class for capability with Contact Form 7
  */
 
-namespace WPM\Core\Vendor;
+namespace WPM\Core\Integrations;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -15,8 +15,8 @@ if ( ! defined( 'WPCF7_VERSION' ) ) {
 
 /**
  * Class WPM_CF7
- * @package  WPM\Core\Vendor
- * @category Vendor
+ * @package  WPM\Core\Integrations
+ * @category Integrations
  * @author   VaLeXaR
  */
 class WPM_CF7 {

@@ -3,7 +3,7 @@
  * Class for capability with Yoast Seo Plugin
  */
 
-namespace WPM\Core\Vendor;
+namespace WPM\Core\Integrations;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -15,10 +15,9 @@ if ( ! defined( 'WPSEO_VERSION' ) ) {
 
 /**
  * @class    WPM_Yoast_Seo
- * @package  WPM\Core\Vendor
- * @category Vendor
+ * @package  WPM\Core\Integrations
+ * @category Integrations
  * @author   VaLeXaR
- * @version  1.0.2
  */
 class WPM_Yoast_Seo {
 

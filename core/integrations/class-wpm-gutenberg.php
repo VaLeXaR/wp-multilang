@@ -3,7 +3,7 @@
  * Class for capability with Gutenberg editor
  */
 
-namespace WPM\Core\Vendor;
+namespace WPM\Core\Integrations;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -15,10 +15,9 @@ if ( ! defined( 'GUTENBERG_VERSION' ) ) {
 
 /**
  * Class WPM_Gutenberg
- * @package  WPM\Core\Vendor
- * @category Vendor
+ * @package  WPM\Core\Integrations
+ * @category Integrations
  * @author   VaLeXaR
- * @since 1.4.11
  */
 class WPM_Gutenberg {
 

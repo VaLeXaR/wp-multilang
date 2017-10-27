@@ -110,7 +110,7 @@ class WPM_Setup {
 		add_action( 'after_switch_theme', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
 		add_action( 'activated_plugin', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
 		add_action( 'upgrader_process_complete', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
-		add_action( 'wpm_init', array( $this, 'load_vendor' ) );
+		add_action( 'wpm_init', array( $this, 'load_integrations' ) );
 		add_action( 'template_redirect', array( $this, 'set_not_found' ) );
 		add_action( 'plugins_loaded', array( $this, 'set_locale' ), 0 );
 		add_action( 'parse_request', array( $this, 'setup_query_var' ), 0 );
@@ -421,14 +421,14 @@ class WPM_Setup {
 
 
 	/**
-	 * Load vendor classes
+	 * Load integration classes
 	 */
-	public function load_vendor() {
-		$vendor_path = ( dirname( WPM_PLUGIN_FILE ) . '/core/vendor/' );
-		foreach ( glob( $vendor_path . '*.php' ) as $vendor_file ) {
-			if ( apply_filters( 'wpm_load_vendor_' . str_replace( '-', '_', basename( $vendor_file, '.php' ) ), true ) ) {
-				if ( $vendor_file && is_readable( $vendor_file ) ) {
-					include_once( $vendor_file );
+	public function load_integrations() {
+		$integrations_path = ( dirname( WPM_PLUGIN_FILE ) . '/core/integrations/' );
+		foreach ( glob( $integrations_path . '*.php' ) as $integration_file ) {
+			if ( apply_filters( 'wpm_load_integrations_' . str_replace( '-', '_', basename( $integration_file, '.php' ) ), true ) ) {
+				if ( $integration_file && is_readable( $integration_file ) ) {
+					include_once( $integration_file );
 				}
 			}
 		}

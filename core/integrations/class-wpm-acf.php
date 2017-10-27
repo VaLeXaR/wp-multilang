@@ -3,7 +3,7 @@
  * Class for capability with Advanced Custom Fields Plugin
  */
 
-namespace WPM\Core\Vendor;
+namespace WPM\Integrations\Integrations;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -16,10 +16,9 @@ if ( ! class_exists( 'acf' ) ) {
 
 /**
  * @class    WPM_Acf
- * @package  WPM\Core\Vendor
- * @category Vendor
+ * @package  WPM\Core\Integrations
+ * @category Integrations
  * @author   VaLeXaR
- * @version  1.1.3
  */
 class WPM_Acf {
 

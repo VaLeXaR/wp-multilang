@@ -3,7 +3,7 @@
  * Class for capability with Contact Form 7
  */
 
-namespace WPM\Core\Vendor;
+namespace WPM\Core\Integrations;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

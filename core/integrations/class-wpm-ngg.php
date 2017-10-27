@@ -3,7 +3,7 @@
  * Class for capability with NextGEN Gallery
  */
 
-namespace WPM\Core\Vendor;
+namespace WPM\Core\Integrations;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -15,10 +15,9 @@ if ( ! defined( 'NGG_PLUGIN' ) ) {
 
 /**
  * Class WPM_NGG
- * @package  WPM\Core\Vendor
- * @category Vendor
+ * @package  WPM\Core\Integrations
+ * @category Integrations
  * @author   VaLeXaR
- * @since    1.2.0
  */
 class WPM_NGG {
 

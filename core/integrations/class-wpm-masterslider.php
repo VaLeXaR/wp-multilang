@@ -3,7 +3,7 @@
  * Class for capability with MasterSlider
  */
 
-namespace WPM\Core\Vendor;
+namespace WPM\Core\Integrations;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

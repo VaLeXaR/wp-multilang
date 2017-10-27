@@ -3,7 +3,7 @@
  * Class for capability with TablePress
  */
 
-namespace WPM\Core\Vendor;
+namespace WPM\Core\Integrations;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -15,10 +15,9 @@ if ( ! class_exists( 'TablePress' ) ) {
 
 /**
  * Class WPM_Tablepress
- * @package  WPM\Core\Vendor
- * @category Vendor
+ * @package  WPM\Core\Integrations
+ * @category Integrations
  * @author   VaLeXaR
- * @since    1.6.0
  */
 class WPM_Tablepress {
 

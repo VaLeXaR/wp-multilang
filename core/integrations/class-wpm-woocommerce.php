@@ -3,7 +3,7 @@
  * Class for capability with WooCommerce
  */
 
-namespace WPM\Core\Vendor;
+namespace WPM\Core\Integrations;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -15,10 +15,9 @@ if ( ! defined( 'WC_VERSION' ) ) {
 
 /**
  * Class WPM_WooCommerce
- * @package  WPM\Core\Vendor
- * @category Vendor
+ * @package  WPM\Core\Integrations
+ * @category Integrations
  * @author   VaLeXaR
- * @version 1.0.1
  */
 class WPM_WooCommerce {
 
