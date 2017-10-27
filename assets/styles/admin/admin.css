@@ -107,7 +107,7 @@ table.wpm-languages {
   border-right: 1px solid #ddd;
   color: #444;
   cursor: pointer;
-  transition: color .15s ease-in-out, border-color .15s ease-in-out, background .15s ease-in-out;
+  transition: color 0.15s ease-in-out, border-color 0.15s ease-in-out, background 0.15s ease-in-out;
   box-sizing: content-box; }
   #customize-controls .wpm-language-switcher:hover, #customize-controls .wpm-language-switcher:focus {
     background-color: #fff;
@@ -116,27 +116,28 @@ table.wpm-languages {
     outline: none;
     box-shadow: none; }
 
-.editor-header__settings .wpm-language-switcher {
+.editor-header__content-tools .wpm-language-switcher {
   position: relative;
   left: 0 !important; }
-  .editor-header__settings .wpm-language-switcher .lang-main {
+  .editor-header__content-tools .wpm-language-switcher .lang-main {
     padding-left: 10px;
     padding-right: 10px; }
-    .editor-header__settings .wpm-language-switcher .lang-main img {
+    .editor-header__content-tools .wpm-language-switcher .lang-main img {
       top: 2px; }
 
-.editor-header__settings .lang-dropdown {
+.editor-header__content-tools .lang-dropdown {
   position: absolute;
   top: 100%;
   left: 0;
   background-color: #fff;
+  border: 1px solid #ccc;
   z-index: 1; }
-  .editor-header__settings .lang-dropdown ul {
+  .editor-header__content-tools .lang-dropdown ul {
     list-style: none; }
-    .editor-header__settings .lang-dropdown ul a {
-      padding: 10px 10px;
+    .editor-header__content-tools .lang-dropdown ul a {
+      padding: 10px;
       display: block; }
-      .editor-header__settings .lang-dropdown ul a:hover, .editor-header__settings .lang-dropdown ul a:focus {
+      .editor-header__content-tools .lang-dropdown ul a:hover, .editor-header__content-tools .lang-dropdown ul a:focus {
         background-color: #ccc; }
 
 .gutenberg-meta-box-html .languagechecklist li {

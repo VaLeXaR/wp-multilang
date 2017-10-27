@@ -59,41 +59,17 @@ class WPM_Gutenberg {
 				wp.api.init().done( function() {
 				if ($('#wpm-language-switcher').length === 0) {
 				      var language_switcher = wp.template( 'wpm-ls-customizer' );
-				      $('.editor-header__settings > .editor-publish-with-dropdown').before(language_switcher);
+				      $('.editor-header__content-tools').append(language_switcher);
 				    }
 			    });
 			    
 			    $(document).on('click', '#wpm-language-switcher .lang-dropdown a', function(){
-			        var post_id = getURLVar('post_id', $(location).attr('href')),
-			            switch_lang_url = $(this).attr('href');
-			        if (post_id && !getURLVar('post_id', switch_lang_url)) {
-			            $(this).attr('href', switch_lang_url + '&post_id=' + post_id);
+			        var switch_lang_url = $(this).attr('href'),
+			            current_request = $(location)[0].href;
+			        if ( (switch_lang_url.search(/(post=)/i) == -1) && (current_request.search(/(post=)/i) !== -1)) {
+			            $(this).attr('href', current_request + '&edit_lang=' + $(this).data('lang'));
 			        }
 			    });
-			    
-			    function getURLVar(key, url) {
-					var value = [];
-				
-					var query = String(url).split('?');
-				
-					if (query[1]) {
-						var part = query[1].split('&');
-				
-						for (var i = 0; i < part.length; i++) {
-							var data = part[i].split('=');
-				
-							if (data[0] && data[1]) {
-								value[data[0]] = data[1];
-							}
-						}
-				
-						if (value[key]) {
-							return value[key];
-						} else {
-							return '';
-						}
-					}
-				}
 			  });
 			})( jQuery, wp );
 		");

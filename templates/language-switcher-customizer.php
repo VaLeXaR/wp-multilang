@@ -21,7 +21,7 @@ $current_url = wpm_get_current_url();
 						continue;
 					} ?>
 					<li class="wpm-language-<?php esc_attr_e( $language ); ?>">
-						<a href="<?php echo esc_url( add_query_arg( 'edit_lang', $language, $current_url ) ); ?>">
+						<a href="<?php echo esc_url( add_query_arg( 'edit_lang', $language, $current_url ) ); ?>" data-lang="<?php esc_attr_e( $language ); ?>">
 							<?php if ( $options[ $key ]['flag'] ) { ?>
 								<img src="<?php echo esc_url( WPM()->flag_dir() . $options[ $key ]['flag'] . '.png' ); ?>"
 								     alt="<?php esc_attr_e( $options[ $key ]['name'] ); ?>">

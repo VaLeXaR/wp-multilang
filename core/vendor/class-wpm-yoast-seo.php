@@ -82,7 +82,7 @@ class WPM_Yoast_Seo {
 	 *
 	 * @return array
 	 */
-	public function add_lang_to_url($url, $type, $object) {
+	public function add_lang_to_url( $url, $type, $object ) {
 
 		$languages = array();
 

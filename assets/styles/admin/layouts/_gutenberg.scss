@@ -1,4 +1,4 @@
-.editor-header__settings {
+.editor-header__content-tools {
 
 	.wpm-language-switcher {
 		position: relative;
@@ -19,6 +19,7 @@
 		top: 100%;
 		left: 0;
 		background-color: #fff;
+		border: 1px solid #ccc;
 		z-index: 1;
 
 		ul {

@@ -45,7 +45,7 @@ function wpm_language_switcher( $args = array(), $echo = true ) {
 		<ul class="wpm-language-switcher switcher-<?php esc_attr_e( $args['type'] ); ?>">
 			<?php foreach ( $languages as $key => $language ) { ?>
 				<li class="item-language-<?php esc_attr_e( $options[ $key ]['slug'] ); ?><?php if ( $key === $locale ) { ?> active<?php } ?>">
-					<a href="<?php echo esc_url( wpm_translate_url( $current_url, $language ) ); ?>">
+					<a href="<?php echo esc_url( wpm_translate_url( $current_url, $language ) ); ?>" data-lang="<?php esc_attr_e( $language ); ?>">
 						<?php if ( ( ( 'flag' === $args['show'] ) || ( 'both' === $args['show'] ) ) && ( $options[ $key ]['flag'] ) ) { ?>
 							<img src="<?php echo esc_url( WPM()->flag_dir() . $options[ $key ]['flag'] . '.png' ); ?>" alt="<?php esc_attr_e( $options[ $key ]['name'] ); ?>">
 						<?php } ?>
@@ -74,7 +74,7 @@ function wpm_language_switcher( $args = array(), $echo = true ) {
 				<ul class="language-dropdown">
 					<?php foreach ( $languages as $key => $language ) { ?>
 						<li class="item-language-<?php esc_attr_e( $options[ $key ]['slug'] ); ?><?php if ( $key === $locale ) { ?> active<?php } ?>">
-							<a href="<?php echo esc_url( wpm_translate_url( $current_url, $language ) ); ?>">
+							<a href="<?php echo esc_url( wpm_translate_url( $current_url, $language ) ); ?>" data-lang="<?php esc_attr_e( $language ); ?>">
 								<?php if ( ( ( 'flag' === $args['show'] ) || ( 'both' === $args['show'] ) ) && ( $options[ $key ]['flag'] ) ) { ?>
 									<img src="<?php echo esc_url( WPM()->flag_dir() . $options[ $key ]['flag'] . '.png' ); ?>" alt="<?php esc_attr_e( $options[ $key ]['name'] ); ?>">
 								<?php } ?>
@@ -94,7 +94,7 @@ function wpm_language_switcher( $args = array(), $echo = true ) {
 		?>
 		<select class="wpm-language-switcher switcher-<?php esc_attr_e( $args['type'] ); ?>" onchange="location = this.value;" title="<?php esc_html_e( __( 'Language Switcher', 'wpm' ) ); ?>">
 			<?php foreach ( $languages as $key => $language ) { ?>
-				<option value="<?php echo esc_url( wpm_translate_url( $current_url, $language ) ); ?>"<?php if ( $key === $locale ) { ?> selected="selected"<?php } ?>>
+				<option value="<?php echo esc_url( wpm_translate_url( $current_url, $language ) ); ?>"<?php if ( $key === $locale ) { ?> selected="selected"<?php } ?> data-lang="<?php esc_attr_e( $language ); ?>">
 					<?php echo $options[ $key ]['name']; ?>
 				</option>
 			<?php } ?>
