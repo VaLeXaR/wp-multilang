@@ -194,6 +194,7 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 			$this->load_plugin_textdomain();
 
 			Core\WPM_AJAX::init();
+			new Core\WPM_REST_Settings();
 			new Core\WPM_Menus();
 			new Core\WPM_Posts();
 			new Core\WPM_Taxonomies();

@@ -11,7 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Class WPM_Options
  * @package WPM\Core
- * @version 1.2.0
  */
 class WPM_Options {
 

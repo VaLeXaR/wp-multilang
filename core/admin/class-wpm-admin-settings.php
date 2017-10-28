@@ -2,7 +2,6 @@
 /**
  * WPM Admin Settings Class
  *
- * @author   VaLeXaR
  * @category Admin
  * @package  WPM/Core/Admin
  */
@@ -15,8 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * WPM_Admin_Settings Class.
- *
- * @version 1.0.1
  */
 class WPM_Admin_Settings {
 
@@ -37,28 +34,15 @@ class WPM_Admin_Settings {
 
 		add_settings_field( 'wpm_languages', __( 'Languages', 'wpm' ), array( $this, 'languages_setting' ), 'general', 'wpm_setting_section' );
 		register_setting( 'general', 'wpm_languages', array(
-			'group'             => 'general',
-			'description'       => __( 'Multilingual Settings', 'wpm' ),
 			'sanitize_callback' => array( $this, 'save_languages' ),
-			'show_in_rest'      => true,
 		) );
 
 		add_settings_field( 'wpm_show_untranslated_strings', __( 'Translating settings', 'wpm' ), array( $this, 'translating_setting' ), 'general', 'wpm_setting_section' );
-		register_setting( 'general', 'wpm_show_untranslated_strings', array(
-			'type'         => 'boolean',
-			'group'        => 'general',
-			'description'  => __( 'Show untranslated strings', 'wpm' ),
-			'show_in_rest' => true,
-		) );
+		register_setting( 'general', 'wpm_show_untranslated_strings' );
 
 		if ( ! is_multisite() || ( is_main_site() ) ) {
 			add_settings_field( 'wpm_uninstall_translations', __( 'Uninstalling', 'wpm' ), array( $this, 'uninstalling_setting' ), 'general', 'wpm_setting_section' );
-			register_setting( 'general', 'wpm_uninstall_translations', array(
-				'type'         => 'boolean',
-				'group'        => 'general',
-				'description'  => __( 'Delete translations when uninstalling plugin', 'wpm' ),
-				'show_in_rest' => true,
-			) );
+			register_setting( 'general', 'wpm_uninstall_translations' );
 		}
 	}
 
