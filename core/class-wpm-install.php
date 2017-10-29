@@ -1,6 +1,7 @@
 <?php
 
 namespace WPM\Core;
+use WPM\Core\Admin\WPM_Admin_Notices;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -67,7 +68,7 @@ class WPM_Install {
 	public static function install_actions() {
 		if ( ! empty( $_GET['do_update_wpm'] ) ) {
 			self::update();
-			WC_Admin_Notices::add_notice( 'update' );
+			WPM_Admin_Notices::add_notice( 'update' );
 		}
 	}
 
@@ -102,12 +103,9 @@ class WPM_Install {
 
 	/**
 	 * Reset any notices added to admin.
-	 *
-	 * @since 3.2.0
 	 */
 	private static function remove_admin_notices() {
-		include_once( dirname( __FILE__ ) . '/admin/class-wc-admin-notices.php' );
-		WC_Admin_Notices::remove_all_notices();
+		WPM_Admin_Notices::remove_all_notices();
 	}
 
 	/**
@@ -124,8 +122,6 @@ class WPM_Install {
 
 	/**
 	 * See if we need to show or run database updates during install.
-	 *
-	 * @since 3.2.0
 	 */
 	private static function maybe_update_db_version() {
 		if ( self::needs_db_update() ) {
