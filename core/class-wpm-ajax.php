@@ -114,7 +114,7 @@ class WPM_AJAX {
 
 		check_ajax_referer( 'delete-lang', 'security' );
 
-		$locale  = wpm_clean( $_POST['locale'] );
+		$locale  = wpm_get_post_data_by_key( 'locale' );
 		$options = wpm_get_options();
 
 		if ( ! isset( $options[ $locale ] ) || ( $locale === get_locale() ) || ( $locale === wpm_get_default_locale() ) ) {

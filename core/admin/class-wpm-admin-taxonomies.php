@@ -211,8 +211,8 @@ class WPM_Admin_Taxonomies {
 			return;
 		}
 
-		if ( isset( $_POST['wpm_languages'] ) ) {
-			update_term_meta( $term_id, '_languages', wpm_clean( $_POST['wpm_languages'] ) );
+		if ( $languages = wpm_get_post_data_by_key( 'wpm_languages' ) ) {
+			update_term_meta( $term_id, '_languages', $languages );
 		} else {
 			delete_term_meta( $term_id, '_languages' );
 		}

@@ -303,7 +303,7 @@ class WPM_Acf {
 
 
 	public function translate_value( $string ) {
-		if ( 'POST' == $_SERVER['REQUEST_METHOD'] && isset( $_POST['action'] ) && $_POST['action'] == 'acf/everything_fields' ) {
+		if ( 'POST' == $_SERVER['REQUEST_METHOD'] && wpm_get_post_data_by_key( 'action' ) == 'acf/everything_fields' ) {
 			$string = wpm_translate_string( $string );
 		}
 
