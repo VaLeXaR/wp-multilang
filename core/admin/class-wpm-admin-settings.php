@@ -299,7 +299,7 @@ class WPM_Admin_Settings {
 		$option_name = 'wpm_languages';
 		$languages   = array();
 
-		if ( isset( $_POST[ $option_name ] ) ) {
+		if ( wpm_get_post_data_by_key( $option_name ) ) {
 
 			$type                = '';
 			$translations        = wpm_get_available_translations();

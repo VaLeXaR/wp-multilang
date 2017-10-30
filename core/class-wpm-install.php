@@ -15,10 +15,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WPM_Install {
 
 	/**
+	 * DB updates and callbacks that need to be run per version.
+	 *
+	 * @var array
+	 */
+	private static $db_updates = array(
+		'1.7.8' => array(
+			'wpm_update_178_datetime_format',
+			'wpm_update_178_db_version',
+		),
+	);
+
+	/**
 	 * Hook in tabs.
 	 */
 	public static function init() {
-		add_action( 'after_setup_theme', array( __CLASS__, 'check_version' ), 0 );
+		add_action( 'init', array( __CLASS__, 'check_version' ), 5 );
 	}
 
 	/**
@@ -29,6 +41,7 @@ class WPM_Install {
 	public static function check_version() {
 		if ( get_option( 'wpm_version' ) !== WPM()->version ) {
 			self::install();
+			do_action( 'wpm_updated' );
 		}
 	}
 
@@ -36,32 +49,51 @@ class WPM_Install {
 	 * Install WPM.
 	 */
 	public static function install() {
-		global $wpdb;
-
-		if ( ! defined( 'WPM_INSTALLING' ) ) {
-			define( 'WPM_INSTALLING', true );
+		if ( ! is_blog_installed() ) {
+			return;
 		}
+
+		// Check if we are not already running this routine.
+		if ( 'yes' === get_transient( 'wpm_installing' ) ) {
+			return;
+		}
+
+		// If we made it till here nothing is running yet, lets set the transient now.
+		set_transient( 'wpm_installing', 'yes', MINUTE_IN_SECONDS * 10 );
+		wpm_maybe_define_constant( 'WPM_INSTALLING', true );
 
 		self::create_options();
 		WPM_Config::load_config_run();
 		self::update_wpm_version();
+		self::maybe_update_db_version();
 
-		/*
-		 * Deletes all expired transients. The multi-table delete syntax is used
-		 * to delete the transient record from table a, and the corresponding
-		 * transient_timeout record from table b.
-		 *
-		 * Based on code inside core's upgrade_network() function.
-		 */
-		$sql = "DELETE a, b FROM $wpdb->options a, $wpdb->options b
-			WHERE a.option_name LIKE %s
-			AND a.option_name NOT LIKE %s
-			AND b.option_name = CONCAT( '_transient_timeout_', SUBSTRING( a.option_name, 12 ) )
-			AND b.option_value < %d";
-		$wpdb->query( $wpdb->prepare( $sql, $wpdb->esc_like( '_transient_' ) . '%', $wpdb->esc_like( '_transient_timeout_' ) . '%', time() ) );
+		delete_transient( 'wpm_installing' );
 
 		// Trigger action
 		do_action( 'wpm_installed' );
+	}
+
+	/**
+	 * Is a DB update needed?
+	 *
+	 * @return boolean
+	 */
+	private static function needs_db_update() {
+		$current_db_version = get_option( 'wpm_db_version', '1.7.7' );
+		$updates            = self::get_db_update_callbacks();
+
+		return ( ! is_null( $current_db_version ) ) && version_compare( $current_db_version, max( array_keys( $updates ) ), '<' );
+	}
+
+	/**
+	 * See if we need to show or run database updates during install.
+	 */
+	private static function maybe_update_db_version() {
+		if ( self::needs_db_update() ) {
+			self::update();
+		} else {
+			self::update_db_version();
+		}
 	}
 
 	/**
@@ -70,6 +102,42 @@ class WPM_Install {
 	private static function update_wpm_version() {
 		delete_option( 'wpm_version' );
 		add_option( 'wpm_version', WPM()->version );
+	}
+
+	/**
+	 * Get list of DB update callbacks.
+	 *
+	 * @return array
+	 */
+	public static function get_db_update_callbacks() {
+		return self::$db_updates;
+	}
+
+	/**
+	 * Push all needed DB updates to the queue for processing.
+	 */
+	private static function update() {
+		$current_db_version = get_option( 'wpm_db_version' );
+
+		foreach ( self::get_db_update_callbacks() as $version => $update_callbacks ) {
+			if ( version_compare( $current_db_version, $version, '<' ) ) {
+				foreach ( $update_callbacks as $update_callback ) {
+					include_once( dirname( __FILE__ ) . '/wpm-update-functions.php' );
+					if ( is_callable( $update_callback ) ) {
+						call_user_func( $update_callback );
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Update DB version to current.
+	 * @param string $version
+	 */
+	public static function update_db_version( $version = null ) {
+		delete_option( 'wpm_db_version' );
+		add_option( 'wpm_db_version', is_null( $version ) ? WPM()->version : $version );
 	}
 
 	/**

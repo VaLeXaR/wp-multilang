@@ -391,7 +391,7 @@ class WPM_Setup {
 	 */
 	public static function set_home_url( $value ) {
 
-		if ( ( is_admin() && ! wp_doing_ajax() ) || ! did_action( 'wpm_init' ) ) {
+		if ( ( is_admin() && ! wp_doing_ajax() ) || ! did_action( 'wpm_init' ) || ! $value ) {
 			return $value;
 		}
 
