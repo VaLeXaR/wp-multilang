@@ -604,6 +604,18 @@ class WPM_Setup {
 	 * @return string
 	 */
 	public function set_date_format( $value ) {
+
+		if ( is_admin() && ! wp_doing_ajax() ) {
+			$screen = get_current_screen();
+			if ( $screen && 'options-general' == $screen->id ) {
+				return $value;
+			}
+		}
+
+		if ( defined( 'REST_REQUEST' ) && ( '/wp/v2/settings' == $GLOBALS['wp']->query_vars['rest_route'] ) ) {
+			return $value;
+		}
+
 		$options = $this->get_options();
 		$locale  = get_locale();
 
@@ -623,6 +635,18 @@ class WPM_Setup {
 	 * @return string
 	 */
 	public function set_time_format( $value ) {
+
+		if ( is_admin() && ! wp_doing_ajax() ) {
+			$screen = get_current_screen();
+			if ( $screen && 'options-general' == $screen->id ) {
+				return $value;
+			}
+		}
+
+		if ( defined( 'REST_REQUEST' ) && ( '/wp/v2/settings' == $GLOBALS['wp']->query_vars['rest_route'] ) ) {
+			return $value;
+		}
+
 		$options = $this->get_options();
 		$locale  = get_locale();
 
