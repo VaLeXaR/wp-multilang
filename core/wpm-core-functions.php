@@ -146,6 +146,18 @@ function wpm_show_notice( $echo = true ) {
 }
 
 
+add_filter( 'the_post', 'wpm_translate_post', 0 );
+add_filter( 'the_title', 'wpm_translate_string', 0 );
+add_filter( 'the_content', 'wpm_translate_string', 0 );
+add_filter( 'the_excerpt', 'wpm_translate_string', 0 );
+add_filter( 'the_editor_content', 'wpm_translate_string', 0 );
+add_filter( 'attribute_escape', array( 'WPM\Core\WPM_Posts', 'escaping_text' ), 0 );
+add_filter( 'esc_textarea', array( 'WPM\Core\WPM_Posts', 'escaping_text' ), 0 );
+add_filter( 'esc_html', array( 'WPM\Core\WPM_Posts', 'escaping_text' ), 0 );
+add_filter( 'get_term', 'wpm_translate_term', 0, 2 );
+add_filter( 'widget_display_callback', 'wpm_translate_value', 0 );
+
+
 if ( ! function_exists( 'remove_class_filter' ) ) {
 	/**
 	 * Remove Class Filter Without Access to Class Object
