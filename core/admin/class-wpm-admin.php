@@ -56,7 +56,6 @@ class WPM_Admin {
 		new WPM_Admin_Menus();
 		new WPM_Admin_Edit_Menus();
 		new WPM_Admin_Customizer();
-		WPM_Admin_Notices::init();
 		new WPM_Admin_Posts();
 		new WPM_Admin_Taxonomies();
 		new WPM_Admin_Settings();

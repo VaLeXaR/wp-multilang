@@ -1,7 +1,6 @@
 <?php
 
 namespace WPM\Core;
-use WPM\Core\Admin\WPM_Admin_Notices;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -28,24 +27,10 @@ class WPM_Install {
 	);
 
 	/**
-	 * Background update class.
-	 *
-	 * @var object
-	 */
-	private static $background_updater;
-
-	/**
 	 * Hook in tabs.
 	 */
 	public static function init() {
-		add_action( 'after_setup_theme', array( __CLASS__, 'check_version' ), 0 );
-	}
-
-	/**
-	 * Init background updates
-	 */
-	public static function init_background_updater() {
-		self::$background_updater = new WPM_Background_Updater();
+		add_action( 'init', array( __CLASS__, 'check_version' ), 5 );
 	}
 
 	/**
@@ -57,18 +42,6 @@ class WPM_Install {
 		if ( get_option( 'wpm_version' ) !== WPM()->version ) {
 			self::install();
 			do_action( 'wpm_updated' );
-		}
-	}
-
-	/**
-	 * Install actions when a update button is clicked within the admin area.
-	 *
-	 * This function is hooked into admin_init to affect admin only.
-	 */
-	public static function install_actions() {
-		if ( ! empty( $_GET['do_update_wpm'] ) ) {
-			self::update();
-			WPM_Admin_Notices::add_notice( 'update' );
 		}
 	}
 
@@ -89,7 +62,6 @@ class WPM_Install {
 		set_transient( 'wpm_installing', 'yes', MINUTE_IN_SECONDS * 10 );
 		wpm_maybe_define_constant( 'WPM_INSTALLING', true );
 
-		self::remove_admin_notices();
 		self::create_options();
 		WPM_Config::load_config_run();
 		self::update_wpm_version();
@@ -102,22 +74,15 @@ class WPM_Install {
 	}
 
 	/**
-	 * Reset any notices added to admin.
-	 */
-	private static function remove_admin_notices() {
-		WPM_Admin_Notices::remove_all_notices();
-	}
-
-	/**
 	 * Is a DB update needed?
 	 *
 	 * @return boolean
 	 */
 	private static function needs_db_update() {
-		$current_db_version = get_option( 'wpm_db_version', null );
+		$current_db_version = get_option( 'wpm_db_version', '1.7.7' );
 		$updates            = self::get_db_update_callbacks();
 
-		return ! is_null( $current_db_version ) && version_compare( $current_db_version, max( array_keys( $updates ) ), '<' );
+		return ( ! is_null( $current_db_version ) ) && version_compare( $current_db_version, max( array_keys( $updates ) ), '<' );
 	}
 
 	/**
@@ -125,7 +90,6 @@ class WPM_Install {
 	 */
 	private static function maybe_update_db_version() {
 		if ( self::needs_db_update() ) {
-			self::init_background_updater();
 			self::update();
 		} else {
 			self::update_db_version();
@@ -154,19 +118,16 @@ class WPM_Install {
 	 */
 	private static function update() {
 		$current_db_version = get_option( 'wpm_db_version' );
-		$update_queued      = false;
 
 		foreach ( self::get_db_update_callbacks() as $version => $update_callbacks ) {
 			if ( version_compare( $current_db_version, $version, '<' ) ) {
 				foreach ( $update_callbacks as $update_callback ) {
-					self::$background_updater->push_to_queue( $update_callback );
-					$update_queued = true;
+					include_once( dirname( __FILE__ ) . '/wpm-update-functions.php' );
+					if ( is_callable( $update_callback ) ) {
+						call_user_func( $update_callback );
+					}
 				}
 			}
-		}
-
-		if ( $update_queued ) {
-			self::$background_updater->save()->dispatch();
 		}
 	}
 
@@ -185,10 +146,6 @@ class WPM_Install {
 	 * Sets up the default options used on the settings page.
 	 */
 	private static function create_options() {
-
-		if ( get_option( 'wpm_languages' ) ) {
-			return;
-		}
 
 		$languages              = array();
 		$available_translations = wpm_get_available_translations();

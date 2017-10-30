@@ -2,7 +2,7 @@
 /**
  * WP Multilang Updates
  *
- * Functions for updating data, used by the background updater.
+ * Functions for updating data, used by updating.
  *
  * @category Core
  * @package  WPM/Functions
@@ -18,7 +18,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Update date and time format foe languages.
  */
 function wpm_update_178_datetime_format() {
+	$languages         = get_option( 'wpm_languages', array() );
+	$updated_languages = array();
 
+	foreach ( $languages as $locale => $language ) {
+		$language['date']             = $language['date'] ? $language['date'] : '';
+		$language['time']             = $language['time'] ? $language['time'] : '';
+		$updated_languages[ $locale ] = $language;
+	}
+
+	update_option( 'wpm_languages', $updated_languages );
 }
 
 /**
