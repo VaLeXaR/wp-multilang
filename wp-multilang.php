@@ -247,8 +247,16 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		 * Get the flags path.
 		 * @return string
 		 */
-		public function flag_dir() {
-			return $this->plugin_url() . '/flags/';
+		public function flags_dir() {
+			return apply_filters( 'wpm_flags_dir', $this->plugin_url() . '/flags/' );
+		}
+
+		/**
+		 * Get the flags path.
+		 * @return string
+		 */
+		public function flags_path() {
+			return apply_filters( 'wpm_flags_path', $this->plugin_path() . '/flags/' );
 		}
 
 		/**

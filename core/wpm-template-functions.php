@@ -33,94 +33,43 @@ function wpm_language_switcher( $args = array(), $echo = true ) {
 		return '';
 	}
 
-	$options     = wpm_get_options();
-	$current_url = wpm_get_current_url();
-	$locale      = get_locale();
-	$locales     = array_flip( $languages );
-	$lang        = wpm_get_language();
+	$vars = array(
+		'languages'   => wpm_get_languages(),
+		'lang'        => wpm_get_language(),
+		'options'     => wpm_get_options(),
+		'current_url' => wpm_get_current_url(),
+		'locales'     => array_flip( wpm_get_languages() ),
+		'locale'      => get_locale(),
+		'args'        => $args,
+	);
 
-	ob_start();
-	if ( 'list' === $args['type'] ) {
-		?>
-		<ul class="wpm-language-switcher switcher-<?php esc_attr_e( $args['type'] ); ?>">
-			<?php foreach ( $languages as $key => $language ) { ?>
-				<li class="item-language-<?php esc_attr_e( $options[ $key ]['slug'] ); ?><?php if ( $key === $locale ) { ?> active<?php } ?>">
-					<a href="<?php echo esc_url( wpm_translate_url( $current_url, $language ) ); ?>" data-lang="<?php esc_attr_e( $language ); ?>">
-						<?php if ( ( ( 'flag' === $args['show'] ) || ( 'both' === $args['show'] ) ) && ( $options[ $key ]['flag'] ) ) { ?>
-							<img src="<?php echo esc_url( WPM()->flag_dir() . $options[ $key ]['flag'] . '.png' ); ?>" alt="<?php esc_attr_e( $options[ $key ]['name'] ); ?>">
-						<?php } ?>
-						<?php if ( ( 'name' === $args['show'] ) || ( 'both' === $args['show'] ) ) { ?>
-							<span><?php esc_attr_e( $options[ $key ]['name'] ); ?></span>
-						<?php } ?>
-					</a>
-				</li>
-			<?php } ?>
-		</ul>
-	<?php
+	$template = '';
+
+	switch ( $args['type'] ) {
+
+		case 'list':
+			$template = wpm_get_template( 'language-switcher-list.php', $vars );
+			break;
+		case 'dropdown':
+			$template = wpm_get_template( 'language-switcher-dropdown.php', $vars );
+			break;
+		case 'select':
+			$template = wpm_get_template( 'language-switcher-select.php', $vars );
+			break;
 	}
-
-	if ( 'dropdown' === $args['type'] ) {
-		?>
-		<ul class="wpm-language-switcher switcher-<?php esc_attr_e( $args['type'] ); ?>">
-			<li class="item-language-main item-language-<?php esc_attr_e( $options[ $locales[ $lang ] ]['slug'] ); ?>">
-				<span>
-					<?php if ( ( ( 'flag' === $args['show'] ) || ( 'both' === $args['show'] ) ) && ( $options[ $locales[ $lang ] ]['flag'] ) ) { ?>
-						<img src="<?php echo esc_url( WPM()->flag_dir() . $options[ $locales[ $lang ] ]['flag'] . '.png' ); ?>" alt="<?php esc_attr_e( $options[ $locales[ $lang ] ]['name'] ); ?>">
-					<?php } ?>
-					<?php if ( ( 'name' === $args['show'] ) || ( 'both' === $args['show'] ) ) { ?>
-						<span><?php esc_attr_e( $options[ $locales[ $lang ] ]['name'] ); ?></span>
-					<?php } ?>
-				</span>
-				<ul class="language-dropdown">
-					<?php foreach ( $languages as $key => $language ) { ?>
-						<li class="item-language-<?php esc_attr_e( $options[ $key ]['slug'] ); ?><?php if ( $key === $locale ) { ?> active<?php } ?>">
-							<a href="<?php echo esc_url( wpm_translate_url( $current_url, $language ) ); ?>" data-lang="<?php esc_attr_e( $language ); ?>">
-								<?php if ( ( ( 'flag' === $args['show'] ) || ( 'both' === $args['show'] ) ) && ( $options[ $key ]['flag'] ) ) { ?>
-									<img src="<?php echo esc_url( WPM()->flag_dir() . $options[ $key ]['flag'] . '.png' ); ?>" alt="<?php esc_attr_e( $options[ $key ]['name'] ); ?>">
-								<?php } ?>
-								<?php if ( ( 'name' === $args['show'] ) || ( 'both' === $args['show'] ) ) { ?>
-									<span><?php esc_attr_e( $options[ $key ]['name'] ); ?></span>
-								<?php } ?>
-							</a>
-						</li>
-					<?php } ?>
-				</ul>
-			</li>
-		</ul>
-	<?php
-	}
-
-	if ( 'select' === $args['type'] ) {
-		?>
-		<select class="wpm-language-switcher switcher-<?php esc_attr_e( $args['type'] ); ?>" onchange="location = this.value;" title="<?php esc_html_e( __( 'Language Switcher', 'wp-multilang' ) ); ?>">
-			<?php foreach ( $languages as $key => $language ) { ?>
-				<option value="<?php echo esc_url( wpm_translate_url( $current_url, $language ) ); ?>"<?php if ( $key === $locale ) { ?> selected="selected"<?php } ?> data-lang="<?php esc_attr_e( $language ); ?>">
-					<?php echo $options[ $key ]['name']; ?>
-				</option>
-			<?php } ?>
-		</select>
-	<?php
-	}
-
-	$content = ob_get_contents();
-	ob_end_clean();
 
 	if ( $echo ) {
-		echo $content;
+		echo $template;
 	} else {
-		return $content;
+		return $template;
 	}
 }
-
-
-add_filter( 'localization', 'wpm_translate_string' );
-add_filter( 'gettext', 'wpm_translate_string' );
 
 
 /**
  * Translate page titles
  */
-add_filter( 'document_title_parts', 'wpm_translate_value', 0 );
+add_filter( 'document_title_parts', 'wpm_translate_value', 5 );
 
 
 /**
@@ -154,7 +103,7 @@ function wpm_set_meta_languages() {
 	}
 }
 
-add_action( 'wp_head', 'wpm_set_meta_languages', 0 );
+add_action( 'wp_head', 'wpm_set_meta_languages' );
 
 
 /**
@@ -408,3 +357,36 @@ function wpm_add_body_class( $classes ) {
 }
 
 add_filter( 'body_class', 'wpm_add_body_class' );
+
+
+/**
+ * Display language switcher in admin
+ */
+function wpm_admin_language_switcher() {
+
+	$args = array(
+		'languages'   => wpm_get_languages(),
+		'lang'        => wpm_get_language(),
+		'options'     => wpm_get_options(),
+		'current_url' => wpm_get_current_url(),
+	);
+
+	echo wpm_get_template( 'admin-language-switcher.php', $args );
+}
+
+
+/**
+ * Display language switcher in customizer
+ */
+function wpm_admin_language_switcher_customizer() {
+
+	$args = array(
+		'languages'   => wpm_get_languages(),
+		'lang'        => wpm_get_language(),
+		'options'     => wpm_get_options(),
+		'current_url' => wpm_get_current_url(),
+		'locales'     => array_flip( wpm_get_languages() ),
+	);
+
+	echo wpm_get_template( 'admin-language-switcher-customizer.php', $args );
+}

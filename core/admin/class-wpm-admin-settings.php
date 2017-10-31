@@ -77,8 +77,8 @@ class WPM_Admin_Settings {
 		$available_translations = wpm_get_available_translations();
 
 		$flags    = array();
-		$flag_dir = WPM()->plugin_path() . '/flags/';
-		if ( $dir_handle = @opendir( $flag_dir ) ) {
+		$flags_path = WPM()->flags_path();
+		if ( $dir_handle = @opendir( $flags_path ) ) {
 			while ( false !== ( $file = readdir( $dir_handle ) ) ) {
 				if ( preg_match( "/\.(jpeg|jpg|gif|png|svg)$/i", $file ) ) {
 					$flags[] = $file;
@@ -143,7 +143,7 @@ class WPM_Admin_Settings {
 							<?php } ?>
 						</select>
 						<?php if ( ( $language['flag'] ) ) { ?>
-							<img src="<?php echo esc_url( WPM()->flag_dir() . $language['flag'] . '.png' ); ?>" alt="<?php esc_attr_e( $language['name'] ); ?>">
+							<img src="<?php echo esc_url( WPM()->flags_dir() . $language['flag'] . '.png' ); ?>" alt="<?php esc_attr_e( $language['name'] ); ?>">
 						<?php } ?>
 					</td>
 					<td class="wpm-lang-delete">

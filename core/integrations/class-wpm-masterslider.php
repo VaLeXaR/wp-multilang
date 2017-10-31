@@ -26,7 +26,7 @@ class WPM_Masterslider {
 	 * WPM_Masterslider constructor.
 	 */
 	public function __construct() {
-		add_action( 'wp_ajax_msp_panel_handler', array( $this, 'save_slider' ), 0 );
+		add_action( 'wp_ajax_msp_panel_handler', array( $this, 'save_slider' ) );
 		add_action( 'masterslider_admin_add_panel_variables', array( $this, 'translate_slider' ) );
 		add_filter( 'wpm_admin_pages', array( $this, 'add_language_switcher' ) );
 		add_filter( 'woocommerce_short_description', 'wpm_translate_string' );

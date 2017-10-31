@@ -80,7 +80,7 @@ function wpm_translate_url( $url, $language = '' ) {
 		$url = str_replace( $host . $path, $host . $new_path, $url );
 	}
 
-	return $url;
+	return apply_filters( 'wpm_translate_url', $url );
 }
 
 /**

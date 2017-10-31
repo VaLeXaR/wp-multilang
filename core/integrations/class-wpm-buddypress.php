@@ -215,7 +215,7 @@ class WPM_BuddyPress {
 	 * @return array
 	 */
 	public function remove_filter( $children ) {
-		remove_filter( 'attribute_escape', array( 'WPM\Core\WPM_Posts', 'escaping_text' ), 0 );
+		remove_filter( 'attribute_escape', array( 'WPM\Core\WPM_Posts', 'escaping_text' ), 5 );
 
 		return $children;
 	}

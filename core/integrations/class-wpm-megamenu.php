@@ -40,9 +40,7 @@ class WPM_Megamenu {
 			return;
 		}
 
-		add_action( 'admin_print_footer_scripts', function () {
-			echo wpm_get_template_html( 'language-switcher.php' );
-		} );
+		add_action( 'admin_print_footer_scripts', 'wpm_admin_language_switcher' );
 
 		wpm_enqueue_js( "
 			(function ( $ ) {

@@ -49,17 +49,17 @@ class WPM_Taxonomies extends \WPM_Object {
 	public function __construct() {
 		parent::__construct();
 		$this->term_config = $this->config['taxonomies'];
-		add_filter( 'get_terms', array( $this, 'translate_terms' ), 0 );
+		add_filter( 'get_terms', array( $this, 'translate_terms' ), 5 );
 		add_filter( 'get_terms_args', array( $this, 'filter_terms_by_language' ), 10, 2 );
-		add_filter( "get_{$this->object_type}_metadata", array( $this, 'get_meta_field' ), 0, 3 );
+		add_filter( "get_{$this->object_type}_metadata", array( $this, 'get_meta_field' ), 5, 3 );
 		add_filter( "update_{$this->object_type}_metadata", array( $this, 'update_meta_field' ), 99, 5 );
 		add_filter( "add_{$this->object_type}_metadata", array( $this, 'add_meta_field' ), 99, 5 );
 		add_action( "delete_{$this->object_type}_metadata", array( $this, 'delete_meta_field' ), 99, 3 );
-		add_filter( 'pre_insert_term', array( $this, 'pre_insert_term' ), 0, 2 );
+		add_filter( 'pre_insert_term', array( $this, 'pre_insert_term' ), 5, 2 );
 		add_filter( 'wp_insert_term_data', array( $this, 'insert_term' ), 99, 3 );
 		add_action( 'created_term', array( $this, 'insert_description' ), 99, 3 );
 		add_filter( 'wp_update_term_data', array( $this, 'update_term' ), 99, 4 );
-		add_action( 'edited_term_taxonomy', array( $this, 'update_description' ), 0, 2 );
+		add_action( 'edited_term_taxonomy', array( $this, 'update_description' ), 5, 2 );
 	}
 
 
@@ -249,10 +249,10 @@ class WPM_Taxonomies extends \WPM_Object {
 			return $data;
 		}
 
-		remove_filter( 'get_term', 'wpm_translate_term', 0 );
+		remove_filter( 'get_term', 'wpm_translate_term', 5 );
 		$old_name        = get_term_field( 'name', $term_id, $taxonomy, 'edit' );
 		$old_description = get_term_field( 'description', $term_id, $taxonomy, 'edit' );
-		add_filter( 'get_term', 'wpm_translate_term', 0, 2 );
+		add_filter( 'get_term', 'wpm_translate_term', 5, 2 );
 
 		if ( ! wpm_is_ml_value( $data['name'] ) ) {
 			$strings      = wpm_value_to_ml_array( $old_name );

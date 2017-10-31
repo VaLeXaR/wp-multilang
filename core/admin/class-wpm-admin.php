@@ -23,8 +23,8 @@ class WPM_Admin {
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'includes' ) );
-		add_action( 'admin_init', array( $this, 'buffer' ), 0 );
-		add_action( 'admin_init', array( $this, 'init' ), 0 );
+		add_action( 'admin_init', array( $this, 'buffer' ) );
+		add_action( 'admin_init', array( $this, 'init' ) );
 		add_action( 'admin_footer', 'wpm_print_js', 25 );
 	}
 

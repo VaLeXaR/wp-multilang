@@ -45,7 +45,7 @@ class WPM_Admin_Taxonomies {
 			}
 
 			add_filter( "manage_edit-{$taxonomy}_columns", array( $this, 'language_columns' ) );
-			add_filter( "manage_{$taxonomy}_custom_column", array( $this, 'render_language_column' ), 0, 3 );
+			add_filter( "manage_{$taxonomy}_custom_column", array( $this, 'render_language_column' ), 10, 3 );
 			add_action( "{$taxonomy}_add_form_fields", array( $this, 'add_taxonomy_fields' ) );
 			add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_taxonomy_fields' ), 10 );
 		}
@@ -80,9 +80,9 @@ class WPM_Admin_Taxonomies {
 	public function render_language_column( $columns, $column, $term_id ) {
 
 		if ( 'languages' === $column ) {
-			remove_filter( 'get_term', 'wpm_translate_term', 0 );
+			remove_filter( 'get_term', 'wpm_translate_term', 5 );
 			$term = get_term( $term_id );
-			add_filter( 'get_term', 'wpm_translate_term', 0, 2 );
+			add_filter( 'get_term', 'wpm_translate_term', 5, 2 );
 			$output    = array();
 			$text      = $term->name . $term->description;
 			$strings   = wpm_value_to_ml_array( $text );
@@ -91,7 +91,7 @@ class WPM_Admin_Taxonomies {
 
 			foreach ( $languages as $locale => $language ) {
 				if ( isset( $strings[ $language ] ) && ! empty( $strings[ $language ] ) ) {
-					$output[] = '<img src="' . WPM()->flag_dir() . $options[ $locale ]['flag'] . '.png" alt="' . $options[ $locale ]['name'] . '" title="' . $options[ $locale ]['name'] . '">';
+					$output[] = '<img src="' . WPM()->flags_dir() . $options[ $locale ]['flag'] . '.png" alt="' . $options[ $locale ]['name'] . '" title="' . $options[ $locale ]['name'] . '">';
 				}
 			}
 

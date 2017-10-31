@@ -24,17 +24,31 @@ include( 'wpm-template-functions.php' );
  *
  * @param $path
  *
+ * @param array $args
+ *
  * @return bool|string
  */
-function wpm_get_template_html( $path ) {
-	ob_start();
+function wpm_get_template( $path, $args = array() ) {
 
-	$located = WPM()->template_path() . $path;
-	if ( ! file_exists( $located ) ) {
-		_doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', $located ), '1.0' );
+	if ( $theme_file = locate_template( 'plugins/' . dirname( WPM_PLUGIN_BASENAME ) . '/' . $path ) ) {
+		$located = $theme_file;
+	} else {
+		$located = WPM()->template_path() . $path;
+		if ( ! file_exists( $located ) ) {
+			_doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', $located ), '1.0' );
 
-		return false;
+			return false;
+		}
 	}
+
+	if ( ! empty( $args ) && is_array( $args ) ) {
+		extract( $args );
+	}
+
+	// Allow 3rd party plugin filter template file from their plugin.
+	$located = apply_filters( 'wpm_get_template', $located, $args, $path );
+
+	ob_start();
 
 	include( $located );
 
@@ -146,16 +160,18 @@ function wpm_show_notice( $echo = true ) {
 }
 
 
-add_filter( 'the_post', 'wpm_translate_post', 0 );
-add_filter( 'the_title', 'wpm_translate_string', 0 );
-add_filter( 'the_content', 'wpm_translate_string', 0 );
-add_filter( 'the_excerpt', 'wpm_translate_string', 0 );
-add_filter( 'the_editor_content', 'wpm_translate_string', 0 );
-add_filter( 'attribute_escape', array( 'WPM\Core\WPM_Posts', 'escaping_text' ), 0 );
-add_filter( 'esc_textarea', array( 'WPM\Core\WPM_Posts', 'escaping_text' ), 0 );
-add_filter( 'esc_html', array( 'WPM\Core\WPM_Posts', 'escaping_text' ), 0 );
-add_filter( 'get_term', 'wpm_translate_term', 0, 2 );
-add_filter( 'widget_display_callback', 'wpm_translate_value', 0 );
+add_filter( 'the_post', 'wpm_translate_post', 5 );
+add_filter( 'the_title', 'wpm_translate_string', 5 );
+add_filter( 'the_content', 'wpm_translate_string', 5 );
+add_filter( 'the_excerpt', 'wpm_translate_string', 5 );
+add_filter( 'the_editor_content', 'wpm_translate_string', 5 );
+add_filter( 'attribute_escape', array( 'WPM\Core\WPM_Posts', 'escaping_text' ), 5 );
+add_filter( 'esc_textarea', array( 'WPM\Core\WPM_Posts', 'escaping_text' ), 5 );
+add_filter( 'esc_html', array( 'WPM\Core\WPM_Posts', 'escaping_text' ), 5 );
+add_filter( 'get_term', 'wpm_translate_term', 5, 2 );
+add_filter( 'widget_display_callback', 'wpm_translate_value', 5 );
+add_filter( 'localization', 'wpm_translate_string', 5 );
+add_filter( 'gettext', 'wpm_translate_string', 5 );
 
 
 if ( ! function_exists( 'remove_class_filter' ) ) {

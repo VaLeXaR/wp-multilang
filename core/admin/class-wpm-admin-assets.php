@@ -86,9 +86,7 @@ class WPM_Admin_Assets {
 			$languages = wpm_get_languages();
 			if ( count( $languages ) > 1 ) {
 				wp_enqueue_script( 'wpm_language_switcher_customizer' );
-				add_action( 'admin_print_footer_scripts', function () {
-					echo wpm_get_template_html( 'language-switcher-customizer.php' );
-				} );
+				add_action( 'admin_print_footer_scripts', 'wpm_admin_language_switcher_customizer' );
 			}
 		}
 
@@ -165,8 +163,6 @@ class WPM_Admin_Assets {
 			<?php
 		} );
 
-		add_action( 'admin_print_footer_scripts', function () {
-			echo wpm_get_template_html( 'language-switcher.php' );
-		} );
+		add_action( 'admin_print_footer_scripts', 'wpm_admin_language_switcher' );
 	}
 }

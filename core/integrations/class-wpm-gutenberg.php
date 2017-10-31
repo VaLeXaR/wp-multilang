@@ -46,9 +46,7 @@ class WPM_Gutenberg {
 			return;
 		}
 
-		add_action( 'admin_print_footer_scripts', function () {
-			echo wpm_get_template_html( 'language-switcher-customizer.php' );
-		} );
+		add_action( 'admin_print_footer_scripts', 'wpm_admin_language_switcher_customizer' );
 
 		wp_add_inline_script( 'wp-editor', "
 			(function( $ ) {

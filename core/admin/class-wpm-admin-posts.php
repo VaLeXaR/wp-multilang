@@ -107,7 +107,7 @@ class WPM_Admin_Posts {
 
 			foreach ( $languages as $locale => $language ) {
 				if ( isset( $strings[ $language ] ) && ! empty( $strings[ $language ] ) ) {
-					$output[] = '<img src="' . WPM()->flag_dir() . $options[ $locale ]['flag'] . '.png" alt="' . $options[ $locale ]['name'] . '" title="' . $options[ $locale ]['name'] . '">';
+					$output[] = '<img src="' . WPM()->flags_dir() . $options[ $locale ]['flag'] . '.png" alt="' . $options[ $locale ]['name'] . '" title="' . $options[ $locale ]['name'] . '">';
 				}
 			}
 
@@ -134,7 +134,7 @@ class WPM_Admin_Posts {
 			<div class="misc-pub-section language">
 				<?php esc_html_e( 'Current edit language:', 'wp-multilang' ); ?>
 				<?php if ( $options[ $locales[ $lang ] ]['flag'] ) { ?>
-					<img src="<?php echo esc_url( WPM()->flag_dir() . $options[ $locales[ $lang ] ]['flag'] . '.png' ); ?>">
+					<img src="<?php echo esc_url( WPM()->flags_dir() . $options[ $locales[ $lang ] ]['flag'] . '.png' ); ?>">
 				<?php } else { ?>
 					<b><?php echo $options[ $locales[ $lang ] ]['name']; ?></b>
 				<?php } ?>

@@ -21,11 +21,11 @@ class WPM_Menus {
 	 * WPM_Menus constructor.
 	 */
 	public function __construct() {
-		add_filter( 'wp_setup_nav_menu_item', array( $this, 'translate_menu_item' ), ( 'POST' === $_SERVER['REQUEST_METHOD'] ? 99 : 0 ) );
+		add_filter( 'wp_setup_nav_menu_item', array( $this, 'translate_menu_item' ), ( 'POST' === $_SERVER['REQUEST_METHOD'] ? 99 : 5 ) );
 		add_filter( 'wp_setup_nav_menu_item', array( $this, 'translate_menu_url' ) );
-		add_filter( 'customize_nav_menu_available_items', array( $this, 'filter_menus' ), 0 );
-		add_filter( 'customize_nav_menu_searched_items', array( $this, 'filter_menus' ), 0 );
-		add_filter( 'wp_nav_menu_items', array( $this, 'add_languages_to_menu' ), 0 );
+		add_filter( 'customize_nav_menu_available_items', array( $this, 'filter_menus' ), 5 );
+		add_filter( 'customize_nav_menu_searched_items', array( $this, 'filter_menus' ), 5 );
+		add_filter( 'wp_nav_menu_items', array( $this, 'add_languages_to_menu' ), 5 );
 	}
 
 	/**
@@ -211,7 +211,7 @@ class WPM_Menus {
 					}
 
 					if ( ( ( 'flag' === $show_type ) || ( 'both' === $show_type ) ) && ( $options[ $locale ]['flag'] ) ) {
-						$language_string = '<img src="' . esc_url( WPM()->flag_dir() . $options[ $locale ]['flag'] . '.png' ) . '" alt="' . esc_attr( $options[ $locale ]['name'] ) . '">';
+						$language_string = '<img src="' . esc_url( WPM()->flags_dir() . $options[ $locale ]['flag'] . '.png' ) . '" alt="' . esc_attr( $options[ $locale ]['name'] ) . '">';
 					}
 
 					if ( ( 'name' === $show_type ) || ( 'both' === $show_type ) ) {

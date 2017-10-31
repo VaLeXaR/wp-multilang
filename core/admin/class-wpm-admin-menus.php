@@ -70,7 +70,7 @@ class WPM_Admin_Menus {
 			'id'     => 'wpm-language-switcher',
 			'parent' => 'top-secondary',
 			'title'  => '<span class="ab-icon">' .
-			            '<img src="' . esc_url( WPM()->flag_dir() . $options[ $locale ]['flag'] . '.png' ) . '"/>' .
+			            '<img src="' . esc_url( WPM()->flags_dir() . $options[ $locale ]['flag'] . '.png' ) . '"/>' .
 			            '</span><span class="ab-label">' .
 			            $options[ $locale ]['name'] .
 			            '</span>',
@@ -88,8 +88,8 @@ class WPM_Admin_Menus {
 				'parent' => 'wpm-language-switcher',
 				'id'     => 'wpm-language-' . $language,
 				'title'  => '<span class="ab-icon">' .
-				            '<img src="' . esc_url( WPM()->flag_dir() . $options[ $key ]['flag'] . '.png' ) . '" />' .
-							'</span>' .
+				            '<img src="' . esc_url( WPM()->flags_dir() . $options[ $key ]['flag'] . '.png' ) . '" />' .
+				            '</span>' .
 				            '<span class="ab-label">' . $options[ $key ]['name'] . '</span>',
 				'href'   => wpm_translate_url( $current_url, $language ),
 			) );
