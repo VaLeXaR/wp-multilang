@@ -59,7 +59,7 @@ class WPM_Admin_Assets {
 			'plugin_url'             => WPM()->plugin_url(),
 			'ajax_url'               => admin_url( 'admin-ajax.php' ),
 			'delete_lang_nonce'      => wp_create_nonce( 'delete-lang' ),
-			'confirm_question'       => __( 'Are you sure you want to delete this language?', 'wpm' ),
+			'confirm_question'       => __( 'Are you sure you want to delete this language?', 'wp-multilang' ),
 			'available_translations' => wpm_get_available_translations(),
 		);
 		wp_localize_script( 'wpm_main', 'wpm_params', $main_params );

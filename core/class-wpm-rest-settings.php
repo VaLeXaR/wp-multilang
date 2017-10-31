@@ -30,7 +30,7 @@ class WPM_REST_Settings {
 	 */
 	public function register_initial_settings() {
 		register_setting( 'general', 'wpm_languages', array(
-			'description'  => __( 'Multilingual Settings', 'wpm' ),
+			'description'  => __( 'Multilingual Settings', 'wp-multilang' ),
 			'default'      => array(),
 			'show_in_rest' => array(
 				'name'   => 'multilingual_settings',
@@ -66,7 +66,7 @@ class WPM_REST_Settings {
 			),
 		) );
 		register_setting( 'general', 'wpm_show_untranslated_strings', array(
-			'description'  => __( 'Show untranslated strings', 'wpm' ),
+			'description'  => __( 'Show untranslated strings', 'wp-multilang' ),
 			'type'         => 'boolean',
 			'default'      => false,
 			'show_in_rest' => array(

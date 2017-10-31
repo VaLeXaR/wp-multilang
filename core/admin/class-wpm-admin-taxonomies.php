@@ -64,7 +64,7 @@ class WPM_Admin_Taxonomies {
 			$columns = array();
 		}
 
-		return wpm_array_insert_after( $columns, 'name', array( 'languages' => __( 'Languages', 'wpm' ) ) );
+		return wpm_array_insert_after( $columns, 'name', array( 'languages' => __( 'Languages', 'wp-multilang' ) ) );
 	}
 
 
@@ -126,7 +126,7 @@ class WPM_Admin_Taxonomies {
 		$i         = 0;
 		?>
 		<div class="form-field term-languages">
-			<p><?php _e( 'Show term only in:', 'wpm' ); ?></p>
+			<p><?php _e( 'Show term only in:', 'wp-multilang' ); ?></p>
 			<?php foreach ( $languages as $language ) {
 				if ( ! $language['enable'] ) {
 					continue;
@@ -169,7 +169,7 @@ class WPM_Admin_Taxonomies {
 		$i         = 0;
 		?>
 		<tr class="form-field">
-			<th scope="row" valign="top"><?php _e( 'Show term only in:', 'wpm' ); ?></th>
+			<th scope="row" valign="top"><?php _e( 'Show term only in:', 'wp-multilang' ); ?></th>
 			<td>
 				<ul class="languagechecklist">
 					<?php foreach ( $languages as $language ) {

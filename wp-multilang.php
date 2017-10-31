@@ -6,7 +6,7 @@
  * Author:          Valentyn Riaboshtan
  * License:     GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:     wpm
+ * Text Domain:     wp-multilang
  * Domain Path:     /languages
  * Version:         1.7.8
  *
@@ -70,14 +70,14 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		 * Cloning is forbidden.
 		 */
 		public function __clone() {
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wpm' ), '1.0' );
+			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wp-multilang' ), '1.0' );
 		}
 
 		/**
 		 * Unserializing instances of this class is forbidden.
 		 */
 		public function __wakeup() {
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wpm' ), '1.0' );
+			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wp-multilang' ), '1.0' );
 		}
 
 		/**
@@ -216,7 +216,7 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		 * Note: the first-loaded translation file overrides any following ones if the same translation is present.
 		 */
 		public function load_plugin_textdomain() {
-			load_plugin_textdomain( 'wpm', false, plugin_basename( __DIR__ ) . '/languages' );
+			load_plugin_textdomain( 'wp-multilang', false, plugin_basename( __DIR__ ) . '/languages' );
 		}
 
 		/**

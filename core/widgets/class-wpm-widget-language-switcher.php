@@ -23,32 +23,32 @@ class WPM_Widget_Language_Switcher extends \WPM_Widget {
 		$this->widget_cssclass    = 'wpm widget_language_switcher';
 		$this->widget_description = '';
 		$this->widget_id          = 'wpm_language_switcher';
-		$this->widget_name        = __( 'Language Switcher', 'wpm' );
+		$this->widget_name        = __( 'Language Switcher', 'wp-multilang' );
 		$this->settings           = array(
 			'title' => array(
 				'type'  => 'text',
-				'std'   => __( 'Languages', 'wpm' ),
-				'label' => __( 'Title', 'wpm' ),
+				'std'   => __( 'Languages', 'wp-multilang' ),
+				'label' => __( 'Title', 'wp-multilang' ),
 			),
 			'show'  => array(
 				'type'    => 'select',
 				'std'     => 'both',
 				'options' => array(
-					'both'     => __( 'Both', 'wpm' ),
-					'flag'     => __( 'Flag', 'wpm' ),
-					'name' => __( 'Name', 'wpm' ),
+					'both'     => __( 'Both', 'wp-multilang' ),
+					'flag'     => __( 'Flag', 'wp-multilang' ),
+					'name' => __( 'Name', 'wp-multilang' ),
 				),
-				'label'   => __( 'Show', 'wpm' ),
+				'label'   => __( 'Show', 'wp-multilang' ),
 			),
 			'type'  => array(
 				'type'    => 'select',
 				'std'     => 'list',
 				'options' => array(
-					'list'     => __( 'List', 'wpm' ),
-					'dropdown' => __( 'Dropdown', 'wpm' ),
-					'select'   => __( 'Select', 'wpm' ),
+					'list'     => __( 'List', 'wp-multilang' ),
+					'dropdown' => __( 'Dropdown', 'wp-multilang' ),
+					'select'   => __( 'Select', 'wp-multilang' ),
 				),
-				'label'   => __( 'Switcher Type', 'wpm' ),
+				'label'   => __( 'Switcher Type', 'wp-multilang' ),
 			),
 		);
 		parent::__construct();

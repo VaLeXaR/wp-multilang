@@ -73,7 +73,7 @@ class WPM_Admin_Posts {
 			$columns = array();
 		}
 
-		$language = array( 'languages' => __( 'Languages', 'wpm' ) );
+		$language = array( 'languages' => __( 'Languages', 'wp-multilang' ) );
 
 		if ( isset( $columns['title'] ) ) {
 			return wpm_array_insert_after( $columns, 'title', $language );
@@ -132,7 +132,7 @@ class WPM_Admin_Posts {
 		if ( isset( $config['post_types'][ $post->post_type ] ) && is_null( $config['post_types'][ $post->post_type ] ) && ( wpm_is_ml_string( $post->post_title ) || wpm_is_ml_value( $post->post_content ) ) ) {
 			?>
 			<div class="misc-pub-section language">
-				<?php esc_html_e( 'Current edit language:', 'wpm' ); ?>
+				<?php esc_html_e( 'Current edit language:', 'wp-multilang' ); ?>
 				<?php if ( $options[ $locales[ $lang ] ]['flag'] ) { ?>
 					<img src="<?php echo esc_url( WPM()->flag_dir() . $options[ $locales[ $lang ] ]['flag'] . '.png' ); ?>">
 				<?php } else { ?>

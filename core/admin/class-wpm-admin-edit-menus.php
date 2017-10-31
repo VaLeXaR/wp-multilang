@@ -35,7 +35,7 @@ class WPM_Admin_Edit_Menus {
 	 * @return array
 	 */
 	public function nav_menu_manage_columns( $columns ) {
-		$columns['languages'] = __( 'Languages', 'wpm' );
+		$columns['languages'] = __( 'Languages', 'wp-multilang' );
 
 		return $columns;
 	}
@@ -114,7 +114,7 @@ class WPM_Admin_Edit_Menus {
 		$i = 0;
 		?>
 		<p class="description description-wide <?php echo esc_attr( $class ) ?>">
-			<?php _e( 'Show item only in:', 'wpm' ); ?><br>
+			<?php _e( 'Show item only in:', 'wp-multilang' ); ?><br>
 			<?php foreach ( $languages as $language ) { if ( ! $language['enable'] ) continue; ?>
 			<label><input type="checkbox" name="<?php esc_attr_e( $name ); ?>[<?php esc_attr_e( $i ); ?>]" id="<?php echo $id . '-' . $language['slug']; ?>" value="<?php esc_attr_e( $language['slug'] ); ?>"<?php if ( in_array( $language['slug'], $value ) ) { ?> checked="checked"<?php } ?>><?php echo $language['name']; ?></label><br>
 			<?php $i++; } ?>

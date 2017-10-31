@@ -102,7 +102,7 @@ class WPM_Admin_Menus {
 	 * Adapted from http://www.johnmorrisonline.com/how-to-add-a-fully-functional-custom-meta-box-to-wordpress-navigation-menus/.
 	 */
 	public function add_nav_menu_meta_boxes() {
-		add_meta_box( 'wpm_endpoints_nav_link', __( 'Languages', 'wpm' ), array( $this, 'nav_menu_links' ), 'nav-menus', 'side', 'low' );
+		add_meta_box( 'wpm_endpoints_nav_link', __( 'Languages', 'wp-multilang' ), array( $this, 'nav_menu_links' ), 'nav-menus', 'side', 'low' );
 	}
 
 	/**
@@ -117,10 +117,10 @@ class WPM_Admin_Menus {
 				<ul id="wpm-languages-checklist" class="categorychecklist form-no-clear">
 					<li>
 						<label class="menu-item-title">
-							<input type="checkbox" class="menu-item-checkbox" name="menu-item[<?php esc_attr_e( $_nav_menu_placeholder ); ?>][menu-item-object-id]" value="<?php esc_attr_e( $_nav_menu_placeholder ); ?>" /> <?php esc_html_e( 'Languages', 'wpm' ); ?>
+							<input type="checkbox" class="menu-item-checkbox" name="menu-item[<?php esc_attr_e( $_nav_menu_placeholder ); ?>][menu-item-object-id]" value="<?php esc_attr_e( $_nav_menu_placeholder ); ?>" /> <?php esc_html_e( 'Languages', 'wp-multilang' ); ?>
 						</label>
 						<input type="hidden" class="menu-item-type" name="menu-item[<?php esc_attr_e( $_nav_menu_placeholder ); ?>][menu-item-type]" value="custom" />
-						<input type="hidden" class="menu-item-title" name="menu-item[<?php esc_attr_e( $_nav_menu_placeholder ); ?>][menu-item-title]" value="<?php esc_html_e( 'Languages', 'wpm' ); ?>" />
+						<input type="hidden" class="menu-item-title" name="menu-item[<?php esc_attr_e( $_nav_menu_placeholder ); ?>][menu-item-title]" value="<?php esc_html_e( 'Languages', 'wp-multilang' ); ?>" />
 						<input type="hidden" class="menu-item-url" name="menu-item[<?php esc_attr_e( $_nav_menu_placeholder ); ?>][menu-item-url]" value="#wpm-languages" />
 						<input type="hidden" class="menu-item-classes" name="menu-item[<?php esc_attr_e( $_nav_menu_placeholder ); ?>][menu-item-classes]" value="wpm-languages" />
 					</li>
@@ -156,13 +156,13 @@ class WPM_Admin_Menus {
 		$value = get_post_meta( $item_id, '_menu_item_languages_show', true );
 		$class = sprintf( 'field-%s', $_key );
 		$options = array(
-			'both' => __( 'Both', 'wpm' ),
-			'flag' => __( 'Flag', 'wpm' ),
-			'name' => __( 'Name', 'wpm' ),
+			'both' => __( 'Both', 'wp-multilang' ),
+			'flag' => __( 'Flag', 'wp-multilang' ),
+			'name' => __( 'Name', 'wp-multilang' ),
 		)
 		?>
 		<p class="description description-wide <?php echo esc_attr( $class ); ?>">
-			<label for="<?php esc_attr_e( $id ); ?>"><?php esc_html_e( 'Show', 'wpm' ); ?></label>
+			<label for="<?php esc_attr_e( $id ); ?>"><?php esc_html_e( 'Show', 'wp-multilang' ); ?></label>
 			<select class="widefat" id="<?php esc_attr_e( $id ); ?>" name="<?php esc_attr_e( $name ); ?>">
 				<?php foreach ( $options as $val => $name ) { ?>
 					<option value="<?php esc_attr_e( $val ); ?>"<?php selected( $val, $value ) ?>><?php esc_html_e( $name ); ?></option>

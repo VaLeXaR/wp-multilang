@@ -75,7 +75,7 @@ class WPM_Admin_Widgets {
 		$i = 0;
 		?>
 		<p>
-			<?php _e( 'Show widget only in:', 'wpm' ); ?><br>
+			<?php _e( 'Show widget only in:', 'wp-multilang' ); ?><br>
 			<?php foreach ( $languages as $language ) { if ( ! $language['enable'] ) continue; ?>
 				<label><input type="checkbox" name="<?php esc_attr_e( $widget->get_field_name('languages') ); ?>[<?php esc_attr_e( $i ); ?>]" id="<?php echo $widget->get_field_id('languages') . '-' . $language['slug']; ?>" value="<?php esc_attr_e( $language['slug'] ); ?>"<?php if ( in_array( $language['slug'], $instance['languages'] ) ) { ?> checked="checked"<?php } ?>><?php echo $language['name']; ?></label><br>
 			<?php $i++; } ?>

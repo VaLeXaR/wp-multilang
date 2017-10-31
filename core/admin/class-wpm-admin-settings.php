@@ -29,19 +29,19 @@ class WPM_Admin_Settings {
 	 */
 	public function add_section() {
 
-		add_settings_section( 'wpm_setting_section', __( 'Multilingual Settings', 'wpm' ),  '', 'general' );
+		add_settings_section( 'wpm_setting_section', __( 'Multilingual Settings', 'wp-multilang' ),  '', 'general' );
 		add_settings_field( 'wpm_site_language', __( 'Site Language' ), array( $this, 'site_language_setting' ), 'general', 'wpm_setting_section' );
 
-		add_settings_field( 'wpm_languages', __( 'Languages', 'wpm' ), array( $this, 'languages_setting' ), 'general', 'wpm_setting_section' );
+		add_settings_field( 'wpm_languages', __( 'Languages', 'wp-multilang' ), array( $this, 'languages_setting' ), 'general', 'wpm_setting_section' );
 		register_setting( 'general', 'wpm_languages', array(
 			'sanitize_callback' => array( $this, 'save_languages' ),
 		) );
 
-		add_settings_field( 'wpm_show_untranslated_strings', __( 'Translating settings', 'wpm' ), array( $this, 'translating_setting' ), 'general', 'wpm_setting_section' );
+		add_settings_field( 'wpm_show_untranslated_strings', __( 'Translating settings', 'wp-multilang' ), array( $this, 'translating_setting' ), 'general', 'wpm_setting_section' );
 		register_setting( 'general', 'wpm_show_untranslated_strings' );
 
 		if ( ! is_multisite() || ( is_main_site() ) ) {
-			add_settings_field( 'wpm_uninstall_translations', __( 'Uninstalling', 'wpm' ), array( $this, 'uninstalling_setting' ), 'general', 'wpm_setting_section' );
+			add_settings_field( 'wpm_uninstall_translations', __( 'Uninstalling', 'wp-multilang' ), array( $this, 'uninstalling_setting' ), 'general', 'wpm_setting_section' );
 			register_setting( 'general', 'wpm_uninstall_translations' );
 		}
 	}
@@ -90,14 +90,14 @@ class WPM_Admin_Settings {
 		<table id="wpm-languages" class="wpm-languages widefat">
 			<thead>
 			<tr>
-				<th class="wpm-lang-order"><?php esc_attr_e( 'Order', 'wpm' ); ?></th>
-				<th class="wpm-lang-status"><?php esc_attr_e( 'Enable', 'wpm' ); ?></th>
-				<th class="wpm-lang-locale"><?php esc_attr_e( 'Locale', 'wpm' ); ?></th>
-				<th class="wpm-lang-slug"><?php esc_attr_e( 'Slug *', 'wpm' ); ?></th>
-				<th class="wpm-lang-name"><?php esc_attr_e( 'Name', 'wpm' ); ?></th>
+				<th class="wpm-lang-order"><?php esc_attr_e( 'Order', 'wp-multilang' ); ?></th>
+				<th class="wpm-lang-status"><?php esc_attr_e( 'Enable', 'wp-multilang' ); ?></th>
+				<th class="wpm-lang-locale"><?php esc_attr_e( 'Locale', 'wp-multilang' ); ?></th>
+				<th class="wpm-lang-slug"><?php esc_attr_e( 'Slug *', 'wp-multilang' ); ?></th>
+				<th class="wpm-lang-name"><?php esc_attr_e( 'Name', 'wp-multilang' ); ?></th>
 				<th class="wpm-lang-locale"><?php esc_attr_e( 'Date Format' ); ?></th>
 				<th class="wpm-lang-locale"><?php esc_attr_e( 'Time Format' ); ?></th>
-				<th class="wpm-lang-flag"><?php esc_attr_e( 'Flag', 'wpm' ); ?></th>
+				<th class="wpm-lang-flag"><?php esc_attr_e( 'Flag', 'wp-multilang' ); ?></th>
 				<th class="wpm-lang-delete"><?php esc_attr_e( 'Delete' ); ?></th>
 			</tr>
 			</thead>
@@ -111,7 +111,7 @@ class WPM_Admin_Settings {
 					<td class="wpm-lang-order"><?php esc_attr_e( $i ); ?></td>
 					<td class="wpm-lang-status">
 						<input type="hidden" name="wpm_languages[<?php esc_attr_e( $i ) ; ?>][enable]" value="0">
-						<input name="wpm_languages[<?php echo $i; ?>][enable]" type="checkbox" value="1"<?php checked( $language['enable'] ); ?> title="<?php esc_attr_e( 'Enable', 'wpm' ); ?>"<?php if ( wpm_get_default_locale() === $key ) { ?> disabled="disabled"<?php } ?>>
+						<input name="wpm_languages[<?php echo $i; ?>][enable]" type="checkbox" value="1"<?php checked( $language['enable'] ); ?> title="<?php esc_attr_e( 'Enable', 'wp-multilang' ); ?>"<?php if ( wpm_get_default_locale() === $key ) { ?> disabled="disabled"<?php } ?>>
 						<?php if ( wpm_get_default_locale() === $key ) { ?>
 							<input type="hidden" name="wpm_languages[<?php esc_attr_e( $i ) ; ?>][enable]" value="1">
 						<?php } ?>
@@ -121,13 +121,13 @@ class WPM_Admin_Settings {
 							<?php esc_attr_e( $key ); ?>
 							<input type="hidden" name="wpm_languages[<?php echo $i; ?>][locale]" value="<?php esc_attr_e( $key ); ?>">
 						<?php } else { ?>
-							<input type="text" name="wpm_languages[<?php echo $i; ?>][locale]" value="<?php esc_attr_e( $key ); ?>" title="<?php esc_attr_e( 'Locale', 'wpm' ); ?>" placeholder="<?php esc_attr_e( 'Locale', 'wpm' ); ?>" required>
+							<input type="text" name="wpm_languages[<?php echo $i; ?>][locale]" value="<?php esc_attr_e( $key ); ?>" title="<?php esc_attr_e( 'Locale', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Locale', 'wp-multilang' ); ?>" required>
 						<?php } ?>
 					</td>
-					<td class="wpm-lang-slug"><input type="text" name="wpm_languages[<?php echo $i; ?>][slug]" value="<?php esc_attr_e( $language['slug'] ); ?>" title="<?php esc_attr_e( 'Slug *', 'wpm' ); ?>" placeholder="<?php esc_attr_e( 'Slug *', 'wpm' ); ?>" required>
+					<td class="wpm-lang-slug"><input type="text" name="wpm_languages[<?php echo $i; ?>][slug]" value="<?php esc_attr_e( $language['slug'] ); ?>" title="<?php esc_attr_e( 'Slug *', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Slug *', 'wp-multilang' ); ?>" required>
 					</td>
 					<td class="wpm-lang-name">
-						<input type="text" name="wpm_languages[<?php echo $i; ?>][name]" value="<?php esc_attr_e( $language['name'] ); ?>" title="<?php esc_attr_e( 'Name', 'wpm' ); ?>" placeholder="<?php esc_attr_e( 'Name', 'wpm' ); ?>">
+						<input type="text" name="wpm_languages[<?php echo $i; ?>][name]" value="<?php esc_attr_e( $language['name'] ); ?>" title="<?php esc_attr_e( 'Name', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Name', 'wp-multilang' ); ?>">
 					</td>
 					<td class="wpm-lang-date">
 						<input type="text" name="wpm_languages[<?php echo $i; ?>][date]" value="<?php esc_attr_e( $language['date'] ); ?>" title="<?php esc_attr_e( 'Date Format' ); ?>" placeholder="<?php esc_attr_e( get_option( 'date_format' ) ); ?>">
@@ -136,7 +136,7 @@ class WPM_Admin_Settings {
 						<input type="text" name="wpm_languages[<?php echo $i; ?>][time]" value="<?php esc_attr_e( $language['time'] ); ?>" title="<?php esc_attr_e( 'Time Format' ); ?>" placeholder="<?php esc_attr_e( get_option( 'time_format' ) ); ?>">
 					</td>
 					<td class="wpm-lang-flag">
-						<select class="wpm-flags" name="wpm_languages[<?php echo $i; ?>][flag]" title="<?php esc_attr_e( 'Flag', 'wpm' ); ?>">
+						<select class="wpm-flags" name="wpm_languages[<?php echo $i; ?>][flag]" title="<?php esc_attr_e( 'Flag', 'wp-multilang' ); ?>">
 							<option value=""><?php esc_attr_e( '&mdash; Select &mdash;' ); ?></option>
 							<?php foreach ( $flags as $flag ) { ?>
 								<option value="<?php esc_attr_e( pathinfo( $flag, PATHINFO_FILENAME ) ); ?>"<?php selected( $language['flag'], pathinfo( $flag, PATHINFO_FILENAME ) ); ?>><?php esc_attr_e( pathinfo( $flag, PATHINFO_FILENAME ) ); ?></option>
@@ -148,11 +148,11 @@ class WPM_Admin_Settings {
 					</td>
 					<td class="wpm-lang-delete">
 						<?php if ( get_locale() === $key ) { ?>
-							<?php esc_html_e( 'Current', 'wpm' ); ?>
+							<?php esc_html_e( 'Current', 'wp-multilang' ); ?>
 						<?php } elseif ( wpm_get_default_locale() === $key ) { ?>
-							<?php esc_html_e( 'Default', 'wpm' ); ?>
+							<?php esc_html_e( 'Default', 'wp-multilang' ); ?>
 						<?php } elseif ( 'en_US' === $key ) { ?>
-							<?php esc_html_e( 'Built-in', 'wpm' ); ?>
+							<?php esc_html_e( 'Built-in', 'wp-multilang' ); ?>
 						<?php } elseif ( ! is_multisite() || is_super_admin() ) { ?>
 							<button type="button" class="button button-link delete-language" data-locale="<?php echo $key; ?>"><?php esc_attr_e( 'Delete' ); ?></button>
 						<?php } ?>
@@ -163,14 +163,14 @@ class WPM_Admin_Settings {
 			</tbody>
 			<tfoot>
 			<tr>
-				<th class="wpm-lang-order"><?php esc_attr_e( 'Order', 'wpm' ); ?></th>
-				<th class="wpm-lang-status"><?php esc_attr_e( 'Enable', 'wpm' ); ?></th>
-				<th class="wpm-lang-locale"><?php esc_attr_e( 'Locale', 'wpm' ); ?></th>
-				<th class="wpm-lang-slug"><?php esc_attr_e( 'Slug *', 'wpm' ); ?></th>
-				<th class="wpm-lang-name"><?php esc_attr_e( 'Name', 'wpm' ); ?></th>
+				<th class="wpm-lang-order"><?php esc_attr_e( 'Order', 'wp-multilang' ); ?></th>
+				<th class="wpm-lang-status"><?php esc_attr_e( 'Enable', 'wp-multilang' ); ?></th>
+				<th class="wpm-lang-locale"><?php esc_attr_e( 'Locale', 'wp-multilang' ); ?></th>
+				<th class="wpm-lang-slug"><?php esc_attr_e( 'Slug *', 'wp-multilang' ); ?></th>
+				<th class="wpm-lang-name"><?php esc_attr_e( 'Name', 'wp-multilang' ); ?></th>
 				<th class="wpm-lang-locale"><?php esc_attr_e( 'Date Format' ); ?></th>
 				<th class="wpm-lang-locale"><?php esc_attr_e( 'Time Format' ); ?></th>
-				<th class="wpm-lang-flag"><?php esc_attr_e( 'Flag', 'wpm' ); ?></th>
+				<th class="wpm-lang-flag"><?php esc_attr_e( 'Flag', 'wp-multilang' ); ?></th>
 				<th class="wpm-lang-delete"><?php esc_attr_e( 'Delete' ); ?></th>
 			</tr>
 			</tfoot>
@@ -183,7 +183,7 @@ class WPM_Admin_Settings {
 
 		array_unshift( $available_translations, array(
 			'language'    => 1,
-			'native_name' => __( 'Custom language', 'wpm' ),
+			'native_name' => __( 'Custom language', 'wp-multilang' ),
 			'iso'         => array(),
 		) );
 
@@ -195,12 +195,12 @@ class WPM_Admin_Settings {
 		?>
 		<p class="submit">
 			<select id="wpm-available-translations" title="<?php esc_attr_e( 'Available translations' ); ?>">
-				<option value=""><?php esc_attr_e( '&mdash; Select language &mdash;', 'wpm' ); ?></option>
+				<option value=""><?php esc_attr_e( '&mdash; Select language &mdash;', 'wp-multilang' ); ?></option>
 				<?php foreach ( $available_translations as $translation ) { ?>
 					<option value="<?php esc_attr_e( $translation['language'] ); ?>"><?php esc_attr_e( $translation['native_name'] ); ?></option>
 				<?php } ?>
 			</select>
-			<input type="button" id="add_lang" class="button button-primary" value="<?php esc_attr_e( 'Add language', 'wpm' ); ?>">
+			<input type="button" id="add_lang" class="button button-primary" value="<?php esc_attr_e( 'Add language', 'wp-multilang' ); ?>">
 		</p>
 		<script>
 			var wpm_lang_count = <?php echo $i; ?>;
@@ -210,21 +210,21 @@ class WPM_Admin_Settings {
 				<td class="wpm-lang-order">{{ data.count }}</td>
 				<td class="wpm-lang-status">
 					<input type="hidden" name="wpm_languages[{{ data.count }}][enable]" value="0">
-					<input name="wpm_languages[{{ data.count }}][enable]" type="checkbox" value="1" title="<?php esc_attr_e( 'Enable', 'wpm' ); ?>" checked="checked">
+					<input name="wpm_languages[{{ data.count }}][enable]" type="checkbox" value="1" title="<?php esc_attr_e( 'Enable', 'wp-multilang' ); ?>" checked="checked">
 				</td>
 				<td class="wpm-lang-locale">
 					<# if (data.language) { #>
 						{{ data.language }}
 						<input type="hidden" name="wpm_languages[{{ data.count }}][locale]" value="{{ data.language }}">
 					<# } else { #>
-						<input type="text" name="wpm_languages[{{ data.count }}][locale]" value="{{ data.language }}" title="<?php esc_attr_e( 'Locale', 'wpm' ); ?>" placeholder="<?php esc_attr_e( 'Locale', 'wpm' ); ?>" required>
+						<input type="text" name="wpm_languages[{{ data.count }}][locale]" value="{{ data.language }}" title="<?php esc_attr_e( 'Locale', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Locale', 'wp-multilang' ); ?>" required>
 					<# } #>
 				</td>
 				<td class="wpm-lang-slug">
-					<input type="text" name="wpm_languages[{{ data.count }}][slug]" value="{{ data.iso[Object.keys(data.iso)[0]] }}" title="<?php esc_attr_e( 'Slug *', 'wpm' ); ?>" placeholder="<?php esc_attr_e( 'Slug *', 'wpm' ); ?>" required>
+					<input type="text" name="wpm_languages[{{ data.count }}][slug]" value="{{ data.iso[Object.keys(data.iso)[0]] }}" title="<?php esc_attr_e( 'Slug *', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Slug *', 'wp-multilang' ); ?>" required>
 				</td>
 				<td class="wpm-lang-name">
-					<input type="text" name="wpm_languages[{{ data.count }}][name]" value="{{ data.native_name }}" title="<?php esc_attr_e( 'Name', 'wpm' ); ?>" placeholder="<?php esc_attr_e( 'Name', 'wpm' ); ?>">
+					<input type="text" name="wpm_languages[{{ data.count }}][name]" value="{{ data.native_name }}" title="<?php esc_attr_e( 'Name', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Name', 'wp-multilang' ); ?>">
 				</td>
 				<td class="wpm-lang-date">
 					<input type="text" name="wpm_languages[{{ data.count }}][date]" value="" title="<?php esc_attr_e( 'Date Format' ); ?>" placeholder="<?php esc_attr_e( get_option( 'date_format' ) ); ?>">
@@ -233,7 +233,7 @@ class WPM_Admin_Settings {
 					<input type="text" name="wpm_languages[{{ data.count }}][time]" value="" title="<?php esc_attr_e( 'Time Format' ); ?>" placeholder="<?php esc_attr_e( get_option( 'time_format' ) ); ?>">
 				</td>
 				<td class="wpm-lang-flag">
-					<select class="wpm-flags" name="wpm_languages[{{ data.count }}][flag]" title="<?php esc_attr_e( 'Flag', 'wpm' ); ?>">
+					<select class="wpm-flags" name="wpm_languages[{{ data.count }}][flag]" title="<?php esc_attr_e( 'Flag', 'wp-multilang' ); ?>">
 						<option value=""><?php esc_attr_e( '&mdash; Select &mdash;' ); ?></option>
 						<?php foreach ( $flags as $flag ) { ?>
 						<option value="<?php esc_attr_e( pathinfo( $flag, PATHINFO_FILENAME ) ); ?>"><?php esc_attr_e( pathinfo( $flag, PATHINFO_FILENAME ) ); ?></option>
@@ -241,7 +241,7 @@ class WPM_Admin_Settings {
 					</select>
 				</td>
 				<td class="wpm-lang-delete">
-					<button type="button" class="button button-link delete-language" data-locale="{{ data.language }}"><?php esc_attr_e( 'Delete', 'wpm' ); ?></button>
+					<button type="button" class="button button-link delete-language" data-locale="{{ data.language }}"><?php esc_attr_e( 'Delete' ); ?></button>
 				</td>
 			</tr>
 		</script>
@@ -255,12 +255,12 @@ class WPM_Admin_Settings {
 		?>
 		<fieldset>
 			<legend class="screen-reader-text">
-				<span><?php esc_html_e( 'Translating settings', 'wpm' ); ?></span>
+				<span><?php esc_html_e( 'Translating settings', 'wp-multilang' ); ?></span>
 			</legend>
 			<label for="wpm_show_untranslated_strings">
 				<input type="hidden" name="wpm_show_untranslated_strings" value="0">
 				<input name="wpm_show_untranslated_strings" type="checkbox" id="wpm_show_untranslated_strings" value="1"<?php checked( get_option( 'wpm_show_untranslated_strings' ) ); ?>>
-				<?php esc_attr_e( 'Show untranslated strings in default language', 'wpm' ); ?>
+				<?php esc_attr_e( 'Show untranslated strings in default language', 'wp-multilang' ); ?>
 			</label>
 		</fieldset>
 		<?php
@@ -273,12 +273,12 @@ class WPM_Admin_Settings {
 		?>
 		<fieldset>
 			<legend class="screen-reader-text">
-				<span><?php esc_html_e( 'Uninstalling', 'wpm' ); ?></span>
+				<span><?php esc_html_e( 'Uninstalling', 'wp-multilang' ); ?></span>
 			</legend>
 			<label for="wpm_uninstall_translations">
 				<input type="hidden" name="wpm_uninstall_translations" value="0">
 				<input name="wpm_uninstall_translations" type="checkbox" id="wpm_uninstall_translations" value="1"<?php checked( get_option( 'wpm_uninstall_translations' ) ); ?>>
-				<?php esc_attr_e( 'Delete translations when uninstalling plugin (some translations may not be deleted and you must delete them manually).', 'wpm' ); ?>
+				<?php esc_attr_e( 'Delete translations when uninstalling plugin (some translations may not be deleted and you must delete them manually).', 'wp-multilang' ); ?>
 			</label>
 		</fieldset>
 		<?php
@@ -336,11 +336,11 @@ class WPM_Admin_Settings {
 			}
 
 			if ( 'updated' === $type ) {
-				add_settings_error( $option_name, '', __( 'New language package installed', 'wpm' ), $type );
+				add_settings_error( $option_name, '', __( 'New language package installed', 'wp-multilang' ), $type );
 			}
 
 			if ( 'error' === $type ) {
-				add_settings_error( $option_name, '', __( 'Language slug and locale is required', 'wpm' ), $type );
+				add_settings_error( $option_name, '', __( 'Language slug and locale is required', 'wp-multilang' ), $type );
 
 				return get_option( $option_name );
 
