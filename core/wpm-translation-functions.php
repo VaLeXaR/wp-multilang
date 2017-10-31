@@ -33,7 +33,7 @@ function wpm_translate_url( $url, $language = '' ) {
 	$languages = wpm_get_languages();
 
 	if ( $language ) {
-		if ( ( ( $language === $languages[ $locale ] ) && ! is_admin() ) || ! in_array( $language, $languages, true ) ) {
+		if ( ( ( $language === $languages[ $locale ] ) && ( ! is_admin() || ( is_admin() && wp_doing_ajax() ) ) ) || ! in_array( $language, $languages, true ) ) {
 			return $url;
 		}
 	}
