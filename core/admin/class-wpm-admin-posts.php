@@ -28,8 +28,6 @@ class WPM_Admin_Posts {
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'init' ) );
 		add_action( 'post_submitbox_misc_actions', array( $this, 'add_lang_indicator' ) );
-		add_filter( 'post_link', array( $this, 'translate_post_link' ), 10, 2 );
-		add_filter( 'page_link', array( $this, 'translate_page_link' ), 10, 2 );
 		new WPM_Admin_Meta_Boxes();
 	}
 
@@ -58,6 +56,8 @@ class WPM_Admin_Posts {
 			add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'render_language_column' ) );
 		}
 
+		add_filter( 'post_link', array( $this, 'translate_post_link' ), 10, 2 );
+		add_filter( 'page_link', array( $this, 'translate_page_link' ), 10, 2 );
 	}
 
 

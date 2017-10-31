@@ -28,7 +28,6 @@ class WPM_Admin_Taxonomies {
 		add_action( 'admin_init', array( $this, 'init' ) );
 		add_action( 'created_term', array( $this, 'save_taxonomy_fields' ), 10, 3 );
 		add_action( 'edit_term', array( $this, 'save_taxonomy_fields' ), 10, 3 );
-		add_action( 'term_link', array( $this, 'translate_term_link' ), 10, 3 );
 	}
 
 
@@ -49,6 +48,8 @@ class WPM_Admin_Taxonomies {
 			add_action( "{$taxonomy}_add_form_fields", array( $this, 'add_taxonomy_fields' ) );
 			add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_taxonomy_fields' ), 10 );
 		}
+
+		add_action( 'term_link', array( $this, 'translate_term_link' ), 10, 3 );
 	}
 
 
