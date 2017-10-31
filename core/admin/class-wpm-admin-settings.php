@@ -92,7 +92,7 @@ class WPM_Admin_Settings {
 			<tr>
 				<th class="wpm-lang-order"><?php esc_attr_e( 'Order', 'wp-multilang' ); ?></th>
 				<th class="wpm-lang-status"><?php esc_attr_e( 'Enable', 'wp-multilang' ); ?></th>
-				<th class="wpm-lang-locale"><?php esc_attr_e( 'Locale', 'wp-multilang' ); ?></th>
+				<th class="wpm-lang-locale"><?php esc_attr_e( 'Locale *', 'wp-multilang' ); ?></th>
 				<th class="wpm-lang-slug"><?php esc_attr_e( 'Slug *', 'wp-multilang' ); ?></th>
 				<th class="wpm-lang-name"><?php esc_attr_e( 'Name', 'wp-multilang' ); ?></th>
 				<th class="wpm-lang-locale"><?php esc_attr_e( 'Date Format' ); ?></th>
@@ -121,7 +121,7 @@ class WPM_Admin_Settings {
 							<?php esc_attr_e( $key ); ?>
 							<input type="hidden" name="wpm_languages[<?php echo $i; ?>][locale]" value="<?php esc_attr_e( $key ); ?>">
 						<?php } else { ?>
-							<input type="text" name="wpm_languages[<?php echo $i; ?>][locale]" value="<?php esc_attr_e( $key ); ?>" title="<?php esc_attr_e( 'Locale', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Locale', 'wp-multilang' ); ?>" required>
+							<input type="text" name="wpm_languages[<?php echo $i; ?>][locale]" value="<?php esc_attr_e( $key ); ?>" title="<?php esc_attr_e( 'Locale *', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Locale *', 'wp-multilang' ); ?>" required>
 						<?php } ?>
 					</td>
 					<td class="wpm-lang-slug"><input type="text" name="wpm_languages[<?php echo $i; ?>][slug]" value="<?php esc_attr_e( $language['slug'] ); ?>" title="<?php esc_attr_e( 'Slug *', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Slug *', 'wp-multilang' ); ?>" required>
@@ -165,7 +165,7 @@ class WPM_Admin_Settings {
 			<tr>
 				<th class="wpm-lang-order"><?php esc_attr_e( 'Order', 'wp-multilang' ); ?></th>
 				<th class="wpm-lang-status"><?php esc_attr_e( 'Enable', 'wp-multilang' ); ?></th>
-				<th class="wpm-lang-locale"><?php esc_attr_e( 'Locale', 'wp-multilang' ); ?></th>
+				<th class="wpm-lang-locale"><?php esc_attr_e( 'Locale *', 'wp-multilang' ); ?></th>
 				<th class="wpm-lang-slug"><?php esc_attr_e( 'Slug *', 'wp-multilang' ); ?></th>
 				<th class="wpm-lang-name"><?php esc_attr_e( 'Name', 'wp-multilang' ); ?></th>
 				<th class="wpm-lang-locale"><?php esc_attr_e( 'Date Format' ); ?></th>
@@ -217,7 +217,7 @@ class WPM_Admin_Settings {
 						{{ data.language }}
 						<input type="hidden" name="wpm_languages[{{ data.count }}][locale]" value="{{ data.language }}">
 					<# } else { #>
-						<input type="text" name="wpm_languages[{{ data.count }}][locale]" value="{{ data.language }}" title="<?php esc_attr_e( 'Locale', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Locale', 'wp-multilang' ); ?>" required>
+						<input type="text" name="wpm_languages[{{ data.count }}][locale]" value="{{ data.language }}" title="<?php esc_attr_e( 'Locale *', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Locale', 'wp-multilang' ); ?>" required>
 					<# } #>
 				</td>
 				<td class="wpm-lang-slug">
