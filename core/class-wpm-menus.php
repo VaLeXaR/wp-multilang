@@ -211,7 +211,7 @@ class WPM_Menus {
 					}
 
 					if ( ( ( 'flag' === $show_type ) || ( 'both' === $show_type ) ) && ( $options[ $locale ]['flag'] ) ) {
-						$language_string = '<img src="' . esc_url( WPM()->flags_dir() . $options[ $locale ]['flag'] . '.png' ) . '" alt="' . esc_attr( $options[ $locale ]['name'] ) . '">';
+						$language_string = '<img src="' . esc_url( wpm_get_flag_url( $options[ $locale ]['flag'] ) ) . '" alt="' . esc_attr( $options[ $locale ]['name'] ) . '">';
 					}
 
 					if ( ( 'name' === $show_type ) || ( 'both' === $show_type ) ) {

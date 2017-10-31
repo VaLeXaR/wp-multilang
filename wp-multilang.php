@@ -8,7 +8,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:     wp-multilang
  * Domain Path:     /languages
- * Version:         1.7.8
+ * Version:         1.8.0
  *
  * @package  WPM
  * @category Core
@@ -40,7 +40,7 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		 *
 		 * @var string
 		 */
-		public $version = '1.7.8';
+		public $version = '1.8.0';
 
 		/**
 		 * The single instance of the class.
@@ -248,7 +248,7 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		 * @return string
 		 */
 		public function flags_dir() {
-			return apply_filters( 'wpm_flags_dir', $this->plugin_url() . '/flags/' );
+			return $this->plugin_url() . '/flags/';
 		}
 
 		/**
@@ -256,7 +256,7 @@ if ( ! class_exists( 'WP_Multilang' ) ) :
 		 * @return string
 		 */
 		public function flags_path() {
-			return apply_filters( 'wpm_flags_path', $this->plugin_path() . '/flags/' );
+			return $this->plugin_path() . '/flags/';
 		}
 
 		/**

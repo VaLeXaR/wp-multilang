@@ -77,7 +77,7 @@ class WPM_Admin_Settings {
 		$available_translations = wpm_get_available_translations();
 
 		$flags    = array();
-		$flags_path = WPM()->flags_path();
+		$flags_path = wpm_get_flags_path();
 		if ( $dir_handle = @opendir( $flags_path ) ) {
 			while ( false !== ( $file = readdir( $dir_handle ) ) ) {
 				if ( preg_match( "/\.(jpeg|jpg|gif|png|svg)$/i", $file ) ) {
@@ -139,11 +139,11 @@ class WPM_Admin_Settings {
 						<select class="wpm-flags" name="wpm_languages[<?php echo $i; ?>][flag]" title="<?php esc_attr_e( 'Flag', 'wp-multilang' ); ?>">
 							<option value=""><?php esc_attr_e( '&mdash; Select &mdash;' ); ?></option>
 							<?php foreach ( $flags as $flag ) { ?>
-								<option value="<?php esc_attr_e( pathinfo( $flag, PATHINFO_FILENAME ) ); ?>"<?php selected( $language['flag'], pathinfo( $flag, PATHINFO_FILENAME ) ); ?>><?php esc_attr_e( pathinfo( $flag, PATHINFO_FILENAME ) ); ?></option>
+								<option value="<?php esc_attr_e( $flag ); ?>"<?php selected( $language['flag'], $flag ); ?>><?php esc_attr_e( pathinfo( $flag, PATHINFO_FILENAME ) ); ?></option>
 							<?php } ?>
 						</select>
 						<?php if ( ( $language['flag'] ) ) { ?>
-							<img src="<?php echo esc_url( WPM()->flags_dir() . $language['flag'] . '.png' ); ?>" alt="<?php esc_attr_e( $language['name'] ); ?>">
+							<img src="<?php echo esc_url( wpm_get_flag_url( $language['flag'] ) ); ?>" alt="<?php esc_attr_e( $language['name'] ); ?>">
 						<?php } ?>
 					</td>
 					<td class="wpm-lang-delete">
@@ -236,7 +236,7 @@ class WPM_Admin_Settings {
 					<select class="wpm-flags" name="wpm_languages[{{ data.count }}][flag]" title="<?php esc_attr_e( 'Flag', 'wp-multilang' ); ?>">
 						<option value=""><?php esc_attr_e( '&mdash; Select &mdash;' ); ?></option>
 						<?php foreach ( $flags as $flag ) { ?>
-						<option value="<?php esc_attr_e( pathinfo( $flag, PATHINFO_FILENAME ) ); ?>"><?php esc_attr_e( pathinfo( $flag, PATHINFO_FILENAME ) ); ?></option>
+						<option value="<?php esc_attr_e( $flag ); ?>"><?php esc_attr_e( pathinfo( $flag, PATHINFO_FILENAME ) ); ?></option>
 						<?php } ?>
 					</select>
 				</td>

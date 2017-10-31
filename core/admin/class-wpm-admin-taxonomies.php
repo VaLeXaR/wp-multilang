@@ -91,7 +91,7 @@ class WPM_Admin_Taxonomies {
 
 			foreach ( $languages as $locale => $language ) {
 				if ( isset( $strings[ $language ] ) && ! empty( $strings[ $language ] ) ) {
-					$output[] = '<img src="' . WPM()->flags_dir() . $options[ $locale ]['flag'] . '.png" alt="' . $options[ $locale ]['name'] . '" title="' . $options[ $locale ]['name'] . '">';
+					$output[] = '<img src="' . esc_url( wpm_get_flag_url( $options[ $locale ]['flag'] ) ) . '" alt="' . $options[ $locale ]['name'] . '" title="' . $options[ $locale ]['name'] . '">';
 				}
 			}
 

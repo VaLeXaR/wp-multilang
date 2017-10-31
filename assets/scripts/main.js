@@ -38,7 +38,7 @@
     $(document).on('change', '.wpm-flags', function () {
       var select = $(this);
       if (select.val()) {
-        var flag = wpm_params.plugin_url + '/flags/' + select.val() + '.png';
+        var flag = wpm_params.flags_dir + select.val();
         if (select.next().length) {
           select.next().attr('src', flag);
         } else {

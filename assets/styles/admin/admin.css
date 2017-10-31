@@ -116,28 +116,29 @@ table.wpm-languages {
     outline: none;
     box-shadow: none; }
 
-.editor-header__content-tools .wpm-language-switcher {
+.editor-header-toolbar .wpm-language-switcher {
   position: relative;
   left: 0 !important; }
-  .editor-header__content-tools .wpm-language-switcher .lang-main {
+  .editor-header-toolbar .wpm-language-switcher .lang-main {
     padding-left: 10px;
-    padding-right: 10px; }
-    .editor-header__content-tools .wpm-language-switcher .lang-main img {
+    padding-right: 10px;
+    line-height: 36px; }
+    .editor-header-toolbar .wpm-language-switcher .lang-main img {
       top: 2px; }
 
-.editor-header__content-tools .lang-dropdown {
+.editor-header-toolbar .lang-dropdown {
   position: absolute;
   top: 100%;
   left: 0;
   background-color: #fff;
   border: 1px solid #ccc;
   z-index: 1; }
-  .editor-header__content-tools .lang-dropdown ul {
+  .editor-header-toolbar .lang-dropdown ul {
     list-style: none; }
-    .editor-header__content-tools .lang-dropdown ul a {
+    .editor-header-toolbar .lang-dropdown ul a {
       padding: 10px;
       display: block; }
-      .editor-header__content-tools .lang-dropdown ul a:hover, .editor-header__content-tools .lang-dropdown ul a:focus {
+      .editor-header-toolbar .lang-dropdown ul a:hover, .editor-header-toolbar .lang-dropdown ul a:focus {
         background-color: #ccc; }
 
 .gutenberg-meta-box-html .languagechecklist li {

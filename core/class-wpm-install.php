@@ -24,6 +24,10 @@ class WPM_Install {
 			'wpm_update_178_datetime_format',
 			'wpm_update_178_db_version',
 		),
+		'1.8.0' => array(
+			'wpm_update_180_flags',
+			'wpm_update_180_db_version',
+		),
 	);
 
 	/**

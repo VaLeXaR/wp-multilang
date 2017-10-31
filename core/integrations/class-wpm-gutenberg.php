@@ -56,7 +56,7 @@ class WPM_Gutenberg {
 				wp.api.init().done( function() {
 				if ($('#wpm-language-switcher').length === 0) {
 				      var language_switcher = wp.template( 'wpm-ls-customizer' );
-				      $('.editor-header__content-tools').append(language_switcher);
+				      $('.editor-header-toolbar').prepend(language_switcher);
 				    }
 			    });
 			    

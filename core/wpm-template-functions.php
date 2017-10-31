@@ -12,6 +12,39 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
+
+/**
+ * Get flags dir path
+ *
+ * @return string
+ */
+function wpm_get_flags_path() {
+	return apply_filters( 'wpm_flags_path', WPM()->flags_path() );
+}
+
+
+/**
+ * Get flags dir url
+ *
+ * @return string
+ */
+function wpm_get_flags_dir() {
+	return apply_filters( 'wpm_flags_dir', WPM()->flags_dir() );
+}
+
+
+/**
+ * Get flag url
+ *
+ * @param string $filename
+ *
+ * @return string
+ */
+function wpm_get_flag_url( $filename = '' ) {
+	return wpm_get_flags_dir() . $filename;
+}
+
+
 /**
  * Display language switcher in templates
  *
@@ -43,19 +76,22 @@ function wpm_language_switcher( $args = array(), $echo = true ) {
 		'args'        => $args,
 	);
 
-	$template = '';
-
 	switch ( $args['type'] ) {
 
 		case 'list':
 			$template = wpm_get_template( 'language-switcher-list.php', $vars );
 			break;
+
 		case 'dropdown':
 			$template = wpm_get_template( 'language-switcher-dropdown.php', $vars );
 			break;
+
 		case 'select':
 			$template = wpm_get_template( 'language-switcher-select.php', $vars );
 			break;
+
+		default:
+			$template = '';
 	}
 
 	if ( $echo ) {

@@ -15,6 +15,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Update language flag
+ */
+function wpm_update_180_flags() {
+	$languages         = get_option( 'wpm_languages', array() );
+	$updated_languages = array();
+
+	foreach ( $languages as $locale => $language ) {
+		$language['flag']             = $language['flag'] . '.png';
+		$updated_languages[ $locale ] = $language;
+	}
+
+	update_option( 'wpm_languages', $updated_languages );
+}
+
+/**
+ * Update DB Version.
+ */
+function wpm_update_180_db_version() {
+	WPM_Install::update_db_version( '1.8.0' );
+}
+
+/**
  * Update date and time format foe languages.
  */
 function wpm_update_178_datetime_format() {

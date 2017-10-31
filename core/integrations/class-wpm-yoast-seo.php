@@ -27,8 +27,8 @@ class WPM_Yoast_Seo {
 	 */
 	public function __construct() {
 		add_filter( 'wpm_option_wpseo_titles_config', array( $this, 'set_posts_config' ) );
-		add_filter( 'wpseo_title', 'wpm_translate_string', 5 );
-		remove_filter( 'update_post_metadata', array( 'WPSEO_Meta', 'remove_meta_if_default' ), 10 );
+		add_filter( 'wpseo_title', 'wpm_translate_string' );
+		remove_filter( 'update_post_metadata', array( 'WPSEO_Meta', 'remove_meta_if_default' ) );
 		add_filter( 'wpseo_sitemap_url', array( $this, 'add_alternate_sitemaplinks' ), 10, 2 );
 		add_filter( 'wpseo_sitemap_entry', array( $this, 'add_lang_to_url' ), 10, 3 );
 	}
