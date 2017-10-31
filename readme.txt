@@ -168,6 +168,15 @@ If you have opened several browser tabs for editing this post in different langu
 
 == Changelog ==
 
+= 1.8.0 =
++ added filters for flags directory for customization
++ added possibility for set own templates for language switcher
++ added wpm settings to WP REST settings endpoint
++ changed plugin text domain
+* fix switching language in customizer
+* fix display date and time formats on settings page
++ fix compatibility with latest version of Gutenberg
+
 = 1.7.8 =
 + add possibility set time and date format for each language
 + add translation emails in Newsletter for each subscriber in his language
