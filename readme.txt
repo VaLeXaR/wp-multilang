@@ -140,7 +140,7 @@ Supports syntax qTranslate, qTranslate-X, WPGlobus, etc.
 
 Compatible with REST-API.
 Supports transfer the required translation through option `lang` in the GET request to REST.
-Has the ability to keep recording the target language through the transmission parameter `lang` in the POST request.
+Has the ability to keep recording the target language through the transmission parameter `lang` in the request.
 
 == Installation ==
 
@@ -183,6 +183,7 @@ If you have opened several browser tabs for editing this post in different langu
 * fix translate preview links for custom posts
 * fix translate media data for ajax
 * fix translate url in admin
+* fix translate page title in Yoast SEO
 
 = 1.7.8 =
 + add possibility set time and date format for each language
