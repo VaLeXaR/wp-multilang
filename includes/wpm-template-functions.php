@@ -78,10 +78,6 @@ function wpm_language_switcher( $args = array(), $echo = true ) {
 
 	switch ( $args['type'] ) {
 
-		case 'list':
-			$template = wpm_get_template( 'language-switcher-list.php', $vars );
-			break;
-
 		case 'dropdown':
 			$template = wpm_get_template( 'language-switcher-dropdown.php', $vars );
 			break;
@@ -91,7 +87,7 @@ function wpm_language_switcher( $args = array(), $echo = true ) {
 			break;
 
 		default:
-			$template = '';
+			$template = wpm_get_template( 'language-switcher-list.php', $vars );
 	}
 
 	if ( $echo ) {
