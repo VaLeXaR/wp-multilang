@@ -4,9 +4,8 @@
  *
  * Uninstalling  WP Multilang deletes translations and options.
  *
- * @author      VaLeXaR
  * @category    Core
- * @package     WPMultilang/Uninstaller
+ * @package     WPM/Uninstaller
  */
 
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
@@ -15,15 +14,15 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 
 global $wpdb;
 
-require_once __DIR__ . '/core/autoload.php';
+require_once __DIR__ . '/includes/autoload.php';
 
-if ( get_option( 'wpm_uninstall_translations', '' ) ) {
-
-	require_once 'core/wpm-core-functions.php';
+if ( get_option( 'wpm_uninstall_translations', false ) ) {
 
 	if ( ! defined( 'WPM_PLUGIN_FILE' ) ) {
 		define( 'WPM_PLUGIN_FILE', __DIR__ . '/wp-multilang.php' );
 	}
+
+	require_once 'includes/wpm-core-functions.php';
 
 	$config    = wpm_get_config();
 	$languages = wpm_get_languages();

@@ -54,7 +54,7 @@ Sample configurations can be viewed in a configuration file in the folder config
 
 Configuration is updated after switching threads off/on or update any plugins.
 
-It has filters for dynamic application configuration translation add languages.
+The plugin has filters for dynamic application configuration for translate.
 
 To disable translation set `null` into the desired configuration.   
 For example, you must turn off translation for a post type `post`.   
@@ -106,9 +106,8 @@ wpm_translate_url ($url, $language = ''); // translate url
 wpm_translate_string ($string, $language = ''); // translate multilingual string
 wpm_translate_value ($value, $language = ''); // translate multidimensional array with multilingual strings   
 ```
-Standard translates all record types, taxonomies, custom fields. Even if you turn off translation for a particular type of account, you will only see its translation.
 
-Supports automatically redirect to the user's browser language, if he went to the site for the first time.
+Supports automatically redirect to the user's browser language, if he visits for the first time.
 
 Update translation occurs at PHP. Therefore plugin has high adaptability, compatibility and easily integrates with other plugins. This is what distinguishes it among similar.
 
@@ -137,9 +136,7 @@ Supports syntax qTranslate, qTranslate-X, WPGlobus, etc.
 
 Compatible with REST-API.   
 Supports transfer the required translation through option `lang` in the GET request to REST.   
-Has the ability to keep recording the target language through the transmission parameter `lang` in the POST request.
-
-Compatible with multisite not tested.
+Has the ability to keep recording the target language through the transmission parameter `lang` in the request.
 
 #### Українська
 
@@ -189,7 +186,7 @@ Compatible with multisite not tested.
 
 Конфігурація оновлюється після перемикання теми, вимкнення/увімкнення/оновлення будь-якого плаґіна.
 
-Має фільтри для динамічного застосування конфігурації перекладу, додавання мов.
+Має фільтри для динамічного застосування конфігурації перекладу.
 
 Для вимкнення перекладу передайте `null` у потрібну конфігурацію.
 Наприклад, потрібно вимкнути переклад для типу запису `post`.
@@ -242,7 +239,6 @@ wpm_translate_url( $url, $language = '' ); // translate url
 wpm_translate_string( $string, $language = '' ); // translate multilingual string
 wpm_translate_value( $value, $language = '' ); // translate multidimensional array with multilingual strings
 ```
-Стандартно перекладає всі типи записів, таксономій, користувацьких полів. Навіть якщо ви вимкнете переклад для певного типу запису, ви будете бачити лише його переклад.
 
 Підтримує автоматичну переадресацію на мову браузера користувача, якщо він зайшов на сайт вперше.
 
@@ -273,6 +269,4 @@ wpm_translate_value( $value, $language = '' ); // translate multidimensional arr
 
 *Сумісний з REST-API.*   
 Підтримує передачу потрібного перекладу через параметр `lang` у GET запиті до REST.   
-Має можливість зберігати запис потрібною мовою через передачу параметру `lang` у POST запиті.
-
-Сумісність з багатосайтовістю не тестувалася.
+Має можливість зберігати запис потрібною мовою через передачу параметру `lang` у запиті.

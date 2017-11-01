@@ -6,7 +6,7 @@
  */
 /* global wp, jQuery */
 /* exported PluginCustomizer */
-var WPMLang = (function( api, $ ) {
+var WPMLang = (function (api, $) {
   'use strict';
 
   var component = {
@@ -22,15 +22,15 @@ var WPMLang = (function( api, $ ) {
    * @param {string} home.url  Preview URL.
    * @returns {void}
    */
-  component.init = function init( home ) {
-    _.extend( component.data, home );
-    if ( ! home || ! home.url  ) {
-      throw new Error( 'Missing args' );
+  component.init = function init(home) {
+    _.extend(component.data, home);
+    if (!home || !home.url) {
+      throw new Error('Missing args');
     }
 
-    api.bind( 'ready', function(){
-      api.previewer.previewUrl.set( home.url );
+    api.bind('ready', function () {
+      api.previewer.previewUrl.set(home.url);
     });
   };
   return component;
-} ( wp.customize, jQuery ) );
+}(wp.customize, jQuery) );

@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.7.8
+Stable tag: 1.8.0
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -52,7 +52,6 @@ WP Multilang compatible with plugins:
 * BuddyPress
 * Meta Slider
 * TablePress
-* WordPress MU Domain Mapping
 
 Supports configuration via json.
 
@@ -141,7 +140,7 @@ Supports syntax qTranslate, qTranslate-X, WPGlobus, etc.
 
 Compatible with REST-API.
 Supports transfer the required translation through option `lang` in the GET request to REST.
-Has the ability to keep recording the target language through the transmission parameter `lang` in the POST request.
+Has the ability to keep recording the target language through the transmission parameter `lang` in the request.
 
 == Installation ==
 
@@ -168,6 +167,23 @@ If you have opened several browser tabs for editing this post in different langu
 5. Post edit page
 
 == Changelog ==
+
+= 1.8.0 =
++ added filters for flags directory for customization
++ added possibility for set own templates for language switcher
++ added wpm settings to WP REST settings endpoint
++ changed plugin text domain to 'wp-multilang'
++ change plugin structure
++ add 'any' post type to filter posts by lang
+- remove uk localization from plugin. It available on wordpress.org
+* fix switching language in customizer
+* fix display date and time formats on settings page
+* fix compatibility with latest version of Gutenberg
+* fix 404 error for paged pages if main page is post archive
+* fix translate preview links for custom posts
+* fix translate media data for ajax
+* fix translate url in admin
+* fix translate page title in Yoast SEO
 
 = 1.7.8 =
 + add possibility set time and date format for each language

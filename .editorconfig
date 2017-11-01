@@ -13,3 +13,7 @@ insert_final_newline = true
 [*.php]
 indent_style = tab
 indent_size = 4
+
+[*.scss]
+indent_style = tab
+indent_size = 4
