@@ -456,9 +456,12 @@ class WPM_Setup {
 	 * @return object WP
 	 */
 	public function setup_query_var( $request ) {
-		if ( ! empty( $request->query_vars ) ) {
-			$request->query_vars['lang'] = $this->get_user_language();
+
+		if ( empty( $request->query_vars ) || ( count( $request->query_vars ) == 1 && isset( $request->query_vars['paged'] ) ) ) {
+			return $request;
 		}
+
+		$request->query_vars['lang'] = $this->get_user_language();
 
 		return $request;
 	}
