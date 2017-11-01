@@ -82,7 +82,7 @@ class WPM_Posts extends \WPM_Object {
 
 				if ( is_string( $post_type ) ) {
 
-					if ( ! isset( $this->post_config[ $post_type ] ) || is_null( $this->post_config[ $post_type ] ) ) {
+					if ( ( 'any' != $post_type ) || ! isset( $this->post_config[ $post_type ] ) || is_null( $this->post_config[ $post_type ] ) ) {
 						return $query;
 					}
 				}
