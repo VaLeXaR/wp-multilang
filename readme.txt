@@ -172,10 +172,17 @@ If you have opened several browser tabs for editing this post in different langu
 + added filters for flags directory for customization
 + added possibility for set own templates for language switcher
 + added wpm settings to WP REST settings endpoint
-+ changed plugin text domain
++ changed plugin text domain to 'wp-multilang'
++ change plugin structure
++ add 'any' post type to filter posts by lang
+- remove uk localization from plugin. It available from wordpress.org
 * fix switching language in customizer
 * fix display date and time formats on settings page
-+ fix compatibility with latest version of Gutenberg
+* fix compatibility with latest version of Gutenberg
+* fix 404 error for paged pages if main page is post archive
+* fix translate preview links for custom posts
+* fix translate media data for ajax
+* fix translate url in admin
 
 = 1.7.8 =
 + add possibility set time and date format for each language
