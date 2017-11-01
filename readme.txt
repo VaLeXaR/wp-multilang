@@ -175,7 +175,7 @@ If you have opened several browser tabs for editing this post in different langu
 + changed plugin text domain to 'wp-multilang'
 + change plugin structure
 + add 'any' post type to filter posts by lang
-- remove uk localization from plugin. It available from wordpress.org
+- remove uk localization from plugin. It available on wordpress.org
 * fix switching language in customizer
 * fix display date and time formats on settings page
 * fix compatibility with latest version of Gutenberg
