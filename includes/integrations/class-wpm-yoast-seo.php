@@ -36,38 +36,67 @@ class WPM_Yoast_Seo {
 	/**
 	 * Add dynamically title setting for post types
 	 *
-	 * @param $config
+	 * @param array $option_config
 	 *
 	 * @return array
 	 */
-	public function set_posts_config( $config ) {
+	public function set_posts_config( $option_config ) {
 
-		$post_types = get_post_types();
+		$config     = wpm_get_config();
+		$post_types = $config['post_types'];
 
-		foreach ( $post_types as $post_type ) {
-			$post_config = array(
+		foreach ( $post_types as $post_type => $post_config ) {
+
+			if ( is_null( $post_config ) ) {
+				continue;
+			}
+
+			$option_post_config = array(
 				"title-{$post_type}"              => array(),
 				"metadesc-{$post_type}"           => array(),
-				"metakey-{$post_type}"           => array(),
+				"metakey-{$post_type}"            => array(),
 				"title-ptarchive-{$post_type}"    => array(),
 				"metadesc-ptarchive-{$post_type}" => array(),
 			);
 
-			$config = wpm_array_merge_recursive( $config, $post_config );
+			$option_config = wpm_array_merge_recursive( $option_post_config, $post_config );
 		}
 
-		$taxonomies = get_taxonomies();
+		$taxonomies = $config['taxonomies'];
 
-		foreach ( $taxonomies as $taxonomy ) {
-			$tax_config = array(
+		foreach ( $taxonomies as $taxonomy => $taxonomy_config ) {
+
+			if ( is_null( $taxonomy_config ) ) {
+				continue;
+			}
+
+			$option_taxonomy_config = array(
 				"title-tax-{$taxonomy}"    => array(),
 				"metadesc-tax-{$taxonomy}" => array(),
 			);
 
-			$config = wpm_array_merge_recursive( $config, $tax_config );
+			$option_config = wpm_array_merge_recursive( $option_taxonomy_config, $option_config );
 		}
 
-		return $config;
+		return $option_config;
+	}
+
+
+	/**
+	 * Translate page title
+	 *
+	 * @param $title
+	 *
+	 * @return string
+	 */
+	public function translate_title( $title ) {
+		$separator   = wpseo_replace_vars( '%%sep%%', array() );
+		$separator   = ' ' . trim( $separator ) . ' ';
+		$titles_part = explode( $separator, $title );
+		$titles_part = wpm_translate_value( $titles_part );
+		$title       = implode( $separator, $titles_part );
+
+		return $title;
 	}
 
 
@@ -135,24 +164,6 @@ class WPM_Yoast_Seo {
 		}
 
 		return $new_output;
-	}
-
-
-	/**
-	 * Translate page title
-	 *
-	 * @param $title
-	 *
-	 * @return string
-	 */
-	public function translate_title( $title ) {
-		$separator   = wpseo_replace_vars( '%%sep%%', array() );
-		$separator   = ' ' . trim( $separator ) . ' ';
-		$titles_part = explode( $separator, $title );
-		$titles_part = wpm_translate_value( $titles_part );
-		$title       = implode( $separator, $titles_part );
-
-		return $title;
 	}
 }
 
