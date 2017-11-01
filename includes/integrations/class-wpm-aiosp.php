@@ -38,19 +38,20 @@ class WPM_AIOSP {
 	/**
 	 * Add dynamically title setting for post types
 	 *
-	 * @param $config
+	 * @param array $option_config
 	 *
 	 * @return array
 	 */
-	public function set_posts_config( $config ) {
+	public function set_posts_config( $option_config ) {
 
-		$post_types = get_post_types();
+		$config     = wpm_get_config();
+		$post_types = $config['post_types'];
 
-		foreach ( $post_types as $post_type ) {
-			$config["aiosp_{$post_type}_title_format"] = array();
+		foreach ( $post_types as $post_type => $post_config ) {
+			$option_config[ "aiosp_{$post_type}_title_format" ] = array();
 		}
 
-		return $config;
+		return $option_config;
 	}
 
 	/**

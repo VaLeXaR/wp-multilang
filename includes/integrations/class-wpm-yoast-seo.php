@@ -46,11 +46,6 @@ class WPM_Yoast_Seo {
 		$post_types = $config['post_types'];
 
 		foreach ( $post_types as $post_type => $post_config ) {
-
-			if ( is_null( $post_config ) ) {
-				continue;
-			}
-
 			$option_post_config = array(
 				"title-{$post_type}"              => array(),
 				"metadesc-{$post_type}"           => array(),
@@ -65,11 +60,6 @@ class WPM_Yoast_Seo {
 		$taxonomies = $config['taxonomies'];
 
 		foreach ( $taxonomies as $taxonomy => $taxonomy_config ) {
-
-			if ( is_null( $taxonomy_config ) ) {
-				continue;
-			}
-
 			$option_taxonomy_config = array(
 				"title-tax-{$taxonomy}"    => array(),
 				"metadesc-tax-{$taxonomy}" => array(),
