@@ -91,12 +91,26 @@ class WPM_Yoast_Seo {
 	}
 
 
+	/**
+	 * Add filter for each type
+	 *
+	 * @param $type
+	 *
+	 * @return mixed
+	 */
 	public function add_filter_for_maps( $type ) {
 		add_filter( "wpseo_sitemap_{$type}_urlset", array( $this, 'add_namespace_to_xml' ) );
 		return $type;
 	}
 
 
+	/**
+	 * Add namespace for xmlns:xhtml
+	 *
+	 * @param $urlset
+	 *
+	 * @return mixed
+	 */
 	public function add_namespace_to_xml( $urlset ) {
 		$urlset = str_replace( 'http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd', 'http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd http://www.w3.org/1999/xhtml http://www.w3.org/2002/08/xhtml/xhtml1-strict.xsd', $urlset );
 		$urlset = str_replace( 'xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"', 'xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml"', $urlset );
@@ -162,6 +176,7 @@ class WPM_Yoast_Seo {
 				}
 
 				$alternate .= sprintf( "\t<xhtml:link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />\n\t", esc_attr( str_replace( '_', '-', strtolower( $lc ) ) ), esc_url( wpm_translate_url( $url['loc'], $lg ) ) );
+				$alternate = apply_filters( 'wpm_sitemap_alternate_link', $alternate, $url['loc'] );
 			}
 
 			$new_loc    = str_replace( '</url>', $alternate . '</url>', $new_loc );
