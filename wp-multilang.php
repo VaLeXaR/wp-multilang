@@ -8,7 +8,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:     wp-multilang
  * Domain Path:     /languages
- * Version:         1.8.0
+ * Version:         1.8.1
  *
  * @package  WPM
  * @category Core
