@@ -608,6 +608,8 @@ class WPM_Setup {
 	 */
 	public function set_date_format( $value ) {
 
+		require_once( ABSPATH . 'wp-admin/includes/screen.php' );
+
 		if ( is_admin() && ! wp_doing_ajax() ) {
 			$screen = get_current_screen();
 			if ( $screen && 'options-general' == $screen->id ) {
@@ -638,6 +640,8 @@ class WPM_Setup {
 	 * @return string
 	 */
 	public function set_time_format( $value ) {
+
+		require_once( ABSPATH . 'wp-admin/includes/screen.php' );
 
 		if ( is_admin() && ! wp_doing_ajax() ) {
 			$screen = get_current_screen();
