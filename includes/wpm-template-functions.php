@@ -134,7 +134,7 @@ function wpm_set_meta_languages() {
 		$hreflangs .= sprintf( '<link rel="alternate" hreflang="%s" href="%s"/>', esc_attr( str_replace( '_', '-', strtolower( $locale ) ) ), esc_url( wpm_translate_url( $current_url, $language ) ) );
 	}
 
-	echo apply_filters( 'wpm_set_alternate_links', $hreflangs );
+	echo apply_filters( 'wpm_set_alternate_links', $hreflangs, $current_url );
 }
 
 add_action( 'wp_head', 'wpm_set_meta_languages' );
