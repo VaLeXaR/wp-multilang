@@ -119,6 +119,8 @@ function wpm_set_meta_languages() {
 		$languages = get_term_meta( get_queried_object_id(), '_languages', true );
 	}
 
+	$hreflangs = '';
+
 	foreach ( wpm_get_languages() as $locale => $language ) {
 
 		if ( $languages && ! in_array( $language, $languages ) ) {
@@ -126,11 +128,13 @@ function wpm_set_meta_languages() {
 		}
 
 		if ( wpm_get_default_locale() == $locale ) {
-			printf( '<link rel="alternate" hreflang="x-default" href="%s"/>', esc_url( wpm_translate_url( $current_url, $language ) ) );
+			$hreflangs .= sprintf( '<link rel="alternate" hreflang="x-default" href="%s"/>', esc_url( wpm_translate_url( $current_url, $language ) ) );
 		}
 
-		printf( '<link rel="alternate" hreflang="%s" href="%s"/>', esc_attr( str_replace( '_', '-', strtolower( $locale ) ) ), esc_url( wpm_translate_url( $current_url, $language ) ) );
+		$hreflangs .= sprintf( '<link rel="alternate" hreflang="%s" href="%s"/>', esc_attr( str_replace( '_', '-', strtolower( $locale ) ) ), esc_url( wpm_translate_url( $current_url, $language ) ) );
 	}
+
+	echo apply_filters( 'wpm_set_alternate_links', $hreflangs );
 }
 
 add_action( 'wp_head', 'wpm_set_meta_languages' );
