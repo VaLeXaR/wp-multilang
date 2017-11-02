@@ -30,7 +30,7 @@ class WPM_Yoast_Seo {
 		remove_filter( 'update_post_metadata', array( 'WPSEO_Meta', 'remove_meta_if_default' ) );
 		add_filter( 'wpseo_sitemap_url', array( $this, 'add_alternate_sitemaplinks' ), 10, 2 );
 		add_filter( 'wpseo_sitemap_entry', array( $this, 'add_lang_to_url' ), 10, 3 );
-		add_filter( 'wpseo_build_sitemap_post_type', array( $this, 'add_filter_for_change_sitemap' ) );
+		add_filter( 'wpseo_build_sitemap_post_type', array( $this, 'add_filter_for_maps' ) );
 	}
 
 
@@ -91,14 +91,15 @@ class WPM_Yoast_Seo {
 	}
 
 
-	public function add_filter_for_change_sitemap( $type ) {
-		add_filter( "wpseo_sitemap_{$type}_urlset", array( $this, 'add_xhtml' ) );
+	public function add_filter_for_maps( $type ) {
+		add_filter( "wpseo_sitemap_{$type}_urlset", array( $this, 'add_namespace_to_xml' ) );
 		return $type;
 	}
 
 
-	public function add_xhtml( $urlset ) {
-		$urlset = str_replace( 'xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"', 'xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"', $urlset );
+	public function add_namespace_to_xml( $urlset ) {
+		$urlset = str_replace( 'http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd', 'http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd http://www.w3.org/1999/xhtml http://www.w3.org/2002/08/xhtml/xhtml1-strict.xsd', $urlset );
+		$urlset = str_replace( 'xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"', 'xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml"', $urlset );
 
 		return $urlset;
 	}
