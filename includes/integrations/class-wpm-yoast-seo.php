@@ -178,7 +178,7 @@ class WPM_Yoast_Seo {
 				$alternate .= sprintf( "\t<xhtml:link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />\n\t", esc_attr( str_replace( '_', '-', strtolower( $lc ) ) ), esc_url( wpm_translate_url( $url['loc'], $lg ) ) );
 			}
 
-			$alternate  = apply_filters( 'wpm_sitemap_alternate_links', $alternate, $language, $url['loc'] );
+			$alternate  = apply_filters( 'wpm_sitemap_alternate_links', $alternate, $url['loc'], $language );
 			$new_loc    = str_replace( '</url>', $alternate . '</url>', $new_loc );
 			$new_output .= $new_loc;
 		}
