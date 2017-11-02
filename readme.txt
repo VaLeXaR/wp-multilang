@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.8.0
+Stable tag: 1.8.1
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -167,6 +167,12 @@ If you have opened several browser tabs for editing this post in different langu
 5. Post edit page
 
 == Changelog ==
+
+= 1.8.1 =
++ add filters for alternate links
++ add namespace for alternate links in Yoas SEO sitemap
+* fix set alternate links
+* fix error for getting date & time format for current language
 
 = 1.8.0 =
 + added filters for flags directory for customization

@@ -107,7 +107,7 @@ add_filter( 'document_title_parts', 'wpm_translate_value', 5 );
 /**
  * Add meta params to 'head'
  */
-function wpm_set_meta_languages() {
+function wpm_set_alternate_links() {
 	$current_url = wpm_get_current_url();
 	$languages   = array();
 
@@ -131,13 +131,13 @@ function wpm_set_meta_languages() {
 			$hreflangs .= sprintf( '<link rel="alternate" hreflang="x-default" href="%s"/>', esc_url( wpm_translate_url( $current_url, $language ) ) );
 		}
 
-		$hreflangs .= sprintf( '<link rel="alternate" hreflang="%s" href="%s"/>', esc_attr( str_replace( '_', '-', strtolower( $language ) ) ), esc_url( wpm_translate_url( $current_url, $language ) ) );
+		$hreflangs .= sprintf( '<link rel="alternate" hreflang="%s" href="%s"/>', esc_attr( str_replace( '_', '-', strtolower( $locale ) ) ), esc_url( wpm_translate_url( $current_url, $language ) ) );
 	}
 
 	echo apply_filters( 'wpm_alternate_links', $hreflangs, $current_url );
 }
 
-add_action( 'wp_head', 'wpm_set_meta_languages' );
+add_action( 'wp_head', 'wpm_set_alternate_links' );
 
 
 /**
