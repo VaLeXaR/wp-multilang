@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-11-01 09:11+0200\n"
+"POT-Creation-Date: 2017-11-01 22:03+0200\n"
 "PO-Revision-Date: 2017-05-22 12:43+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -32,7 +32,7 @@ msgstr ""
 #: includes/admin/class-wpm-admin-menus.php:120
 #: includes/admin/class-wpm-admin-menus.php:123
 #: includes/admin/class-wpm-admin-meta-boxes.php:99
-#: includes/admin/class-wpm-admin-posts.php:75
+#: includes/admin/class-wpm-admin-posts.php:77
 #: includes/admin/class-wpm-admin-settings.php:35
 #: includes/admin/class-wpm-admin-taxonomies.php:67
 #: includes/widgets/class-wpm-widget-language-switcher.php:30
@@ -75,7 +75,7 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-posts.php:134
+#: includes/admin/class-wpm-admin-posts.php:136
 msgid "Current edit language:"
 msgstr ""
 
