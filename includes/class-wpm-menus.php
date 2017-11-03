@@ -196,30 +196,29 @@ class WPM_Menus {
 				}
 
 				$languages   = wpm_get_languages();
-				$options     = wpm_get_options();
 				$current_url = wpm_get_current_url();
 				$new_items   = array();
 				$show_type   = get_post_meta( $menu_id, '_menu_item_languages_show', true );
 
-				foreach ( $languages as $locale => $language ) {
+				foreach ( $languages as $lang => $language ) {
 
 					$language_string = '';
 					$current_class = '';
 
-					if ( wpm_get_language() == $language ) {
+					if ( wpm_get_language() == $lang ) {
 						$current_class = 'class="active-language"';
 					}
 
-					if ( ( ( 'flag' === $show_type ) || ( 'both' === $show_type ) ) && ( $options[ $locale ]['flag'] ) ) {
-						$language_string = '<img src="' . esc_url( wpm_get_flag_url( $options[ $locale ]['flag'] ) ) . '" alt="' . esc_attr( $options[ $locale ]['name'] ) . '">';
+					if ( ( ( 'flag' === $show_type ) || ( 'both' === $show_type ) ) && ( $language['flag'] ) ) {
+						$language_string = '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" alt="' . esc_attr( $language['name'] ) . '">';
 					}
 
 					if ( ( 'name' === $show_type ) || ( 'both' === $show_type ) ) {
-						$language_string .= '<span>' . esc_attr( $options[ $locale ]['name'] ) . '</span>';
+						$language_string .= '<span>' . esc_attr( $language['name'] ) . '</span>';
 					}
 
-					$new_item = preg_replace( '/<a href="[^"]+">[^@]+<\/a>/', '<a href="' . esc_url( wpm_translate_url( $current_url, $language ) ) . '" ' . $current_class . ' data-lang="' . esc_attr( $language ) . '">' . $language_string . '</a>', $item );
-					$new_items[] = str_replace( $menu_id, 'language-' . $language, $new_item );
+					$new_item = preg_replace( '/<a href="[^"]+">[^@]+<\/a>/', '<a href="' . esc_url( wpm_translate_url( $current_url, $lang ) ) . '" ' . $current_class . ' data-lang="' . esc_attr( $lang ) . '">' . $language_string . '</a>', $item );
+					$new_items[] = str_replace( $menu_id, 'language-' . $lang, $new_item );
 				}
 
 				$menu_items = wpm_array_insert_after( $menu_items, $key, $new_items );

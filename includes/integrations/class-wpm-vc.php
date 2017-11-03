@@ -70,14 +70,13 @@ class WPM_VC {
 	 * @return string
 	 */
 	public function generate_select_frontend() {
-		$output              = '';
-		$output              .= '<select id="vc_vendor_wpm_langs_front" class="vc_select vc_select-navbar">';
-		$inline_url          = vc_frontend_editor()->getInlineUrl();
-		$active_language     = wpm_get_language();
-		$options             = wpm_get_options();
-		$available_languages = wpm_get_languages();
-		foreach ( $available_languages as $locale => $lang ) {
-			$output .= '<option value="' . add_query_arg( 'edit_lang', $lang, $inline_url ) . '" ' . selected( $lang, $active_language, false ) . ' >' . $options[ $locale ]['name'] . '</option >';
+		$output          = '';
+		$output          .= '<select id="vc_vendor_wpm_langs_front" class="vc_select vc_select-navbar">';
+		$inline_url      = vc_frontend_editor()->getInlineUrl();
+		$active_language = wpm_get_language();
+		$languages       = wpm_get_languages();
+		foreach ( $languages as $lang => $language ) {
+			$output .= '<option value="' . add_query_arg( 'edit_lang', $lang, $inline_url ) . '" ' . selected( $lang, $active_language, false ) . ' >' . $language['name'] . '</option >';
 		}
 		$output .= '</select >';
 

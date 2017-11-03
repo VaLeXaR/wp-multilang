@@ -30,16 +30,16 @@ class WPM_Meta_Box_Languages {
 			$post_languages = array();
 		}
 
-		$languages = wpm_get_options();
-		$i = 0;
+		$languages = wpm_get_languages();
+		$i         = 0;
 		?>
 		<h4><?php _e( 'Show post only in:', 'wp-multilang' ); ?></h4>
 		<ul class="languagechecklist">
-			<?php foreach ( $languages as $language ) { if ( ! $language['enable'] ) continue; ?>
+			<?php foreach ( $languages as $lang => $language ) { ?>
 				<li>
 					<label>
-						<input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $language['slug']; ?>" value="<?php esc_attr_e( $language['slug'] ); ?>"<?php if ( in_array( $language['slug'], $post_languages ) ) { ?> checked="checked"<?php } ?>>
-						<?php echo $language['name']; ?>
+						<input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $lang; ?>" value="<?php esc_attr_e( $lang ); ?>"<?php if ( in_array( $lang, $post_languages ) ) { ?> checked="checked"<?php } ?>>
+						<?php esc_attr_e( $language['name'] ); ?>
 					</label>
 				</li>
 				<?php $i++; } ?>

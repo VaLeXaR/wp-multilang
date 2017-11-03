@@ -74,19 +74,20 @@ table.wpm-languages {
   table.wpm-languages .wpm-lang-locale {
     width: 10%; }
   table.wpm-languages .wpm-lang-slug {
-    width: 20%; }
+    width: 15%; }
   table.wpm-languages .wpm-lang-name {
-    width: 20%; }
+    width: 15%; }
+  table.wpm-languages .wpm-lang-date {
+    width: 10%; }
+  table.wpm-languages .wpm-lang-time {
+    width: 10%; }
   table.wpm-languages .wpm-lang-flag {
-    width: 20%; }
+    width: 15%; }
   table.wpm-languages .wpm-lang-delete {
     width: 10%; }
 
 .wp-core-ui .button-link.delete-language {
   color: #dd0e11; }
-
-#languages {
-  width: 100px; }
 
 .languagechecklist li {
   margin: 0;

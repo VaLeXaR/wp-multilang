@@ -34,15 +34,23 @@ table.wpm-languages {
 	}
 
 	.wpm-lang-slug {
-		width: 20%;
+		width: 15%;
 	}
 
 	.wpm-lang-name {
-		width: 20%;
+		width: 15%;
+	}
+
+	.wpm-lang-date {
+		width: 10%;
+	}
+
+	.wpm-lang-time {
+		width: 10%;
 	}
 
 	.wpm-lang-flag {
-		width: 20%;
+		width: 15%;
 	}
 
 	.wpm-lang-delete {
@@ -52,8 +60,4 @@ table.wpm-languages {
 
 .wp-core-ui .button-link.delete-language {
 	color: $red;
-}
-
-#languages {
-	width: 100px;
 }

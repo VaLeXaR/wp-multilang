@@ -71,8 +71,8 @@ class WPM_Admin_Assets {
 		wp_register_script( 'wpm_translator', wpm_asset_path( 'scripts/translator' . $suffix . '.js' ), array(), WPM_VERSION );
 
 		$translator_params = array(
-			'languages'                 => array_values( wpm_get_languages() ),
-			'default_language'          => wpm_get_languages()[ wpm_get_default_locale() ],
+			'languages'                 => array_keys( wpm_get_languages() ),
+			'default_language'          => wpm_get_default_language(),
 			'language'                  => wpm_get_language(),
 			'show_untranslated_strings' => get_option( 'wpm_show_untranslated_strings' ),
 		);

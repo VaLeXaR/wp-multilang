@@ -9,6 +9,7 @@
  */
 
 use WPM\Includes\WPM_Install;
+use WPM\Includes\WPM_Setup;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -17,11 +18,50 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Update language flag
  */
+function wpm_update_182_options() {
+
+	$updated_languages = array();
+	$default_locale    = wpm_get_default_locale();
+	$default_language  = '';
+
+	foreach ( wpm_get_languages() as $locale => $language ) {
+		if ( isset( $language['slug'] ) ) {
+			$slug = $language['slug'];
+			if ( $locale == $default_locale ) {
+				$default_language = $slug;
+			}
+			$updated_languages[ $slug ] = array(
+				'enable'      => $language['enable'],
+				'locale'      => $locale,
+				'name'        => $language['name'],
+				'translation' => $locale,
+				'date'        => $language['date'],
+				'time'        => $language['time'],
+				'flag'        => $language['flag'],
+			);
+		}
+	}
+
+	if ( $updated_languages ) {
+		update_option( 'wpm_languages', $updated_languages );
+		update_option( 'wpm_site_language', $default_language );
+	}
+}
+
+/**
+ * Update DB Version.
+ */
+function wpm_update_182_db_version() {
+	WPM_Install::update_db_version( '1.8.2' );
+}
+
+/**
+ * Update language flag
+ */
 function wpm_update_180_flags() {
-	$languages         = get_option( 'wpm_languages', array() );
 	$updated_languages = array();
 
-	foreach ( $languages as $locale => $language ) {
+	foreach ( wpm_get_languages() as $locale => $language ) {
 		$language['flag']             = $language['flag'] . '.png';
 		$updated_languages[ $locale ] = $language;
 	}
@@ -40,10 +80,9 @@ function wpm_update_180_db_version() {
  * Update date and time format foe languages.
  */
 function wpm_update_178_datetime_format() {
-	$languages         = get_option( 'wpm_languages', array() );
 	$updated_languages = array();
 
-	foreach ( $languages as $locale => $language ) {
+	foreach ( wpm_get_languages() as $locale => $language ) {
 		$language['date']             = $language['date'] ? $language['date'] : '';
 		$language['time']             = $language['time'] ? $language['time'] : '';
 		$updated_languages[ $locale ] = $language;

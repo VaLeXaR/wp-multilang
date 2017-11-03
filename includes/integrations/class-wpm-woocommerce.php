@@ -39,14 +39,14 @@ class WPM_WooCommerce {
 		add_filter( 'woocommerce_shipping_instance_form_fields_legacy_local_pickup', 'wpm_translate_value' );
 		add_filter( 'woocommerce_shipping_instance_form_fields_local_pickup', 'wpm_translate_value' );
 		add_filter( 'woocommerce_shipping_free_shipping_instance_settings_values', array( $this, 'update_shipping_settings' ), 10, 2 );
-		add_filter( 'woocommerce_shipping_flat_rate_instance_settings_values', array ($this, 'update_shipping_settings'), 10, 2 );
+		add_filter( 'woocommerce_shipping_flat_rate_instance_settings_values', array( $this, 'update_shipping_settings' ), 10, 2 );
 		add_filter( 'woocommerce_shipping_legacy_flat_rate_instance_settings_values', array( $this, 'update_shipping_settings' ), 10, 2 );
 		add_filter( 'woocommerce_shipping_legacy_free_shipping_instance_settings_values', array( $this, 'update_shipping_settings' ), 10, 2 );
 		add_filter( 'woocommerce_shipping_legacy_international_delivery_instance_settings_values', array( $this, 'update_shipping_settings' ), 10, 2 );
 		add_filter( 'woocommerce_shipping_legacy_local_delivery_instance_settings_values', array( $this, 'update_shipping_settings' ), 10, 2 );
 		add_filter( 'woocommerce_shipping_legacy_local_pickup_instance_settings_values', array( $this, 'update_shipping_settings' ), 10, 2 );
 		add_filter( 'woocommerce_shipping_local_pickup_instance_settings_values', array( $this, 'update_shipping_settings' ), 10, 2 );
-		add_filter( 'woocommerce_shipping_zone_shipping_methods', array( $this, 'translate_zone_shipping_methods') );
+		add_filter( 'woocommerce_shipping_zone_shipping_methods', array( $this, 'translate_zone_shipping_methods' ) );
 		add_filter( 'woocommerce_gateway_method_title', 'wpm_translate_string' );
 		add_filter( 'woocommerce_gateway_method_description', 'wpm_translate_string' );
 	}
@@ -73,7 +73,7 @@ class WPM_WooCommerce {
 	 *
 	 * @return array
 	 */
-	public function update_shipping_settings($settings, $shipping) {
+	public function update_shipping_settings( $settings, $shipping ) {
 
 		$old_settings = get_option( $shipping->get_instance_option_key(), null );
 
@@ -84,7 +84,7 @@ class WPM_WooCommerce {
 		}
 
 		$setting_config = array(
-			'title' => array()
+			'title' => array(),
 		);
 
 		$new_value    = wpm_set_language_value( $strings, $settings, $setting_config );

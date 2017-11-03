@@ -28,6 +28,10 @@ class WPM_Install {
 			'wpm_update_180_flags',
 			'wpm_update_180_db_version',
 		),
+		'1.8.2' => array(
+			'wpm_update_182_options',
+			'wpm_update_182_db_version',
+		),
 	);
 
 	/**
@@ -153,18 +157,26 @@ class WPM_Install {
 
 		$languages              = array();
 		$available_translations = wpm_get_available_translations();
+		$default_locale         = wpm_get_default_locale();
+		$default_language       = '';
 
-		foreach ( wpm_get_installed_languages() as $language ) {
-			$languages[ $language ] = array(
-				'name'   => $available_translations[ $language ]['native_name'],
-				'date'   => '',
-				'time'   => '',
-				'slug'   => current( $available_translations[ $language ]['iso'] ),
-				'flag'   => current( $available_translations[ $language ]['iso'] ),
-				'enable' => 1,
+		foreach ( wpm_get_installed_languages() as $locale ) {
+			$slug = sanitize_title( current( $available_translations[ $locale ]['iso'] ) );
+			if ( $locale == $default_locale ) {
+				$default_language = $slug;
+			}
+			$languages[ $slug ] = array(
+				'enable'      => 1,
+				'locale'      => $locale,
+				'name'        => $available_translations[ $locale ]['native_name'],
+				'translation' => $locale,
+				'date'        => '',
+				'time'        => '',
+				'flag'        => $slug . '.png',
 			);
 		}
 
 		add_option( 'wpm_languages', $languages );
+		add_option( 'wpm_site_language', $default_language );
 	}
 }

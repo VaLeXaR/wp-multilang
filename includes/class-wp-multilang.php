@@ -16,7 +16,7 @@ final class WP_Multilang {
 	 *
 	 * @var string
 	 */
-	public $version = '1.8.1';
+	public $version = '1.8.2';
 
 	/**
 	 * The single instance of the class.
@@ -106,13 +106,13 @@ final class WP_Multilang {
 	 */
 	private function is_request( $type ) {
 		switch ( $type ) {
-			case 'admin' :
+			case 'admin':
 				return is_admin();
-			case 'ajax' :
+			case 'ajax':
 				return wp_doing_ajax();
-			case 'cron' :
+			case 'cron':
 				return defined( 'DOING_CRON' );
-			case 'frontend' :
+			case 'frontend':
 				return ( ! is_admin() || wp_doing_ajax() ) && ! defined( 'DOING_CRON' );
 			default:
 				return false;
@@ -173,7 +173,7 @@ final class WP_Multilang {
 		new WPM_Comments();
 
 		if ( $this->is_request( 'admin' ) ) {
-			new Admin\WPM_Admin;
+			new Admin\WPM_Admin();
 		}
 
 		// Init action.

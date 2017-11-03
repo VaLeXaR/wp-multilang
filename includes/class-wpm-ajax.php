@@ -112,57 +112,17 @@ class WPM_AJAX {
 
 		check_ajax_referer( 'delete-lang', 'security' );
 
-		$locale  = wpm_get_post_data_by_key( 'locale' );
+		$language  = wpm_get_post_data_by_key( 'language' );
 		$options = wpm_get_options();
 
-		if ( ! isset( $options[ $locale ] ) || ( $locale === get_locale() ) || ( $locale === wpm_get_default_locale() ) ) {
+		if ( ! isset( $options[ $language ] ) || ( $language === wpm_get_user_language() ) || ( $language === wpm_get_default_language() ) ) {
 			return;
 		}
 
-		unset( $options[ $locale ] );
+		unset( $options[ $language ] );
 
 		global $wpdb;
 		$wpdb->update( $wpdb->options, array( 'option_value' => maybe_serialize( $options ) ), array( 'option_name' => 'wpm_languages' ) );
-
-		$files_delete                  = array();
-		$installed_plugin_translations = wp_get_installed_translations( 'plugins' );
-
-		foreach ( $installed_plugin_translations as $plugin => $translation ) {
-			if ( isset( $translation[ $locale ] ) ) {
-				$files_delete[] = WP_LANG_DIR . '/plugins/' . $plugin . '-' . $locale . '.mo';
-				$files_delete[] = WP_LANG_DIR . '/plugins/' . $plugin . '-' . $locale . '.po';
-			}
-		}
-
-		$installed_themes_translations = wp_get_installed_translations( 'themes' );
-
-		foreach ( $installed_themes_translations as $theme => $translation ) {
-			if ( isset( $translation[ $locale ] ) ) {
-				$files_delete[] = WP_LANG_DIR . '/themes/' . $theme . '-' . $locale . '.mo';
-				$files_delete[] = WP_LANG_DIR . '/themes/' . $theme . '-' . $locale . '.po';
-			}
-		}
-
-		$installed_core_translations = wp_get_installed_translations( 'core' );
-
-		foreach ( $installed_core_translations as $wp_file => $translation ) {
-			if ( isset( $translation[ $locale ] ) ) {
-				$files_delete[] = WP_LANG_DIR . '/' . $wp_file . '-' . $locale . '.mo';
-				$files_delete[] = WP_LANG_DIR . '/' . $wp_file . '-' . $locale . '.po';
-			}
-		}
-
-		if ( file_exists( WP_LANG_DIR . '/' . $locale . '.mo' ) ) {
-			$files_delete[] = WP_LANG_DIR . '/' . $locale . '.mo';
-		}
-
-		if ( file_exists( WP_LANG_DIR . '/' . $locale . '.po' ) ) {
-			$files_delete[] = WP_LANG_DIR . '/' . $locale . '.po';
-		}
-
-		foreach ( $files_delete as $file ) {
-			wp_delete_file( $file );
-		}
 
 		die();
 	}

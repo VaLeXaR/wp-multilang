@@ -68,10 +68,7 @@ function wpm_get_language_switcher( $args = array() ) {
 	$vars = array(
 		'languages'   => wpm_get_languages(),
 		'lang'        => wpm_get_language(),
-		'options'     => wpm_get_options(),
 		'current_url' => wpm_get_current_url(),
-		'locales'     => array_flip( wpm_get_languages() ),
-		'locale'      => get_locale(),
 		'args'        => $args,
 	);
 
@@ -126,17 +123,17 @@ function wpm_set_alternate_links() {
 
 	$hreflangs = '';
 
-	foreach ( wpm_get_languages() as $locale => $language ) {
+	foreach ( wpm_get_languages() as $lang => $language ) {
 
-		if ( $languages && ! in_array( $language, $languages ) ) {
+		if ( $languages && ! isset( $languages[ $lang ] ) ) {
 			continue;
 		}
 
-		if ( wpm_get_default_locale() == $locale ) {
-			$hreflangs .= sprintf( '<link rel="alternate" hreflang="x-default" href="%s"/>', esc_url( wpm_translate_url( $current_url, $language ) ) );
+		if ( wpm_get_default_language() == $lang ) {
+			$hreflangs .= sprintf( '<link rel="alternate" hreflang="x-default" href="%s"/>', esc_url( wpm_translate_url( $current_url, $lang ) ) );
 		}
 
-		$hreflangs .= sprintf( '<link rel="alternate" hreflang="%s" href="%s"/>', esc_attr( str_replace( '_', '-', strtolower( $locale ) ) ), esc_url( wpm_translate_url( $current_url, $language ) ) );
+		$hreflangs .= sprintf( '<link rel="alternate" hreflang="%s" href="%s"/>', esc_attr( str_replace( '_', '-', strtolower( $language['locale'] ) ) ), esc_url( wpm_translate_url( $current_url, $lang ) ) );
 	}
 
 	echo apply_filters( 'wpm_alternate_links', $hreflangs, $current_url );
@@ -406,7 +403,6 @@ function wpm_admin_language_switcher() {
 	$args = array(
 		'languages'   => wpm_get_languages(),
 		'lang'        => wpm_get_language(),
-		'options'     => wpm_get_options(),
 		'current_url' => wpm_get_current_url(),
 	);
 
@@ -422,9 +418,7 @@ function wpm_admin_language_switcher_customizer() {
 	$args = array(
 		'languages'   => wpm_get_languages(),
 		'lang'        => wpm_get_language(),
-		'options'     => wpm_get_options(),
 		'current_url' => wpm_get_current_url(),
-		'locales'     => array_flip( wpm_get_languages() ),
 	);
 
 	echo wpm_get_template( 'admin-language-switcher-customizer.php', $args );

@@ -41,12 +41,12 @@ var wpm_translator = {
     }
 
     var results = {},
-      languages = wpm_translator_params.languages,
-      j = languages.length;
+      languages = wpm_translator_params.languages;
 
-    while (j--) {
-      results[languages[j]] = '';
-    }
+
+    languages.forEach(function(item){
+      results[item] = '';
+    });
 
     var clang_regex = /<!--:([a-z]{2})-->/gi;
     var blang_regex = /\[:([a-z]{2})\]/gi;

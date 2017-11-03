@@ -171,24 +171,24 @@ class WPM_Yoast_Seo {
 		$loc        = $output;
 		$new_output = '';
 
-		foreach ( wpm_get_languages() as $locale => $language ) {
+		foreach ( wpm_get_languages() as $lang => $language ) {
 
-			if ( isset( $url['languages'] ) && ! in_array( $language, $url['languages'] ) ) {
+			if ( isset( $url['languages'] ) && ! in_array( $lang, $url['languages'] ) ) {
 				continue;
 			}
 
 			$alternate = '';
-			$new_loc   = str_replace( $url['loc'], esc_url( wpm_translate_url( $url['loc'], $language ) ), $loc );
+			$new_loc   = str_replace( $url['loc'], esc_url( wpm_translate_url( $url['loc'], $lang ) ), $loc );
 
 			foreach ( wpm_get_languages() as $lc => $lg ) {
-				if ( isset( $url['languages'] ) && ! in_array( $lg, $url['languages'] ) ) {
+				if ( isset( $url['languages'] ) && ! in_array( $lc, $url['languages'] ) ) {
 					continue;
 				}
 
-				$alternate .= sprintf( "\t<xhtml:link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />\n\t", esc_attr( str_replace( '_', '-', strtolower( $lc ) ) ), esc_url( wpm_translate_url( $url['loc'], $lg ) ) );
+				$alternate .= sprintf( "\t<xhtml:link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />\n\t", esc_attr( str_replace( '_', '-', strtolower( $lg['locale'] ) ) ), esc_url( wpm_translate_url( $url['loc'], $lc ) ) );
 			}
 
-			$alternate  = apply_filters( 'wpm_sitemap_alternate_links', $alternate, $url['loc'], $language );
+			$alternate  = apply_filters( 'wpm_sitemap_alternate_links', $alternate, $url['loc'], $lang );
 			$new_loc    = str_replace( '</url>', $alternate . '</url>', $new_loc );
 			$new_output .= $new_loc;
 		}

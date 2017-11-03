@@ -11,7 +11,7 @@
 
         var data = {
           action: 'wpm_delete_lang',
-          locale: button.data('locale'),
+          language: button.data('language'),
           security: wpm_params.delete_lang_nonce
         };
         $.ajax({

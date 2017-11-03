@@ -23,12 +23,21 @@ class WPM_REST_Settings {
 		add_action( 'rest_api_init', array( $this, 'register_initial_settings' ) );
 		add_filter( 'rest_pre_get_setting', array( $this, 'get_languages_setting' ), 10, 3 );
 		add_filter( 'rest_pre_update_setting', array( $this, 'update_languages_setting' ), 10, 3 );
+		add_filter( 'rest_pre_update_setting', array( $this, 'update_site_language_setting' ), 10, 3 );
 	}
 
 	/**
 	 * Add settings to REST API
 	 */
 	public function register_initial_settings() {
+		register_setting( 'general', 'wpm_site_language', array(
+			'description'  => __( 'Sile Language', 'wp-multilang' ),
+			'type'         => 'string',
+			'default'      => false,
+			'show_in_rest' => array(
+				'name' => 'site_language',
+			),
+		) );
 		register_setting( 'general', 'wpm_languages', array(
 			'description'  => __( 'Multilingual Settings', 'wp-multilang' ),
 			'default'      => array(),
@@ -45,7 +54,13 @@ class WPM_REST_Settings {
 							'slug' => array(
 								'type' => 'string',
 							),
+							'locale' => array(
+								'type' => 'string',
+							),
 							'name' => array(
+								'type' => 'string',
+							),
+							'translation' => array(
 								'type' => 'string',
 							),
 							'date' => array(
@@ -55,9 +70,6 @@ class WPM_REST_Settings {
 								'type' => 'string',
 							),
 							'flag' => array(
-								'type' => 'string',
-							),
-							'locale' => array(
 								'type' => 'string',
 							),
 						),
@@ -130,19 +142,24 @@ class WPM_REST_Settings {
 					break;
 				}
 
-				$locale = $item['locale'];
+				$slug = sanitize_title( $item['slug'] );
 
-				$languages[ $locale ] = array(
-					'enable' => $item['enable'] ? 1 : 0,
-					'slug'   => sanitize_title( $item['slug'] ),
-					'name'   => $item['name'],
-					'date'   => $item['date'],
-					'time'   => $item['time'],
-					'flag'   => $item['flag'],
+				if ( ! $slug ) {
+					break;
+				}
+
+				$languages[ $slug ] = array(
+					'enable'      => $item['enable'] ? 1 : 0,
+					'locale'      => $item['locale'],
+					'name'        => $item['name'],
+					'translation' => $item['translation'],
+					'date'        => $item['date'],
+					'time'        => $item['time'],
+					'flag'        => $item['flag'],
 				);
 
-				if ( isset( $translations[ $locale ] ) && wp_can_install_language_pack() && ( ! is_multisite() || is_super_admin() ) ) {
-					wp_download_language_pack( $locale );
+				if ( isset( $translations[ $item['translation'] ] ) && wp_can_install_language_pack() && ( ! is_multisite() || is_super_admin() ) ) {
+					wp_download_language_pack( $item['translation'] );
 				}
 			}
 
@@ -152,5 +169,19 @@ class WPM_REST_Settings {
 		}// End if().
 
 		return true;
+	}
+
+
+	public function update_site_language_setting( $updated, $name, $request ) {
+
+		if ( 'site_language' != $name ) {
+			return $updated;
+		}
+
+		$request   = wpm_clean( $request );
+		$languages = wpm_get_languages();
+		update_option( 'WPLANG', $languages[ $request ]['translation'] );
+
+		return $updated;
 	}
 }
