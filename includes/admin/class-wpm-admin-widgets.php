@@ -50,7 +50,7 @@ class WPM_Admin_Widgets {
 			'text'  => array(),
 		);
 
-		if ( isset( $widgets_config[ $widget->id_base ] ) && ! is_null( $widgets_config[ $widget->id_base ] ) ) {
+		if ( ! is_null( $widgets_config[ $widget->id_base ] ) ) {
 			$widget_config = wpm_array_merge_recursive( $widget_config, $widgets_config[ $widget->id_base ] );
 		}
 
