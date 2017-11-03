@@ -49,11 +49,10 @@ function wpm_get_flag_url( $filename = '' ) {
  * Display language switcher in templates
  *
  * @param array $args
- * @param bool  $echo
  *
  * @return string
  */
-function wpm_language_switcher( $args = array(), $echo = true ) {
+function wpm_get_language_switcher( $args = array() ) {
 	$default = array(
 		'type' => 'list',
 		'show' => 'both',
@@ -90,11 +89,17 @@ function wpm_language_switcher( $args = array(), $echo = true ) {
 			$template = wpm_get_template( 'language-switcher-list.php', $vars );
 	}
 
-	if ( $echo ) {
-		echo $template;
-	} else {
-		return $template;
-	}
+	return $template;
+}
+
+
+/**
+ * Display language switcher
+ *
+ * @param array $args
+ */
+function wpm_language_switcher( $args = array() ) {
+	echo wpm_get_language_switcher( $args );
 }
 
 
