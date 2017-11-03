@@ -32,7 +32,7 @@ class WPM_CF7 {
 		if ( '_language' == $name ) {
 			$options = wpm_get_options();
 
-			return $options[ get_locale() ]['name'];
+			return $options[ wpm_get_language() ]['name'];
 		}
 
 		return $output;

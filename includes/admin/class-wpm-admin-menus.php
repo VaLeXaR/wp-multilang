@@ -76,20 +76,20 @@ class WPM_Admin_Menus {
 
 		$current_url = wpm_get_current_url();
 
-		foreach ( $languages as $key => $language ) {
+		foreach ( $languages as $lang => $language ) {
 
-			if ( $key === $user_language ) {
+			if ( $lang === $user_language ) {
 				continue;
 			}
 
 			$wp_admin_bar->add_menu( array(
 				'parent' => 'wpm-language-switcher',
-				'id'     => 'wpm-language-' . $key,
+				'id'     => 'wpm-language-' . $lang,
 				'title'  => '<span class="ab-icon">' .
 				            '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" />' .
 				            '</span>' .
 				            '<span class="ab-label">' . $language['name'] . '</span>',
-				'href'   => wpm_translate_url( $current_url, $key ),
+				'href'   => wpm_translate_url( $current_url, $lang ),
 			) );
 		}
 	}

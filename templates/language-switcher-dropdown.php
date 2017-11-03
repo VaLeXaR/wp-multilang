@@ -10,7 +10,7 @@
 				</span>
 		<ul class="language-dropdown">
 			<?php foreach ( $languages as $key => $language ) { ?>
-				<li class="item-language-<?php esc_attr_e( $language['slug'] ); ?><?php if ( $key === $lang ) { ?> active<?php } ?>">
+				<li class="item-language-<?php esc_attr_e( $key ); ?><?php if ( $key === $lang ) { ?> active<?php } ?>">
 					<a href="<?php echo esc_url( wpm_translate_url( $current_url, $key ) ); ?>" data-lang="<?php esc_attr_e( $key ); ?>">
 						<?php if ( ( ( 'flag' === $args['show'] ) || ( 'both' === $args['show'] ) ) && ( $language['flag'] ) ) { ?>
 							<img src="<?php echo esc_url( wpm_get_flag_url( $language['flag'] ) ); ?>" alt="<?php esc_attr_e( $language['name'] ); ?>">

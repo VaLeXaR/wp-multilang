@@ -175,11 +175,13 @@ class WPM_REST_Settings {
 	public function update_site_language_setting( $updated, $name, $request ) {
 
 		if ( 'site_language' != $name ) {
-			return;
+			return $updated;
 		}
 
 		$request   = wpm_clean( $request );
 		$languages = wpm_get_languages();
 		update_option( 'WPLANG', $languages[ $request ]['translation'] );
+
+		return $updated;
 	}
 }

@@ -33,7 +33,7 @@ class WPM_Setup {
 	 *
 	 * @var string
 	 */
-	private $site_locale = '';
+	private $default_locale = '';
 
 	/**
 	 * Default locale
@@ -118,7 +118,7 @@ class WPM_Setup {
 		add_action( 'activated_plugin', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
 		add_action( 'upgrader_process_complete', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
 		add_action( 'after_setup_theme', array( $this, 'redirect_default_url' ) );
-//		add_action( 'wpm_init', array( $this, 'load_integrations' ) );
+		add_action( 'wpm_init', array( $this, 'load_integrations' ) );
 		add_action( 'parse_request', array( $this, 'setup_query_var' ), 0 );
 		add_action( 'wp', array( $this, 'redirect_to_user_language' ) );
 		add_action( 'request', array( $this, 'set_home_page' ) );
@@ -137,7 +137,7 @@ class WPM_Setup {
 	 */
 	public function get_options() {
 		if ( ! $this->options ) {
-			$this->options = get_option( 'wpm_languages' );
+			$this->options = get_option( 'wpm_languages', array() );
 		}
 
 		return $this->options;
@@ -193,13 +193,16 @@ class WPM_Setup {
 	 */
 	public function get_languages() {
 		if ( ! $this->languages ) {
-			$options = $this->get_options();
+			$options   = $this->get_options();
+			$languages = array();
 
 			foreach ( $options as $slug => $language ) {
 				if ( $language['enable'] ) {
-					$this->languages[ $slug ] = $language;
+					$languages[ $slug ] = $language;
 				}
 			}
+
+			$this->languages = $languages;
 		}
 
 		return $this->languages;
@@ -211,12 +214,12 @@ class WPM_Setup {
 	 * @return string
 	 */
 	public function get_default_locale() {
-		if ( ! $this->site_locale ) {
-			$option_lang       = get_option( 'WPLANG' );
-			$this->site_locale = $option_lang ? $option_lang : 'en_US';
+		if ( ! $this->default_locale ) {
+			$option_lang          = get_option( 'WPLANG' );
+			$this->default_locale = $option_lang ? $option_lang : 'en_US';
 		}
 
-		return $this->site_locale;
+		return $this->default_locale;
 	}
 
 	/**
@@ -226,15 +229,26 @@ class WPM_Setup {
 	 */
 	public function get_default_language() {
 		if ( ! $this->default_language ) {
-			$this->default_language = get_option( 'wpm_site_language' );
+			$default_language = get_option( 'wpm_site_language' );
+
+			if ( ! $default_language ) {
+				$locale           = explode( '_', $this->get_default_locale() );
+				$default_language = $locale[0];
+			}
+
+			$this->default_language = $default_language;
 		}
 
 		return $this->default_language;
 	}
 
 
-	public function get_locale() {
+	public function get_locale( $locale ) {
 		$languages = $this->get_languages();
+
+		if ( ! $languages ) {
+			return $locale;
+		}
 
 		return $languages[ $this->get_user_language() ]['translation'];
 	}
@@ -338,7 +352,8 @@ class WPM_Setup {
 		if ( preg_match( '!^/([a-z]{2})(/|$)!i', $this->site_request_uri, $match ) ) {
 			$url_lang = $match[1];
 		}
-		if ( isset( $languages[ $url_lang ] ) && $user_language === $default_language ) {
+
+		if ( $url_lang && isset( $languages[ $url_lang ] ) && $user_language === $default_language ) {
 			wp_redirect( home_url( str_replace( '/' . $user_language . '/', '/', $this->site_request_uri ) ) );
 			exit;
 		}
