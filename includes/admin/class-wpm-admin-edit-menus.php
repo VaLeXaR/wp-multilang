@@ -84,7 +84,7 @@ class WPM_Admin_Edit_Menus {
 	 * @return mixed
 	 */
 	public function setup_nav_menu_item( $item ) {
-		if ( !isset( $item->languages ) ) {
+		if ( ! isset( $item->languages ) ) {
 			$languages = get_post_meta( $item->ID, '_languages', true );
 			$item->languages = is_array( $languages ) ? $languages : array();
 		}
@@ -115,8 +115,8 @@ class WPM_Admin_Edit_Menus {
 		?>
 		<p class="description description-wide <?php echo esc_attr( $class ) ?>">
 			<?php _e( 'Show item only in:', 'wp-multilang' ); ?><br>
-			<?php foreach ( $languages as $language ) { if ( ! $language['enable'] ) continue; ?>
-			<label><input type="checkbox" name="<?php esc_attr_e( $name ); ?>[<?php esc_attr_e( $i ); ?>]" id="<?php echo $id . '-' . $language['slug']; ?>" value="<?php esc_attr_e( $language['slug'] ); ?>"<?php if ( in_array( $language['slug'], $value ) ) { ?> checked="checked"<?php } ?>><?php echo $language['name']; ?></label><br>
+			<?php foreach ( $languages as $lang => $language ) { if ( ! $language['enable'] ) continue; ?>
+			<label><input type="checkbox" name="<?php esc_attr_e( $name ); ?>[<?php esc_attr_e( $i ); ?>]" id="<?php echo $id . '-' . $lang; ?>" value="<?php esc_attr_e( $lang ); ?>"<?php if ( in_array( $lang, $value ) ) { ?> checked="checked"<?php } ?>><?php echo $language['name']; ?></label><br>
 			<?php $i++; } ?>
 		</p>
 		<?php

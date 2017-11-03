@@ -57,22 +57,20 @@ class WPM_Admin_Menus {
 			return;
 		}
 
-		$locale = get_locale();
-		$languages = wpm_get_languages();
+		$user_language = wpm_get_user_language();
+		$languages     = wpm_get_languages();
 
 		if ( count( $languages ) <= 1 ) {
 			return;
 		}
 
-		$options = wpm_get_options();
-
 		$wp_admin_bar->add_menu( array(
 			'id'     => 'wpm-language-switcher',
 			'parent' => 'top-secondary',
 			'title'  => '<span class="ab-icon">' .
-			            '<img src="' . esc_url( wpm_get_flag_url( $options[ $locale ]['flag'] ) ) . '"/>' .
+			            '<img src="' . esc_url( wpm_get_flag_url( $languages[ $user_language ]['flag'] ) ) . '"/>' .
 			            '</span><span class="ab-label">' .
-			            $options[ $locale ]['name'] .
+			            $languages[ $user_language ]['name'] .
 			            '</span>',
 		) );
 
@@ -80,18 +78,18 @@ class WPM_Admin_Menus {
 
 		foreach ( $languages as $key => $language ) {
 
-			if ( $key === $locale ) {
+			if ( $key === $user_language ) {
 				continue;
 			}
 
 			$wp_admin_bar->add_menu( array(
 				'parent' => 'wpm-language-switcher',
-				'id'     => 'wpm-language-' . $language,
+				'id'     => 'wpm-language-' . $key,
 				'title'  => '<span class="ab-icon">' .
-				            '<img src="' . esc_url( wpm_get_flag_url( $options[ $key ]['flag'] ) ) . '" />' .
+				            '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" />' .
 				            '</span>' .
-				            '<span class="ab-label">' . $options[ $key ]['name'] . '</span>',
-				'href'   => wpm_translate_url( $current_url, $language ),
+				            '<span class="ab-label">' . $language['name'] . '</span>',
+				'href'   => wpm_translate_url( $current_url, $key ),
 			) );
 		}
 	}

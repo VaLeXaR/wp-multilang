@@ -173,7 +173,7 @@ final class WP_Multilang {
 		new WPM_Comments();
 
 		if ( $this->is_request( 'admin' ) ) {
-//			new Admin\WPM_Admin;
+			new Admin\WPM_Admin;
 		}
 
 		// Init action.

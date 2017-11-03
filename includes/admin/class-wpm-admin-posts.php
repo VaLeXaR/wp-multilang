@@ -103,12 +103,11 @@ class WPM_Admin_Posts {
 			$output    = array();
 			$text      = $post->post_title . $post->post_content;
 			$strings   = wpm_value_to_ml_array( $text );
-			$options   = wpm_get_options();
-			$languages = wpm_get_all_languages();
+			$languages = wpm_get_options();
 
-			foreach ( $languages as $locale => $language ) {
-				if ( isset( $strings[ $language ] ) && ! empty( $strings[ $language ] ) ) {
-					$output[] = '<img src="' . esc_url( wpm_get_flag_url( $options[ $locale ]['flag'] ) ) . '" alt="' . $options[ $locale ]['name'] . '" title="' . $options[ $locale ]['name'] . '">';
+			foreach ( $languages as $lang => $language ) {
+				if ( isset( $strings[ $lang ] ) && ! empty( $strings[ $lang ] ) ) {
+					$output[] = '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" alt="' . $language['name'] . '" title="' . $language['name'] . '">';
 				}
 			}
 
@@ -125,19 +124,17 @@ class WPM_Admin_Posts {
 	 * @param \WP_Post $post
 	 */
 	public function add_lang_indicator( $post ) {
-		$options   = wpm_get_options();
-		$languages = wpm_get_all_languages();
-		$locales   = array_flip( $languages );
-		$lang      = wpm_get_language();
+		$languages = wpm_get_languages();
+		$language  = wpm_get_language();
 		$config    = wpm_get_config();
 		if ( isset( $config['post_types'][ $post->post_type ] ) && is_null( $config['post_types'][ $post->post_type ] ) && ( wpm_is_ml_string( $post->post_title ) || wpm_is_ml_value( $post->post_content ) ) ) {
 			?>
 			<div class="misc-pub-section language">
 				<?php esc_html_e( 'Current edit language:', 'wp-multilang' ); ?>
-				<?php if ( $options[ $locales[ $lang ] ]['flag'] ) { ?>
-					<img src="<?php echo esc_url( wpm_get_flag_url( $options[ $locales[ $lang ] ]['flag'] ) ); ?>">
+				<?php if ( $languages[ $language ]['flag'] ) { ?>
+					<img src="<?php echo esc_url( wpm_get_flag_url( $languages[ $language ]['flag'] ) ); ?>">
 				<?php } else { ?>
-					<b><?php echo $options[ $locales[ $lang ] ]['name']; ?></b>
+					<b><?php echo $languages[ $language ]['name']; ?></b>
 				<?php } ?>
 			</div>
 			<?php

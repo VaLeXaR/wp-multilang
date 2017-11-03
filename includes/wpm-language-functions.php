@@ -151,7 +151,7 @@ function wpm_get_language() {
 			}
 		}
 
-		$lang = ( isset( $query['edit_lang'] ) && in_array( wpm_clean( $query['edit_lang'] ), $languages, true ) ) ? wpm_clean( $query['edit_lang'] ) : ( ( $edit_lang && isset( $languages[ $edit_lang ] ) ) ? $edit_lang : wpm_get_user_language() );
+		$lang = ( isset( $query['edit_lang'] ) && isset( $languages [ wpm_clean( $query['edit_lang'] ) ] ) ) ? wpm_clean( $query['edit_lang'] ) : ( ( $edit_lang && isset( $languages[ $edit_lang ] ) ) ? $edit_lang : wpm_get_user_language() );
 	} else {
 		$lang = wpm_get_user_language();
 	}
