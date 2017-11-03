@@ -429,3 +429,24 @@ function wpm_admin_language_switcher_customizer() {
 
 	echo wpm_get_template( 'admin-language-switcher-customizer.php', $args );
 }
+
+
+/**
+ * Get flag list
+ *
+ * @return array
+ */
+function wpm_get_flags() {
+	$flags      = array();
+	$flags_path = wpm_get_flags_path();
+	if ( $dir_handle = @opendir( $flags_path ) ) {
+		while ( false !== ( $file = readdir( $dir_handle ) ) ) {
+			if ( preg_match( "/\.(jpeg|jpg|gif|png|svg)$/i", $file ) ) {
+				$flags[] = $file;
+			}
+		}
+		sort( $flags );
+	}
+
+	return $flags;
+}

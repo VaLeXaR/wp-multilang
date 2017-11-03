@@ -71,21 +71,10 @@ class WPM_Admin_Settings {
 	 * Display languages
 	 */
 	public function languages_setting() {
-
 		$languages              = wpm_get_options();
 		$installed_languages    = wpm_get_installed_languages();
 		$available_translations = wpm_get_available_translations();
-
-		$flags    = array();
-		$flags_path = wpm_get_flags_path();
-		if ( $dir_handle = @opendir( $flags_path ) ) {
-			while ( false !== ( $file = readdir( $dir_handle ) ) ) {
-				if ( preg_match( "/\.(jpeg|jpg|gif|png|svg)$/i", $file ) ) {
-					$flags[] = $file;
-				}
-			}
-			sort( $flags );
-		}
+		$flags                  = wpm_get_flags();
 		?>
 		<table id="wpm-languages" class="wpm-languages widefat">
 			<thead>
