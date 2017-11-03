@@ -27,24 +27,6 @@ function wpm_get_languages() {
 }
 
 /**
- * Get enabled languages
- *
- * @see WPM_Setup::get_languages()
- *
- * @return array
- */
-function wpm_get_all_languages() {
-	$options   = wpm_get_options();
-	$languages = array();
-
-	foreach ( $options as $locale => $language ) {
-		$languages[ $locale ] = $language['slug'];
-	}
-
-	return $languages;
-}
-
-/**
  * Get user language
  *
  * @see WPM_Setup::get_user_language()
@@ -64,6 +46,17 @@ function wpm_get_user_language() {
  */
 function wpm_get_default_locale() {
 	return WPM_Setup::instance()->get_default_locale();
+}
+
+/**
+ * Get default locale
+ *
+ * @see WPM_Setup::get_default_locale()
+ *
+ * @return string
+ */
+function wpm_get_default_language() {
+	return WPM_Setup::instance()->get_default_language();
 }
 
 /**
@@ -158,7 +151,7 @@ function wpm_get_language() {
 			}
 		}
 
-		$lang = ( isset( $query['edit_lang'] ) && in_array( wpm_clean( $query['edit_lang'] ), $languages, true ) ) ? wpm_clean( $query['edit_lang'] ) : ( ( $edit_lang && in_array( $edit_lang, $languages, true ) ) ? $edit_lang : wpm_get_user_language() );
+		$lang = ( isset( $query['edit_lang'] ) && in_array( wpm_clean( $query['edit_lang'] ), $languages, true ) ) ? wpm_clean( $query['edit_lang'] ) : ( ( $edit_lang && isset( $languages[ $edit_lang ] ) ) ? $edit_lang : wpm_get_user_language() );
 	} else {
 		$lang = wpm_get_user_language();
 	}

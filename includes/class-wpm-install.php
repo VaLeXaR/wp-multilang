@@ -153,18 +153,26 @@ class WPM_Install {
 
 		$languages              = array();
 		$available_translations = wpm_get_available_translations();
+		$default_locale = wpm_get_default_locale();
+		$default_language = '';
 
 		foreach ( wpm_get_installed_languages() as $language ) {
-			$languages[ $language ] = array(
-				'name'   => $available_translations[ $language ]['native_name'],
-				'date'   => '',
-				'time'   => '',
-				'slug'   => current( $available_translations[ $language ]['iso'] ),
-				'flag'   => current( $available_translations[ $language ]['iso'] ),
-				'enable' => 1,
+			$slug = sanitize_title( current( $available_translations[ $language ]['iso'] ) );
+			if ($language == $default_locale) {
+				$default_language = $language;
+			}
+			$languages[ $slug ] = array(
+				'enable'      => 1,
+				'locale'      => $language,
+				'name'        => $available_translations[ $language ]['native_name'],
+				'translation' => $language,
+				'date'        => '',
+				'time'        => '',
+				'flag'        => $slug . '.png',
 			);
 		}
 
 		add_option( 'wpm_languages', $languages );
+		add_option( 'wpm_site_language', $default_language );
 	}
 }
