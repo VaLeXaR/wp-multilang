@@ -67,22 +67,6 @@ table.wpm-languages {
     display: flex; }
   table.wpm-languages .wpm-lang-order {
     width: 6%; }
-  table.wpm-languages .wpm-lang-default {
-    width: 6%; }
-  table.wpm-languages .wpm-lang-status {
-    width: 6%; }
-  table.wpm-languages .wpm-lang-locale {
-    width: 10%; }
-  table.wpm-languages .wpm-lang-slug {
-    width: 15%; }
-  table.wpm-languages .wpm-lang-name {
-    width: 15%; }
-  table.wpm-languages .wpm-lang-date {
-    width: 10%; }
-  table.wpm-languages .wpm-lang-time {
-    width: 10%; }
-  table.wpm-languages .wpm-lang-flag {
-    width: 15%; }
   table.wpm-languages .wpm-lang-delete {
     width: 10%; }
 

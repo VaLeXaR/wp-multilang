@@ -77,10 +77,10 @@ class WPM_Admin_Settings {
 			<thead>
 			<tr>
 				<th class="wpm-lang-order"><?php esc_attr_e( 'Order', 'wp-multilang' ); ?></th>
+				<th class="wpm-lang-name"><?php esc_attr_e( 'Name', 'wp-multilang' ); ?></th>
 				<th class="wpm-lang-status"><?php esc_attr_e( 'Enable', 'wp-multilang' ); ?></th>
 				<th class="wpm-lang-locale"><?php esc_attr_e( 'Locale *', 'wp-multilang' ); ?></th>
 				<th class="wpm-lang-slug"><?php esc_attr_e( 'Slug *', 'wp-multilang' ); ?></th>
-				<th class="wpm-lang-name"><?php esc_attr_e( 'Name', 'wp-multilang' ); ?></th>
 				<th class="wpm-lang-translation"><?php esc_attr_e( 'Translation', 'wp-multilang' ); ?></th>
 				<th class="wpm-lang-date"><?php esc_attr_e( 'Date Format' ); ?></th>
 				<th class="wpm-lang-time"><?php esc_attr_e( 'Time Format' ); ?></th>
@@ -96,6 +96,9 @@ class WPM_Admin_Settings {
 				} ?>
 				<tr>
 					<td class="wpm-lang-order"><?php esc_attr_e( $i ); ?></td>
+					<td class="wpm-lang-name">
+						<input type="text" name="wpm_languages[<?php echo $i; ?>][name]" value="<?php esc_attr_e( $language['name'] ); ?>" title="<?php esc_attr_e( 'Name', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Name', 'wp-multilang' ); ?>">
+					</td>
 					<td class="wpm-lang-status">
 						<input type="hidden" name="wpm_languages[<?php esc_attr_e( $i ) ; ?>][enable]" value="0">
 						<input name="wpm_languages[<?php echo $i; ?>][enable]" type="checkbox" value="1"<?php checked( $language['enable'] ); ?> title="<?php esc_attr_e( 'Enable', 'wp-multilang' ); ?>"<?php if ( wpm_get_default_language() === $key ) { ?> disabled="disabled"<?php } ?>>
@@ -107,9 +110,6 @@ class WPM_Admin_Settings {
 						<input type="text" name="wpm_languages[<?php echo $i; ?>][locale]" value="<?php esc_attr_e( $language['locale'] ); ?>" title="<?php esc_attr_e( 'Locale *', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Locale *', 'wp-multilang' ); ?>" required>
 					</td>
 					<td class="wpm-lang-slug"><input type="text" name="wpm_languages[<?php echo $i; ?>][slug]" value="<?php esc_attr_e( $key ); ?>" title="<?php esc_attr_e( 'Slug *', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Slug *', 'wp-multilang' ); ?>" required>
-					</td>
-					<td class="wpm-lang-name">
-						<input type="text" name="wpm_languages[<?php echo $i; ?>][name]" value="<?php esc_attr_e( $language['name'] ); ?>" title="<?php esc_attr_e( 'Name', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Name', 'wp-multilang' ); ?>">
 					</td>
 					<td class="wpm-lang-translation">
 						<select name="wpm_languages[<?php echo $i; ?>][translation]" title="<?php esc_attr_e( 'Translation', 'wp-multilang' ); ?>">
@@ -151,10 +151,10 @@ class WPM_Admin_Settings {
 			<tfoot>
 			<tr>
 				<th class="wpm-lang-order"><?php esc_attr_e( 'Order', 'wp-multilang' ); ?></th>
+				<th class="wpm-lang-name"><?php esc_attr_e( 'Name', 'wp-multilang' ); ?></th>
 				<th class="wpm-lang-status"><?php esc_attr_e( 'Enable', 'wp-multilang' ); ?></th>
 				<th class="wpm-lang-locale"><?php esc_attr_e( 'Locale *', 'wp-multilang' ); ?></th>
 				<th class="wpm-lang-slug"><?php esc_attr_e( 'Slug *', 'wp-multilang' ); ?></th>
-				<th class="wpm-lang-name"><?php esc_attr_e( 'Name', 'wp-multilang' ); ?></th>
 				<th class="wpm-lang-translation"><?php esc_attr_e( 'Translation', 'wp-multilang' ); ?></th>
 				<th class="wpm-lang-date"><?php esc_attr_e( 'Date Format' ); ?></th>
 				<th class="wpm-lang-time"><?php esc_attr_e( 'Time Format' ); ?></th>
@@ -169,6 +169,9 @@ class WPM_Admin_Settings {
 		<script id="tmpl-wpm-add-lang" type="text/template">
 			<tr>
 				<td class="wpm-lang-order">{{ data.count }}</td>
+				<td class="wpm-lang-name">
+					<input type="text" name="wpm_languages[{{ data.count }}][name]" value="{{ data.native_name }}" title="<?php esc_attr_e( 'Name', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Name', 'wp-multilang' ); ?>">
+				</td>
 				<td class="wpm-lang-status">
 					<input type="hidden" name="wpm_languages[{{ data.count }}][enable]" value="0">
 					<input name="wpm_languages[{{ data.count }}][enable]" type="checkbox" value="1" title="<?php esc_attr_e( 'Enable', 'wp-multilang' ); ?>" checked="checked">
@@ -178,9 +181,6 @@ class WPM_Admin_Settings {
 				</td>
 				<td class="wpm-lang-slug">
 					<input type="text" name="wpm_languages[{{ data.count }}][slug]" value="{{ data.iso[Object.keys(data.iso)[0]] }}" title="<?php esc_attr_e( 'Slug *', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Slug *', 'wp-multilang' ); ?>" required>
-				</td>
-				<td class="wpm-lang-name">
-					<input type="text" name="wpm_languages[{{ data.count }}][name]" value="{{ data.native_name }}" title="<?php esc_attr_e( 'Name', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Name', 'wp-multilang' ); ?>">
 				</td>
 				<td class="wpm-lang-translation">
 					<select name="wpm_languages[{{ data.count }}][translation]" title="<?php esc_attr_e( 'Translation', 'wp-multilang' ); ?>">
