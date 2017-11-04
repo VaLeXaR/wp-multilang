@@ -90,7 +90,7 @@ class WPM_Posts extends \WPM_Object {
 
 			$lang = get_query_var( 'lang' );
 
-			if ( ! $lang && ! $query->is_main_query() ) {
+			if ( ! $lang ) {
 				$lang = wpm_get_user_language();
 			}
 
