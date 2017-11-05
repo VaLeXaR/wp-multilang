@@ -343,7 +343,7 @@ class WPM_Setup {
 
 
 	/**
-	 * Remove lang from default url
+	 * Redirect to default language
 	 */
 	public function redirect_default_url() {
 		$user_language    = $this->get_user_language();
@@ -355,9 +355,16 @@ class WPM_Setup {
 			$url_lang = $match[1];
 		}
 
-		if ( $url_lang && isset( $languages[ $url_lang ] ) && $user_language === $default_language ) {
-			wp_redirect( home_url( str_replace( '/' . $user_language . '/', '/', $this->site_request_uri ) ) );
-			exit;
+		if ( get_option( 'wpm_use_prefix' ) ) {
+			if ( ! $url_lang && ! is_admin() && ! isset( $_REQUEST['lang'] ) && ! preg_match( '/^.*\.php$/i', wp_parse_url( $this->site_request_uri, PHP_URL_PATH ) ) ) {
+				wp_redirect( home_url( '/' . $default_language . $this->site_request_uri ) );
+				exit;
+			}
+		} else {
+			if ( $url_lang && isset( $languages[ $url_lang ] ) && $user_language === $default_language ) {
+				wp_redirect( home_url( str_replace( '/' . $user_language . '/', '/', $this->site_request_uri ) ) );
+				exit;
+			}
 		}
 	}
 
@@ -389,7 +396,7 @@ class WPM_Setup {
 	public function get_config() {
 
 		if ( ! $this->config ) {
-			$config       = get_option( 'wpm_config' );
+			$config       = get_option( 'wpm_config', array() );
 			$theme_config = WPM_Config::load_theme_config();
 			$this->config = wpm_array_merge_recursive( $config, $theme_config );
 		}
@@ -441,9 +448,9 @@ class WPM_Setup {
 			return $value;
 		}
 
-		$user_language = wpm_get_user_language();
+		$user_language    = wpm_get_user_language();
 		$default_language = wpm_get_default_language();
-		if ( $user_language !== $default_language ) {
+		if ( $user_language !== $default_language || get_option( 'wpm_use_prefix' ) ) {
 			$value .= '/' . $user_language;
 		}
 
@@ -612,7 +619,7 @@ class WPM_Setup {
 	 * @return string
 	 */
 	public function fix_rest_url( $url ) {
-		if ( get_locale() != wpm_get_default_locale() ) {
+		if ( ! get_option( 'wpm_use_prefix' ) && get_locale() != wpm_get_default_locale() ) {
 			$url = str_replace( '/' . wpm_get_language() . '/', '/', $url );
 		}
 

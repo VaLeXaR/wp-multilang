@@ -44,6 +44,9 @@ class WPM_Admin_Settings {
 		add_settings_field( 'wpm_show_untranslated_strings', __( 'Translating settings', 'wp-multilang' ), array( $this, 'translating_setting' ), 'general', 'wpm_setting_section' );
 		register_setting( 'general', 'wpm_show_untranslated_strings' );
 
+		add_settings_field( 'wpm_use_prefix', __( 'Use prefix', 'wp-multilang' ), array( $this, 'use_prefix_setting' ), 'general', 'wpm_setting_section' );
+		register_setting( 'general', 'wpm_use_prefix' );
+
 		if ( ! is_multisite() || ( is_main_site() ) ) {
 			add_settings_field( 'wpm_uninstall_translations', __( 'Uninstalling', 'wp-multilang' ), array( $this, 'uninstalling_setting' ), 'general', 'wpm_setting_section' );
 			register_setting( 'general', 'wpm_uninstall_translations' );
@@ -68,10 +71,8 @@ class WPM_Admin_Settings {
 	 * Display languages
 	 */
 	public function languages_setting() {
-		$languages              = wpm_get_options();
-		$installed_languages    = wpm_get_installed_languages();
-		$available_translations = wpm_get_available_translations();
-		$flags                  = wpm_get_flags();
+		$languages = wpm_get_options();
+		$flags     = wpm_get_flags();
 		?>
 		<div id="poststuff">
 			<div id="wpm-languages" class="wpm-languages meta-box-sortables">
@@ -280,8 +281,26 @@ class WPM_Admin_Settings {
 			</legend>
 			<label for="wpm_show_untranslated_strings">
 				<input type="hidden" name="wpm_show_untranslated_strings" value="0">
-				<input name="wpm_show_untranslated_strings" type="checkbox" id="wpm_show_untranslated_strings" value="1"<?php checked( get_option( 'wpm_show_untranslated_strings' ) ); ?>>
+				<input name="wpm_show_untranslated_strings" type="checkbox" id="wpm_show_untranslated_strings" value="1"<?php checked( get_option( 'wpm_show_untranslated_strings', 1 ) ); ?>>
 				<?php esc_attr_e( 'Show untranslated strings in default language', 'wp-multilang' ); ?>
+			</label>
+		</fieldset>
+		<?php
+	}
+
+	/**
+	 * Display translation setting
+	 */
+	public function use_prefix_setting() {
+		?>
+		<fieldset>
+			<legend class="screen-reader-text">
+				<span><?php esc_html_e( 'Use prefix', 'wp-multilang' ); ?></span>
+			</legend>
+			<label for="wpm_use_prefix">
+				<input type="hidden" name="wpm_use_prefix" value="0">
+				<input name="wpm_use_prefix" type="checkbox" id="wpm_use_prefix" value="1"<?php checked( get_option( 'wpm_use_prefix', 1 ) ); ?>>
+				<?php esc_attr_e( 'Use prefix for default language', 'wp-multilang' ); ?>
 			</label>
 		</fieldset>
 		<?php

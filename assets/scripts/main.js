@@ -47,8 +47,6 @@
       }
     });
 
-    $('#WPLANG').parents('tr').hide();
-
     $('#add_lang').click(function () {
       var t_language = wp.template('wpm-add-lang');
       var data = {
