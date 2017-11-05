@@ -561,7 +561,8 @@ class WPM_Setup {
 
 			foreach ( $browser_languages as $browser_language ) {
 				foreach ( $languages as $key => $value ) {
-					if ( $browser_language == $key || $browser_language == $value['locale'] ) {
+					$browser_language = strtolower( str_replace( '_', '-', $browser_language ) );
+					if ( $browser_language == $key || strtolower( str_replace( '_', '-', $value['locale'] ) ) == $browser_language ) {
 						$detect = $key;
 						break;
 					}
