@@ -81,7 +81,7 @@ function wpm_translate_url( $url, $language = '' ) {
 		$new_url = $url;
 	}
 
-	return apply_filters( 'wpm_translate_url', $new_url, $url, $language );
+	return apply_filters( 'wpm_translate_url', $new_url, $language, $url );
 }
 
 /**
