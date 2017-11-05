@@ -75,11 +75,13 @@ function wpm_translate_url( $url, $language = '' ) {
 		}
 	}
 
+	$new_url = '';
+
 	if ( $new_path ) {
-		$url = str_replace( $host . $path, $host . $new_path, $url );
+		$new_url = str_replace( $host . $path, $host . $new_path, $url );
 	}
 
-	return apply_filters( 'wpm_translate_url', $url );
+	return apply_filters( 'wpm_translate_url', $new_url, $url, $language );
 }
 
 /**
