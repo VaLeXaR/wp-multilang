@@ -20,7 +20,7 @@
           data: data,
           dataType: 'json',
           complete: function () {
-            button.parent().parent().fadeOut('slow', function () {
+            button.parent().parents('.postbox').fadeOut('slow', function () {
               $(this).remove();
             });
           },
@@ -31,9 +31,7 @@
       }
     });
 
-    $("#wpm-languages tbody").sortable({
-      handle: 'td:first-child'
-    });
+    $("#wpm-languages").sortable();
 
     $(document).on('change', '.wpm-flags', function () {
       var select = $(this);
@@ -53,27 +51,16 @@
 
     $('#add_lang').click(function () {
       var t_language = wp.template('wpm-add-lang');
-      var language_val = $('#wpm-available-translations').val();
-      if (!language_val) {
-        return false;
-      }
-      var language = wpm_params.available_translations[language_val];
-      if (typeof language === 'undefined') {
-        language = {
-          language: '',
-          native_name: '',
-          iso: {
-            0: ''
-          }
-        };
-      }
-      language['count'] = wpm_lang_count;
-      $('#wpm-languages tbody').append(t_language(language)).sortable({
-        handle: 'td:first-child'
-      });
-      $('[name="wpm_languages[' + wpm_lang_count + '][flag]"]').val(language.iso[Object.keys(language.iso)[0]]).trigger('change');
-      $('#wpm-available-translations').val('');
+      var data = {
+        count: wpm_lang_count
+      };
+      $('#wpm-languages').append(t_language(data)).sortable();
       wpm_lang_count++;
+    });
+
+
+    $(document).on('click', '.handlediv', function(){
+      $(this).parent().toggleClass('closed');
     });
 
   });

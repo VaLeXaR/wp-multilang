@@ -244,6 +244,7 @@ class WPM_Setup {
 
 
 	public function get_locale( $locale ) {
+
 		$languages = $this->get_languages();
 
 		if ( ! $languages ) {
@@ -276,12 +277,13 @@ class WPM_Setup {
 		$url           = '';
 		$user_language = '';
 
+		require_once( ABSPATH . WPINC . '/pluggable.php' );
+
 		if ( ! is_admin() ) {
 			$url = wpm_get_current_url();
 		}
 
 		if ( wp_doing_ajax() ) {
-
 			if ( $referrer = wp_get_raw_referer() ) {
 				if ( strpos( $referrer, '/wp-admin/' ) === false ) {
 					$url = $referrer;
@@ -309,20 +311,20 @@ class WPM_Setup {
 			$lang = wpm_clean( $_REQUEST['lang'] );
 			if ( isset( $languages[ $lang ] ) ) {
 				$user_language = $lang;
-			}
 
-			if ( is_admin() && ! wp_doing_ajax() ) {
-				update_user_meta( get_current_user_id(), 'user_language', $lang );
-				update_user_meta( get_current_user_id(), 'locale', $languages[ $lang ]['translation'] );
+				if ( is_admin() && ! wp_doing_ajax() ) {
+					update_user_meta( get_current_user_id(), 'user_lang', $lang );
+					update_user_meta( get_current_user_id(), 'locale', $languages[ $lang ]['translation'] );
+				}
 			}
 		} else {
 			if ( is_admin() && ! wp_doing_ajax() ) {
-				if ( $user_meta_language = get_user_meta( get_current_user_id(), 'user_language', true ) ) {
+				if ( $user_meta_language = get_user_meta( get_current_user_id(), 'user_lang', true ) ) {
 					if ( isset( $languages[ $user_meta_language ] ) ) {
 						$user_language = $user_meta_language;
 					}
 				} else {
-					update_user_meta( get_current_user_id(), 'user_language', $this->get_default_language() );
+					update_user_meta( get_current_user_id(), 'user_lang', $this->get_default_language() );
 					update_user_meta( get_current_user_id(), 'locale', $this->get_default_locale() );
 				}
 			} elseif ( ! is_admin() && preg_match( '/^.*\.php$/i', wp_parse_url( $url, PHP_URL_PATH ) ) ) {

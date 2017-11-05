@@ -57,29 +57,40 @@ class WPM_Admin_Menus {
 			return;
 		}
 
-		$user_language = wpm_get_user_language();
-		$languages     = wpm_get_languages();
+		$installed_translations = wpm_get_installed_languages();
 
-		if ( count( $languages ) <= 1 ) {
+		if ( count( $installed_translations ) <= 1 ) {
 			return;
 		}
+
+		$user_language          = wpm_get_user_language();
+		$options                = wpm_get_options();
+		$available_translations = wpm_get_available_translations();
+		$current_url            = wpm_get_current_url();
 
 		$wp_admin_bar->add_menu( array(
 			'id'     => 'wpm-language-switcher',
 			'parent' => 'top-secondary',
 			'title'  => '<span class="ab-icon">' .
-			            '<img src="' . esc_url( wpm_get_flag_url( $languages[ $user_language ]['flag'] ) ) . '"/>' .
+			            '<img src="' . esc_url( wpm_get_flag_url( $options[ $user_language ]['flag'] ) ) . '"/>' .
 			            '</span><span class="ab-label">' .
-			            $languages[ $user_language ]['name'] .
+			            $available_translations[ get_locale() ]['native_name'] .
 			            '</span>',
 		) );
 
-		$current_url = wpm_get_current_url();
+		foreach ( $installed_translations as $locale ) {
 
-		foreach ( $languages as $lang => $language ) {
-
-			if ( $lang === $user_language ) {
+			if ( get_locale() === $locale ) {
 				continue;
+			}
+
+			$lang     = '';
+			$language = array();
+
+			foreach ( $options as $lang => $language ) {
+				if ( $language['translation'] == $locale ) {
+					break;
+				}
 			}
 
 			$wp_admin_bar->add_menu( array(
@@ -88,7 +99,7 @@ class WPM_Admin_Menus {
 				'title'  => '<span class="ab-icon">' .
 				            '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" />' .
 				            '</span>' .
-				            '<span class="ab-label">' . $language['name'] . '</span>',
+				            '<span class="ab-label">' . $available_translations[$locale]['native_name'] . '</span>',
 				'href'   => wpm_translate_url( $current_url, $lang ),
 			) );
 		}

@@ -56,12 +56,11 @@ class WPM_Admin_Assets {
 		), WPM_VERSION );
 
 		$main_params = array(
-			'plugin_url'             => wpm()->plugin_url(),
-			'flags_dir'             => wpm_get_flags_dir(),
-			'ajax_url'               => admin_url( 'admin-ajax.php' ),
-			'delete_lang_nonce'      => wp_create_nonce( 'delete-lang' ),
-			'confirm_question'       => __( 'Are you sure you want to delete this language?', 'wp-multilang' ),
-			'available_translations' => wpm_get_available_translations(),
+			'plugin_url'        => wpm()->plugin_url(),
+			'flags_dir'         => wpm_get_flags_dir(),
+			'ajax_url'          => admin_url( 'admin-ajax.php' ),
+			'delete_lang_nonce' => wp_create_nonce( 'delete-lang' ),
+			'confirm_question'  => __( 'Are you sure you want to delete this language?', 'wp-multilang' ),
 		);
 		wp_localize_script( 'wpm_main', 'wpm_params', $main_params );
 
