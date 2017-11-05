@@ -29,7 +29,7 @@ class WPM_Admin_Settings {
 	 */
 	public function add_section() {
 
-		add_settings_section( 'wpm_setting_section', __( 'Multilingual Settings', 'wp-multilang' ),  '', 'general' );
+		add_settings_section( 'wpm_setting_section', __( 'Multilingual Settings', 'wp-multilang' ), array( $this, 'display_section' ), 'general' );
 
 		add_settings_field( 'wpm_site_language', __( 'Site Language' ), array( $this, 'site_language_setting' ), 'general', 'wpm_setting_section' );
 		register_setting( 'general', 'wpm_site_language', array(
@@ -44,6 +44,9 @@ class WPM_Admin_Settings {
 		add_settings_field( 'wpm_show_untranslated_strings', __( 'Translating settings', 'wp-multilang' ), array( $this, 'translating_setting' ), 'general', 'wpm_setting_section' );
 		register_setting( 'general', 'wpm_show_untranslated_strings' );
 
+		add_settings_field( 'wpm_use_redirect', __( 'Browser redirect', 'wp-multilang' ), array( $this, 'browser_redirect' ), 'general', 'wpm_setting_section' );
+		register_setting( 'general', 'wpm_use_redirect' );
+
 		add_settings_field( 'wpm_use_prefix', __( 'Use prefix', 'wp-multilang' ), array( $this, 'use_prefix_setting' ), 'general', 'wpm_setting_section' );
 		register_setting( 'general', 'wpm_use_prefix' );
 
@@ -52,6 +55,19 @@ class WPM_Admin_Settings {
 			register_setting( 'general', 'wpm_uninstall_translations' );
 		}
 	}
+
+
+	/**
+	 * Display multilingual section
+	 */
+	public function display_section() {
+		?>
+		<p>
+			<?php _e( 'Read <a href="https://support.google.com/webmasters/answer/182192?hl=en" target="_blank">Google guidelines</a> before.', 'wp-multilang' ) ?>
+		</p>
+		<?php
+	}
+
 
 	/**
 	 * Show site language from DB
@@ -279,17 +295,37 @@ class WPM_Admin_Settings {
 			<legend class="screen-reader-text">
 				<span><?php esc_html_e( 'Translating settings', 'wp-multilang' ); ?></span>
 			</legend>
-			<label for="wpm_show_untranslated_strings">
+			<label>
 				<input type="hidden" name="wpm_show_untranslated_strings" value="0">
-				<input name="wpm_show_untranslated_strings" type="checkbox" id="wpm_show_untranslated_strings" value="1"<?php checked( get_option( 'wpm_show_untranslated_strings', 1 ) ); ?>>
-				<?php esc_attr_e( 'Show untranslated strings in default language', 'wp-multilang' ); ?>
+				<input name="wpm_show_untranslated_strings" type="checkbox" value="1"<?php checked( get_option( 'wpm_show_untranslated_strings', 1 ) ); ?>>
+				<?php esc_html_e( 'Show untranslated strings in default language', 'wp-multilang' ); ?>
 			</label>
 		</fieldset>
 		<?php
 	}
 
+
 	/**
-	 * Display translation setting
+	 * Use redirect to user browser language
+	 */
+	public function browser_redirect() {
+		?>
+		<fieldset>
+			<legend class="screen-reader-text">
+				<span><?php esc_html_e( 'Browser redirect', 'wp-multilang' ); ?></span>
+			</legend>
+			<label>
+				<input type="hidden" name="wpm_use_redirect" value="0">
+				<input name="wpm_use_redirect" type="checkbox" value="1"<?php checked( get_option( 'wpm_use_redirect', 0 ) ); ?>>
+				<?php esc_attr_e( 'Use redirect to user browser language', 'wp-multilang' ); ?>
+			</label>
+		</fieldset>
+		<?php
+	}
+
+
+	/**
+	 * Use prefix for default language
 	 */
 	public function use_prefix_setting() {
 		?>
@@ -297,17 +333,18 @@ class WPM_Admin_Settings {
 			<legend class="screen-reader-text">
 				<span><?php esc_html_e( 'Use prefix', 'wp-multilang' ); ?></span>
 			</legend>
-			<label for="wpm_use_prefix">
+			<label>
 				<input type="hidden" name="wpm_use_prefix" value="0">
-				<input name="wpm_use_prefix" type="checkbox" id="wpm_use_prefix" value="1"<?php checked( get_option( 'wpm_use_prefix', 1 ) ); ?>>
+				<input name="wpm_use_prefix" type="checkbox" value="1"<?php checked( get_option( 'wpm_use_prefix', 0 ) ); ?>>
 				<?php esc_attr_e( 'Use prefix for default language', 'wp-multilang' ); ?>
 			</label>
 		</fieldset>
 		<?php
 	}
 
+
 	/**
-	 * Display ininstall setting
+	 * Display uninstall setting
 	 */
 	public function uninstalling_setting() {
 		?>
@@ -315,9 +352,9 @@ class WPM_Admin_Settings {
 			<legend class="screen-reader-text">
 				<span><?php esc_html_e( 'Uninstalling', 'wp-multilang' ); ?></span>
 			</legend>
-			<label for="wpm_uninstall_translations">
+			<label>
 				<input type="hidden" name="wpm_uninstall_translations" value="0">
-				<input name="wpm_uninstall_translations" type="checkbox" id="wpm_uninstall_translations" value="1"<?php checked( get_option( 'wpm_uninstall_translations' ) ); ?>>
+				<input name="wpm_uninstall_translations" type="checkbox" value="1"<?php checked( get_option( 'wpm_uninstall_translations' ) ); ?>>
 				<?php esc_attr_e( 'Delete translations when uninstalling plugin (some translations may not be deleted and you must delete them manually).', 'wp-multilang' ); ?>
 			</label>
 		</fieldset>
@@ -325,6 +362,13 @@ class WPM_Admin_Settings {
 	}
 
 
+	/**
+	 * Save site language
+	 *
+	 * @param $value
+	 *
+	 * @return string
+	 */
 	public function save_site_language( $value ) {
 		check_admin_referer( 'general-options' );
 
@@ -334,6 +378,7 @@ class WPM_Admin_Settings {
 
 		return $value;
 	}
+
 
 	/**
 	 * Save WPM languages

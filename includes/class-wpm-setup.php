@@ -525,7 +525,7 @@ class WPM_Setup {
 			if ( ! isset( $_COOKIE['language'] ) ) {
 
 				wpm_setcookie( 'language', $user_language, time() + YEAR_IN_SECONDS );
-				$redirect_to_browser_language = apply_filters( 'wpm_redirect_to_browser_language', true );
+				$redirect_to_browser_language = get_option( 'wpm_use_redirect', false );
 
 				if ( $redirect_to_browser_language ) {
 

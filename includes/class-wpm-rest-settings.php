@@ -38,6 +38,7 @@ class WPM_REST_Settings {
 				'name' => 'site_language',
 			),
 		) );
+
 		register_setting( 'general', 'wpm_languages', array(
 			'description'  => __( 'Multilingual Settings', 'wp-multilang' ),
 			'default'      => array(),
@@ -77,12 +78,31 @@ class WPM_REST_Settings {
 				),
 			),
 		) );
+
 		register_setting( 'general', 'wpm_show_untranslated_strings', array(
 			'description'  => __( 'Show untranslated strings', 'wp-multilang' ),
 			'type'         => 'boolean',
 			'default'      => false,
 			'show_in_rest' => array(
 				'name' => 'show_untranslated_strings',
+			),
+		) );
+
+		register_setting( 'general', 'wpm_use_redirect', array(
+			'description'  => __( 'Browser redirect', 'wp-multilang' ),
+			'type'         => 'boolean',
+			'default'      => false,
+			'show_in_rest' => array(
+				'name' => 'use_redirect',
+			),
+		) );
+
+		register_setting( 'general', 'wpm_use_prefix', array(
+			'description'  => __( 'Use prefix', 'wp-multilang' ),
+			'type'         => 'boolean',
+			'default'      => false,
+			'show_in_rest' => array(
+				'name' => 'use_prefix',
 			),
 		) );
 	}
