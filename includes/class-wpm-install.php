@@ -87,7 +87,7 @@ class WPM_Install {
 	 * @return boolean
 	 */
 	private static function needs_db_update() {
-		$current_db_version = get_option( 'wpm_db_version', '1.7.7' );
+		$current_db_version = get_option( 'wpm_db_version', null );
 		$updates            = self::get_db_update_callbacks();
 
 		return ( ! is_null( $current_db_version ) ) && version_compare( $current_db_version, max( array_keys( $updates ) ), '<' );
@@ -108,6 +108,14 @@ class WPM_Install {
 	 * Update WPM version to current.
 	 */
 	private static function update_wpm_version() {
+
+		/* fix for update */
+		if ( $old_version = get_option( 'wpm_version' ) ) {
+			if ( version_compare( $old_version, '1.7.7', 'le' ) ) {
+				add_option( 'wpm_db_version', '1.7.7' );
+			}
+		}
+
 		delete_option( 'wpm_version' );
 		add_option( 'wpm_version', wpm()->version );
 	}
