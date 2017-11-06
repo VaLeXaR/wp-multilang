@@ -79,6 +79,9 @@
 .wp-core-ui .button-link.delete-language {
   color: #dd0e11; }
 
+.wpm-languages {
+  max-width: 500px; }
+
 #customize-controls .wpm-language-switcher {
   display: block;
   position: absolute;

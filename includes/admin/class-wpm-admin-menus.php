@@ -20,6 +20,7 @@ class WPM_Admin_Menus {
 	 */
 	public function __construct() {
 		add_action( 'admin_bar_menu', array( $this, 'admin_bar_menu' ) );
+		add_action( 'admin_menu', array( $this, 'settings_menu' ) );
 
 		// Add endpoints custom URLs in Appearance > Menus > Pages.
 		add_action( 'admin_head-nav-menus.php', array( $this, 'add_nav_menu_meta_boxes' ) );
@@ -104,6 +105,22 @@ class WPM_Admin_Menus {
 			) );
 		}
 	}
+
+
+	/**
+	 * Add menu item.
+	 */
+	public function settings_menu() {
+		add_options_page( __( 'WP Multilang Settings', 'wp-multilang' ), __( 'WP Multilang', 'wp-multilang' ), 'manage_options', 'wpm-settings', array( $this, 'settings_page' ) );
+	}
+
+	/**
+	 * Init the settings page.
+	 */
+	public function settings_page() {
+		WPM_Admin_Settings::output();
+	}
+
 
 	/**
 	 * Add custom nav meta box.

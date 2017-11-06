@@ -31,6 +31,7 @@ class WPM_Yoast_Seo {
 		add_filter( 'wpseo_sitemap_url', array( $this, 'add_alternate_sitemaplinks' ), 10, 2 );
 		add_filter( 'wpseo_sitemap_entry', array( $this, 'add_lang_to_url' ), 10, 3 );
 		add_filter( 'wpseo_build_sitemap_post_type', array( $this, 'add_filter_for_maps' ) );
+		add_filter( 'wpseo_locale', array( $this, 'set_opengraph_locale ' ) );
 	}
 
 
@@ -194,6 +195,15 @@ class WPM_Yoast_Seo {
 		}
 
 		return $new_output;
+	}
+
+	/**
+	 * Set locale for opengraph
+	 *
+	 * @return string
+	 */
+	public function set_opengraph_locale() {
+		return __( 'html_lang_attribute' );
 	}
 }
 

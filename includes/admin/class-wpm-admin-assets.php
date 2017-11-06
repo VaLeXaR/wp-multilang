@@ -113,7 +113,7 @@ class WPM_Admin_Assets {
 			$this->set_language_switcher();
 		}
 
-		if ( 'options-general' === $screen_id ) {
+		if ( 'settings_page_wpm-settings' === $screen_id ) {
 			wp_enqueue_script( 'wpm_main' );
 		}
 

@@ -30,7 +30,7 @@ class WPM_REST_Settings {
 	 * Add settings to REST API
 	 */
 	public function register_initial_settings() {
-		register_setting( 'general', 'wpm_site_language', array(
+		register_setting( 'wpm-settings', 'wpm_site_language', array(
 			'description'  => __( 'Sile Language', 'wp-multilang' ),
 			'type'         => 'string',
 			'default'      => false,
@@ -39,7 +39,7 @@ class WPM_REST_Settings {
 			),
 		) );
 
-		register_setting( 'general', 'wpm_languages', array(
+		register_setting( 'wpm-settings', 'wpm_languages', array(
 			'description'  => __( 'Multilingual Settings', 'wp-multilang' ),
 			'default'      => array(),
 			'show_in_rest' => array(
@@ -79,8 +79,8 @@ class WPM_REST_Settings {
 			),
 		) );
 
-		register_setting( 'general', 'wpm_show_untranslated_strings', array(
-			'description'  => __( 'Show untranslated strings', 'wp-multilang' ),
+		register_setting( 'wpm-settings', 'wpm_show_untranslated_strings', array(
+			'description'  => __( 'Show untranslated strings in default language', 'wp-multilang' ),
 			'type'         => 'boolean',
 			'default'      => true,
 			'show_in_rest' => array(
@@ -88,8 +88,8 @@ class WPM_REST_Settings {
 			),
 		) );
 
-		register_setting( 'general', 'wpm_use_redirect', array(
-			'description'  => __( 'Browser redirect', 'wp-multilang' ),
+		register_setting( 'wpm-settings', 'wpm_use_redirect', array(
+			'description'  => __( 'Use redirect to user browser language in first time', 'wp-multilang' ),
 			'type'         => 'boolean',
 			'default'      => false,
 			'show_in_rest' => array(
@@ -97,8 +97,8 @@ class WPM_REST_Settings {
 			),
 		) );
 
-		register_setting( 'general', 'wpm_use_prefix', array(
-			'description'  => __( 'Use prefix', 'wp-multilang' ),
+		register_setting( 'wpm-settings', 'wpm_use_prefix', array(
+			'description'  => __( 'Use prefix for default language', 'wp-multilang' ),
 			'type'         => 'boolean',
 			'default'      => false,
 			'show_in_rest' => array(
