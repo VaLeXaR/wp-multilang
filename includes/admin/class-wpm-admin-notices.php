@@ -179,5 +179,5 @@ class WPM_Admin_Notices {
 	}
 }
 
-WPM_Admin_Notices::init();
+
 

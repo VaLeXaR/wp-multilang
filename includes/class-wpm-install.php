@@ -124,7 +124,7 @@ class WPM_Install {
 	 * @since 2.0.0
 	 */
 	private static function remove_admin_notices() {
-		include_once( dirname( __FILE__ ) . '/admin/class-wpm-admin-notices.php' );
+		WPM_Admin_Notices::init();
 		WPM_Admin_Notices::remove_all_notices();
 	}
 
