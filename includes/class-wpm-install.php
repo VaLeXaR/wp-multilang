@@ -1,6 +1,7 @@
 <?php
 
 namespace WPM\Includes;
+use WPM\Includes\Admin\WPM_Admin_Notices;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -28,17 +29,32 @@ class WPM_Install {
 			'wpm_update_180_flags',
 			'wpm_update_180_db_version',
 		),
-		'1.8.2' => array(
-			'wpm_update_182_options',
-			'wpm_update_182_db_version',
+		'2.0.0' => array(
+			'wpm_update_200_options',
+			'wpm_update_200_db_version',
 		),
 	);
+
+	/**
+	 * Background update class.
+	 *
+	 * @var object
+	 */
+	private static $background_updater;
 
 	/**
 	 * Hook in tabs.
 	 */
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'check_version' ), 5 );
+		add_filter( 'plugin_action_links_' . WPM_PLUGIN_BASENAME, array( __CLASS__, 'plugin_action_links' ) );
+	}
+
+	/**
+	 * Init background updates
+	 */
+	public static function init_background_updater() {
+		self::$background_updater = new WPM_Background_Updater();
 	}
 
 	/**
@@ -50,6 +66,23 @@ class WPM_Install {
 		if ( get_option( 'wpm_version' ) !== wpm()->version ) {
 			self::install();
 			do_action( 'wpm_updated' );
+		}
+	}
+
+	/**
+	 * Install actions when a update button is clicked within the admin area.
+	 *
+	 * This function is hooked into admin_init to affect admin only.
+	 */
+	public static function install_actions() {
+		if ( ! empty( $_GET['do_update_wpm'] ) ) {
+			self::update();
+			WPM_Admin_Notices::add_notice( 'update' );
+		}
+		if ( ! empty( $_GET['force_update_wpm'] ) ) {
+			do_action( 'wp_wpm_updater_cron' );
+			wp_safe_redirect( admin_url( 'admin.php?page=wc-settings' ) );
+			exit;
 		}
 	}
 
@@ -70,7 +103,9 @@ class WPM_Install {
 		set_transient( 'wpm_installing', 'yes', MINUTE_IN_SECONDS * 10 );
 		wpm_maybe_define_constant( 'WPM_INSTALLING', true );
 
+		self::remove_admin_notices();
 		self::create_options();
+		self::create_roles();
 		WPM_Config::load_config_run();
 		self::update_wpm_version();
 		self::maybe_update_db_version();
@@ -82,7 +117,18 @@ class WPM_Install {
 	}
 
 	/**
+	 * Reset any notices added to admin.
+	 *
+	 * @since 2.0.0
+	 */
+	private static function remove_admin_notices() {
+		WPM_Admin_Notices::remove_all_notices();
+	}
+
+	/**
 	 * Is a DB update needed?
+	 *
+	 * @since 1.7.8
 	 *
 	 * @return boolean
 	 */
@@ -95,10 +141,17 @@ class WPM_Install {
 
 	/**
 	 * See if we need to show or run database updates during install.
+	 *
+	 * @since 1.7.8
 	 */
 	private static function maybe_update_db_version() {
 		if ( self::needs_db_update() ) {
-			self::update();
+			if ( apply_filters( 'wpm_enable_auto_update_db', false ) ) {
+				self::init_background_updater();
+				self::update();
+			} else {
+				WPM_Admin_Notices::add_notice( 'update' );
+			}
 		} else {
 			self::update_db_version();
 		}
@@ -123,6 +176,8 @@ class WPM_Install {
 	/**
 	 * Get list of DB update callbacks.
 	 *
+	 * @since 1.7.8
+	 *
 	 * @return array
 	 */
 	public static function get_db_update_callbacks() {
@@ -131,24 +186,32 @@ class WPM_Install {
 
 	/**
 	 * Push all needed DB updates to the queue for processing.
+	 *
+	 * @since 1.7.8
 	 */
 	private static function update() {
 		$current_db_version = get_option( 'wpm_db_version' );
+		$update_queued      = false;
 
 		foreach ( self::get_db_update_callbacks() as $version => $update_callbacks ) {
 			if ( version_compare( $current_db_version, $version, '<' ) ) {
 				foreach ( $update_callbacks as $update_callback ) {
-					include_once( dirname( __FILE__ ) . '/wpm-update-functions.php' );
-					if ( is_callable( $update_callback ) ) {
-						call_user_func( $update_callback );
-					}
+					self::$background_updater->push_to_queue( $update_callback );
+					$update_queued = true;
 				}
 			}
+		}
+
+		if ( $update_queued ) {
+			self::$background_updater->save()->dispatch();
 		}
 	}
 
 	/**
 	 * Update DB version to current.
+	 *
+	 * @since 1.7.8
+	 *
 	 * @param string $version
 	 */
 	public static function update_db_version( $version = null ) {
@@ -186,5 +249,112 @@ class WPM_Install {
 
 		add_option( 'wpm_languages', $languages );
 		add_option( 'wpm_site_language', $default_language );
+	}
+
+
+	/**
+	 * Create roles and capabilities.
+	 */
+	public static function create_roles() {
+		global $wp_roles;
+
+		if ( ! class_exists( 'WP_Roles' ) ) {
+			return;
+		}
+
+		if ( ! isset( $wp_roles ) ) {
+			$wp_roles = new \WP_Roles();
+		}
+
+		// Translator role
+		add_role( 'translator', __( 'Translator', 'wp-multilang' ), array(
+			'level_7'              => true,
+			'level_6'              => true,
+			'level_5'              => true,
+			'level_4'              => true,
+			'level_3'              => true,
+			'level_2'              => true,
+			'level_1'              => true,
+			'level_0'              => true,
+			'read'                 => true,
+			'read_private_pages'   => true,
+			'read_private_posts'   => true,
+			'edit_posts'           => true,
+			'edit_pages'           => true,
+			'edit_published_posts' => true,
+			'edit_published_pages' => true,
+			'edit_private_pages'   => true,
+			'edit_private_posts'   => true,
+			'edit_others_posts'    => true,
+			'edit_others_pages'    => true,
+			'manage_categories'    => true,
+			'manage_links'         => true,
+			'upload_files'         => true,
+		) );
+
+		$capabilities = self::get_core_capabilities();
+
+		foreach ( $capabilities as $cap_group ) {
+			foreach ( $cap_group as $cap ) {
+				$wp_roles->add_cap( 'translator', $cap );
+				$wp_roles->add_cap( 'administrator', $cap );
+			}
+		}
+	}
+
+	/**
+	 * Get capabilities for WP Multilanf - these are assigned to admin/translator during installation or reset.
+	 *
+	 * @return array
+	 */
+	private static function get_core_capabilities() {
+		$capabilities = array();
+
+		$capabilities['core'] = array(
+			'manage_translations',
+		);
+
+		return $capabilities;
+	}
+
+
+	/**
+	 * wpm_remove_roles function.
+	 */
+	public static function remove_roles() {
+		global $wp_roles;
+
+		if ( ! class_exists( 'WP_Roles' ) ) {
+			return;
+		}
+
+		if ( ! isset( $wp_roles ) ) {
+			$wp_roles = new \WP_Roles();
+		}
+
+		$capabilities = self::get_core_capabilities();
+
+		foreach ( $capabilities as $cap_group ) {
+			foreach ( $cap_group as $cap ) {
+				$wp_roles->remove_cap( 'translator', $cap );
+				$wp_roles->remove_cap( 'administrator', $cap );
+			}
+		}
+
+		remove_role( 'translator' );
+	}
+
+	/**
+	 * Show action links on the plugin screen.
+	 *
+	 * @param	mixed $links Plugin Action links
+	 * @return	array
+	 */
+	public static function plugin_action_links( $links ) {
+		$action_links = array(
+			'settings' => '<a href="' . admin_url( 'admin.php?page=wc-settings' ) . '" aria-label="' . esc_attr__( 'View WooCommerce settings', 'woocommerce' ) . '">' . esc_html__( 'Settings', 'woocommerce' ) . '</a>',
+		);
+
+		return array_merge( $action_links, $links );
 	}
 }

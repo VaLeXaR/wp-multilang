@@ -7,7 +7,7 @@
  * @author        VaLeXaR
  * @category      Core
  * @package       WPM/Functions
- * @version       1.0.3
+ * @version       1.1.0
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -30,10 +30,10 @@ function wpm_translate_url( $url, $language = '' ) {
 	}
 
 	$user_language = wpm_get_language();
-	$languages     = wpm_get_languages();
+	$options       = wpm_get_options();
 
 	if ( $language ) {
-		if ( ( ( $language === $user_language ) && ( ! is_admin() || wp_doing_ajax() ) ) || ! isset( $languages[ $language ] ) ) {
+		if ( ( ( $language === $user_language ) && ( ! is_admin() || wp_doing_ajax() ) ) || ! isset( $options[ $language ] ) ) {
 			return $url;
 		}
 	}
@@ -121,7 +121,7 @@ function wpm_translate_string( $string, $language = '' ) {
 	$language         = wpm_get_language();
 	$default_language = wpm_get_default_language();
 
-	if ( ( '' == $strings[ $language ] ) && get_option( 'wpm_show_untranslated_strings' ) ) {
+	if ( ( '' == $strings[ $language ] ) && get_option( 'wpm_show_untranslated_strings', true ) ) {
 		return $strings[ $default_language ];
 	}
 

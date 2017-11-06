@@ -79,12 +79,6 @@
 .wp-core-ui .button-link.delete-language {
   color: #dd0e11; }
 
-.languagechecklist li {
-  margin: 0;
-  padding: 0;
-  line-height: 22px;
-  word-wrap: break-word; }
-
 #customize-controls .wpm-language-switcher {
   display: block;
   position: absolute;

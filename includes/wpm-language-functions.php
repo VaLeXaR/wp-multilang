@@ -49,9 +49,11 @@ function wpm_get_default_locale() {
 }
 
 /**
- * Get default locale
+ * Get site language
  *
- * @see WPM_Setup::get_default_locale()
+ * @since 2.0.0
+ *
+ * @see WPM_Setup::get_default_language()
  *
  * @return string
  */
@@ -119,7 +121,7 @@ function wpm_get_orig_home_url() {
 /**
  * Get available translation
  *
- * @see WPM_Setup::get_translations()
+ * @see WPM_Setup::get_site_request_uri()
  *
  * @since 1.7.0
  *

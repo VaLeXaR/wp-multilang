@@ -3,6 +3,8 @@
 
   $(function () {
 
+    $('#WPLANG').parents('tr').hide();
+
     $(document).on('click', '.delete-language', function () {
 
       var button = $(this);

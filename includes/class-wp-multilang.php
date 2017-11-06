@@ -4,7 +4,7 @@
  * Main WP_Multilang.
  *
  * @class   WPM
- * @version 1.0.5
+ * @version 1.1.1
  */
 
 namespace WPM\Includes;
@@ -16,7 +16,7 @@ final class WP_Multilang {
 	 *
 	 * @var string
 	 */
-	public $version = '1.8.2';
+	public $version = '2.0.0';
 
 	/**
 	 * The single instance of the class.

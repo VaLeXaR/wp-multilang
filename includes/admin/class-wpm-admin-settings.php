@@ -150,6 +150,7 @@ class WPM_Admin_Settings {
 											'name'                        => 'wpm_languages[' . $i . '][translation]',
 											'id'                          => 'wpm_languages[' . $i . '][translation]',
 											'selected'                    => $language['translation'],
+											'languages'                   => get_available_languages(),
 											'show_available_translations' => current_user_can( 'install_languages' ),
 										) );
 										?>
@@ -297,7 +298,7 @@ class WPM_Admin_Settings {
 			</legend>
 			<label>
 				<input type="hidden" name="wpm_show_untranslated_strings" value="0">
-				<input name="wpm_show_untranslated_strings" type="checkbox" value="1"<?php checked( get_option( 'wpm_show_untranslated_strings', 1 ) ); ?>>
+				<input name="wpm_show_untranslated_strings" type="checkbox" value="1"<?php checked( get_option( 'wpm_show_untranslated_strings', true ) ); ?>>
 				<?php esc_html_e( 'Show untranslated strings in default language', 'wp-multilang' ); ?>
 			</label>
 		</fieldset>
@@ -317,7 +318,7 @@ class WPM_Admin_Settings {
 			<label>
 				<input type="hidden" name="wpm_use_redirect" value="0">
 				<input name="wpm_use_redirect" type="checkbox" value="1"<?php checked( get_option( 'wpm_use_redirect', 0 ) ); ?>>
-				<?php esc_attr_e( 'Use redirect to user browser language', 'wp-multilang' ); ?>
+				<?php esc_attr_e( 'Use redirect to user browser language in first time', 'wp-multilang' ); ?>
 			</label>
 		</fieldset>
 		<?php
@@ -425,7 +426,7 @@ class WPM_Admin_Settings {
 					'enable'      => $item['enable'] ? 1 : 0,
 					'locale'      => $item['locale'],
 					'name'        => $item['name'],
-					'translation' => $item['translation'],
+					'translation' => $item['translation'] ? $item['translation'] : 'en_US',
 					'date'        => $item['date'],
 					'time'        => $item['time'],
 					'flag'        => $item['flag'],

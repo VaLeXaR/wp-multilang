@@ -82,7 +82,7 @@ class WPM_REST_Settings {
 		register_setting( 'general', 'wpm_show_untranslated_strings', array(
 			'description'  => __( 'Show untranslated strings', 'wp-multilang' ),
 			'type'         => 'boolean',
-			'default'      => false,
+			'default'      => true,
 			'show_in_rest' => array(
 				'name' => 'show_untranslated_strings',
 			),
@@ -107,7 +107,17 @@ class WPM_REST_Settings {
 		) );
 	}
 
-
+	/**
+	 * Ges site languages
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param $value
+	 * @param $name
+	 * @param $args
+	 *
+	 * @return array
+	 */
 	public function get_languages_setting( $value, $name, $args ) {
 
 		if ( 'multilingual_settings' != $name ) {
@@ -172,7 +182,7 @@ class WPM_REST_Settings {
 					'enable'      => $item['enable'] ? 1 : 0,
 					'locale'      => $item['locale'],
 					'name'        => $item['name'],
-					'translation' => $item['translation'],
+					'translation' => $item['translation'] ? $item['translation'] : 'en_US',
 					'date'        => $item['date'],
 					'time'        => $item['time'],
 					'flag'        => $item['flag'],
@@ -192,6 +202,17 @@ class WPM_REST_Settings {
 	}
 
 
+	/**
+	 * Save site language
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param $updated
+	 * @param $name
+	 * @param $request
+	 *
+	 * @return mixed
+	 */
 	public function update_site_language_setting( $updated, $name, $request ) {
 
 		if ( 'site_language' != $name ) {
@@ -200,7 +221,10 @@ class WPM_REST_Settings {
 
 		$request   = wpm_clean( $request );
 		$languages = wpm_get_languages();
-		update_option( 'WPLANG', $languages[ $request ]['translation'] );
+
+		if ( $languages ) {
+			update_option( 'WPLANG', $languages[ $request ]['translation'] );
+		}
 
 		return $updated;
 	}

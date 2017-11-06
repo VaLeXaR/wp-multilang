@@ -18,18 +18,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Update language flag
  */
-function wpm_update_182_options() {
+function wpm_update_200_options() {
 
 	$updated_languages = array();
-	$default_locale    = wpm_get_default_locale();
-	$default_language  = '';
 
 	foreach ( wpm_get_languages() as $locale => $language ) {
 		if ( isset( $language['slug'] ) ) {
 			$slug = $language['slug'];
-			if ( $locale == $default_locale ) {
-				$default_language = $slug;
-			}
 			$updated_languages[ $slug ] = array(
 				'enable'      => $language['enable'],
 				'locale'      => $locale,
@@ -44,15 +39,14 @@ function wpm_update_182_options() {
 
 	if ( $updated_languages ) {
 		update_option( 'wpm_languages', $updated_languages );
-		update_option( 'wpm_site_language', $default_language );
 	}
 }
 
 /**
  * Update DB Version.
  */
-function wpm_update_182_db_version() {
-	WPM_Install::update_db_version( '1.8.2' );
+function wpm_update_200_db_version() {
+	WPM_Install::update_db_version( '2.0.0' );
 }
 
 /**

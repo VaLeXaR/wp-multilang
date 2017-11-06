@@ -428,6 +428,8 @@ function wpm_admin_language_switcher_customizer() {
 /**
  * Get flag list
  *
+ * @since  2.0.0
+ *
  * @return array
  */
 function wpm_get_flags() {

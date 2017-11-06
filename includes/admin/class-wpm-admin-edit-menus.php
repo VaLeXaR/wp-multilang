@@ -103,20 +103,19 @@ class WPM_Admin_Edit_Menus {
 	 */
 	public function menu_item_custom_fields( $item_id, $item ) {
 
-		$_key  = 'languages';
-		$key   = sprintf( 'menu-item-%s', $_key );
-		$id    = sprintf( 'edit-%s-%s', $key, $item_id );
-		$name  = sprintf( '%s[%s]', $_key, $item_id );
-		$value = $item->languages;
-
-		$class = sprintf( 'field-%s', $_key );
+		$_key      = 'languages';
+		$key       = sprintf( 'menu-item-%s', $_key );
+		$id        = sprintf( 'edit-%s-%s', $key, $item_id );
+		$name      = sprintf( '%s[%s]', $_key, $item_id );
+		$value     = $item->languages;
+		$class     = sprintf( 'field-%s', $_key );
 		$languages = wpm_get_options();
-		$i = 0;
+		$i         = 0;
 		?>
 		<p class="description description-wide <?php echo esc_attr( $class ) ?>">
 			<?php _e( 'Show item only in:', 'wp-multilang' ); ?><br>
 			<?php foreach ( $languages as $lang => $language ) { if ( ! $language['enable'] ) continue; ?>
-			<label><input type="checkbox" name="<?php esc_attr_e( $name ); ?>[<?php esc_attr_e( $i ); ?>]" id="<?php echo $id . '-' . $lang; ?>" value="<?php esc_attr_e( $lang ); ?>"<?php if ( in_array( $lang, $value ) ) { ?> checked="checked"<?php } ?>><?php echo $language['name']; ?></label><br>
+			<label><input type="checkbox" name="<?php esc_attr_e( $name ); ?>[<?php esc_attr_e( $i ); ?>]" id="<?php echo $id . '-' . $lang; ?>" value="<?php esc_attr_e( $lang ); ?>"<?php checked( in_array( $lang, $value ) ); ?>><?php echo $language['name']; ?></label><br>
 			<?php $i++; } ?>
 		</p>
 		<?php

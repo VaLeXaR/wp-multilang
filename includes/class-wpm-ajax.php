@@ -112,10 +112,10 @@ class WPM_AJAX {
 
 		check_ajax_referer( 'delete-lang', 'security' );
 
-		$language  = wpm_get_post_data_by_key( 'language' );
-		$options = wpm_get_options();
+		$language = wpm_get_post_data_by_key( 'language' );
+		$options  = wpm_get_options();
 
-		if ( ! isset( $options[ $language ] ) || ( $language === wpm_get_user_language() ) || ( $language === wpm_get_default_language() ) ) {
+		if ( ! isset( $options[ $language ] ) || ( wpm_get_user_language() === $language ) || ( wpm_get_default_language() === $language ) ) {
 			return;
 		}
 

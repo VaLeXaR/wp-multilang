@@ -287,6 +287,7 @@ if ( ! function_exists( 'remove_class_action' ) ) {
 /**
  * Define a constant if it is not already defined.
  *
+ * @since  1.8.0
  * @param string $name  Constant name.
  * @param string $value Value.
  */
@@ -299,7 +300,7 @@ function wpm_maybe_define_constant( $name, $value ) {
 /**
  * Get an item of post data if set, otherwise return a default value.
  *
- * @since  3.0.9
+ * @since  1.8.0
  * @param  string $key
  * @param  string $default
  * @return mixed value sanitized by wc_clean
@@ -311,6 +312,7 @@ function wpm_get_post_data_by_key( $key, $default = '' ) {
 /**
  * Get data if set, otherwise return a default value or null. Prevents notices when data is not set.
  *
+ * @since  1.8.0
  * @param  mixed $var
  * @param  string $default
  * @return mixed value sanitized by wpm_clean
@@ -327,6 +329,8 @@ function wpm_get_var( &$var, $default = null ) {
  * transient_timeout record from table b.
  *
  * Based on code inside core's upgrade_network() function.
+ *
+ * @since  1.8.0
  *
  * @return int Number of transients that were cleared.
  */

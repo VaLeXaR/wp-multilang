@@ -22,6 +22,9 @@ if ( get_option( 'wpm_uninstall_translations', false ) ) {
 		define( 'WPM_PLUGIN_FILE', __DIR__ . '/wp-multilang.php' );
 	}
 
+	// Roles + caps.
+	WPM\Includes\WPM_Install::remove_roles();
+
 	require_once 'includes/wpm-core-functions.php';
 
 	$config           = wpm_get_config();

@@ -36,7 +36,7 @@ class WPM_Setup {
 	private $default_locale = '';
 
 	/**
-	 * Default locale
+	 * Default site language
 	 *
 	 * @var string
 	 */
@@ -223,7 +223,9 @@ class WPM_Setup {
 	}
 
 	/**
-	 * Get default locale from options
+	 * Get site language
+	 *
+	 * @since 2.0.0
 	 *
 	 * @return string
 	 */
@@ -243,6 +245,15 @@ class WPM_Setup {
 	}
 
 
+	/**
+	 * Set site locale
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param $locale
+	 *
+	 * @return mixed
+	 */
 	public function get_locale( $locale ) {
 
 		$languages = $this->get_languages();
@@ -257,6 +268,7 @@ class WPM_Setup {
 
 	/**
 	 * Get user language
+	 *
 	 * @return string
 	 */
 	public function get_user_language() {
@@ -370,6 +382,7 @@ class WPM_Setup {
 
 	/**
 	 * Get available translations
+	 *
 	 * @return array
 	 */
 	public function get_translations() {
@@ -391,6 +404,7 @@ class WPM_Setup {
 
 	/**
 	 * Get config from options
+	 *
 	 * @return array
 	 */
 	public function get_config() {
@@ -549,7 +563,7 @@ class WPM_Setup {
 	/**
 	 * Detect browser language
 	 *
-	 * @return null|string
+	 * @return string
 	 */
 	private function get_browser_language() {
 
@@ -631,6 +645,8 @@ class WPM_Setup {
 	/**
 	 * Set date format for current language
 	 *
+	 * @since 1.8.0
+	 *
 	 * @param $value
 	 *
 	 * @return string
@@ -664,6 +680,8 @@ class WPM_Setup {
 	/**
 	 * Set time format for current language
 	 *
+	 * @since 1.8.0
+	 *
 	 * @param $value
 	 *
 	 * @return string
@@ -694,6 +712,16 @@ class WPM_Setup {
 	}
 
 
+	/**
+	 * Set locale for html
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param $translation
+	 * @param $text
+	 *
+	 * @return mixed
+	 */
 	public function set_html_locale( $translation, $text ) {
 
 		if ( 'html_lang_attribute' == $text ) {

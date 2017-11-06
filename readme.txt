@@ -32,6 +32,9 @@ Features of the plugin WP Multilang:
 * No subdomains for language version
 * Support multisite
 * Support WordPress in subfolder
+* Possibility set many languages with one localization
+* Possibility to set custom locale for html(If installed locale is en_US, you can set locale like: en, en-UK, en-AU etc. without installation another localization)
+* Possibility for add new languages for any user with capability `manage options`
 
 WP Multilang compatible with plugins:
 
@@ -167,6 +170,17 @@ If you have opened several browser tabs for editing this post in different langu
 5. Post edit page
 
 == Changelog ==
+
+= 2.0.0 =
++ remake logic for set language and translation
++ add possibility fo set custom locale
++ add possibility for set many languages for one localization
++ set new design for language settings
++ add option for redirect to browser language in first time
++ add option for use prefix for default language
++ admin localization use only installed languages
+* fix separate posts by languages
+* fix save title settings in Yoast SEO
 
 = 1.8.1 =
 + add filters for alternate links

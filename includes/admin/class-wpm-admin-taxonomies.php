@@ -171,7 +171,7 @@ class WPM_Admin_Taxonomies {
 					<?php foreach ( $languages as $lang => $language ) { ?>
 						<li>
 							<label>
-								<input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $lang; ?>" value="<?php esc_attr_e( $lang ); ?>"<?php if ( in_array( $lang, $term_languages ) ) { ?> checked="checked"<?php } ?>>
+								<input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $lang; ?>" value="<?php esc_attr_e( $lang ); ?>"<?php checked( in_array( $lang, $term_languages ) ); ?>>
 								<?php esc_attr_e( $language['name'] ); ?>
 							</label>
 						</li>
