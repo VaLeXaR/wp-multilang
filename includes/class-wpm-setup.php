@@ -125,7 +125,7 @@ class WPM_Setup {
 		add_filter( 'rest_url', array( $this, 'fix_rest_url' ) );
 		add_filter( 'option_date_format', array( $this, 'set_date_format' ) );
 		add_filter( 'option_time_format', array( $this, 'set_time_format' ) );
-		add_filter( 'locale', array( $this, 'get_locale' ) );
+		add_filter( 'locale', array( $this, 'set_locale' ) );
 		add_filter( 'gettext', array( $this, 'set_html_locale' ), 10, 2 );
 	}
 
@@ -254,7 +254,7 @@ class WPM_Setup {
 	 *
 	 * @return mixed
 	 */
-	public function get_locale( $locale ) {
+	public function set_locale( $locale ) {
 
 		$languages = $this->get_languages();
 
@@ -576,7 +576,10 @@ class WPM_Setup {
 			foreach ( $browser_languages as $browser_language ) {
 				foreach ( $languages as $key => $value ) {
 					$browser_language = strtolower( str_replace( '_', '-', $browser_language ) );
-					if ( $browser_language == $key || strtolower( str_replace( '_', '-', $value['locale'] ) ) == $browser_language ) {
+					if ( ! $locale = $value['locale'] ) {
+						$locale = $value['translation'];
+					}
+					if ( $browser_language == $key || strtolower( str_replace( '_', '-', $locale ) ) == $browser_language ) {
 						$detect = $key;
 						break;
 					}
