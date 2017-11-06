@@ -47,6 +47,8 @@ class WPM_Install {
 	 */
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'check_version' ), 5 );
+		add_action( 'init', array( __CLASS__, 'init_background_updater' ), 5 );
+		add_action( 'admin_init', array( __CLASS__, 'install_actions' ) );
 		add_filter( 'plugin_action_links_' . WPM_PLUGIN_BASENAME, array( __CLASS__, 'plugin_action_links' ) );
 	}
 
@@ -122,6 +124,7 @@ class WPM_Install {
 	 * @since 2.0.0
 	 */
 	private static function remove_admin_notices() {
+		include_once( dirname( __FILE__ ) . '/admin/class-wpm-admin-notices.php' );
 		WPM_Admin_Notices::remove_all_notices();
 	}
 

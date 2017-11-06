@@ -82,6 +82,12 @@
 .wpm-languages {
   max-width: 500px; }
 
+.languagechecklist li {
+  margin: 0;
+  padding: 0;
+  line-height: 22px;
+  word-wrap: break-word; }
+
 #customize-controls .wpm-language-switcher {
   display: block;
   position: absolute;

@@ -303,7 +303,7 @@ function wpm_maybe_define_constant( $name, $value ) {
  * @since  1.8.0
  * @param  string $key
  * @param  string $default
- * @return mixed value sanitized by wc_clean
+ * @return mixed value sanitized by wpm_clean
  */
 function wpm_get_post_data_by_key( $key, $default = '' ) {
 	return wpm_clean( wpm_get_var( $_POST[ $key ], $default ) );

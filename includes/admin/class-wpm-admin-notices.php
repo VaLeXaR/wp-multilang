@@ -38,7 +38,6 @@ class WPM_Admin_Notices {
 	public static function init() {
 		self::$notices = get_option( 'wpm_admin_notices', array() );
 
-		add_action( 'wpm_installed', array( __CLASS__, 'reset_admin_notices' ) );
 		add_action( 'wp_loaded', array( __CLASS__, 'hide_notices' ) );
 		add_action( 'shutdown', array( __CLASS__, 'store_notices' ) );
 
@@ -75,6 +74,7 @@ class WPM_Admin_Notices {
 	 */
 	public static function add_notice( $name ) {
 		self::$notices = array_unique( array_merge( self::get_notices(), array( $name ) ) );
+
 	}
 
 	/**
@@ -178,4 +178,6 @@ class WPM_Admin_Notices {
 		}
 	}
 }
+
+WPM_Admin_Notices::init();
 
