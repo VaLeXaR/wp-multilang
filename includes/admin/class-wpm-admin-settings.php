@@ -461,7 +461,10 @@ class WPM_Admin_Settings {
 			}
 
 			if ( 'error' === $type ) {
-				add_settings_error( $option_name, '', __( 'Language slug and locale is required', 'wp-multilang' ), $type );
+				WPM_Admin_Notices::add_custom_notice(
+					$option_name . '_save_error',
+					__( 'Language slug and locale is required', 'wp-multilang' )
+				);
 
 				return get_option( $option_name );
 

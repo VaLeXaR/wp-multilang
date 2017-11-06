@@ -29,7 +29,6 @@ class WPM_Admin_Notices {
 	 * @var array
 	 */
 	private static $core_notices = array(
-		'install' => 'install_notice',
 		'update'  => 'update_notice',
 	);
 
@@ -124,9 +123,6 @@ class WPM_Admin_Notices {
 		if ( ! empty( $notices ) ) {
 			wp_enqueue_style( 'wpm-activation', plugins_url( '/assets/css/activation.css', WPM_PLUGIN_FILE ), array(), WPM_VERSION );
 
-			// Add RTL support
-			wp_style_add_data( 'wpm-activation', 'rtl', 'replace' );
-
 			foreach ( $notices as $notice ) {
 				if ( ! empty( self::$core_notices[ $notice ] ) && apply_filters( 'wpm_show_admin_notice', true, $notice ) ) {
 					add_action( 'admin_notices', array( __CLASS__, self::$core_notices[ $notice ] ) );
@@ -181,13 +177,5 @@ class WPM_Admin_Notices {
 			include( 'views/html-notice-updated.php' );
 		}
 	}
-
-	/**
-	 * If we have just installed, show a message with the install pages button.
-	 */
-	public static function install_notice() {
-		include( 'views/html-notice-install.php' );
-	}
 }
 
-WPM_Admin_Notices::init();
