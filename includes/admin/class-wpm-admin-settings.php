@@ -28,13 +28,14 @@ class WPM_Admin_Settings {
 
 	/**
 	 * Settings page template
+	 * @since 2.0.0
 	 */
 	static function output() {
 		?>
 		<div class="wrap">
 			<h2><?php esc_html_e( 'WP Multilang Settings', 'wp-multilang' ) ?></h2>
 
-			<form method="post">
+			<form method="post" action="options.php">
 				<?php settings_fields( 'wpm-settings' ); ?>
 				<?php do_settings_sections( 'wpm-settings' ); ?>
 				<?php submit_button(); ?>
@@ -202,7 +203,7 @@ class WPM_Admin_Settings {
 										<?php } ?>
 									</td>
 								</tr>
-								<?php do_action( 'wpm_language_settings', $key ); ?>
+								<?php do_action( 'wpm_language_settings', $key, $i ); ?>
 								<?php if ( ( wpm_get_user_language() !== $key ) && ( wpm_get_default_language() !== $key ) ) { ?>
 								<tr>
 									<td class="row-title"><?php esc_attr_e( 'Delete' ); ?></td>
@@ -292,6 +293,7 @@ class WPM_Admin_Settings {
 								</select>
 							</td>
 						</tr>
+						<?php do_action( 'wpm_language_settings', '', '{{ data.count }}' ); ?>
 						<tr>
 							<td class="row-title"><?php esc_attr_e( 'Delete' ); ?></td>
 							<td>
@@ -431,7 +433,7 @@ class WPM_Admin_Settings {
 
 			foreach ( $value as $item ) {
 
-				if ( empty( $item['slug'] ) ) {
+				if ( empty( $item['slug'] ) || empty( $item['locale'] ) ) {
 					$type = 'error';
 					break;
 				}
@@ -466,10 +468,16 @@ class WPM_Admin_Settings {
 			}
 		}// End if().
 
-		return $languages;
+		return apply_filters( 'wpm_save_languages', $languages, $value );
 	}
 
-
+	/**
+	 * Hide site locale
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param $page
+	 */
 	public function hide_site_locale( $page ) {
 		if ( 'options-general.php' == $page ) {
 			wpm_enqueue_js( "

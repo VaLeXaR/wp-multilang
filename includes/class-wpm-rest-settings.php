@@ -39,6 +39,33 @@ class WPM_REST_Settings {
 			),
 		) );
 
+		$language_options = apply_filters( 'wpm_rest_schema_languages', array(
+			'enable' => array(
+				'type' => 'boolean',
+			),
+			'slug' => array(
+				'type' => 'string',
+			),
+			'locale' => array(
+				'type' => 'string',
+			),
+			'name' => array(
+				'type' => 'string',
+			),
+			'translation' => array(
+				'type' => 'string',
+			),
+			'date' => array(
+				'type' => 'string',
+			),
+			'time' => array(
+				'type' => 'string',
+			),
+			'flag' => array(
+				'type' => 'string',
+			),
+		));
+
 		register_setting( 'wpm-settings', 'wpm_languages', array(
 			'description'  => __( 'Multilingual Settings', 'wp-multilang' ),
 			'default'      => array(),
@@ -48,32 +75,7 @@ class WPM_REST_Settings {
 					'type'  => 'array',
 					'items' => array(
 						'type' => 'object',
-						'properties' => array(
-							'enable' => array(
-								'type' => 'boolean',
-							),
-							'slug' => array(
-								'type' => 'string',
-							),
-							'locale' => array(
-								'type' => 'string',
-							),
-							'name' => array(
-								'type' => 'string',
-							),
-							'translation' => array(
-								'type' => 'string',
-							),
-							'date' => array(
-								'type' => 'string',
-							),
-							'time' => array(
-								'type' => 'string',
-							),
-							'flag' => array(
-								'type' => 'string',
-							),
-						),
+						'properties' => $language_options,
 					),
 				),
 			),
@@ -194,7 +196,7 @@ class WPM_REST_Settings {
 			}
 
 			if ( ! $error ) {
-				update_option( 'wpm_languages', $languages );
+				update_option( 'wpm_languages', apply_filters( 'wpm_save_languages', $languages, $request ) );
 			}
 		}// End if().
 

@@ -20,7 +20,6 @@ if ( ! defined( 'WPSEO_VERSION' ) ) {
  */
 class WPM_Yoast_Seo {
 
-
 	/**
 	 * WPM_Yoast_Seo constructor.
 	 */
@@ -31,9 +30,11 @@ class WPM_Yoast_Seo {
 		add_filter( 'wpseo_sitemap_url', array( $this, 'add_alternate_sitemaplinks' ), 10, 2 );
 		add_filter( 'wpseo_sitemap_entry', array( $this, 'add_lang_to_url' ), 10, 3 );
 		add_filter( 'wpseo_build_sitemap_post_type', array( $this, 'add_filter_for_maps' ) );
-		add_filter( 'wpseo_locale', array( $this, 'set_opengraph_locale ' ) );
+		add_action( 'wpm_language_settings', array( $this, 'set_opengraph_locale' ), 10, 2 );
+		add_filter( 'wpm_rest_schema_languages', array( $this, 'add_schema_to_rest' ) );
+		add_filter( 'wpm_save_languages', array( $this, 'save_languages' ), 10, 2 );
+		add_filter( 'wpseo_locale', array( $this, 'add_opengraph_locale' ) );
 	}
-
 
 	/**
 	 * Add dynamically title setting for post types
@@ -83,7 +84,6 @@ class WPM_Yoast_Seo {
 		return $option_config;
 	}
 
-
 	/**
 	 * Translate page title
 	 *
@@ -101,7 +101,6 @@ class WPM_Yoast_Seo {
 		return $title;
 	}
 
-
 	/**
 	 * Add filter for each type
 	 *
@@ -113,7 +112,6 @@ class WPM_Yoast_Seo {
 		add_filter( "wpseo_sitemap_{$type}_urlset", array( $this, 'add_namespace_to_xml' ) );
 		return $type;
 	}
-
 
 	/**
 	 * Add namespace for xmlns:xhtml
@@ -128,7 +126,6 @@ class WPM_Yoast_Seo {
 
 		return $urlset;
 	}
-
 
 	/**
 	 * Add separating by language to url
@@ -158,7 +155,6 @@ class WPM_Yoast_Seo {
 
 		return $url;
 	}
-
 
 	/**
 	 * Add alternate links to sitemap
@@ -200,10 +196,90 @@ class WPM_Yoast_Seo {
 	/**
 	 * Set locale for opengraph
 	 *
+	 * @since 2.0.0
+	 *
+	 * @param $count
+	 * @param $lang
+	 */
+	public function set_opengraph_locale( $lang, $count ) {
+		$options = wpm_get_options();
+		$value   = '';
+
+		if ( isset( $options[ $lang ]['wpseo_og_locale'] ) ) {
+			$value = $options[ $lang ]['wpseo_og_locale'];
+		}
+		?>
+		<tr>
+			<td class="row-title"><?php esc_attr_e( 'Opengraph Locale', 'wp-multilang' ); ?></td>
+			<td>
+				<input type="text" name="wpm_languages[<?php esc_attr_e( $count ); ?>][wpseo_og_locale]" value="<?php esc_attr_e( $value ); ?>" title="<?php esc_attr_e( 'Opengraph Locale', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Opengraph Locale', 'wp-multilang' ); ?>">
+			</td>
+		</tr>
+		<?php
+	}
+
+	/**
+	 * Add param to rest schema
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param $schema
+	 *
+	 * @return mixed
+	 */
+	public function add_schema_to_rest( $schema ) {
+		$schema['wpseo_og_locale'] = array( 'type' => 'string' );
+
+		return $schema;
+	}
+
+	/**
+	 * Save languages
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param $languages
+	 * @param $request
+	 *
+	 * @return mixed
+	 */
+	public function save_languages( $languages, $request ) {
+		foreach ( $request as $value ) {
+			if ( isset( $languages[ $value['slug'] ] ) && isset( $value['wpseo_og_locale'] ) ) {
+				$languages[ $value['slug'] ]['wpseo_og_locale'] = $value['wpseo_og_locale'];
+			}
+		}
+
+		return $languages;
+	}
+
+	/**
+	 * Set locale for opengraph
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param $locale
+	 *
 	 * @return string
 	 */
-	public function set_opengraph_locale() {
-		return __( 'html_lang_attribute' );
+	public function add_opengraph_locale( $locale ) {
+		$languages     = wpm_get_languages();
+		$user_language = wpm_get_language();
+		$new_locale    = '';
+
+		if ( $languages[ $user_language ]['wpseo_og_locale'] ) {
+			$new_locale = $languages[ $user_language ]['wpseo_og_locale'];
+		}
+
+		if ( $new_locale && $languages[ $user_language ]['locale'] ) {
+			$new_locale = $languages[ $user_language ]['locale'];
+		}
+
+		if ( $new_locale ) {
+			$locale = $new_locale;
+		}
+
+		return $locale;
 	}
 }
 
