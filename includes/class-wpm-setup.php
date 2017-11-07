@@ -575,7 +575,6 @@ class WPM_Setup {
 			return '';
 		}
 
-
 		$detect             = '';
 		$prefered_languages = array();
 		$priority           = 1.0;
