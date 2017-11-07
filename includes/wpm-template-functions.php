@@ -121,7 +121,7 @@ function wpm_set_alternate_links() {
 		$languages = get_term_meta( get_queried_object_id(), '_languages', true );
 	}
 
-	$hreflangs = '';
+	$hreflangs = array();
 
 	foreach ( wpm_get_languages() as $lang => $language ) {
 
@@ -130,13 +130,15 @@ function wpm_set_alternate_links() {
 		}
 
 		if ( wpm_get_default_language() == $lang ) {
-			$hreflangs .= sprintf( '<link rel="alternate" hreflang="x-default" href="%s"/>', esc_url( wpm_translate_url( $current_url, $lang ) ) );
+			$hreflangs['x-default'] = sprintf( "<link rel=\"alternate\" hreflang=\"x-default\" href=\"%s\"/>\n", esc_url( wpm_translate_url( $current_url, $lang ) ) );
 		}
 
-		$hreflangs .= sprintf( '<link rel="alternate" hreflang="%s" href="%s"/>', esc_attr( str_replace( '_', '-', strtolower( $language['locale'] ) ) ), esc_url( wpm_translate_url( $current_url, $lang ) ) );
+		$hreflangs[ $lang ] = sprintf( "<link rel=\"alternate\" hreflang=\"%s\" href=\"%s\"/>\n", esc_attr( str_replace( '_', '-', strtolower( $language['locale'] ) ) ), esc_url( wpm_translate_url( $current_url, $lang ) ) );
 	}
 
-	echo apply_filters( 'wpm_alternate_links', $hreflangs, $current_url );
+	$hreflangs = apply_filters( 'wpm_alternate_links', $hreflangs, $current_url );
+
+	echo implode( '', $hreflangs );
 }
 
 add_action( 'wp_head', 'wpm_set_alternate_links' );

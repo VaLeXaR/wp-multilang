@@ -33,6 +33,9 @@ class WPM_AIOSP {
 		add_filter( 'wpm_option_aioseop_options_config', array( $this, 'set_posts_config' ) );
 		add_filter( 'delete_post_metadata', array( $this, 'save_old_fields' ), 10, 5 );
 		add_filter( 'add_post_metadata', array( $this, 'update_old_fields' ), 10, 4 );
+
+		// AIOSP Sitemap do not support simple tag in sitemap like "xhtml:link" what needed in multilingual sitemap
+		//add_filter( 'aiosp_sitemap_xml_namespace', array( $this, 'add_namespace' ) );
 	}
 
 	/**
@@ -140,6 +143,21 @@ class WPM_AIOSP {
 		}
 
 		return $check;
+	}
+
+	/**
+	 * Add namespace to sitemap
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param $namespace
+	 *
+	 * @return mixed
+	 */
+	public function add_namespace( $namespace ) {
+		$namespace['xmlns:xhtml'] = 'http://www.w3.org/1999/xhtml';
+
+		return $namespace;
 	}
 }
 
