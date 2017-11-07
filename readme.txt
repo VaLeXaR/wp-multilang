@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.8.1
+Stable tag: 2.0.0
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -32,6 +32,10 @@ Features of the plugin WP Multilang:
 * No subdomains for language version
 * Support multisite
 * Support WordPress in subfolder
+* Possibility set many languages with one localization. For example, for localization in the region.
+* Possibility to set custom locale for html(If installed locale is en_US, you can set locale like: en, en-UK, en-AU etc. without installation another localization)
+* Possibility for add new languages for any user with capability `manage options`
+* Exist the role "Translator" for editing posts, terms. It can not publish or delete
 
 WP Multilang compatible with plugins:
 
@@ -52,6 +56,7 @@ WP Multilang compatible with plugins:
 * BuddyPress
 * Meta Slider
 * TablePress
+* Download Monitor (Redefine templates for links in your theme and translate link texts)
 
 Supports configuration via json.
 
@@ -142,6 +147,11 @@ Compatible with REST-API.
 Supports transfer the required translation through option `lang` in the GET request to REST.
 Has the ability to keep recording the target language through the transmission parameter `lang` in the request.
 
+
+== Warning ==
+Not compatible with:
+- WP Maintenance
+
 == Installation ==
 
 1. Upload the plugin files to the `/wp-content/plugins/wp-multilang` directory, or install the plugin through the WordPress plugins screen directly.
@@ -167,6 +177,25 @@ If you have opened several browser tabs for editing this post in different langu
 5. Post edit page
 
 == Changelog ==
+
+= 2.0.0 =
++ remake logic for set language and translation
++ add possibility fo set custom locale
++ add possibility for set many languages for one localization
++ set new design for language settings
++ add option for redirect to browser language in first time
++ add option for use prefix for default language
++ add option for deleting unused language packs
++ admin localization use only installed languages
++ add user role `Translator`
++ Move WP Multilang settings to separate page
++ add config for Download Monitor
++ add config for new widgets in Page Builder by SiteOrigin
++ add filters for customizing language settings
++ add Background Updater
+* fix separate posts by languages
+* fix save title settings in Yoast SEO
+* fix switch user language in admin dashboard
 
 = 1.8.1 =
 + add filters for alternate links

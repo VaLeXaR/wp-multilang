@@ -86,12 +86,11 @@ class WPM_Admin_Taxonomies {
 			$output    = array();
 			$text      = $term->name . $term->description;
 			$strings   = wpm_value_to_ml_array( $text );
-			$options   = wpm_get_options();
-			$languages = wpm_get_all_languages();
+			$languages = wpm_get_options();
 
-			foreach ( $languages as $locale => $language ) {
-				if ( isset( $strings[ $language ] ) && ! empty( $strings[ $language ] ) ) {
-					$output[] = '<img src="' . esc_url( wpm_get_flag_url( $options[ $locale ]['flag'] ) ) . '" alt="' . $options[ $locale ]['name'] . '" title="' . $options[ $locale ]['name'] . '">';
+			foreach ( $languages as $lang => $language ) {
+				if ( isset( $strings[ $lang ] ) && ! empty( $strings[ $lang ] ) ) {
+					$output[] = '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" alt="' . $language['name'] . '" title="' . $language['name'] . '">';
 				}
 			}
 
@@ -122,16 +121,13 @@ class WPM_Admin_Taxonomies {
 			return;
 		}
 
-		$languages = wpm_get_options();
+		$languages = wpm_get_languages();
 		$i         = 0;
 		?>
 		<div class="form-field term-languages">
 			<p><?php _e( 'Show term only in:', 'wp-multilang' ); ?></p>
-			<?php foreach ( $languages as $language ) {
-				if ( ! $language['enable'] ) {
-					continue;
-				} ?>
-				<label><input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $language['slug']; ?>" value="<?php esc_attr_e( $language['slug'] ); ?>"><?php echo $language['name']; ?></label>
+			<?php foreach ( $languages as $lang => $language ) { ?>
+				<label><input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $lang; ?>" value="<?php esc_attr_e( $lang ); ?>"><?php esc_attr_e( $language['name'] ); ?></label>
 				<?php $i ++;
 			} ?>
 		</div>
@@ -165,21 +161,18 @@ class WPM_Admin_Taxonomies {
 			$term_languages = array();
 		}
 
-		$languages = wpm_get_options();
+		$languages = wpm_get_languages();
 		$i         = 0;
 		?>
 		<tr class="form-field">
 			<th scope="row" valign="top"><?php _e( 'Show term only in:', 'wp-multilang' ); ?></th>
 			<td>
 				<ul class="languagechecklist">
-					<?php foreach ( $languages as $language ) {
-						if ( ! $language['enable'] ) {
-							continue;
-						} ?>
+					<?php foreach ( $languages as $lang => $language ) { ?>
 						<li>
 							<label>
-								<input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $language['slug']; ?>" value="<?php esc_attr_e( $language['slug'] ); ?>"<?php if ( in_array( $language['slug'], $term_languages ) ) { ?> checked="checked"<?php } ?>>
-								<?php echo $language['name']; ?>
+								<input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $lang; ?>" value="<?php esc_attr_e( $lang ); ?>"<?php checked( in_array( $lang, $term_languages ) ); ?>>
+								<?php esc_attr_e( $language['name'] ); ?>
 							</label>
 						</li>
 						<?php $i ++;

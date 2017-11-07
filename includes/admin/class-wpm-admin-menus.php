@@ -20,6 +20,7 @@ class WPM_Admin_Menus {
 	 */
 	public function __construct() {
 		add_action( 'admin_bar_menu', array( $this, 'admin_bar_menu' ) );
+		add_action( 'admin_menu', array( $this, 'settings_menu' ) );
 
 		// Add endpoints custom URLs in Appearance > Menus > Pages.
 		add_action( 'admin_head-nav-menus.php', array( $this, 'add_nav_menu_meta_boxes' ) );
@@ -57,44 +58,73 @@ class WPM_Admin_Menus {
 			return;
 		}
 
-		$locale = get_locale();
-		$languages = wpm_get_languages();
+		$installed_translations = wpm_get_installed_languages();
 
-		if ( count( $languages ) <= 1 ) {
+		if ( count( $installed_translations ) <= 1 ) {
 			return;
 		}
 
-		$options = wpm_get_options();
+		$user_language          = wpm_get_user_language();
+		$languages              = wpm_get_languages();
+		$available_translations = wpm_get_available_translations();
+		$current_url            = wpm_get_current_url();
 
 		$wp_admin_bar->add_menu( array(
 			'id'     => 'wpm-language-switcher',
 			'parent' => 'top-secondary',
 			'title'  => '<span class="ab-icon">' .
-			            '<img src="' . esc_url( wpm_get_flag_url( $options[ $locale ]['flag'] ) ) . '"/>' .
+			            '<img src="' . esc_url( wpm_get_flag_url( $languages[ $user_language ]['flag'] ) ) . '"/>' .
 			            '</span><span class="ab-label">' .
-			            $options[ $locale ]['name'] .
+			            $available_translations[ get_locale() ]['native_name'] .
 			            '</span>',
 		) );
 
-		$current_url = wpm_get_current_url();
+		foreach ( $installed_translations as $locale ) {
 
-		foreach ( $languages as $key => $language ) {
-
-			if ( $key === $locale ) {
+			if ( get_locale() === $locale ) {
 				continue;
 			}
 
-			$wp_admin_bar->add_menu( array(
-				'parent' => 'wpm-language-switcher',
-				'id'     => 'wpm-language-' . $language,
-				'title'  => '<span class="ab-icon">' .
-				            '<img src="' . esc_url( wpm_get_flag_url( $options[ $key ]['flag'] ) ) . '" />' .
-				            '</span>' .
-				            '<span class="ab-label">' . $options[ $key ]['name'] . '</span>',
-				'href'   => wpm_translate_url( $current_url, $language ),
-			) );
+			$lang     = '';
+			$language = array();
+			$add = false;
+
+			foreach ( $languages as $lang => $language ) {
+				if ( $language['translation'] == $locale ) {
+					$add = true;
+					break;
+				}
+			}
+
+			if ( $add ) {
+				$wp_admin_bar->add_menu( array(
+					'parent' => 'wpm-language-switcher',
+					'id'     => 'wpm-language-' . $lang,
+					'title'  => '<span class="ab-icon">' .
+					            '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" />' .
+					            '</span>' .
+					            '<span class="ab-label">' . $available_translations[$locale]['native_name'] . '</span>',
+					'href'   => wpm_translate_url( $current_url, $lang ),
+				) );
+			}
 		}
 	}
+
+
+	/**
+	 * Add menu item.
+	 */
+	public function settings_menu() {
+		add_options_page( __( 'WP Multilang Settings', 'wp-multilang' ), __( 'WP Multilang', 'wp-multilang' ), 'manage_options', 'wpm-settings', array( $this, 'settings_page' ) );
+	}
+
+	/**
+	 * Init the settings page.
+	 */
+	public function settings_page() {
+		WPM_Admin_Settings::output();
+	}
+
 
 	/**
 	 * Add custom nav meta box.

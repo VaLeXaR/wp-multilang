@@ -22,37 +22,72 @@ include( 'wpm-template-functions.php' );
 /**
  * Load html files
  *
- * @param $path
- *
+ * @param $slug
+ * @param string $name
+ * @param string $custom_dir
  * @param array $args
  *
  * @return bool|string
+ * @internal param $path
+ *
  */
-function wpm_get_template( $path, $args = array() ) {
+function wpm_get_template( $slug, $name = '', $custom_dir = '', $args = array() ) {
+	$template = '';
 
-	if ( $theme_file = locate_template( 'plugins/' . dirname( WPM_PLUGIN_BASENAME ) . '/' . $path ) ) {
-		$located = $theme_file;
-	} else {
-		$located = wpm()->template_path() . $path;
-		if ( ! file_exists( $located ) ) {
-			_doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', $located ), '1.0' );
+	// The plugin path
+	$template_path = wpm()->template_path();
 
-			return false;
+	// Look in yourtheme/slug-name.php and yourtheme/wp-multilang/slug-name.php
+	if ( $name ) {
+		$template = locate_template( array( "{$slug}-{$name}.php", "wp-multilang/{$slug}-{$name}.php" ) );
+	}
+
+	// If a custom path was defined, check that next
+	if ( ! $template && $custom_dir && file_exists( trailingslashit( $custom_dir ) . "{$slug}-{$name}.php" ) ) {
+		$template = trailingslashit( $custom_dir ) . "{$slug}-{$name}.php";
+	}
+
+	// Get default slug-name.php
+	if ( ! $template && $name && file_exists( $template_path . "{$slug}-{$name}.php" ) ) {
+		$template = $template_path . "{$slug}-{$name}.php";
+	}
+
+	// If template file doesn't exist, look in yourtheme/slug.php and yourtheme/wp-multilang/slug.php
+	if ( ! $template ) {
+		$template = locate_template( array( "{$slug}.php", "wp-multilang/{$slug}.php" ) );
+	}
+
+	// If a custom path was defined, check that next
+	if ( ! $template && $custom_dir && file_exists( trailingslashit( $custom_dir ) . "{$slug}.php" ) ) {
+		$template = trailingslashit( $custom_dir ) . "{$slug}.php";
+	}
+
+	// Get default slug-name.php
+	if ( ! $template && file_exists( $template_path . "{$slug}.php" ) ) {
+		$template = $template_path . "{$slug}.php";
+	}
+
+	// Allow 3rd party plugin filter template file from their plugin
+	$template = apply_filters( 'wpm_get_template_part', $template, $slug, $name );
+
+	// Load template if we've found one
+	if ( $template ) {
+
+		// Extract args if there are any
+		if ( is_array( $args ) && count( $args ) > 0 ) {
+			extract( $args );
 		}
+
+		do_action( 'wpm_before_template_part', $template, $slug, $name, $custom_dir, $args );
+
+		ob_start();
+
+		include( $template );
+
+		do_action( 'wpm_after_template_part', $template, $slug, $name, $custom_dir, $args );
+
+		return ob_get_clean();
 	}
-
-	if ( ! empty( $args ) && is_array( $args ) ) {
-		extract( $args );
-	}
-
-	// Allow 3rd party plugin filter template file from their plugin.
-	$located = apply_filters( 'wpm_get_template', $located, $args, $path );
-
-	ob_start();
-
-	include( $located );
-
-	return ob_get_clean();
 }
 
 /**
@@ -287,6 +322,7 @@ if ( ! function_exists( 'remove_class_action' ) ) {
 /**
  * Define a constant if it is not already defined.
  *
+ * @since  1.8.0
  * @param string $name  Constant name.
  * @param string $value Value.
  */
@@ -299,10 +335,10 @@ function wpm_maybe_define_constant( $name, $value ) {
 /**
  * Get an item of post data if set, otherwise return a default value.
  *
- * @since  3.0.9
+ * @since  1.8.0
  * @param  string $key
  * @param  string $default
- * @return mixed value sanitized by wc_clean
+ * @return mixed value sanitized by wpm_clean
  */
 function wpm_get_post_data_by_key( $key, $default = '' ) {
 	return wpm_clean( wpm_get_var( $_POST[ $key ], $default ) );
@@ -311,6 +347,7 @@ function wpm_get_post_data_by_key( $key, $default = '' ) {
 /**
  * Get data if set, otherwise return a default value or null. Prevents notices when data is not set.
  *
+ * @since  1.8.0
  * @param  mixed $var
  * @param  string $default
  * @return mixed value sanitized by wpm_clean
@@ -327,6 +364,8 @@ function wpm_get_var( &$var, $default = null ) {
  * transient_timeout record from table b.
  *
  * Based on code inside core's upgrade_network() function.
+ *
+ * @since  1.8.0
  *
  * @return int Number of transients that were cleared.
  */

@@ -20,7 +20,6 @@ if ( ! defined( 'WPSEO_VERSION' ) ) {
  */
 class WPM_Yoast_Seo {
 
-
 	/**
 	 * WPM_Yoast_Seo constructor.
 	 */
@@ -31,8 +30,8 @@ class WPM_Yoast_Seo {
 		add_filter( 'wpseo_sitemap_url', array( $this, 'add_alternate_sitemaplinks' ), 10, 2 );
 		add_filter( 'wpseo_sitemap_entry', array( $this, 'add_lang_to_url' ), 10, 3 );
 		add_filter( 'wpseo_build_sitemap_post_type', array( $this, 'add_filter_for_maps' ) );
+		add_filter( 'wpseo_locale', array( $this, 'add_opengraph_locale' ) );
 	}
-
 
 	/**
 	 * Add dynamically title setting for post types
@@ -82,7 +81,6 @@ class WPM_Yoast_Seo {
 		return $option_config;
 	}
 
-
 	/**
 	 * Translate page title
 	 *
@@ -100,7 +98,6 @@ class WPM_Yoast_Seo {
 		return $title;
 	}
 
-
 	/**
 	 * Add filter for each type
 	 *
@@ -112,7 +109,6 @@ class WPM_Yoast_Seo {
 		add_filter( "wpseo_sitemap_{$type}_urlset", array( $this, 'add_namespace_to_xml' ) );
 		return $type;
 	}
-
 
 	/**
 	 * Add namespace for xmlns:xhtml
@@ -127,7 +123,6 @@ class WPM_Yoast_Seo {
 
 		return $urlset;
 	}
-
 
 	/**
 	 * Add separating by language to url
@@ -158,7 +153,6 @@ class WPM_Yoast_Seo {
 		return $url;
 	}
 
-
 	/**
 	 * Add alternate links to sitemap
 	 *
@@ -171,29 +165,49 @@ class WPM_Yoast_Seo {
 		$loc        = $output;
 		$new_output = '';
 
-		foreach ( wpm_get_languages() as $locale => $language ) {
+		foreach ( wpm_get_languages() as $lang => $language ) {
 
-			if ( isset( $url['languages'] ) && ! in_array( $language, $url['languages'] ) ) {
+			if ( isset( $url['languages'] ) && ! in_array( $lang, $url['languages'] ) ) {
 				continue;
 			}
 
-			$alternate = '';
-			$new_loc   = str_replace( $url['loc'], esc_url( wpm_translate_url( $url['loc'], $language ) ), $loc );
+			$alternate = array();
+			$new_loc   = str_replace( $url['loc'], esc_url( wpm_translate_url( $url['loc'], $lang ) ), $loc );
 
-			foreach ( wpm_get_languages() as $lc => $lg ) {
-				if ( isset( $url['languages'] ) && ! in_array( $lg, $url['languages'] ) ) {
+			foreach ( wpm_get_languages() as $key => $lg ) {
+				if ( isset( $url['languages'] ) && ! in_array( $key, $url['languages'] ) ) {
 					continue;
 				}
 
-				$alternate .= sprintf( "\t<xhtml:link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />\n\t", esc_attr( str_replace( '_', '-', strtolower( $lc ) ) ), esc_url( wpm_translate_url( $url['loc'], $lg ) ) );
+				$alternate[ $key ] .= sprintf( "\t<xhtml:link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />\n\t", esc_attr( str_replace( '_', '-', strtolower( $lg['locale'] ) ) ), esc_url( wpm_translate_url( $url['loc'], $key ) ) );
 			}
 
-			$alternate  = apply_filters( 'wpm_sitemap_alternate_links', $alternate, $url['loc'], $language );
-			$new_loc    = str_replace( '</url>', $alternate . '</url>', $new_loc );
+			$alternate  = apply_filters( 'wpm_sitemap_alternate_links', $alternate, $url['loc'], $lang );
+			$new_loc    = str_replace( '</url>', implode( '', $alternate ) . '</url>', $new_loc );
 			$new_output .= $new_loc;
 		}
 
 		return $new_output;
+	}
+
+	/**
+	 * Set locale for opengraph
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param $locale
+	 *
+	 * @return string
+	 */
+	public function add_opengraph_locale( $locale ) {
+		$languages     = wpm_get_languages();
+		$user_language = wpm_get_language();
+
+		if ( $languages[ $user_language ]['locale'] ) {
+			$locale = $languages[ $user_language ]['locale'];
+		}
+
+		return $locale;
 	}
 }
 

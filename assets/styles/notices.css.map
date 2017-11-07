@@ -1,0 +1,11 @@
+{
+	"version": 3,
+	"file": "notices.css",
+	"sources": [
+		"notices.scss",
+		"common/_variables.scss",
+		"notices/_core.scss"
+	],
+	"names": [],
+	"mappings": "AEAA,AAAA,YAAY,CAAC;EACZ,QAAQ,EAAE,QAAQ,GAClB;;AAED,AAAA,kBAAkB,CAAC;EAClB,eAAe,EAAE,IAAI,GACrB"
+}

@@ -1,0 +1,32 @@
+.wpm-languages {
+
+	.language-status {
+		position: absolute;
+		top: 5px;
+		right: 40px;
+		font-size: 13px;
+		line-height: 26px;
+		height: 28px;
+		display: inline-block;
+	}
+
+	.language-order {
+		font-weight: normal;
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+		line-height: 20px;
+		border: 1px solid #ccc;
+		border-radius: 50px;
+		margin-right: 10px;
+		text-align: center;
+	}
+}
+
+.wp-core-ui .button-link.delete-language {
+	color: $red;
+}
+
+.wpm-languages {
+	max-width: 500px;
+}

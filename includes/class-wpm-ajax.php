@@ -90,7 +90,8 @@ class WPM_AJAX {
 	 */
 	public static function add_ajax_events() {
 		$ajax_events = array(
-			'delete_lang' => false,
+			'delete_lang'        => false,
+			'delete_translation' => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -112,17 +113,39 @@ class WPM_AJAX {
 
 		check_ajax_referer( 'delete-lang', 'security' );
 
-		$locale  = wpm_get_post_data_by_key( 'locale' );
-		$options = wpm_get_options();
+		$language = wpm_get_post_data_by_key( 'language' );
+		$options  = wpm_get_options();
 
-		if ( ! isset( $options[ $locale ] ) || ( $locale === get_locale() ) || ( $locale === wpm_get_default_locale() ) ) {
+		if ( ! $language || ! isset( $options[ $language ] ) || ( wpm_get_user_language() === $language ) || ( wpm_get_default_language() === $language ) ) {
 			return;
 		}
 
-		unset( $options[ $locale ] );
+		unset( $options[ $language ] );
 
 		global $wpdb;
 		$wpdb->update( $wpdb->options, array( 'option_value' => maybe_serialize( $options ) ), array( 'option_name' => 'wpm_languages' ) );
+
+		die();
+	}
+	/**
+	 * Remove installed language files and option
+	 */
+	public static function delete_translation() {
+
+		check_ajax_referer( 'delete-translation', 'security' );
+
+		$locale  = wpm_get_post_data_by_key( 'locale' );
+		$options = wpm_get_options();
+
+		if ( ! $locale ) {
+			return;
+		}
+
+		foreach ( $options as $lang => $language ) {
+			if ( $language['translation'] == $locale ) {
+				return;
+			}
+		}
 
 		$files_delete                  = array();
 		$installed_plugin_translations = wp_get_installed_translations( 'plugins' );

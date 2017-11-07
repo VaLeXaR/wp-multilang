@@ -36,6 +36,13 @@ class WPM_Setup {
 	private $default_locale = '';
 
 	/**
+	 * Default site language
+	 *
+	 * @var string
+	 */
+	private $default_language = '';
+
+	/**
 	 * Languages
 	 *
 	 * @var array
@@ -110,16 +117,16 @@ class WPM_Setup {
 		add_action( 'after_switch_theme', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
 		add_action( 'activated_plugin', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
 		add_action( 'upgrader_process_complete', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
+		add_action( 'after_setup_theme', array( $this, 'redirect_default_url' ) );
 		add_action( 'wpm_init', array( $this, 'load_integrations' ) );
-		add_action( 'template_redirect', array( $this, 'set_not_found' ) );
-		add_action( 'plugins_loaded', array( $this, 'set_locale' ), 0 );
 		add_action( 'parse_request', array( $this, 'setup_query_var' ), 0 );
 		add_action( 'wp', array( $this, 'redirect_to_user_language' ) );
 		add_action( 'request', array( $this, 'set_home_page' ) );
 		add_filter( 'rest_url', array( $this, 'fix_rest_url' ) );
-		add_filter( 'get_available_languages', array( $this, 'get_available_languages' ) );
 		add_filter( 'option_date_format', array( $this, 'set_date_format' ) );
 		add_filter( 'option_time_format', array( $this, 'set_time_format' ) );
+		add_filter( 'locale', array( $this, 'set_locale' ) );
+		add_filter( 'gettext', array( $this, 'set_html_locale' ), 10, 2 );
 	}
 
 
@@ -130,7 +137,7 @@ class WPM_Setup {
 	 */
 	public function get_options() {
 		if ( ! $this->options ) {
-			$this->options = get_option( 'wpm_languages' );
+			$this->options = get_option( 'wpm_languages', array() );
 		}
 
 		return $this->options;
@@ -186,20 +193,23 @@ class WPM_Setup {
 	 */
 	public function get_languages() {
 		if ( ! $this->languages ) {
-			$options = $this->get_options();
+			$options   = $this->get_options();
+			$languages = array();
 
-			foreach ( $options as $locale => $language ) {
+			foreach ( $options as $slug => $language ) {
 				if ( $language['enable'] ) {
-					$this->languages[ $locale ] = $language['slug'];
+					$languages[ $slug ] = $language;
 				}
 			}
+
+			$this->languages = $languages;
 		}
 
 		return $this->languages;
 	}
 
 	/**
-	 * Get default locale from options
+	 * Get site locale from options
 	 *
 	 * @return string
 	 */
@@ -212,14 +222,58 @@ class WPM_Setup {
 		return $this->default_locale;
 	}
 
+	/**
+	 * Get site language
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return string
+	 */
+	public function get_default_language() {
+		if ( ! $this->default_language ) {
+			$default_language = get_option( 'wpm_site_language' );
+
+			if ( ! $default_language ) {
+				$locale           = explode( '_', $this->get_default_locale() );
+				$default_language = $locale[0];
+			}
+
+			$this->default_language = $default_language;
+		}
+
+		return $this->default_language;
+	}
+
+
+	/**
+	 * Set site locale
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param $locale
+	 *
+	 * @return mixed
+	 */
+	public function set_locale( $locale ) {
+
+		$languages = $this->get_languages();
+
+		if ( ! $languages ) {
+			return $locale;
+		}
+
+		return $languages[ $this->get_user_language() ]['translation'];
+	}
+
 
 	/**
 	 * Get user language
+	 *
 	 * @return string
 	 */
 	public function get_user_language() {
 		if ( ! $this->user_language ) {
-			$this->set_user_language();
+			$this->user_language = $this->set_user_language();
 		}
 
 		return $this->user_language;
@@ -231,16 +285,17 @@ class WPM_Setup {
 	 */
 	public function set_user_language() {
 
-		$languages      = $this->get_languages();
-		$default_locale = $this->get_default_locale();
-		$url            = '';
+		$languages     = $this->get_languages();
+		$url           = '';
+		$user_language = '';
+
+		require_once( ABSPATH . WPINC . '/pluggable.php' );
 
 		if ( ! is_admin() ) {
 			$url = wpm_get_current_url();
 		}
 
 		if ( wp_doing_ajax() ) {
-
 			if ( $referrer = wp_get_raw_referer() ) {
 				if ( strpos( $referrer, '/wp-admin/' ) === false ) {
 					$url = $referrer;
@@ -256,67 +311,78 @@ class WPM_Setup {
 			$this->site_request_uri = $site_request_uri ? $site_request_uri : '/';
 
 			if ( preg_match( '!^/([a-z]{2})(/|$)!i', $this->site_request_uri, $match ) ) {
-				$this->user_language = $match[1];
+				$user_language = $match[1];
+			}
+
+			if ( $user_language && ! is_admin() && ! isset( $languages[ $user_language ] ) ) {
+				add_action( 'template_redirect', array( $this, 'set_not_found' ) );
 			}
 		}
 
 		if ( isset( $_REQUEST['lang'] ) ) {
 			$lang = wpm_clean( $_REQUEST['lang'] );
-			if ( in_array( $lang, $languages ) ) {
-				$this->user_language = $lang;
-			}
+			if ( isset( $languages[ $lang ] ) ) {
+				$user_language = $lang;
 
-			if ( is_admin() && ! wp_doing_ajax() ) {
-				$locales = array_flip( $languages );
-				update_user_meta( get_current_user_id(), 'locale', $locales[ $lang ] );
+				if ( is_admin() && ! wp_doing_ajax() ) {
+					update_user_meta( get_current_user_id(), 'user_lang', $lang );
+					update_user_meta( get_current_user_id(), 'locale', $languages[ $lang ]['translation'] );
+				}
 			}
 		} else {
 			if ( is_admin() && ! wp_doing_ajax() ) {
-				$user_locale = get_user_meta( get_current_user_id(), 'locale', true );
-				if ( $user_locale ) {
-					if ( isset( $languages[ $user_locale ] ) ) {
-						$this->user_language = $languages[ $user_locale ];
+				if ( $user_meta_language = get_user_meta( get_current_user_id(), 'user_lang', true ) ) {
+					if ( isset( $languages[ $user_meta_language ] ) ) {
+						$user_language = $user_meta_language;
 					}
 				} else {
-					update_user_meta( get_current_user_id(), 'locale', $default_locale );
+					update_user_meta( get_current_user_id(), 'user_lang', $this->get_default_language() );
+					update_user_meta( get_current_user_id(), 'locale', $this->get_default_locale() );
 				}
 			} elseif ( ! is_admin() && preg_match( '/^.*\.php$/i', wp_parse_url( $url, PHP_URL_PATH ) ) ) {
 				if ( isset( $_COOKIE['language'] ) ) {
-					$this->user_language = wpm_clean( $_COOKIE['language'] );
+					$user_language = wpm_clean( $_COOKIE['language'] );
 				}
 			}
 		}
+
+		if ( ! $user_language ) {
+			$user_language = $this->get_default_language();
+		}
+
+		return $user_language;
 	}
 
 
 	/**
-	 * Set locale from user language
+	 * Redirect to default language
 	 */
-	public function set_locale() {
-		global $locale;
+	public function redirect_default_url() {
+		$user_language    = $this->get_user_language();
+		$default_language = $this->get_default_language();
+		$languages        = $this->get_languages();
+		$url_lang         = '';
 
-		$languages      = $this->get_languages();
-		$default_locale = $this->get_default_locale();
-		$user_language  = $this->get_user_language();
-
-		foreach ( $languages as $key => $value ) {
-			if ( ( $value === $user_language ) ) {
-				$locale = $key;
-				if ( $key === $default_locale && ! is_admin() && ! isset( $_REQUEST['lang'] ) && ! preg_match( '/^.*\.php$/i', wp_parse_url( $this->site_request_uri, PHP_URL_PATH ) ) ) {
-					wp_redirect( home_url( str_replace( '/' . $user_language . '/', '/', $this->site_request_uri ) ) );
-					exit;
-				}
-				break;
-			}
+		if ( preg_match( '!^/([a-z]{2})(/|$)!i', $this->site_request_uri, $match ) ) {
+			$url_lang = $match[1];
 		}
 
-		if ( ! $this->user_language || ! in_array( $this->user_language, $languages, true ) ) {
-			$this->user_language = $languages[ $default_locale ];
+		if ( get_option( 'wpm_use_prefix' ) ) {
+			if ( ! $url_lang && ! is_admin() && ! isset( $_REQUEST['lang'] ) && ! preg_match( '/^.*\.php$/i', wp_parse_url( $this->site_request_uri, PHP_URL_PATH ) ) ) {
+				wp_redirect( home_url( '/' . $default_language . $this->site_request_uri ) );
+				exit;
+			}
+		} else {
+			if ( $url_lang && isset( $languages[ $url_lang ] ) && $user_language === $default_language ) {
+				wp_redirect( home_url( str_replace( '/' . $user_language . '/', '/', $this->site_request_uri ) ) );
+				exit;
+			}
 		}
 	}
 
 	/**
 	 * Get available translations
+	 *
 	 * @return array
 	 */
 	public function get_translations() {
@@ -338,12 +404,13 @@ class WPM_Setup {
 
 	/**
 	 * Get config from options
+	 *
 	 * @return array
 	 */
 	public function get_config() {
 
 		if ( ! $this->config ) {
-			$config       = get_option( 'wpm_config' );
+			$config       = get_option( 'wpm_config', array() );
 			$theme_config = WPM_Config::load_theme_config();
 			$this->config = wpm_array_merge_recursive( $config, $theme_config );
 		}
@@ -395,11 +462,10 @@ class WPM_Setup {
 			return $value;
 		}
 
-		$language       = wpm_get_user_language();
-		$languages      = wpm_get_languages();
-		$default_locale = wpm_get_default_locale();
-		if ( $language !== $languages[ $default_locale ] ) {
-			$value .= '/' . $language;
+		$user_language    = wpm_get_user_language();
+		$default_language = wpm_get_default_language();
+		if ( $user_language !== $default_language || get_option( 'wpm_use_prefix' ) ) {
+			$value .= '/' . $user_language;
 		}
 
 		return $value;
@@ -438,14 +504,10 @@ class WPM_Setup {
 	 * Set 404 headers for not available language
 	 */
 	public function set_not_found() {
-		$languages = $this->get_languages();
-
-		if ( ! in_array( $this->user_language, $languages, true ) ) {
-			global $wp_query;
-			$wp_query->set_404();
-			status_header( 404 );
-			nocache_headers();
-		}
+		global $wp_query;
+		$wp_query->set_404();
+		status_header( 404 );
+		nocache_headers();
 	}
 
 	/**
@@ -472,24 +534,25 @@ class WPM_Setup {
 	public function redirect_to_user_language() {
 
 		if ( ! is_admin() && ! defined( 'WP_CLI' ) ) {
+			$user_language = $this->get_user_language();
 
 			if ( ! isset( $_COOKIE['language'] ) ) {
 
-				wpm_setcookie( 'language', $this->user_language, time() + YEAR_IN_SECONDS );
-				$redirect_to_browser_language = apply_filters( 'wpm_redirect_to_browser_language', true );
+				wpm_setcookie( 'language', $user_language, time() + YEAR_IN_SECONDS );
+				$redirect_to_browser_language = get_option( 'wpm_use_redirect', false );
 
 				if ( $redirect_to_browser_language ) {
 
 					$browser_language = $this->get_browser_language();
 
-					if ( $browser_language && ( $browser_language !== $this->user_language ) ) {
+					if ( $browser_language && ( $browser_language !== $user_language ) ) {
 						wp_redirect( wpm_translate_url( wpm_get_current_url(), $browser_language ) );
 						exit;
 					}
 				}
 			} else {
-				if ( wpm_clean( $_COOKIE['language'] ) != $this->user_language ) {
-					wpm_setcookie( 'language', $this->user_language, time() + YEAR_IN_SECONDS );
+				if ( wpm_clean( $_COOKIE['language'] ) != $user_language ) {
+					wpm_setcookie( 'language', $user_language, time() + YEAR_IN_SECONDS );
 					do_action( 'wpm_changed_language' );
 				}
 			} // End if().
@@ -500,26 +563,48 @@ class WPM_Setup {
 	/**
 	 * Detect browser language
 	 *
-	 * @return null|string
+	 * @return string
 	 */
 	private function get_browser_language() {
 
-		$detect = '';
+		if ( ! isset( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) || ! $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) {
+			return '';
+		}
 
-		if ( isset( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) && $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) {
-			$browser_languages = explode( ',', $_SERVER['HTTP_ACCEPT_LANGUAGE'] );
-			$languages         = $this->get_languages();
+		if ( ! preg_match_all( '#([^;,]+)(;[^,0-9]*([0-9\.]+)[^,]*)?#i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches, PREG_SET_ORDER ) ) {
+			return '';
+		}
 
-			foreach ( $browser_languages as $browser_language ) {
+		$detect             = '';
+		$prefered_languages = array();
+		$priority           = 1.0;
 
-				if ( in_array( $browser_language, $languages, true ) ) {
-					$detect = $browser_language;
-					break;
+		foreach ( $matches as $match ) {
+			if ( ! isset( $match[3] ) ) {
+				$pr       = $priority;
+				$priority -= 0.001;
+			} else {
+				$pr = floatval( $match[3] );
+			}
+			$prefered_languages[ str_replace( '-', '_', $match[1] ) ] = $pr;
+		}
+
+		arsort( $prefered_languages, SORT_NUMERIC );
+
+		$browser_languages = array_keys( $prefered_languages );
+		$languages         = $this->get_languages();
+
+		foreach ( $browser_languages as $browser_language ) {
+			foreach ( $languages as $key => $value ) {
+				if ( ! $locale = $value['locale'] ) {
+					$locale = $value['translation'];
 				}
 
-				if ( isset( $languages[ $browser_language ] ) ) {
-					$detect = $languages[ $browser_language ];
-					break;
+				$locale = str_replace( '-', '_', $locale );
+
+				if ( $browser_language == $locale || strtolower( str_replace( '_', '-', $browser_language ) ) == $key ) {
+					$detect = $key;
+					break 2;
 				}
 			}
 		}
@@ -545,7 +630,7 @@ class WPM_Setup {
 
 	/**
 	 * Set user locale for AJAX front requests
-
+	 *
 	 * @param $check
 	 * @param $object_id
 	 * @param $meta_key
@@ -574,33 +659,18 @@ class WPM_Setup {
 	 * @return string
 	 */
 	public function fix_rest_url( $url ) {
-		if ( get_locale() != wpm_get_default_locale() ) {
+		if ( ! get_option( 'wpm_use_prefix' ) && get_locale() != wpm_get_default_locale() ) {
 			$url = str_replace( '/' . wpm_get_language() . '/', '/', $url );
 		}
 
 		return $url;
 	}
 
-	/**
-	 * Fix REST url
-	 *
-	 * @param $languages
-	 *
-	 * @return array
-	 */
-	public function get_available_languages( $languages ) {
-		foreach ( $this->get_options() as $locale => $language ) {
-			if ( 'en_US' != $locale && ! in_array( $locale, $languages ) ) {
-				$languages[] = $locale;
-			}
-		}
-
-		return $languages;
-	}
-
 
 	/**
 	 * Set date format for current language
+	 *
+	 * @since 1.8.0
 	 *
 	 * @param $value
 	 *
@@ -621,11 +691,11 @@ class WPM_Setup {
 			return $value;
 		}
 
-		$options = $this->get_options();
-		$locale  = get_locale();
+		$languages     = $this->get_languages();
+		$user_language = $this->get_user_language();
 
-		if ( isset( $options[ $locale ]['date'] ) && $options[ $locale ]['date'] ) {
-			return $options[ $locale ]['date'];
+		if ( isset( $languages[ $user_language ]['date'] ) && $languages[ $user_language ]['date'] ) {
+			return $languages[ $user_language ]['date'];
 		}
 
 		return $value;
@@ -634,6 +704,8 @@ class WPM_Setup {
 
 	/**
 	 * Set time format for current language
+	 *
+	 * @since 1.8.0
 	 *
 	 * @param $value
 	 *
@@ -654,13 +726,38 @@ class WPM_Setup {
 			return $value;
 		}
 
-		$options = $this->get_options();
-		$locale  = get_locale();
+		$languages     = $this->get_languages();
+		$user_language = $this->get_user_language();
 
-		if ( isset( $options[ $locale ]['time'] ) && $options[ $locale ]['time'] ) {
-			return $options[ $locale ]['time'];
+		if ( isset( $languages[ $user_language ]['time'] ) && $languages[ $user_language ]['time'] ) {
+			return $languages[ $user_language ]['time'];
 		}
 
 		return $value;
+	}
+
+
+	/**
+	 * Set locale for html
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param $translation
+	 * @param $text
+	 *
+	 * @return mixed
+	 */
+	public function set_html_locale( $translation, $text ) {
+
+		if ( 'html_lang_attribute' == $text ) {
+			$languages     = $this->get_languages();
+			$user_language = $this->get_user_language();
+
+			if ( $languages[ $user_language ]['locale'] ) {
+				$translation = $languages[ $user_language ]['locale'];
+			}
+		}
+
+		return $translation;
 	}
 }

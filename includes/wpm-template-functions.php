@@ -49,11 +49,10 @@ function wpm_get_flag_url( $filename = '' ) {
  * Display language switcher in templates
  *
  * @param array $args
- * @param bool  $echo
  *
  * @return string
  */
-function wpm_language_switcher( $args = array(), $echo = true ) {
+function wpm_get_language_switcher( $args = array() ) {
 	$default = array(
 		'type' => 'list',
 		'show' => 'both',
@@ -69,32 +68,35 @@ function wpm_language_switcher( $args = array(), $echo = true ) {
 	$vars = array(
 		'languages'   => wpm_get_languages(),
 		'lang'        => wpm_get_language(),
-		'options'     => wpm_get_options(),
 		'current_url' => wpm_get_current_url(),
-		'locales'     => array_flip( wpm_get_languages() ),
-		'locale'      => get_locale(),
 		'args'        => $args,
 	);
 
 	switch ( $args['type'] ) {
 
 		case 'dropdown':
-			$template = wpm_get_template( 'language-switcher-dropdown.php', $vars );
+			$template = wpm_get_template( 'language-switcher', $args['type'], '', $vars );
 			break;
 
 		case 'select':
-			$template = wpm_get_template( 'language-switcher-select.php', $vars );
+			$template = wpm_get_template( 'language-switcher', $args['type'], '', $vars );
 			break;
 
 		default:
-			$template = wpm_get_template( 'language-switcher-list.php', $vars );
+			$template = wpm_get_template( 'language-switcher', $args['type'], '', $vars );
 	}
 
-	if ( $echo ) {
-		echo $template;
-	} else {
-		return $template;
-	}
+	return $template;
+}
+
+
+/**
+ * Display language switcher
+ *
+ * @param array $args
+ */
+function wpm_language_switcher( $args = array() ) {
+	echo wpm_get_language_switcher( $args );
 }
 
 
@@ -119,22 +121,24 @@ function wpm_set_alternate_links() {
 		$languages = get_term_meta( get_queried_object_id(), '_languages', true );
 	}
 
-	$hreflangs = '';
+	$hreflangs = array();
 
-	foreach ( wpm_get_languages() as $locale => $language ) {
+	foreach ( wpm_get_languages() as $lang => $language ) {
 
-		if ( $languages && ! in_array( $language, $languages ) ) {
+		if ( $languages && ! isset( $languages[ $lang ] ) ) {
 			continue;
 		}
 
-		if ( wpm_get_default_locale() == $locale ) {
-			$hreflangs .= sprintf( '<link rel="alternate" hreflang="x-default" href="%s"/>', esc_url( wpm_translate_url( $current_url, $language ) ) );
+		if ( wpm_get_default_language() == $lang ) {
+			$hreflangs['x-default'] = sprintf( "<link rel=\"alternate\" hreflang=\"x-default\" href=\"%s\"/>\n", esc_url( wpm_translate_url( $current_url, $lang ) ) );
 		}
 
-		$hreflangs .= sprintf( '<link rel="alternate" hreflang="%s" href="%s"/>', esc_attr( str_replace( '_', '-', strtolower( $locale ) ) ), esc_url( wpm_translate_url( $current_url, $language ) ) );
+		$hreflangs[ $lang ] = sprintf( "<link rel=\"alternate\" hreflang=\"%s\" href=\"%s\"/>\n", esc_attr( str_replace( '_', '-', strtolower( $language['locale'] ) ) ), esc_url( wpm_translate_url( $current_url, $lang ) ) );
 	}
 
-	echo apply_filters( 'wpm_alternate_links', $hreflangs, $current_url );
+	$hreflangs = apply_filters( 'wpm_alternate_links', $hreflangs, $current_url );
+
+	echo implode( '', $hreflangs );
 }
 
 add_action( 'wp_head', 'wpm_set_alternate_links' );
@@ -401,11 +405,10 @@ function wpm_admin_language_switcher() {
 	$args = array(
 		'languages'   => wpm_get_languages(),
 		'lang'        => wpm_get_language(),
-		'options'     => wpm_get_options(),
 		'current_url' => wpm_get_current_url(),
 	);
 
-	echo wpm_get_template( 'admin-language-switcher.php', $args );
+	echo wpm_get_template( 'admin-language-switcher', '', '', $args );
 }
 
 
@@ -417,10 +420,31 @@ function wpm_admin_language_switcher_customizer() {
 	$args = array(
 		'languages'   => wpm_get_languages(),
 		'lang'        => wpm_get_language(),
-		'options'     => wpm_get_options(),
 		'current_url' => wpm_get_current_url(),
-		'locales'     => array_flip( wpm_get_languages() ),
 	);
 
-	echo wpm_get_template( 'admin-language-switcher-customizer.php', $args );
+	echo wpm_get_template( 'admin-language-switcher', 'customizer', '', $args );
+}
+
+
+/**
+ * Get flag list
+ *
+ * @since  2.0.0
+ *
+ * @return array
+ */
+function wpm_get_flags() {
+	$flags      = array();
+	$flags_path = wpm_get_flags_path();
+	if ( $dir_handle = @opendir( $flags_path ) ) {
+		while ( false !== ( $file = readdir( $dir_handle ) ) ) {
+			if ( preg_match( "/\.(jpeg|jpg|gif|png|svg)$/i", $file ) ) {
+				$flags[] = $file;
+			}
+		}
+		sort( $flags );
+	}
+
+	return $flags;
 }

@@ -7,7 +7,7 @@
  * @author        VaLeXaR
  * @category      Core
  * @package       WPM/Functions
- * @version       1.0.3
+ * @version       1.1.0
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -29,16 +29,16 @@ function wpm_translate_url( $url, $language = '' ) {
 		return $url;
 	}
 
-	$locale    = get_locale();
-	$languages = wpm_get_languages();
+	$user_language = wpm_get_language();
+	$options       = wpm_get_options();
 
 	if ( $language ) {
-		if ( ( ( $language === $languages[ $locale ] ) && ( ! is_admin() || wp_doing_ajax() ) ) || ! in_array( $language, $languages, true ) ) {
+		if ( ( ( $language === $user_language ) && ( ! is_admin() || wp_doing_ajax() ) ) || ! isset( $options[ $language ] ) ) {
 			return $url;
 		}
 	}
 
-	if ( preg_match( '/^.*\.php$/i', wp_parse_url( $url, PHP_URL_PATH ) ) ) {
+	if ( preg_match( '/^.*\.php$/i', wp_parse_url( $url, PHP_URL_PATH ) ) || ( strpos( $url, '/wp-admin/' ) !== false ) ) {
 		return add_query_arg( 'lang', $language, $url );
 	}
 
@@ -50,37 +50,38 @@ function wpm_translate_url( $url, $language = '' ) {
 		$url_lang = $match[1];
 	}
 
-	$default_locale = wpm_get_default_locale();
-	$new_path       = '';
+	$default_language = wpm_get_default_language();
+	$new_path         = '';
 
 	if ( $language ) {
-
-		if ( ! $url_lang && ( $language === $languages[ $default_locale ] ) ) {
+		if ( ! $url_lang && ( $language === $default_language ) ) {
 			return $url;
-		} elseif ( $url_lang && ( $language === $languages[ $default_locale ] ) ) {
+		} elseif ( $url_lang && ( $language === $default_language ) ) {
 			$new_path = str_replace( '/' . $url_lang . '/', '/', $path );
-		} elseif ( $url_lang && ( $language !== $languages[ $default_locale ] ) ) {
+		} elseif ( $url_lang && ( $language !== $default_language ) ) {
 			$new_path = str_replace( '/' . $url_lang . '/', '/' . $language . '/', $path );
-		} elseif ( ! $url_lang && ( $path !== $languages[ $default_locale ] ) ) {
+		} elseif ( ! $url_lang && ( $path !== $default_language ) ) {
 			$new_path = '/' . $language . $path;
 		}
 	} else {
-		if ( ! $url_lang && ( $locale === $default_locale ) ) {
+		if ( ! $url_lang && ( $user_language === $default_language ) ) {
 			return $url;
-		} elseif ( ! $url_lang && ( $locale !== $default_locale ) ) {
-			$new_path = '/' . $languages[ $locale ] . $path;
-		} elseif ( $url_lang && ( $locale === $default_locale ) ) {
+		} elseif ( ! $url_lang && ( $user_language !== $default_language ) ) {
+			$new_path = '/' . $user_language . $path;
+		} elseif ( $url_lang && ( $user_language === $default_language ) ) {
 			$new_path = str_replace( '/' . $url_lang . '/', '/', $path );
-		} elseif ( $url_lang && ( $locale !== $default_locale ) ) {
-			$new_path = str_replace( '/' . $url_lang . '/', '/' . $languages[ $locale ] . '/', $path );
+		} elseif ( $url_lang && ( $user_language !== $default_language ) ) {
+			$new_path = str_replace( '/' . $url_lang . '/', '/' . $user_language . '/', $path );
 		}
 	}
 
 	if ( $new_path ) {
-		$url = str_replace( $host . $path, $host . $new_path, $url );
+		$new_url = str_replace( $host . $path, $host . $new_path, $url );
+	} else {
+		$new_url = $url;
 	}
 
-	return apply_filters( 'wpm_translate_url', $url );
+	return apply_filters( 'wpm_translate_url', $new_url, $language, $url );
 }
 
 /**
@@ -110,18 +111,18 @@ function wpm_translate_string( $string, $language = '' ) {
 	$languages = wpm_get_languages();
 
 	if ( $language ) {
-		if ( in_array( $language, $languages, true ) ) {
+		if ( isset( $languages[ $language ] ) ) {
 			return $strings[ $language ];
 		} else {
 			return '';
 		}
 	}
 
-	$language       = wpm_get_language();
-	$default_locale = wpm_get_default_locale();
+	$language         = wpm_get_language();
+	$default_language = wpm_get_default_language();
 
-	if ( ( '' == $strings[ $language ] ) && get_option( 'wpm_show_untranslated_strings' ) ) {
-		return $strings[ $languages[ $default_locale ] ];
+	if ( ( '' == $strings[ $language ] ) && get_option( 'wpm_show_untranslated_strings', true ) ) {
+		return $strings[ $default_language ];
 	}
 
 	return $strings[ $language ];
@@ -172,10 +173,10 @@ function wpm_string_to_ml_array( $string ) {
 
 	$result = array();
 
-	$languages = wpm_get_all_languages();
+	$languages = wpm_get_options();
 
-	foreach ( $languages as $language ) {
-		$result[ $language ] = '';
+	foreach ( $languages as $key => $language ) {
+		$result[ $key ] = '';
 	}
 
 	$language = '';
@@ -254,9 +255,9 @@ function wpm_ml_array_to_string( $strings ) {
 		return $string;
 	}
 
-	$languages = wpm_get_all_languages();
+	$languages = wpm_get_options();
 	foreach ( $strings as $key => $value ) {
-		if ( in_array( $key, $languages, true ) && ( '' != $value ) ) {
+		if ( isset( $languages[ $key ] ) && ( '' != $value ) ) {
 			if ( wpm_is_ml_string( $value ) ) {
 				$string = wpm_translate_string( $string );
 			}
@@ -307,7 +308,7 @@ function wpm_set_language_value( $localize_array, $value, $config = array(), $la
 	$languages = wpm_get_languages();
 	$new_value = array();
 
-	if ( ! $lang || ! in_array( $lang, $languages, true ) ) {
+	if ( ! $lang || ! isset( $languages[ $lang ] ) ) {
 		$lang = wpm_get_language();
 	}
 
@@ -337,8 +338,8 @@ function wpm_set_language_value( $localize_array, $value, $config = array(), $la
 				$new_value[ $lang ] = $value;
 			} else {
 				$result = array();
-				foreach ( $languages as $language ) {
-					$result[ $language ] = '';
+				foreach ( $languages as $lg => $language ) {
+					$result[ $lg ] = '';
 				}
 				$result[ $lang ] = $value;
 				$new_value  = $result;
@@ -482,10 +483,10 @@ function wpm_is_ml_array( $array ) {
 		return false;
 	}
 
-	$languages = wpm_get_all_languages();
+	$languages = wpm_get_options();
 
 	foreach ( $array as $key => $item ) {
-		if ( ! in_array( $key, $languages, true ) ) {
+		if ( ! isset( $languages[ $key ] ) ) {
 			return false;
 		}
 	}

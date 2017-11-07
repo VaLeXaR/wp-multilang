@@ -50,7 +50,7 @@ class WPM_Admin_Widgets {
 			'text'  => array(),
 		);
 
-		if ( isset( $widgets_config[ $widget->id_base ] ) && ! is_null( $widgets_config[ $widget->id_base ] ) ) {
+		if ( ! is_null( $widgets_config[ $widget->id_base ] ) ) {
 			$widget_config = wpm_array_merge_recursive( $widget_config, $widgets_config[ $widget->id_base ] );
 		}
 
@@ -67,17 +67,17 @@ class WPM_Admin_Widgets {
 	 *
 	 * @param $widget
 	 * @param $return
-	 * @param $instance
+	 * @param object \WP_Widget $instance
 	 */
 	public function add_language_fields( $widget, $return, $instance ) {
-		$instance = wp_parse_args( (array) $instance, array( 'languages' => array() ) );
-		$languages = wpm_get_options();
-		$i = 0;
+		$instance  = wp_parse_args( (array) $instance, array( 'languages' => array() ) );
+		$languages = wpm_get_languages();
+		$i         = 0;
 		?>
 		<p>
 			<?php _e( 'Show widget only in:', 'wp-multilang' ); ?><br>
-			<?php foreach ( $languages as $language ) { if ( ! $language['enable'] ) continue; ?>
-				<label><input type="checkbox" name="<?php esc_attr_e( $widget->get_field_name('languages') ); ?>[<?php esc_attr_e( $i ); ?>]" id="<?php echo $widget->get_field_id('languages') . '-' . $language['slug']; ?>" value="<?php esc_attr_e( $language['slug'] ); ?>"<?php if ( in_array( $language['slug'], $instance['languages'] ) ) { ?> checked="checked"<?php } ?>><?php echo $language['name']; ?></label><br>
+			<?php foreach ( $languages as $lang => $language ) { ?>
+				<label><input type="checkbox" name="<?php esc_attr_e( $widget->get_field_name('languages') ); ?>[<?php esc_attr_e( $i ); ?>]" id="<?php echo $widget->get_field_id('languages') . '-' . $lang; ?>" value="<?php esc_attr_e( $lang ); ?>"<?php checked( in_array( $lang, $instance['languages'] ) ); ?>><?php esc_attr_e( $language['name'] ); ?></label><br>
 			<?php $i++; } ?>
 		</p>
 		<?php

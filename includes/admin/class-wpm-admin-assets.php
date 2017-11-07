@@ -56,12 +56,12 @@ class WPM_Admin_Assets {
 		), WPM_VERSION );
 
 		$main_params = array(
-			'plugin_url'             => wpm()->plugin_url(),
-			'flags_dir'             => wpm_get_flags_dir(),
-			'ajax_url'               => admin_url( 'admin-ajax.php' ),
-			'delete_lang_nonce'      => wp_create_nonce( 'delete-lang' ),
-			'confirm_question'       => __( 'Are you sure you want to delete this language?', 'wp-multilang' ),
-			'available_translations' => wpm_get_available_translations(),
+			'plugin_url'               => wpm()->plugin_url(),
+			'flags_dir'                => wpm_get_flags_dir(),
+			'ajax_url'                 => admin_url( 'admin-ajax.php' ),
+			'delete_lang_nonce'        => wp_create_nonce( 'delete-lang' ),
+			'delete_translation_nonce' => wp_create_nonce( 'delete-translation' ),
+			'confirm_question'         => __( 'Are you sure you want to delete this language?', 'wp-multilang' ),
 		);
 		wp_localize_script( 'wpm_main', 'wpm_params', $main_params );
 
@@ -71,10 +71,10 @@ class WPM_Admin_Assets {
 		wp_register_script( 'wpm_translator', wpm_asset_path( 'scripts/translator' . $suffix . '.js' ), array(), WPM_VERSION );
 
 		$translator_params = array(
-			'languages'                 => array_values( wpm_get_languages() ),
-			'default_language'          => wpm_get_languages()[ wpm_get_default_locale() ],
+			'languages'                 => array_keys( wpm_get_languages() ),
+			'default_language'          => wpm_get_default_language(),
 			'language'                  => wpm_get_language(),
-			'show_untranslated_strings' => get_option( 'wpm_show_untranslated_strings' ),
+			'show_untranslated_strings' => get_option( 'wpm_show_untranslated_strings', true ),
 		);
 		wp_localize_script( 'wpm_translator', 'wpm_translator_params', $translator_params );
 
@@ -114,7 +114,7 @@ class WPM_Admin_Assets {
 			$this->set_language_switcher();
 		}
 
-		if ( 'options-general' === $screen_id ) {
+		if ( 'settings_page_wpm-settings' === $screen_id ) {
 			wp_enqueue_script( 'wpm_main' );
 		}
 

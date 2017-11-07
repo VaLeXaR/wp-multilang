@@ -56,37 +56,31 @@
   position: absolute;
   top: 0; }
 
-table.wpm-languages {
+.wpm-languages .language-status {
+  position: absolute;
+  top: 5px;
+  right: 40px;
+  font-size: 13px;
+  line-height: 26px;
+  height: 28px;
+  display: inline-block; }
+
+.wpm-languages .language-order {
+  font-weight: normal;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  border: 1px solid #ccc;
+  border-radius: 50px;
+  margin-right: 10px;
   text-align: center; }
-  table.wpm-languages th {
-    text-align: center; }
-  table.wpm-languages tbody tr > td:first-child {
-    cursor: move; }
-  table.wpm-languages .ui-sortable-helper {
-    background-color: #fff;
-    display: flex; }
-  table.wpm-languages .wpm-lang-order {
-    width: 6%; }
-  table.wpm-languages .wpm-lang-default {
-    width: 6%; }
-  table.wpm-languages .wpm-lang-status {
-    width: 6%; }
-  table.wpm-languages .wpm-lang-locale {
-    width: 10%; }
-  table.wpm-languages .wpm-lang-slug {
-    width: 20%; }
-  table.wpm-languages .wpm-lang-name {
-    width: 20%; }
-  table.wpm-languages .wpm-lang-flag {
-    width: 20%; }
-  table.wpm-languages .wpm-lang-delete {
-    width: 10%; }
 
 .wp-core-ui .button-link.delete-language {
   color: #dd0e11; }
 
-#languages {
-  width: 100px; }
+.wpm-languages {
+  max-width: 500px; }
 
 .languagechecklist li {
   margin: 0;

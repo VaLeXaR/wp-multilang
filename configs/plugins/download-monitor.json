@@ -1,0 +1,15 @@
+{
+  "post_types": {
+    "dlm_download":{}
+  },
+  "taxonomies": {
+    "dlm_download_category": {},
+    "dlm_download_tag": {}
+  },
+  "options": {
+    "dlm_no_access_error": {}
+  },
+  "admin_pages": [
+    "dlm_download_page_download-monitor-settings"
+  ]
+}
