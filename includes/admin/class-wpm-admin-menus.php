@@ -65,7 +65,7 @@ class WPM_Admin_Menus {
 		}
 
 		$user_language          = wpm_get_user_language();
-		$options                = wpm_get_options();
+		$languages              = wpm_get_languages();
 		$available_translations = wpm_get_available_translations();
 		$current_url            = wpm_get_current_url();
 
@@ -73,7 +73,7 @@ class WPM_Admin_Menus {
 			'id'     => 'wpm-language-switcher',
 			'parent' => 'top-secondary',
 			'title'  => '<span class="ab-icon">' .
-			            '<img src="' . esc_url( wpm_get_flag_url( $options[ $user_language ]['flag'] ) ) . '"/>' .
+			            '<img src="' . esc_url( wpm_get_flag_url( $languages[ $user_language ]['flag'] ) ) . '"/>' .
 			            '</span><span class="ab-label">' .
 			            $available_translations[ get_locale() ]['native_name'] .
 			            '</span>',
@@ -87,22 +87,26 @@ class WPM_Admin_Menus {
 
 			$lang     = '';
 			$language = array();
+			$add = false;
 
-			foreach ( $options as $lang => $language ) {
+			foreach ( $languages as $lang => $language ) {
 				if ( $language['translation'] == $locale ) {
+					$add = true;
 					break;
 				}
 			}
 
-			$wp_admin_bar->add_menu( array(
-				'parent' => 'wpm-language-switcher',
-				'id'     => 'wpm-language-' . $lang,
-				'title'  => '<span class="ab-icon">' .
-				            '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" />' .
-				            '</span>' .
-				            '<span class="ab-label">' . $available_translations[$locale]['native_name'] . '</span>',
-				'href'   => wpm_translate_url( $current_url, $lang ),
-			) );
+			if ( $add ) {
+				$wp_admin_bar->add_menu( array(
+					'parent' => 'wpm-language-switcher',
+					'id'     => 'wpm-language-' . $lang,
+					'title'  => '<span class="ab-icon">' .
+					            '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" />' .
+					            '</span>' .
+					            '<span class="ab-label">' . $available_translations[$locale]['native_name'] . '</span>',
+					'href'   => wpm_translate_url( $current_url, $lang ),
+				) );
+			}
 		}
 	}
 

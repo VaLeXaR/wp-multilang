@@ -35,6 +35,7 @@ Features of the plugin WP Multilang:
 * Possibility set many languages with one localization. For example, for localization in the region.
 * Possibility to set custom locale for html(If installed locale is en_US, you can set locale like: en, en-UK, en-AU etc. without installation another localization)
 * Possibility for add new languages for any user with capability `manage options`
+* Exist the role "Translator" for editing posts, terms
 
 WP Multilang compatible with plugins:
 
@@ -180,6 +181,7 @@ If you have opened several browser tabs for editing this post in different langu
 + add option for use prefix for default language
 + add option for deleting unused language packs
 + admin localization use only installed languages
++ add user role `Translator`
 + Move WP Multilang settings to separate page
 * fix separate posts by languages
 * fix save title settings in Yoast SEO
