@@ -88,6 +88,10 @@ class WPM_Background_Updater extends \WP_Background_Process {
 
 		include_once( dirname( __FILE__ ) . '/wpm-update-functions.php' );
 
+		if ( is_callable( $callback ) ) {
+			call_user_func( $callback );
+		}
+
 		return false;
 	}
 
