@@ -177,12 +177,12 @@ class WPM_Yoast_Seo {
 			$alternate = '';
 			$new_loc   = str_replace( $url['loc'], esc_url( wpm_translate_url( $url['loc'], $lang ) ), $loc );
 
-			foreach ( wpm_get_languages() as $lc => $lg ) {
-				if ( isset( $url['languages'] ) && ! in_array( $lc, $url['languages'] ) ) {
+			foreach ( wpm_get_languages() as $key => $lg ) {
+				if ( isset( $url['languages'] ) && ! in_array( $key, $url['languages'] ) ) {
 					continue;
 				}
 
-				$alternate .= sprintf( "\t<xhtml:link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />\n\t", esc_attr( str_replace( '_', '-', strtolower( $lg['locale'] ) ) ), esc_url( wpm_translate_url( $url['loc'], $lc ) ) );
+				$alternate .= sprintf( "\t<xhtml:link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />\n\t", esc_attr( str_replace( '_', '-', strtolower( $lg['locale'] ) ) ), esc_url( wpm_translate_url( $url['loc'], $key ) ) );
 			}
 
 			$alternate  = apply_filters( 'wpm_sitemap_alternate_links', $alternate, $url['loc'], $lang );

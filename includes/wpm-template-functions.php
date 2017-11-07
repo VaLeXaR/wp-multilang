@@ -75,15 +75,15 @@ function wpm_get_language_switcher( $args = array() ) {
 	switch ( $args['type'] ) {
 
 		case 'dropdown':
-			$template = wpm_get_template( 'language-switcher-dropdown.php', $vars );
+			$template = wpm_get_template( 'language-switcher', $args['type'], '', $vars );
 			break;
 
 		case 'select':
-			$template = wpm_get_template( 'language-switcher-select.php', $vars );
+			$template = wpm_get_template( 'language-switcher', $args['type'], '', $vars );
 			break;
 
 		default:
-			$template = wpm_get_template( 'language-switcher-list.php', $vars );
+			$template = wpm_get_template( 'language-switcher', $args['type'], '', $vars );
 	}
 
 	return $template;
@@ -406,7 +406,7 @@ function wpm_admin_language_switcher() {
 		'current_url' => wpm_get_current_url(),
 	);
 
-	echo wpm_get_template( 'admin-language-switcher.php', $args );
+	echo wpm_get_template( 'admin-language-switcher', '', '', $args );
 }
 
 
@@ -421,7 +421,7 @@ function wpm_admin_language_switcher_customizer() {
 		'current_url' => wpm_get_current_url(),
 	);
 
-	echo wpm_get_template( 'admin-language-switcher-customizer.php', $args );
+	echo wpm_get_template( 'admin-language-switcher', 'customizer', '', $args );
 }
 
 

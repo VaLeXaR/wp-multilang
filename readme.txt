@@ -56,6 +56,7 @@ WP Multilang compatible with plugins:
 * BuddyPress
 * Meta Slider
 * TablePress
+* Download Monitor (Redefine templates for links in your theme and translate link texts)
 
 Supports configuration via json.
 
@@ -183,6 +184,7 @@ If you have opened several browser tabs for editing this post in different langu
 + admin localization use only installed languages
 + add user role `Translator`
 + Move WP Multilang settings to separate page
++ add config for Download Monitor
 * fix separate posts by languages
 * fix save title settings in Yoast SEO
 * fix switch user language in admin dashboard
