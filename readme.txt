@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.8.2
+Stable tag: 2.0.0
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -35,7 +35,7 @@ Features of the plugin WP Multilang:
 * Possibility set many languages with one localization. For example, for localization in the region.
 * Possibility to set custom locale for html(If installed locale is en_US, you can set locale like: en, en-UK, en-AU etc. without installation another localization)
 * Possibility for add new languages for any user with capability `manage options`
-* Exist the role "Translator" for editing posts, terms
+* Exist the role "Translator" for editing posts, terms. It can not publish or delete
 
 WP Multilang compatible with plugins:
 

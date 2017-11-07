@@ -28,6 +28,7 @@ class WPM_Masterslider {
 		add_action( 'masterslider_admin_add_panel_variables', array( $this, 'translate_slider' ) );
 		add_filter( 'wpm_admin_pages', array( $this, 'add_language_switcher' ) );
 		add_filter( 'woocommerce_short_description', 'wpm_translate_string' );
+		add_filter( 'wpm_role_translator_capabilities', array( $this, 'add_core_capabilities' ) );
 	}
 
 
@@ -184,6 +185,21 @@ class WPM_Masterslider {
 		}
 
 		return $config;
+	}
+
+	/**
+	 * Add access to master slider for translator
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param $capabilities
+	 *
+	 * @return array
+	 */
+	public function add_core_capabilities( $capabilities ) {
+		$capabilities['core'][] = 'access_masterslider';
+
+		return $capabilities;
 	}
 }
 
