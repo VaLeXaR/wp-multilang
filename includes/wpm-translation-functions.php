@@ -38,7 +38,7 @@ function wpm_translate_url( $url, $language = '' ) {
 		}
 	}
 
-	if ( preg_match( '/^.*\.php$/i', wp_parse_url( $url, PHP_URL_PATH ) ) ) {
+	if ( preg_match( '/^.*\.php$/i', wp_parse_url( $url, PHP_URL_PATH ) ) || ( strpos( $url, '/wp-admin/' ) !== false ) ) {
 		return add_query_arg( 'lang', $language, $url );
 	}
 

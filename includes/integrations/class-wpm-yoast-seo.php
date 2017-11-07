@@ -267,11 +267,11 @@ class WPM_Yoast_Seo {
 		$user_language = wpm_get_language();
 		$new_locale    = '';
 
-		if ( $languages[ $user_language ]['wpseo_og_locale'] ) {
+		if ( isset( $languages[ $user_language ]['wpseo_og_locale'] ) && $languages[ $user_language ]['wpseo_og_locale'] ) {
 			$new_locale = $languages[ $user_language ]['wpseo_og_locale'];
 		}
 
-		if ( $new_locale && $languages[ $user_language ]['locale'] ) {
+		if ( ! $new_locale && $languages[ $user_language ]['locale'] ) {
 			$new_locale = $languages[ $user_language ]['locale'];
 		}
 

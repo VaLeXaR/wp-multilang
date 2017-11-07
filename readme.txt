@@ -185,6 +185,7 @@ If you have opened several browser tabs for editing this post in different langu
 + Move WP Multilang settings to separate page
 * fix separate posts by languages
 * fix save title settings in Yoast SEO
+* fix switch user language in admin dashboard
 
 = 1.8.1 =
 + add filters for alternate links
