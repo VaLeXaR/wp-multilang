@@ -269,8 +269,7 @@ class WPM_Install {
 			$wp_roles = new \WP_Roles();
 		}
 
-		// Translator role
-		add_role( 'translator', __( 'Translator', 'wp-multilang' ), array(
+		$capabilities = array(
 			'level_7'              => true,
 			'level_6'              => true,
 			'level_5'              => true,
@@ -293,20 +292,32 @@ class WPM_Install {
 			'manage_categories'    => true,
 			'manage_links'         => true,
 			'upload_files'         => true,
-		) );
+		);
+
+		// Translator role
+		$result = add_role( 'translator', __( 'Translator', 'wp-multilang' ), $capabilities );
+
+		if ( is_null( $result ) ) {
+			$translator = get_role( 'translator' );
+
+			foreach ( $capabilities as $cap => $value ) {
+				$translator->add_cap( $cap );
+			}
+		}
 
 		$capabilities = self::get_core_capabilities();
 
 		foreach ( $capabilities as $cap_group ) {
 			foreach ( $cap_group as $cap ) {
 				$wp_roles->add_cap( 'translator', $cap );
-				$wp_roles->add_cap( 'administrator', $cap );
 			}
 		}
+
+		$wp_roles->add_cap( 'administrator', 'manage_translations' );
 	}
 
 	/**
-	 * Get capabilities for WP Multilanf - these are assigned to admin/translator during installation or reset.
+	 * Get capabilities for WP Multilang - these are assigned to translator during installation or reset.
 	 *
 	 * @return array
 	 */
@@ -317,7 +328,27 @@ class WPM_Install {
 			'manage_translations',
 		);
 
-		return $capabilities;
+		$capability_types = apply_filters( 'wpm_role_translator_capability_types', array() );
+
+		foreach ( $capability_types as $capability_type ) {
+
+			$capabilities[ $capability_type ] = array(
+				// Post type
+				"edit_{$capability_type}",
+				"read_{$capability_type}",
+				"edit_{$capability_type}s",
+				"edit_others_{$capability_type}s",
+				"read_private_{$capability_type}s",
+				"edit_private_{$capability_type}s",
+				"edit_published_{$capability_type}s",
+
+				// Terms
+				"manage_{$capability_type}_terms",
+				"edit_{$capability_type}_terms",
+			);
+		}
+
+		return apply_filters( 'wpm_role_translator_capabilities', $capabilities );
 	}
 
 
@@ -340,9 +371,10 @@ class WPM_Install {
 		foreach ( $capabilities as $cap_group ) {
 			foreach ( $cap_group as $cap ) {
 				$wp_roles->remove_cap( 'translator', $cap );
-				$wp_roles->remove_cap( 'administrator', $cap );
 			}
 		}
+
+		$wp_roles->remove_cap( 'administrator', 'manage_translations' );
 
 		remove_role( 'translator' );
 	}
@@ -350,8 +382,9 @@ class WPM_Install {
 	/**
 	 * Show action links on the plugin screen.
 	 *
-	 * @param	mixed $links Plugin Action links
-	 * @return	array
+	 * @param mixed $links Plugin Action links
+	 *
+	 * @return array
 	 */
 	public static function plugin_action_links( $links ) {
 		$action_links = array(
