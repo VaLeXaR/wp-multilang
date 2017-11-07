@@ -62,18 +62,32 @@ class WPM_Admin_Settings {
 			'sanitize_callback' => array( $this, 'save_languages' ),
 		) );
 
+		add_settings_field( 'wpm_installed_translations', __( 'Installed translations', 'wp-multilang' ), array( $this, 'installed_translations' ), 'wpm-settings', 'wpm_setting_section' );
+
 		add_settings_field( 'wpm_show_untranslated_strings', __( 'Translating settings', 'wp-multilang' ), array( $this, 'translating_setting' ), 'wpm-settings', 'wpm_setting_section' );
-		register_setting( 'wpm-settings', 'wpm_show_untranslated_strings', array( 'type' => 'boolean' ) );
+		register_setting( 'wpm-settings', 'wpm_show_untranslated_strings', array(
+			'type'    => 'boolean',
+			'default' => true,
+		) );
 
 		add_settings_field( 'wpm_use_redirect', __( 'Browser redirect', 'wp-multilang' ), array( $this, 'browser_redirect' ), 'wpm-settings', 'wpm_setting_section' );
-		register_setting( 'wpm-settings', 'wpm_use_redirect', array( 'type' => 'boolean' ) );
+		register_setting( 'wpm-settings', 'wpm_use_redirect', array(
+			'type'    => 'boolean',
+			'default' => false,
+		) );
 
 		add_settings_field( 'wpm_use_prefix', __( 'Use prefix', 'wp-multilang' ), array( $this, 'use_prefix_setting' ), 'wpm-settings', 'wpm_setting_section' );
-		register_setting( 'wpm-settings', 'wpm_use_prefix', array( 'type' => 'boolean' ) );
+		register_setting( 'wpm-settings', 'wpm_use_prefix', array(
+			'type'    => 'boolean',
+			'default' => false,
+		) );
 
 		if ( ! is_multisite() || ( is_main_site() ) ) {
 			add_settings_field( 'wpm_uninstall_translations', __( 'Uninstalling', 'wp-multilang' ), array( $this, 'uninstalling_setting' ), 'wpm-settings', 'wpm_setting_section' );
-			register_setting( 'wpm-settings', 'wpm_uninstall_translations', array( 'type' => 'boolean' ) );
+			register_setting( 'wpm-settings', 'wpm_uninstall_translations', array(
+				'type'    => 'boolean',
+				'default' => false,
+			) );
 		}
 	}
 
@@ -84,7 +98,7 @@ class WPM_Admin_Settings {
 	public function display_section() {
 		?>
 		<p>
-			<?php _e( 'Read <a href="https://support.google.com/webmasters/answer/182192?hl=en" target="_blank">Google guidelines</a> before.', 'wp-multilang' ) ?>
+			<?php printf( __( 'Read <a href="%s" target="_blank">Google guidelines</a> before.', 'wp-multilang' ), esc_url( 'https://support.google.com/webmasters/answer/182192?hl=en' ) ) ?>
 		</p>
 		<?php
 	}
@@ -206,7 +220,7 @@ class WPM_Admin_Settings {
 								<?php do_action( 'wpm_language_settings', $key, $i ); ?>
 								<?php if ( ( wpm_get_user_language() !== $key ) && ( wpm_get_default_language() !== $key ) ) { ?>
 								<tr>
-									<td class="row-title"><?php esc_attr_e( 'Delete' ); ?></td>
+									<td class="row-title"></td>
 									<td>
 										<button type="button" class="button button-link delete-language" data-language="<?php echo $key; ?>"><?php esc_attr_e( 'Delete' ); ?></button>
 								</tr>
@@ -254,7 +268,7 @@ class WPM_Admin_Settings {
 						<tr>
 							<td class="row-title"><?php esc_attr_e( 'Locale *', 'wp-multilang' ); ?></td>
 							<td>
-								<input type="text" name="wpm_languages[{{ data.count }}][locale]" value="" title="<?php esc_attr_e( 'Locale *', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Locale', 'wp-multilang' ); ?>" required>
+								<input type="text" name="wpm_languages[{{ data.count }}][locale]" value="" title="<?php esc_attr_e( 'Locale *', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Locale *', 'wp-multilang' ); ?>" required>
 							</td>
 						</tr>
 						<tr>
@@ -295,7 +309,7 @@ class WPM_Admin_Settings {
 						</tr>
 						<?php do_action( 'wpm_language_settings', '', '{{ data.count }}' ); ?>
 						<tr>
-							<td class="row-title"><?php esc_attr_e( 'Delete' ); ?></td>
+							<td class="row-title"></td>
 							<td>
 								<button type="button" class="button button-link delete-language" data-language=""><?php esc_attr_e( 'Delete' ); ?></button>
 							</td>
@@ -313,6 +327,33 @@ class WPM_Admin_Settings {
 	/**
 	 * Display translation setting
 	 */
+	public function installed_translations() {
+		$installed_translations = wpm_get_installed_languages();
+		$available_translations = wpm_get_available_translations();
+		$options                = wpm_get_options();
+		?>
+		<select id="wpm_installed_translations" title="<?php esc_html_e( 'Installed translations', 'wp-multilang' ); ?>">
+			<?php foreach ( $installed_translations as $translation ) { ?>
+				<?php
+				$used = false;
+				foreach ( $options as $lang => $language ) {
+					if ( $language['translation'] == $translation ) {
+						$used = true;
+						break;
+					}
+				}
+				?>
+				<option value="<?php esc_attr_e( $translation ); ?>"<?php if ( ( 'en_US' == $translation ) || $used ) { ?> disabled="disabled" <?php } ?>><?php esc_attr_e( $available_translations[ $translation ]['native_name'] ); ?></option>
+			<?php } ?>
+		</select>
+		<input type="button" id="delete_translation" class="button" value="<?php esc_attr_e( 'Delete translation', 'wp-multilang' ); ?>">
+		<p><?php esc_html_e( 'Delete unused not built-in language pack', 'wp-multilang' ); ?></p>
+		<?php
+	}
+
+	/**
+	 * Display translation setting
+	 */
 	public function translating_setting() {
 		?>
 		<fieldset>
@@ -321,7 +362,7 @@ class WPM_Admin_Settings {
 			</legend>
 			<label>
 				<input type="hidden" name="wpm_show_untranslated_strings" value="0">
-				<input name="wpm_show_untranslated_strings" type="checkbox" value="1"<?php checked( get_option( 'wpm_show_untranslated_strings', true ) ); ?>>
+				<input name="wpm_show_untranslated_strings" type="checkbox" value="1"<?php checked( get_option( 'wpm_show_untranslated_strings' ) ); ?>>
 				<?php esc_html_e( 'Show untranslated strings in default language', 'wp-multilang' ); ?>
 			</label>
 		</fieldset>
@@ -340,7 +381,7 @@ class WPM_Admin_Settings {
 			</legend>
 			<label>
 				<input type="hidden" name="wpm_use_redirect" value="0">
-				<input name="wpm_use_redirect" type="checkbox" value="1"<?php checked( get_option( 'wpm_use_redirect', 0 ) ); ?>>
+				<input name="wpm_use_redirect" type="checkbox" value="1"<?php checked( get_option( 'wpm_use_redirect' ) ); ?>>
 				<?php esc_attr_e( 'Use redirect to user browser language in first time', 'wp-multilang' ); ?>
 			</label>
 		</fieldset>
@@ -359,7 +400,7 @@ class WPM_Admin_Settings {
 			</legend>
 			<label>
 				<input type="hidden" name="wpm_use_prefix" value="0">
-				<input name="wpm_use_prefix" type="checkbox" value="1"<?php checked( get_option( 'wpm_use_prefix', 0 ) ); ?>>
+				<input name="wpm_use_prefix" type="checkbox" value="1"<?php checked( get_option( 'wpm_use_prefix' ) ); ?>>
 				<?php esc_attr_e( 'Use prefix for default language', 'wp-multilang' ); ?>
 			</label>
 		</fieldset>
@@ -421,7 +462,7 @@ class WPM_Admin_Settings {
 
 		if ( wpm_get_post_data_by_key( $option_name ) ) {
 
-			$type                = '';
+			$error               = false;
 			$translations        = wpm_get_available_translations();
 			$installed_languages = wpm_get_installed_languages();
 
@@ -434,14 +475,14 @@ class WPM_Admin_Settings {
 			foreach ( $value as $item ) {
 
 				if ( empty( $item['slug'] ) || empty( $item['locale'] ) ) {
-					$type = 'error';
+					$error = true;
 					break;
 				}
 
 				$slug = sanitize_title( $item['slug'] );
 
 				if ( ! $slug ) {
-					$type = 'error';
+					$error = true;
 					break;
 				}
 
@@ -457,17 +498,15 @@ class WPM_Admin_Settings {
 
 				if ( isset( $translations[ $item['translation'] ] ) && wp_can_install_language_pack() && current_user_can( 'install_languages' ) ) {
 					wp_download_language_pack( $item['translation'] );
+					WPM_Admin_Notices::add_custom_notice(
+						$option_name . '_lang_pack_installed',
+						__( 'New language pack installed', 'wp-multilang' )
+					);
 				}
 			}
 
-			if ( 'error' === $type ) {
-				WPM_Admin_Notices::add_custom_notice(
-					$option_name . '_save_error',
-					__( 'Language slug and locale is required', 'wp-multilang' )
-				);
-
+			if ( $error ) {
 				return get_option( $option_name );
-
 			}
 		}// End if().
 

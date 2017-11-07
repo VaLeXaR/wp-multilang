@@ -90,7 +90,8 @@ class WPM_AJAX {
 	 */
 	public static function add_ajax_events() {
 		$ajax_events = array(
-			'delete_lang' => false,
+			'delete_lang'        => false,
+			'delete_translation' => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -115,7 +116,7 @@ class WPM_AJAX {
 		$language = wpm_get_post_data_by_key( 'language' );
 		$options  = wpm_get_options();
 
-		if ( ! isset( $options[ $language ] ) || ( wpm_get_user_language() === $language ) || ( wpm_get_default_language() === $language ) ) {
+		if ( ! $language || ! isset( $options[ $language ] ) || ( wpm_get_user_language() === $language ) || ( wpm_get_default_language() === $language ) ) {
 			return;
 		}
 
@@ -123,6 +124,68 @@ class WPM_AJAX {
 
 		global $wpdb;
 		$wpdb->update( $wpdb->options, array( 'option_value' => maybe_serialize( $options ) ), array( 'option_name' => 'wpm_languages' ) );
+
+		die();
+	}
+	/**
+	 * Remove installed language files and option
+	 */
+	public static function delete_translation() {
+
+		check_ajax_referer( 'delete-translation', 'security' );
+
+		$locale  = wpm_get_post_data_by_key( 'locale' );
+		$options = wpm_get_options();
+
+		if ( ! $locale ) {
+			return;
+		}
+
+		foreach ( $options as $lang => $language ) {
+			if ( $language['translation'] == $locale ) {
+				return;
+			}
+		}
+
+		$files_delete                  = array();
+		$installed_plugin_translations = wp_get_installed_translations( 'plugins' );
+
+		foreach ( $installed_plugin_translations as $plugin => $translation ) {
+			if ( isset( $translation[ $locale ] ) ) {
+				$files_delete[] = WP_LANG_DIR . '/plugins/' . $plugin . '-' . $locale . '.mo';
+				$files_delete[] = WP_LANG_DIR . '/plugins/' . $plugin . '-' . $locale . '.po';
+			}
+		}
+
+		$installed_themes_translations = wp_get_installed_translations( 'themes' );
+
+		foreach ( $installed_themes_translations as $theme => $translation ) {
+			if ( isset( $translation[ $locale ] ) ) {
+				$files_delete[] = WP_LANG_DIR . '/themes/' . $theme . '-' . $locale . '.mo';
+				$files_delete[] = WP_LANG_DIR . '/themes/' . $theme . '-' . $locale . '.po';
+			}
+		}
+
+		$installed_core_translations = wp_get_installed_translations( 'core' );
+
+		foreach ( $installed_core_translations as $wp_file => $translation ) {
+			if ( isset( $translation[ $locale ] ) ) {
+				$files_delete[] = WP_LANG_DIR . '/' . $wp_file . '-' . $locale . '.mo';
+				$files_delete[] = WP_LANG_DIR . '/' . $wp_file . '-' . $locale . '.po';
+			}
+		}
+
+		if ( file_exists( WP_LANG_DIR . '/' . $locale . '.mo' ) ) {
+			$files_delete[] = WP_LANG_DIR . '/' . $locale . '.mo';
+		}
+
+		if ( file_exists( WP_LANG_DIR . '/' . $locale . '.po' ) ) {
+			$files_delete[] = WP_LANG_DIR . '/' . $locale . '.po';
+		}
+
+		foreach ( $files_delete as $file ) {
+			wp_delete_file( $file );
+		}
 
 		die();
 	}

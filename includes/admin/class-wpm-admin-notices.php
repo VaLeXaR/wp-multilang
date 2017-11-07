@@ -121,7 +121,9 @@ class WPM_Admin_Notices {
 		$notices = self::get_notices();
 
 		if ( ! empty( $notices ) ) {
-			wp_enqueue_style( 'wpm-activation', plugins_url( '/assets/css/activation.css', WPM_PLUGIN_FILE ), array(), WPM_VERSION );
+			$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
+			wp_enqueue_style( 'wpm-notices', plugins_url( '/assets/styles/notices' . $suffix . '.css', WPM_PLUGIN_FILE ), array(), WPM_VERSION );
 
 			foreach ( $notices as $notice ) {
 				if ( ! empty( self::$core_notices[ $notice ] ) && apply_filters( 'wpm_show_admin_notice', true, $notice ) ) {
