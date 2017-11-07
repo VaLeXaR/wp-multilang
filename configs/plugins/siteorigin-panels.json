@@ -4,6 +4,7 @@
       "widgets": {
         "wpm_each": {
           "title": {},
+          "widget_title": {},
           "sub_title": {},
           "alt": {},
           "text": {},
@@ -68,6 +69,44 @@
               "name": {},
               "location": {},
               "text": {}
+            }
+          },
+          "headline": {
+            "text": {}
+          },
+          "sub_headline": {
+            "text": {}
+          },
+          "columns": {
+            "wpm_each": {
+              "title": {},
+              "subtitle": {},
+              "image_title": {},
+              "image_alt": {},
+              "button": {},
+              "features": {
+                "wpm_each": {
+                  "text": {},
+                  "hover": {}
+                }
+              }
+            }
+          },
+          "panels": {
+            "wpm_each": {
+              "title": {},
+              "content_text": {}
+            }
+          },
+          "tabs": {
+            "wpm_each": {
+              "title": {},
+              "content_text": {}
+            }
+          },
+          "items": {
+            "wpm_each": {
+              "title": {}
             }
           }
         }
