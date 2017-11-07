@@ -500,7 +500,7 @@ class WPM_Admin_Settings {
 					wp_download_language_pack( $item['translation'] );
 					WPM_Admin_Notices::add_custom_notice(
 						$option_name . '_lang_pack_installed',
-						__( 'New language pack installed', 'wp-multilang' )
+						__( 'New language pack successfully installed', 'wp-multilang' )
 					);
 				}
 			}
