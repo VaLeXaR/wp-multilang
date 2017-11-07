@@ -567,22 +567,45 @@ class WPM_Setup {
 	 */
 	private function get_browser_language() {
 
-		$detect = '';
+		if ( ! isset( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) || ! $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) {
+			return '';
+		}
 
-		if ( isset( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) && $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) {
-			$browser_languages = explode( ',', $_SERVER['HTTP_ACCEPT_LANGUAGE'] );
-			$languages         = $this->get_languages();
+		if ( ! preg_match_all( '#([^;,]+)(;[^,0-9]*([0-9\.]+)[^,]*)?#i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches, PREG_SET_ORDER ) ) {
+			return '';
+		}
 
-			foreach ( $browser_languages as $browser_language ) {
-				foreach ( $languages as $key => $value ) {
-					$browser_language = strtolower( str_replace( '_', '-', $browser_language ) );
-					if ( ! $locale = $value['locale'] ) {
-						$locale = $value['translation'];
-					}
-					if ( $browser_language == $key || strtolower( str_replace( '_', '-', $locale ) ) == $browser_language ) {
-						$detect = $key;
-						break;
-					}
+
+		$detect             = '';
+		$prefered_languages = array();
+		$priority           = 1.0;
+
+		foreach ( $matches as $match ) {
+			if ( ! isset( $match[3] ) ) {
+				$pr       = $priority;
+				$priority -= 0.001;
+			} else {
+				$pr = floatval( $match[3] );
+			}
+			$prefered_languages[ str_replace( '-', '_', $match[1] ) ] = $pr;
+		}
+
+		arsort( $prefered_languages, SORT_NUMERIC );
+
+		$browser_languages = array_keys( $prefered_languages );
+		$languages         = $this->get_languages();
+
+		foreach ( $browser_languages as $browser_language ) {
+			foreach ( $languages as $key => $value ) {
+				if ( ! $locale = $value['locale'] ) {
+					$locale = $value['translation'];
+				}
+
+				$locale = str_replace( '-', '_', $locale );
+
+				if ( $browser_language == $locale || strtolower( str_replace( '_', '-', $browser_language ) ) == $key ) {
+					$detect = $key;
+					break 2;
 				}
 			}
 		}
