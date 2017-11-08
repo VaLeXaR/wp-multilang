@@ -125,7 +125,7 @@ class WPM_Taxonomies extends \WPM_Object {
 						),
 						array(
 							'key'     => '_languages',
-							'value'   => 's:' . strlen( $lang ) . ':"' . $lang . '";',
+							'value'   => serialize( $lang ),
 							'compare' => 'LIKE',
 						),
 					),

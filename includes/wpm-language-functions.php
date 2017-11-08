@@ -112,18 +112,33 @@ function wpm_get_available_translations() {
  *
  * @since 1.7.0
  *
+ * @param bool $unslash
+ *
  * @return string
  */
-function wpm_get_orig_home_url() {
-	return WPM_Setup::instance()->get_original_home_url();
+function wpm_get_orig_home_url( $unslash = true ) {
+	return WPM_Setup::instance()->get_original_home_url( $unslash );
 }
 
 /**
- * Get available translation
+ * Get original request uri
+ *
+ * @see WPM_Setup::get_original_request_uri()
+ *
+ * @since 1.7.0
+ *
+ * @return string
+ */
+function wpm_get_orig_request_uri() {
+	return WPM_Setup::instance()->get_original_request_uri();
+}
+
+/**
+ * Get site request uri
  *
  * @see WPM_Setup::get_site_request_uri()
  *
- * @since 1.7.0
+ * @since 2.0.1
  *
  * @return string
  */
@@ -146,7 +161,7 @@ function wpm_get_language() {
 		$query     = $_GET;
 
 		if ( wp_doing_ajax() && ( $referrer = wp_get_raw_referer() ) ) {
-			if ( strpos( $referrer, '/wp-admin/' ) !== false ) {
+			if ( strpos( $referrer, 'wp-admin/' ) !== false ) {
 				$query = wp_parse_url( $referrer, PHP_URL_QUERY );
 			} else {
 				return wpm_get_user_language();
