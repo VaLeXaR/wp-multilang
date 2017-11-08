@@ -33,53 +33,51 @@ function wpm_translate_url( $url, $language = '' ) {
 	$options       = wpm_get_options();
 
 	if ( $language ) {
-		if ( ( ( $language === $user_language ) && ( ! is_admin() || wp_doing_ajax() ) ) || ! isset( $options[ $language ] ) ) {
+		if ( ( ( $language === $user_language ) && ( ! is_admin() || wp_doing_ajax() ) && ! isset( $_GET['lang'] ) ) || ! isset( $options[ $language ] ) ) {
 			return $url;
 		}
 	}
 
-	if ( preg_match( '/^.*\.php$/i', wp_parse_url( $url, PHP_URL_PATH ) ) || ( strpos( $url, '/wp-admin/' ) !== false ) ) {
+	if ( preg_match( '/^.*\.php$/i', wp_parse_url( wpm_get_orig_request_uri(), PHP_URL_PATH ) ) || ( strpos( $url, 'wp-admin/' ) !== false ) ) {
 		return add_query_arg( 'lang', $language, $url );
 	}
 
-	$url_lang = '';
-	$path     = str_replace( $host, '', $url );
-	$path     = $path ? $path : '/';
+	$url         = remove_query_arg( 'lang', $url );
+	$path        = wp_parse_url( $url, PHP_URL_PATH );
+	$path        = $path ? $path : '/';
+	$default_uri = str_replace( $host, '', $url );
+	$default_uri = $default_uri ? $default_uri : '/';
+	$pattern     = '!^/([a-z]{2})(-[a-z]{2})?(/|$)!i';
 
-	if ( preg_match( '!^/([a-z]{2})(/|$)!i', $path, $match ) ) {
-		$url_lang = $match[1];
+	if ( preg_match( $pattern, $path ) ) {
+		$default_uri = preg_replace( $pattern, '/', $default_uri );
 	}
 
-	$default_language = wpm_get_default_language();
-	$new_path         = '';
+	$default_language    = wpm_get_default_language();
+	$default_lang_prefix = get_option( 'wpm_use_prefix' ) ? $default_language : '';
 
 	if ( $language ) {
-		if ( ! $url_lang && ( $language === $default_language ) ) {
-			return $url;
-		} elseif ( $url_lang && ( $language === $default_language ) ) {
-			$new_path = str_replace( '/' . $url_lang . '/', '/', $path );
-		} elseif ( $url_lang && ( $language !== $default_language ) ) {
-			$new_path = str_replace( '/' . $url_lang . '/', '/' . $language . '/', $path );
-		} elseif ( ! $url_lang && ( $path !== $default_language ) ) {
-			$new_path = '/' . $language . $path;
+		if ( $language === $default_language ) {
+			$new_uri = '/' . $default_lang_prefix . $default_uri;
+		} else {
+			$new_uri = '/' . $language . $default_uri;
 		}
 	} else {
-		if ( ! $url_lang && ( $user_language === $default_language ) ) {
-			return $url;
-		} elseif ( ! $url_lang && ( $user_language !== $default_language ) ) {
-			$new_path = '/' . $user_language . $path;
-		} elseif ( $url_lang && ( $user_language === $default_language ) ) {
-			$new_path = str_replace( '/' . $url_lang . '/', '/', $path );
-		} elseif ( $url_lang && ( $user_language !== $default_language ) ) {
-			$new_path = str_replace( '/' . $url_lang . '/', '/' . $user_language . '/', $path );
+		if ( ( $user_language === $default_language ) ) {
+			$new_uri = '/' . $default_lang_prefix . $default_uri;
+		} else {
+			$new_uri = '/' . $user_language . $default_uri;
 		}
 	}
 
-	if ( $new_path ) {
-		$new_url = str_replace( $host . $path, $host . $new_path, $url );
+	$new_uri = preg_replace( '/(\/+)/', '/', $new_uri );
+
+	if ( '/' != $new_uri ) {
+		$new_url = $host . $new_uri;
 	} else {
-		$new_url = $url;
+		$new_url = wpm_get_orig_home_url( false );
 	}
+
 
 	return apply_filters( 'wpm_translate_url', $new_url, $language, $url );
 }
