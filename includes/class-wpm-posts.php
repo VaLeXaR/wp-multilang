@@ -1,6 +1,7 @@
 <?php
 
 namespace WPM\Includes;
+use WPM\Includes\Abstracts\WPM_Object;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -10,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WPM_Posts
  * @package  WPM/Includes
  */
-class WPM_Posts extends \WPM_Object {
+class WPM_Posts extends WPM_Object {
 
 	/**
 	 * Object name
