@@ -141,7 +141,6 @@ class WPM_Setup {
 		add_filter( 'option_time_format', array( $this, 'set_time_format' ) );
 		add_filter( 'locale', array( $this, 'set_locale' ) );
 		add_filter( 'gettext', array( $this, 'set_html_locale' ), 10, 2 );
-		add_filter( 'redirect_canonical', array( $this, 'fix_canonical_redirect' ) );
 	}
 
 
@@ -410,7 +409,7 @@ class WPM_Setup {
 		$default_language = $this->get_default_language();
 		$url_lang         = $this->get_lang_from_url();
 
-		if ( ! isset( $_REQUEST['lang'] ) ) {
+		if ( ! isset( $_GET['lang'] ) ) {
 			if ( get_option( 'wpm_use_prefix' ) ) {
 				if ( ! $url_lang ) {
 					wp_redirect( home_url( $this->get_original_request_uri() ) );
@@ -422,6 +421,11 @@ class WPM_Setup {
 					exit;
 				}
 			}
+		}
+
+		if ( isset( $_GET['lang'] ) && ! empty( $_GET['lang'] ) && $url_lang ) {
+			wp_redirect( $this->get_original_home_url() . $this->get_site_request_uri() );
+			exit;
 		}
 	}
 
@@ -804,23 +808,6 @@ class WPM_Setup {
 		}
 
 		return $translation;
-	}
-
-	/**
-	 * Fix redirect when using lang param in $_GET
-	 *
-	 * @since 2.0.1
-	 *
-	 * @param string $redirect_url
-	 *
-	 * @return string
-	 */
-	public function fix_canonical_redirect( $redirect_url ) {
-		if ( isset( $_GET['lang'] ) && ! empty( $_GET['lang'] ) && $this->get_lang_from_url() ) {
-			$redirect_url = str_replace( home_url(), $this->get_original_home_url(), $redirect_url );
-		}
-
-		return $redirect_url;
 	}
 
 	/**
