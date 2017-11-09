@@ -18,10 +18,34 @@
     "translation",
     "multilanguage"
   ],
+  "support": {
+    "issues": "https://github.com/valexar/wp-multilang/issues",
+    "forum": "https://wordpress.org/support/plugin/wp-multilang",
+    "wiki": "https://github.com/valexar/wp-multilang/wiki",
+    "source": "https://github.com/valexar/wp-multilang"
+  },
   "require": {
-    "php": ">=5.6.4"
+    "php": ">=5.6.4",
+    "composer/installers": "~1.0",
+    "xrstf/composer-php52": "1.*"
   },
   "require-dev": {
     "kint-php/kint": "^2.1"
+  },
+  "autoload": {
+    "classmap": [
+      "includes/"
+    ]
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "xrstf\\Composer52\\Generator::onPostInstallCmd"
+    ],
+    "post-update-cmd": [
+      "xrstf\\Composer52\\Generator::onPostInstallCmd"
+    ],
+    "post-autoload-dump": [
+      "xrstf\\Composer52\\Generator::onPostInstallCmd"
+    ]
   }
 }

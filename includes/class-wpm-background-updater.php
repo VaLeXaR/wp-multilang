@@ -11,23 +11,16 @@
  */
 
 namespace WPM\Includes;
+use WPM\Includes\Libraries\WP_Background_Process;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'WP_Async_Request', false ) ) {
-	include_once( dirname( __FILE__ ) . '/libraries/wp-async-request.php' );
-}
-
-if ( ! class_exists( 'WP_Background_Process', false ) ) {
-	include_once( dirname( __FILE__ ) . '/libraries/wp-background-process.php' );
-}
-
 /**
  * WPM_Background_Updater Class.
  */
-class WPM_Background_Updater extends \WP_Background_Process {
+class WPM_Background_Updater extends WP_Background_Process {
 
 	/**
 	 * @var string

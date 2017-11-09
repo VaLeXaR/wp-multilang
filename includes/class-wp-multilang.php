@@ -124,12 +124,6 @@ final class WP_Multilang {
 	 */
 	public function includes() {
 		/**
-		 * Abstract classes.
-		 */
-		include_once( WPM_ABSPATH . 'includes/abstracts/abstract-wpm-object.php' );
-		include_once( WPM_ABSPATH . 'includes/abstracts/abstract-wpm-widget.php' );
-
-		/**
 		 * Core classes.
 		 */
 		include_once( WPM_ABSPATH . 'includes/wpm-core-functions.php' );
