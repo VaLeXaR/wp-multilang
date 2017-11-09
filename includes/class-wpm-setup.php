@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WPM_Setup {
 
 	/**
-	 * Original url
+	 * Original home url
 	 *
 	 * @var string
 	 */
@@ -29,7 +29,7 @@ class WPM_Setup {
 	private $original_request_uri = '';
 
 	/**
-	 * Original uri
+	 * Site uri
 	 *
 	 * @var string
 	 */
@@ -76,6 +76,13 @@ class WPM_Setup {
 	 * @var string
 	 */
 	private $user_language = '';
+
+	/**
+	 * URL language
+	 *
+	 * @var string
+	 */
+	private $url_language = '';
 
 	/**
 	 * Available translations
@@ -126,7 +133,7 @@ class WPM_Setup {
 		add_action( 'upgrader_process_complete', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
 		add_action( 'after_setup_theme', array( $this, 'redirect_default_url' ) );
 		add_action( 'wpm_init', array( $this, 'load_integrations' ) );
-//		add_action( 'parse_request', array( $this, 'setup_query_var' ), 0 );
+		add_action( 'parse_request', array( $this, 'setup_query_var' ), 0 );
 		add_action( 'wp', array( $this, 'redirect_to_user_language' ) );
 		add_filter( 'request', array( $this, 'set_home_page' ) );
 		add_filter( 'rest_url', array( $this, 'fix_rest_url' ) );
@@ -134,7 +141,7 @@ class WPM_Setup {
 		add_filter( 'option_time_format', array( $this, 'set_time_format' ) );
 		add_filter( 'locale', array( $this, 'set_locale' ) );
 		add_filter( 'gettext', array( $this, 'set_html_locale' ), 10, 2 );
-		add_filter( 'redirect_canonical', array( $this, 'fix_canonical_redirect' ), 10, 2 );
+		add_filter( 'redirect_canonical', array( $this, 'fix_canonical_redirect' ) );
 	}
 
 
@@ -321,7 +328,7 @@ class WPM_Setup {
 	 * Set user language for frontend from url or browser
 	 * Set admin language from cookie or url
 	 */
-	public function set_user_language() {
+	private function set_user_language() {
 
 		$languages     = $this->get_languages();
 		$url           = '';
@@ -425,7 +432,6 @@ class WPM_Setup {
 	 * @return array
 	 */
 	public function get_translations() {
-
 		if ( ! $this->translations ) {
 			require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
 			$available_translations          = wp_get_available_translations();
@@ -521,11 +527,7 @@ class WPM_Setup {
 	 * @return array
 	 */
 	public function set_lang_var( $public_query_vars ) {
-
-		if ( ! isset( $_GET['lang'] ) ) {
-			$public_query_vars[] = 'lang';
-		}
-
+		$public_query_vars[] = 'lang';
 
 		return $public_query_vars;
 	}
@@ -664,18 +666,9 @@ class WPM_Setup {
 	 * @return array
 	 */
 	public function set_home_page( $query_vars ) {
-		d($query_vars);
-		/*$url_lang = $this->get_lang_from_url();
-		d($query_vars);
-
-		if ( isset( $_GET['lang'] ) && ( ( '/' == wp_parse_url( $this->get_site_request_uri(), PHP_URL_PATH ) ) || ( count( $query_vars ) == 2 && isset( $query_vars['paged'] ) ) || $url_lang ) ) {
+		if ( isset( $_GET['lang'] ) && ( ( '/' == wp_parse_url( $this->get_site_request_uri(), PHP_URL_PATH ) ) || ( count( $query_vars ) == 2 && isset( $query_vars['paged'] ) ) ) ) {
 			unset( $query_vars['lang'] );
-		}*/
-
-		/*if ( isset( $_GET['lang'] ) && in_array( $url_lang, $query_vars ) ) {
-			$key = array_search( $url_lang, $query_vars );
-			unset( $query_vars[ $key ] );
-		}*/
+		}
 
 		return $query_vars;
 	}
@@ -820,13 +813,12 @@ class WPM_Setup {
 	 * @since 2.0.1
 	 *
 	 * @param string $redirect_url
-	 * @param string $requested_url
 	 *
 	 * @return string
 	 */
-	public function fix_canonical_redirect( $redirect_url, $requested_url ) {
-		if ( isset( $_GET['lang'] ) && ! empty( $_GET['lang'] ) ) {
-			return $requested_url;
+	public function fix_canonical_redirect( $redirect_url ) {
+		if ( isset( $_GET['lang'] ) && ! empty( $_GET['lang'] ) && $this->get_lang_from_url() ) {
+			$redirect_url = str_replace( home_url(), $this->get_original_home_url(), $redirect_url );
 		}
 
 		return $redirect_url;
@@ -839,13 +831,17 @@ class WPM_Setup {
 	 *
 	 * @return string
 	 */
-	public function get_lang_from_url() {
-		$url_lang = '';
+	private function get_lang_from_url() {
+		if ( ! $this->url_language ) {
+			$url_lang = '';
 
-		if ( preg_match( '!^/([a-z]{2})(-[a-z]{2})?(/|$)!i', $this->get_original_request_uri(), $match ) ) {
-			$url_lang = $match[1];
+			if ( preg_match( '!^/([a-z]{2})(-[a-z]{2})?(/|$)!i', $this->get_original_request_uri(), $match ) ) {
+				$url_lang = $match[1];
+			}
+
+			$this->url_language = $url_lang;
 		}
 
-		return $url_lang;
+		return $this->url_language;
 	}
 }
