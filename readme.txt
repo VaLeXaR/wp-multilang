@@ -179,7 +179,7 @@ If you have opened several browser tabs for editing this post in different langu
 == Changelog ==
 
 = 2.0.3 =
-+ add setting for set Yoast SEO Opengrapth locale
++ add setting for set Yoast SEO Opengraph locale
 * fix add $_GET 'lang' param
 
 = 2.0.2 =
