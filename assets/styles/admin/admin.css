@@ -82,6 +82,14 @@
 .wpm-languages {
   max-width: 500px; }
 
+.wpm-flags {
+  width: 160px; }
+
+.select2-results__option img,
+.select2-selection__rendered img {
+  margin-right: 5px;
+  margin-left: 5px; }
+
 .languagechecklist li {
   margin: 0;
   padding: 0;

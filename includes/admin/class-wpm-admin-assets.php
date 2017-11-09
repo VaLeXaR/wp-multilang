@@ -36,6 +36,7 @@ class WPM_Admin_Assets {
 
 		// Register admin styles
 		wp_enqueue_style( 'wpm_language_switcher', wpm_asset_path( 'styles/admin/admin' . $suffix . '.css' ), array(), WPM_VERSION );
+		wp_register_style( 'select2', '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css', array(), '4.0.5' );
 	}
 
 
@@ -50,9 +51,11 @@ class WPM_Admin_Assets {
 		$config    = wpm_get_config();
 
 		// Register scripts
+		wp_register_script( 'select2', '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js', array( 'jquery' ), null );
 		wp_register_script( 'wpm_main', wpm_asset_path( 'scripts/main' . $suffix . '.js' ), array(
 			'wp-util',
 			'jquery-ui-sortable',
+			'select2',
 		), WPM_VERSION );
 
 		$main_params = array(
@@ -116,6 +119,7 @@ class WPM_Admin_Assets {
 
 		if ( 'settings_page_wpm-settings' === $screen_id ) {
 			wp_enqueue_script( 'wpm_main' );
+			wp_enqueue_style( 'select2' );
 		}
 
 		$admin_html_tags = apply_filters( 'wpm_admin_html_tags', $config['admin_html_tags'] );

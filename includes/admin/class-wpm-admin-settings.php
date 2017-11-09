@@ -209,12 +209,9 @@ class WPM_Admin_Settings {
 										<select class="wpm-flags" name="wpm_languages[<?php echo $i; ?>][flag]" title="<?php esc_attr_e( 'Flag', 'wp-multilang' ); ?>">
 											<option value=""><?php esc_attr_e( '&mdash; Select &mdash;' ); ?></option>
 											<?php foreach ( $flags as $flag ) { ?>
-												<option value="<?php esc_attr_e( $flag ); ?>" <?php selected( $language['flag'], $flag ); ?>><?php esc_attr_e( pathinfo( $flag, PATHINFO_FILENAME ) ); ?></option>
+												<option value="<?php esc_attr_e( $flag ); ?>" data-flag="<?php echo esc_url( wpm_get_flag_url( $flag ) ); ?>" <?php selected( $language['flag'], $flag ); ?>><?php esc_attr_e( pathinfo( $flag, PATHINFO_FILENAME ) ); ?></option>
 											<?php } ?>
 										</select>
-										<?php if ( ( $language['flag'] ) ) { ?>
-											<img src="<?php echo esc_url( wpm_get_flag_url( $language['flag'] ) ); ?>" alt="<?php esc_attr_e( $language['name'] ); ?>">
-										<?php } ?>
 									</td>
 								</tr>
 								<?php do_action( 'wpm_language_settings', $key, $i ); ?>
@@ -302,7 +299,7 @@ class WPM_Admin_Settings {
 								<select class="wpm-flags" name="wpm_languages[{{ data.count }}][flag]" title="<?php esc_attr_e( 'Flag', 'wp-multilang' ); ?>">
 									<option value=""><?php esc_attr_e( '&mdash; Select &mdash;' ); ?></option>
 									<?php foreach ( $flags as $flag ) { ?>
-										<option value="<?php esc_attr_e( $flag ); ?>"><?php esc_attr_e( pathinfo( $flag, PATHINFO_FILENAME ) ); ?></option>
+										<option value="<?php esc_attr_e( $flag ); ?>" data-flag="<?php echo esc_url( wpm_get_flag_url( $flag ) ); ?>"><?php esc_attr_e( pathinfo( $flag, PATHINFO_FILENAME ) ); ?></option>
 									<?php } ?>
 								</select>
 							</td>

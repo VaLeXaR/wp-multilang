@@ -1,6 +1,13 @@
 (function ($) {
   "use strict";
 
+  function formatState (item) {
+    if (!item.id) {
+      return item.text;
+    }
+    return $('<img src="' + $(item.element).data('flag') + '" /> ' + item.text + '</span>');
+  }
+
   $(function () {
 
     $(document).on('click', '.delete-language', function () {
@@ -43,20 +50,6 @@
       }
     });
 
-    $(document).on('change', '.wpm-flags', function () {
-      var select = $(this);
-      if (select.val()) {
-        var flag = wpm_params.flags_dir + select.val();
-        if (select.next().length) {
-          select.next().attr('src', flag);
-        } else {
-          select.parent().append('<img src="' + flag + '">');
-        }
-      } else {
-        select.next().remove();
-      }
-    });
-
     $('#add_lang').click(function () {
       var t_language = wp.template('wpm-add-lang');
       var data = {
@@ -64,6 +57,10 @@
       };
       $('#wpm-languages').append(t_language(data));
       wpm_lang_count++;
+      $(".wpm-flags").select2({
+        templateResult: formatState,
+        templateSelection: formatState
+      });
     });
 
 
@@ -112,6 +109,11 @@
           }
         });
       }
+    });
+
+    $(".wpm-flags").select2({
+      templateResult: formatState,
+      templateSelection: formatState
     });
 
   });

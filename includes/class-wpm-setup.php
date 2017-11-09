@@ -131,10 +131,10 @@ class WPM_Setup {
 		add_action( 'after_switch_theme', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
 		add_action( 'activated_plugin', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
 		add_action( 'upgrader_process_complete', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
-		add_action( 'after_setup_theme', array( $this, 'redirect_default_url' ) );
 		add_action( 'wpm_init', array( $this, 'load_integrations' ) );
 		add_action( 'parse_request', array( $this, 'setup_query_var' ), 0 );
-		add_action( 'wp', array( $this, 'redirect_to_user_language' ) );
+		add_action( 'template_redirect', array( $this, 'redirect_default_url' ) );
+		add_action( 'template_redirect', array( $this, 'redirect_to_user_language' ) );
 		add_filter( 'request', array( $this, 'set_home_page' ) );
 		add_filter( 'rest_url', array( $this, 'fix_rest_url' ) );
 		add_filter( 'option_date_format', array( $this, 'set_date_format' ) );
@@ -408,18 +408,17 @@ class WPM_Setup {
 	public function redirect_default_url() {
 		$user_language    = $this->get_user_language();
 		$default_language = $this->get_default_language();
-		$languages        = $this->get_languages();
 		$url_lang         = $this->get_lang_from_url();
 
 		if ( ! isset( $_REQUEST['lang'] ) ) {
 			if ( get_option( 'wpm_use_prefix' ) ) {
-				if ( ! $url_lang && ! is_admin() && ! preg_match( '/^.*\.php$/i', wp_parse_url( $this->get_original_request_uri(), PHP_URL_PATH ) ) ) {
-					wp_redirect( home_url( '/' . $default_language . $this->get_original_request_uri() ) );
+				if ( ! $url_lang ) {
+					wp_redirect( home_url( $this->get_original_request_uri() ) );
 					exit;
 				}
 			} else {
-				if ( $url_lang && isset( $languages[ $url_lang ] ) && $user_language === $default_language ) {
-					wp_redirect( home_url( str_replace( '/' . $user_language . '/', '/', $this->get_original_request_uri() ) ) );
+				if ( $url_lang && $user_language === $default_language ) {
+					wp_redirect( home_url( preg_replace( '!^/([a-z]{2})(-[a-z]{2})?(/|$)!i', '/', $this->get_original_request_uri() ) ) );
 					exit;
 				}
 			}
@@ -705,7 +704,7 @@ class WPM_Setup {
 	 * @return string
 	 */
 	public function fix_rest_url( $url ) {
-		if ( ! get_option( 'wpm_use_prefix' ) && get_locale() != wpm_get_default_locale() ) {
+		if ( ! get_option( 'wpm_use_prefix' ) && wpm_get_language() != wpm_get_default_language() ) {
 			$url = str_replace( '/' . wpm_get_language() . '/', '/', $url );
 		}
 
