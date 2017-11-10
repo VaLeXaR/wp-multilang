@@ -14,7 +14,8 @@
     "product_shipping_class" : {}
   },
   "admin_pages": [
-    "woocommerce_page_wc-settings"
+    "woocommerce_page_wc-settings",
+    "product_page_product_attributes"
   ],
   "options": {
     "woocommerce_store_address": {},
