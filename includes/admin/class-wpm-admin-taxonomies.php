@@ -86,7 +86,7 @@ class WPM_Admin_Taxonomies {
 			$output    = array();
 			$text      = $term->name . $term->description;
 			$strings   = wpm_value_to_ml_array( $text );
-			$languages = wpm_get_options();
+			$languages = wpm_get_lang_option();
 
 			foreach ( $languages as $lang => $language ) {
 				if ( isset( $strings[ $lang ] ) && ! empty( $strings[ $lang ] ) ) {

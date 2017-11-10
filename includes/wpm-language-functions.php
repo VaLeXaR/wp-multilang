@@ -79,8 +79,8 @@ function wpm_get_config() {
  *
  * @return array
  */
-function wpm_get_options() {
-	return WPM_Setup::instance()->get_options();
+function wpm_get_lang_option() {
+	return WPM_Setup::get_option( 'languages' );
 }
 
 /**

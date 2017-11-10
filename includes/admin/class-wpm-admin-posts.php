@@ -103,7 +103,7 @@ class WPM_Admin_Posts {
 			$output    = array();
 			$text      = $post->post_title . $post->post_content;
 			$strings   = wpm_value_to_ml_array( $text );
-			$languages = wpm_get_options();
+			$languages = wpm_get_lang_option();
 
 			foreach ( $languages as $lang => $language ) {
 				if ( isset( $strings[ $lang ] ) && ! empty( $strings[ $lang ] ) ) {

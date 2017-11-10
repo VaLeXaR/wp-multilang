@@ -122,7 +122,7 @@ class WPM_Admin_Settings {
 	 * Display languages
 	 */
 	public function languages_setting() {
-		$languages = wpm_get_options();
+		$languages = wpm_get_lang_option();
 		$flags     = wpm_get_flags();
 		?>
 		<div id="poststuff">
@@ -327,7 +327,7 @@ class WPM_Admin_Settings {
 	public function installed_translations() {
 		$installed_translations = wpm_get_installed_languages();
 		$available_translations = wpm_get_available_translations();
-		$options                = wpm_get_options();
+		$options                = wpm_get_lang_option();
 		?>
 		<select id="wpm_installed_translations" title="<?php esc_html_e( 'Installed translations', 'wp-multilang' ); ?>">
 			<?php foreach ( $installed_translations as $translation ) { ?>

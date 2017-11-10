@@ -30,7 +30,7 @@ function wpm_translate_url( $url, $language = '' ) {
 	}
 
 	$user_language = wpm_get_language();
-	$options       = wpm_get_options();
+	$options       = wpm_get_lang_option();
 
 	if ( $language ) {
 		if ( ( ( $language === $user_language ) && ( ! is_admin() || wp_doing_ajax() ) && ! isset( $_GET['lang'] ) ) || ! isset( $options[ $language ] ) ) {
@@ -171,7 +171,7 @@ function wpm_string_to_ml_array( $string ) {
 
 	$result = array();
 
-	$languages = wpm_get_options();
+	$languages = wpm_get_lang_option();
 
 	foreach ( $languages as $key => $language ) {
 		$result[ $key ] = '';
@@ -253,7 +253,7 @@ function wpm_ml_array_to_string( $strings ) {
 		return $string;
 	}
 
-	$languages = wpm_get_options();
+	$languages = wpm_get_lang_option();
 	foreach ( $strings as $key => $value ) {
 		if ( isset( $languages[ $key ] ) && ( '' != $value ) ) {
 			if ( wpm_is_ml_string( $value ) ) {
@@ -481,7 +481,7 @@ function wpm_is_ml_array( $array ) {
 		return false;
 	}
 
-	$languages = wpm_get_options();
+	$languages = wpm_get_lang_option();
 
 	foreach ( $array as $key => $item ) {
 		if ( ! isset( $languages[ $key ] ) ) {

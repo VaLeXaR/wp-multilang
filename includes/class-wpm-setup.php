@@ -61,7 +61,7 @@ class WPM_Setup {
 	 *
 	 * @var array
 	 */
-	private $options = array();
+	private static $options = array();
 
 	/**
 	 * Installed languages
@@ -147,14 +147,16 @@ class WPM_Setup {
 	/**
 	 * Load options from base
 	 *
+	 * @param string $key
+	 *
 	 * @return array|string
 	 */
-	public function get_options() {
-		if ( ! $this->options ) {
-			$this->options = get_option( 'wpm_languages', array() );
+	static function get_option( $key ) {
+		if ( ! isset( self::$options[ $key ] ) ) {
+			self::$options[ $key ] = get_option( 'wpm_' . $key );
 		}
 
-		return $this->options;
+		return self::$options[ $key ];
 	}
 
 
@@ -237,7 +239,7 @@ class WPM_Setup {
 	 */
 	public function get_languages() {
 		if ( ! $this->languages ) {
-			$options   = $this->get_options();
+			$options   = self::get_option( 'languages' );
 			$languages = array();
 
 			foreach ( $options as $slug => $language ) {
@@ -275,7 +277,7 @@ class WPM_Setup {
 	 */
 	public function get_default_language() {
 		if ( ! $this->default_language ) {
-			$default_language = get_option( 'wpm_site_language' );
+			$default_language = self::get_option( 'site_language' );
 
 			if ( ! $default_language ) {
 				$locale           = explode( '_', $this->get_default_locale() );
@@ -410,7 +412,7 @@ class WPM_Setup {
 		$url_lang         = $this->get_lang_from_url();
 
 		if ( ! isset( $_GET['lang'] ) ) {
-			if ( get_option( 'wpm_use_prefix' ) ) {
+			if ( self::get_option( 'use_prefix' ) ) {
 				if ( ! $url_lang ) {
 					wp_redirect( home_url( $this->get_original_request_uri() ) );
 					exit;
@@ -518,7 +520,7 @@ class WPM_Setup {
 		$default_language = wpm_get_default_language();
 
 
-		if ( $user_language !== $default_language || get_option( 'wpm_use_prefix' ) ) {
+		if ( $user_language !== $default_language || self::get_option( 'use_prefix' ) ) {
 			$value .= '/' . $user_language;
 		}
 
@@ -592,7 +594,7 @@ class WPM_Setup {
 			if ( ! isset( $_COOKIE['language'] ) ) {
 
 				wpm_setcookie( 'language', $user_language, time() + YEAR_IN_SECONDS );
-				$redirect_to_browser_language = get_option( 'wpm_use_redirect', false );
+				$redirect_to_browser_language = self::get_option( 'use_redirect', false );
 
 				if ( $redirect_to_browser_language ) {
 
@@ -712,7 +714,7 @@ class WPM_Setup {
 	 * @return string
 	 */
 	public function fix_rest_url( $url ) {
-		if ( ! get_option( 'wpm_use_prefix' ) && wpm_get_language() != wpm_get_default_language() ) {
+		if ( ! self::get_option( 'use_prefix' ) && wpm_get_language() != wpm_get_default_language() ) {
 			$url = str_replace( '/' . wpm_get_language() . '/', '/', $url );
 		}
 
