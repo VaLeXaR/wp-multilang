@@ -26,7 +26,7 @@ class WPM_Config {
 		self::load_plugins_config();
 		self::load_core_configs();
 		self::parse_config_files();
-		update_option( 'wpm_config', self::$config );
+		wp_cache_set( 'wpm_config', self::$config );
 	}
 
 	/**

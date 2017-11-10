@@ -56,11 +56,8 @@
         count: wpm_lang_count
       };
       $('#wpm-languages').append(t_language(data));
+      $(".wpm-flags").trigger('change');
       wpm_lang_count++;
-      $(".wpm-flags").select2({
-        templateResult: formatState,
-        templateSelection: formatState
-      });
     });
 
 
@@ -111,10 +108,14 @@
       }
     });
 
-    $(".wpm-flags").select2({
-      templateResult: formatState,
-      templateSelection: formatState
+    $(document).on('change', '.wpm-flags', function(){
+      $(this).select2({
+        templateResult: formatState,
+        templateSelection: formatState
+      });
     });
+
+    $(".wpm-flags").trigger('change');
 
   });
 }(jQuery));

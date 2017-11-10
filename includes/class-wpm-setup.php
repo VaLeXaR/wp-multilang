@@ -458,7 +458,11 @@ class WPM_Setup {
 	public function get_config() {
 
 		if ( ! $this->config ) {
-			$config       = get_option( 'wpm_config', array() );
+			if ( ! $config = wp_cache_get( 'wpm_config' ) ) {
+				WPM_Config::load_config_run();
+				$config = wp_cache_get( 'wpm_config' );
+			}
+
 			$theme_config = WPM_Config::load_theme_config();
 			$this->config = wpm_array_merge_recursive( $config, $theme_config );
 		}
