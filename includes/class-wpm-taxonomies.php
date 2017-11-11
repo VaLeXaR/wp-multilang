@@ -179,8 +179,7 @@ class WPM_Taxonomies extends WPM_Object {
 		}
 
 		if ( ! wpm_is_ml_value( $data['name'] ) ) {
-			$data['name'] = wpm_set_language_value( array(), $data['name'] );
-			$data['name'] = wpm_ml_value_to_string( $data['name'] );
+			$data['name'] = wpm_set_new_value( array(), $data['name'] );
 		}
 
 		$this->description = array(
@@ -211,8 +210,7 @@ class WPM_Taxonomies extends WPM_Object {
 			return;
 		}
 
-		$value       = wpm_set_language_value( array(), $value );
-		$description = wpm_ml_value_to_string( $value );
+		$description = wpm_set_new_value( array(), $value );
 
 		$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_taxonomy_id' => $tt_id ) );
 	}
@@ -240,9 +238,7 @@ class WPM_Taxonomies extends WPM_Object {
 		add_filter( 'get_term', 'wpm_translate_term', 5, 2 );
 
 		if ( ! wpm_is_ml_value( $data['name'] ) ) {
-			$strings      = wpm_value_to_ml_array( $old_name );
-			$value        = wpm_set_language_value( $strings, $data['name'] );
-			$data['name'] = wpm_ml_value_to_string( $value );
+			$data['name'] = wpm_set_new_value( $old_name, $data['name'] );
 		}
 
 		$this->description = array(
@@ -273,10 +269,7 @@ class WPM_Taxonomies extends WPM_Object {
 			return;
 		}
 
-		$old_value   = $this->description['old'];
-		$strings     = wpm_value_to_ml_array( $old_value );
-		$value       = wpm_set_language_value( $strings, $value );
-		$description = wpm_ml_value_to_string( $value );
+		$description = wpm_set_new_value( $this->description['old'], $value );
 
 		$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_taxonomy_id' => $tt_id ) );
 	}

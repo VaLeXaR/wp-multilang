@@ -182,13 +182,11 @@ class WPM_Posts extends WPM_Object {
 
 				if ( $post_id ) {
 					$old_value = get_post_field( $key, $post_id, 'edit' );
-					$old_value = wpm_value_to_ml_array( $old_value );
 				} else {
 					$old_value = '';
 				}
 
-				$value        = wpm_set_language_value( $old_value, $data[ $key ], $post_field_config );
-				$data[ $key ] = wpm_ml_value_to_string( $value );
+				$data[ $key ] = wpm_set_new_value( $old_value, $data[ $key ], $post_field_config );
 			}
 		}
 

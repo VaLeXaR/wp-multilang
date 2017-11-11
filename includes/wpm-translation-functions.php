@@ -538,3 +538,11 @@ function wpm_is_ml_value( $value ) {
 		return wpm_is_ml_string( $value );
 	}
 }
+
+function wpm_set_new_value( $old_value, $new_value, $config = array() ) {
+	$old_value = wpm_value_to_ml_array( $old_value );
+	$value     = wpm_set_language_value( $old_value, $new_value, $config );
+	$value     = wpm_ml_value_to_string( $value );
+
+	return $value;
+}

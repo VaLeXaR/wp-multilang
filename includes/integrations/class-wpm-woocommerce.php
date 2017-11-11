@@ -82,22 +82,15 @@ class WPM_WooCommerce {
 	 */
 	public function update_shipping_settings( $settings, $shipping ) {
 
-		$old_settings = get_option( $shipping->get_instance_option_key(), null );
-
-		$strings = array();
-
-		if ( $old_settings ) {
-			$strings  = wpm_value_to_ml_array( $old_settings );
-		}
+		$old_settings = get_option( $shipping->get_instance_option_key(), array() );
 
 		$setting_config = array(
 			'title' => array(),
 		);
 
-		$new_value    = wpm_set_language_value( $strings, $settings, $setting_config );
-		$new_settings = wpm_ml_value_to_string( $new_value );
+		$settings = wpm_set_new_value( $old_settings, $settings, $setting_config );
 
-		return $new_settings;
+		return $settings;
 	}
 
 	/**
@@ -219,8 +212,7 @@ class WPM_WooCommerce {
 		$label = '';
 
 		if ( isset( $_POST['attribute_label'] ) ) {
-			$label = wpm_set_language_value( '', wc_clean( stripslashes( $_POST['attribute_label'] ) ), array() );
-			$label = wpm_ml_value_to_string( $label );
+			$label = wpm_set_new_value( '', wc_clean( stripslashes( $_POST['attribute_label'] ) ) );
 		}
 
 		$_POST['attribute_label'] = $label;
@@ -237,9 +229,7 @@ class WPM_WooCommerce {
 
 		if ( isset( $_POST['attribute_label'] ) ) {
 			$attribute = wc_get_attribute( $attribute_id );
-			$old_label = wpm_value_to_ml_array( $attribute->name );
-			$label     = wpm_set_language_value( $old_label, wc_clean( stripslashes( $_POST['attribute_label'] ) ), array() );
-			$label     = wpm_ml_value_to_string( $label );
+			$label     = wpm_set_new_value( $attribute->name, wc_clean( stripslashes( $_POST['attribute_label'] ) ) );
 		}
 
 		$_POST['attribute_label'] = $label;

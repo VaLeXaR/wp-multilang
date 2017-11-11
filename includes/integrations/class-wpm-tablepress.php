@@ -67,11 +67,9 @@ class WPM_Tablepress {
 		);
 
 		$old_table            = json_decode( get_post_field( 'post_content', wpm_clean( $postarr['ID'] ), 'edit' ) );
-		$strings              = wpm_value_to_ml_array( $old_table );
-		$value                = json_decode( stripslashes_from_strings_only( $data['post_content'] ) );
-		$new_value            = wpm_set_language_value( $strings, $value, $options );
-		$new_value            = wpm_ml_value_to_string( $new_value );
-		$data['post_content'] = addslashes_gpc( wp_json_encode( $new_value ) );
+		$new_table            = json_decode( stripslashes_from_strings_only( $data['post_content'] ) );
+		$value                = wpm_set_new_value( $old_table, $new_table, $options );
+		$data['post_content'] = addslashes_gpc( wp_json_encode( $value ) );
 
 		return $data;
 	}

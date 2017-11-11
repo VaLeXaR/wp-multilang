@@ -145,9 +145,7 @@ class WPM_BuddyPress {
 			$this->field_group = xprofile_get_field_group( $field_group_id );
 		}
 
-		$strings   = wpm_string_to_ml_array( $this->field_group->name );
-		$new_value = wpm_set_language_value( $strings, $name );
-		$name      = wpm_ml_value_to_string( $new_value );
+		$name = wpm_set_new_value( $this->field_group->name, $name );
 
 		return $name;
 	}
@@ -161,9 +159,7 @@ class WPM_BuddyPress {
 	 * @return string
 	 */
 	public function save_group_description( $description ) {
-		$strings     = wpm_string_to_ml_array( $this->field_group->description );
-		$new_value   = wpm_set_language_value( $strings, $description );
-		$description = wpm_ml_value_to_string( $new_value );
+		$description = wpm_set_new_value( $this->field_group->description, $description );
 
 		return $description;
 	}
@@ -183,9 +179,7 @@ class WPM_BuddyPress {
 			$this->field = xprofile_get_field( $field_id );
 		}
 
-		$strings   = wpm_string_to_ml_array( $this->field->name );
-		$new_value = wpm_set_language_value( $strings, $name );
-		$name      = wpm_ml_value_to_string( $new_value );
+		$name = wpm_set_new_value( $this->field->name, $name );
 
 		return $name;
 	}
@@ -199,9 +193,7 @@ class WPM_BuddyPress {
 	 * @return string
 	 */
 	public function save_field_description( $description ) {
-		$strings     = wpm_string_to_ml_array( $this->field->description );
-		$new_value   = wpm_set_language_value( $strings, $description );
-		$description = wpm_ml_value_to_string( $new_value );
+		$description = wpm_set_new_value( $this->field->description, $description );
 
 		return $description;
 	}

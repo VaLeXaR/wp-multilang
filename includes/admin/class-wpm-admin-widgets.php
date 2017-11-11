@@ -52,9 +52,7 @@ class WPM_Admin_Widgets {
 			$base_widget_config = wpm_array_merge_recursive( $base_widget_config, $widget_config );
 		}
 
-		$old_instance = wpm_value_to_ml_array( $old_instance );
-		$new_value    = wpm_set_language_value( $old_instance, $new_instance, $base_widget_config );
-		$instance     = wpm_ml_value_to_string( $new_value );
+		$instance = wpm_set_new_value( $old_instance, $new_instance, $base_widget_config );
 
 		return $instance;
 	}

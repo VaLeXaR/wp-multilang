@@ -127,8 +127,6 @@ class WPM_Acf {
 
 		if ( ! $old_field ) {
 			$old_field = array();
-		} else {
-			$old_field = wpm_value_to_ml_array( $old_field );
 		}
 
 		$default_config = array(
@@ -138,10 +136,8 @@ class WPM_Acf {
 		);
 
 		$acf_field_config = apply_filters( "wpm_acf_field_{$field['type']}_config", $default_config );
-
-		$field = apply_filters( 'acf/update_field/type=' . $field['type'], $field, $post_id );
-		$field = wpm_set_language_value( $old_field, $field, $acf_field_config );
-		$field = wpm_ml_value_to_string( $field );
+		$field            = apply_filters( 'acf/update_field/type=' . $field['type'], $field, $post_id );
+		$field            = wpm_set_new_value( $old_field, $field, $acf_field_config );
 
 		wp_cache_delete( 'load_field/key=' . $field['key'], 'acf' );
 
@@ -211,9 +207,7 @@ class WPM_Acf {
 		remove_filter( "acf/load_value", 'wpm_translate_value', 5 );
 		$old_value = get_field( $field['name'], $post_id, false );
 		add_filter( "acf/load_value", 'wpm_translate_value', 5 );
-		$old_value = wpm_value_to_ml_array( $old_value );
-		$new_value = wpm_set_language_value( $old_value, $value, $acf_field_config );
-		$value     = wpm_ml_value_to_string( $new_value );
+		$value = wpm_set_new_value( $old_value, $value, $acf_field_config );
 
 		return $value;
 	}
@@ -278,9 +272,7 @@ class WPM_Acf {
 			remove_filter( "acf/load_value", 'wpm_translate_value', 5 );
 			$old_value = get_field( $field['name'], $post_id, false );
 			add_filter( "acf/load_value", 'wpm_translate_value', 5 );
-			$old_value = wpm_value_to_ml_array( $old_value );
-			$new_value = wpm_set_language_value( $old_value, $value, $acf_field_config );
-			$value     = wpm_ml_value_to_string( $new_value );
+			$value = wpm_set_new_value( $old_value, $value, $acf_field_config );
 		}
 
 
