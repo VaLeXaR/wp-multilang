@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 include( 'wpm-formatting-functions.php' );
 include( 'wpm-language-functions.php' );
 include( 'wpm-translation-functions.php' );
+include( 'wpm-config-functions.php' );
 include( 'wpm-template-functions.php' );
 
 /**

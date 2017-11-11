@@ -100,6 +100,7 @@ class WPM_Config {
 	 * Load configs from current theme
 	 */
 	static public function load_theme_config() {
+		self::$config_files = self::$config = array();
 
 		$config_file = get_template_directory() . '/wpm-config.json';
 		if ( file_exists( $config_file ) ) {

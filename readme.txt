@@ -181,7 +181,9 @@ If you have opened several browser tabs for editing this post in different langu
 = 2.0.3 =
 + add flag select autocomplete
 + add setting for set Yoast SEO Opengraph locale
+* add support WooCommerce attributes
 * fix add $_GET 'lang' param
+* Other fixes and improvements
 
 = 2.0.2 =
 * fix separate posts by language

@@ -471,24 +471,6 @@ class WPM_Setup {
 
 		$config = apply_filters( 'wpm_load_config', $this->config );
 
-		$posts_config = apply_filters( 'wpm_posts_config', $config['post_types'] );
-		$post_types   = get_post_types( '', 'names' );
-
-		foreach ( $post_types as $post_type ) {
-			$posts_config[ $post_type ] = apply_filters( "wpm_post_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
-		}
-
-		$config['post_types'] = $posts_config;
-
-		$taxonomies_config = apply_filters( 'wpm_taxonomies_config', $config['taxonomies'] );
-		$taxonomies        = get_taxonomies();
-
-		foreach ( $taxonomies as $taxonomy ) {
-			$taxonomies_config[ $taxonomy ] = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
-		}
-
-		$config['taxonomies'] = $taxonomies_config;
-
 		$config['options'] = apply_filters( 'wpm_options_config', $config['options'] );
 
 		if ( is_multisite() ) {
@@ -496,8 +478,6 @@ class WPM_Setup {
 		} else {
 			unset( $config['site_options'] );
 		}
-
-		$config['widgets'] = apply_filters( 'wpm_widgets_config', $config['widgets'] );
 
 		return $config;
 	}

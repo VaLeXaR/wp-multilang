@@ -23,17 +23,6 @@ abstract class WPM_Object {
 	 */
 	public $object_table;
 
-	/**
-	 *  WPM config
-	 * @array
-	 */
-	public $config;
-
-
-	public function __construct() {
-		$this->config = wpm_get_config();
-	}
-
 
 	/**
 	 * Translate meta
@@ -47,6 +36,22 @@ abstract class WPM_Object {
 	public function get_meta_field( $value, $object_id, $meta_key ) {
 		global $wpdb;
 
+		switch ( $this->object_type ) {
+
+			case 'post':
+				if ( is_null( wpm_get_post_config( get_post_type( $object_id ) ) ) ) {
+					return $value;
+				}
+
+				break;
+
+			case 'term':
+				$term = get_term( $object_id );
+				if ( is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
+					return $value;
+				}
+		}
+
 		if ( ! $meta_key ) {
 
 			$meta_cache = wp_cache_get( $object_id, $this->object_type . '_meta' );
@@ -59,7 +64,8 @@ abstract class WPM_Object {
 			return wpm_translate_value( $meta_cache );
 		}
 
-		$object_fields_config = $this->config[ $this->object_type . '_fields' ];
+		$config               = wpm_get_config();
+		$object_fields_config = $config[ $this->object_type . '_fields' ];
 		$object_fields_config = apply_filters( "wpm_{$this->object_type}_meta_config", $object_fields_config );
 
 		if ( ! isset( $object_fields_config[ $meta_key ] ) ) {
@@ -126,7 +132,7 @@ abstract class WPM_Object {
 		switch ( $this->object_type ) {
 
 			case 'post':
-				if ( ! isset( $this->config['post_types'][ get_post_type( $object_id ) ] ) || is_null( $this->config['post_types'][ get_post_type( $object_id ) ] ) ) {
+				if ( is_null( wpm_get_post_config( get_post_type( $object_id ) ) ) ) {
 					return $check;
 				}
 
@@ -134,12 +140,13 @@ abstract class WPM_Object {
 
 			case 'term':
 				$term = get_term( $object_id );
-				if ( ! isset( $this->config['taxonomies'][ $term->taxonomy ] ) || is_null( $this->config['taxonomies'][ $term->taxonomy ] ) ) {
+				if ( is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
 					return $check;
 				}
 		}
 
-		$object_fields_config = $this->config[ $this->object_type . '_fields' ];
+		$config               = wpm_get_config();
+		$object_fields_config = $config[ $this->object_type . '_fields' ];
 		$object_fields_config = apply_filters( "wpm_{$this->object_type}_meta_config", $object_fields_config );
 
 		if ( ! isset( $object_fields_config[ $meta_key ] ) ) {
@@ -290,19 +297,20 @@ abstract class WPM_Object {
 		switch ( $this->object_type ) {
 
 			case 'post':
-				if ( ! isset( $this->config['post_types'][ get_post_type( $object_id ) ] ) || is_null( $this->config['post_types'][ get_post_type( $object_id ) ] ) ) {
+				if ( is_null( wpm_get_post_config( get_post_type( $object_id ) ) ) ) {
 					return $check;
 				}
 				break;
 
 			case 'term':
 				$term = get_term( $object_id );
-				if ( ! isset( $this->config['taxonomies'][ $term->taxonomy ] ) || is_null( $this->config['taxonomies'][ $term->taxonomy ] ) ) {
+				if ( is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
 					return $check;
 				}
 		}
 
-		$object_fields_config = $this->config[ $this->object_type . '_fields' ];
+		$config               = wpm_get_config();
+		$object_fields_config = $config[ $this->object_type . '_fields' ];
 		$object_fields_config = apply_filters( "wpm_{$this->object_type}_meta_config", $object_fields_config );
 
 		if ( ! isset( $object_fields_config[ $meta_key ] ) ) {
@@ -387,19 +395,20 @@ abstract class WPM_Object {
 		switch ( $this->object_type ) {
 
 			case 'post':
-				if ( ! isset( $this->config['post_types'][ get_post_type( $object_id ) ] ) || is_null( $this->config['post_types'][ get_post_type( $object_id ) ] ) ) {
+				if ( is_null( wpm_get_post_config( get_post_type( $object_id ) ) ) ) {
 					return;
 				}
 				break;
 
 			case 'term':
 				$term = get_term( $object_id );
-				if ( ! isset( $this->config['taxonomies'][ $term->taxonomy ] ) || is_null( $this->config['taxonomies'][ $term->taxonomy ] ) ) {
+				if ( is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
 					return;
 				}
 		}
 
-		$object_fields_config = $this->config[ $this->object_type . '_fields' ];
+		$config               = wpm_get_config();
+		$object_fields_config = $config[ $this->object_type . '_fields' ];
 		$object_fields_config = apply_filters( "wpm_{$this->object_type}_meta_config", $object_fields_config );
 
 		if ( ! isset( $object_fields_config[ $meta_key ] ) ) {
@@ -408,5 +417,4 @@ abstract class WPM_Object {
 
 		wp_cache_delete( $object_id, $this->object_type . '_' . $meta_key . '_wpm_meta' );
 	}
-
 }

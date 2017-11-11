@@ -28,7 +28,7 @@ class WPM_Newsletter {
 		add_action( 'admin_notices', array( $this, 'add_notice' ) );
 		add_action( 'init', array( $this, 'translate_options' ) );
 		add_filter( 'newsletter_user_subscribe', array( $this, 'save_profile_20' ) );
-		add_filter( 'newsletter_replace', array($this, 'translate_email'), 10, 2 );
+		add_filter( 'newsletter_replace', array( $this, 'translate_email' ), 10, 2 );
 	}
 
 

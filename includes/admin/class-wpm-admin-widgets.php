@@ -41,21 +41,19 @@ class WPM_Admin_Widgets {
 	 */
 	public function pre_save_widget( $instance, $new_instance, $old_instance, $widget ) {
 
-		$config                             = wpm_get_config();
-		$widgets_config                     = $config['widgets'];
-		$widgets_config[ $widget->id_base ] = apply_filters( "wpm_widget_{$widget->id_base}_config", isset( $widgets_config[ $widget->id_base ] ) ? $widgets_config[ $widget->id_base ] : null );
-
-		$widget_config = array(
+		$base_widget_config = array(
 			'title' => array(),
 			'text'  => array(),
 		);
 
-		if ( ! is_null( $widgets_config[ $widget->id_base ] ) ) {
-			$widget_config = wpm_array_merge_recursive( $widget_config, $widgets_config[ $widget->id_base ] );
+		$widget_config = wpm_get_widget_config( $widget->id_base );
+
+		if ( ! is_null( $widget_config ) ) {
+			$base_widget_config = wpm_array_merge_recursive( $base_widget_config, $widget_config );
 		}
 
 		$old_instance = wpm_value_to_ml_array( $old_instance );
-		$new_value    = wpm_set_language_value( $old_instance, $new_instance, $widget_config );
+		$new_value    = wpm_set_language_value( $old_instance, $new_instance, $base_widget_config );
 		$instance     = wpm_ml_value_to_string( $new_value );
 
 		return $instance;
@@ -77,7 +75,7 @@ class WPM_Admin_Widgets {
 		<p>
 			<?php _e( 'Show widget only in:', 'wp-multilang' ); ?><br>
 			<?php foreach ( $languages as $lang => $language ) { ?>
-				<label><input type="checkbox" name="<?php esc_attr_e( $widget->get_field_name('languages') ); ?>[<?php esc_attr_e( $i ); ?>]" id="<?php echo $widget->get_field_id('languages') . '-' . $lang; ?>" value="<?php esc_attr_e( $lang ); ?>"<?php checked( in_array( $lang, $instance['languages'] ) ); ?>><?php esc_attr_e( $language['name'] ); ?></label><br>
+				<label><input type="checkbox" name="<?php esc_attr_e( $widget->get_field_name('languages') ); ?>[<?php echo $i; ?>]" id="<?php echo $widget->get_field_id('languages') . '-' . $lang; ?>" value="<?php esc_attr_e( $lang ); ?>"<?php checked( in_array( $lang, $instance['languages'] ) ); ?>><?php esc_attr_e( $language['name'] ); ?></label><br>
 			<?php $i++; } ?>
 		</p>
 		<?php

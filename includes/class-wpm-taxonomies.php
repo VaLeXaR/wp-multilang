@@ -34,20 +34,11 @@ class WPM_Taxonomies extends WPM_Object {
 	 */
 	private $description = array();
 
-	/**
-	 * Term config
-	 *
-	 * @var array
-	 */
-	public $term_config = array();
-
 
 	/**
 	 * WPM_Taxonomies constructor.
 	 */
 	public function __construct() {
-		parent::__construct();
-		$this->term_config = $this->config['taxonomies'];
 		add_filter( 'get_terms', array( $this, 'translate_terms' ), 5 );
 		add_filter( 'get_terms_args', array( $this, 'filter_terms_by_language' ), 10, 2 );
 		add_filter( "get_{$this->object_type}_metadata", array( $this, 'get_meta_field' ), 5, 3 );
@@ -103,8 +94,7 @@ class WPM_Taxonomies extends WPM_Object {
 
 				if ( count( $taxonomies ) === 1 ) {
 					$taxonomy = current( $taxonomies );
-
-					if ( ! isset( $this->term_config[ $taxonomy ] ) || is_null( $this->term_config[ $taxonomy ] ) ) {
+					if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
 						return $args;
 					}
 				}
@@ -155,7 +145,7 @@ class WPM_Taxonomies extends WPM_Object {
 	public function pre_insert_term( $term, $taxonomy ) {
 		global $wpdb;
 
-		if ( ! isset( $this->term_config[ $taxonomy ] ) || is_null( $this->term_config[ $taxonomy ] ) ) {
+		if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
 			return $term;
 		}
 
@@ -184,12 +174,12 @@ class WPM_Taxonomies extends WPM_Object {
 	 */
 	public function insert_term( $data, $taxonomy, $args ) {
 
-		if ( ! isset( $this->term_config[ $taxonomy ] ) || is_null( $this->term_config[ $taxonomy ] ) ) {
+		if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
 			return $data;
 		}
 
 		if ( ! wpm_is_ml_value( $data['name'] ) ) {
-			$data['name'] = wpm_set_language_value( array(), $data['name'], $this->term_config[ $taxonomy ] );
+			$data['name'] = wpm_set_language_value( array(), $data['name'] );
 			$data['name'] = wpm_ml_value_to_string( $data['name'] );
 		}
 
@@ -211,11 +201,7 @@ class WPM_Taxonomies extends WPM_Object {
 	public function insert_description( $term_id, $tt_id, $taxonomy ) {
 		global $wpdb;
 
-		if ( ! isset( $this->term_config[ $taxonomy ] ) || is_null( $this->term_config[ $taxonomy ] ) ) {
-			return;
-		}
-
-		if ( ! $this->description ) {
+		if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) || ! $this->description ) {
 			return;
 		}
 
@@ -225,7 +211,7 @@ class WPM_Taxonomies extends WPM_Object {
 			return;
 		}
 
-		$value       = wpm_set_language_value( array(), $value, $this->term_config[ $taxonomy ] );
+		$value       = wpm_set_language_value( array(), $value );
 		$description = wpm_ml_value_to_string( $value );
 
 		$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_taxonomy_id' => $tt_id ) );
@@ -244,7 +230,7 @@ class WPM_Taxonomies extends WPM_Object {
 	 */
 	public function update_term( $data, $term_id, $taxonomy, $args ) {
 
-		if ( ! isset( $this->term_config[ $taxonomy ] ) || is_null( $this->term_config[ $taxonomy ] ) ) {
+		if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
 			return $data;
 		}
 
@@ -255,7 +241,7 @@ class WPM_Taxonomies extends WPM_Object {
 
 		if ( ! wpm_is_ml_value( $data['name'] ) ) {
 			$strings      = wpm_value_to_ml_array( $old_name );
-			$value        = wpm_set_language_value( $strings, $data['name'], $this->term_config[ $taxonomy ] );
+			$value        = wpm_set_language_value( $strings, $data['name'] );
 			$data['name'] = wpm_ml_value_to_string( $value );
 		}
 
@@ -277,11 +263,7 @@ class WPM_Taxonomies extends WPM_Object {
 	public function update_description( $tt_id, $taxonomy ) {
 		global $wpdb;
 
-		if ( ! isset( $this->term_config[ $taxonomy ] ) || is_null( $this->term_config[ $taxonomy ] ) ) {
-			return;
-		}
-
-		if ( ! $this->description ) {
+		if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) || ! $this->description ) {
 			return;
 		}
 
@@ -293,7 +275,7 @@ class WPM_Taxonomies extends WPM_Object {
 
 		$old_value   = $this->description['old'];
 		$strings     = wpm_value_to_ml_array( $old_value );
-		$value       = wpm_set_language_value( $strings, $value, $this->term_config[ $taxonomy ] );
+		$value       = wpm_set_language_value( $strings, $value );
 		$description = wpm_ml_value_to_string( $value );
 
 		$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_taxonomy_id' => $tt_id ) );

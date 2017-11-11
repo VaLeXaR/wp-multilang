@@ -97,5 +97,12 @@
       "description" : {},
       "instructions" : {}
     }
+  },
+  "admin_html_tags": {
+    "product_page_product_attributes": {
+      "value": [
+        "#attribute_label"
+      ]
+    }
   }
 }

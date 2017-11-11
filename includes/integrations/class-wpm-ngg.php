@@ -28,7 +28,7 @@ class WPM_NGG {
 		add_filter( 'wpm_admin_html_tags', array( $this, 'add_admin_html_tags' ) );
 		add_filter( 'ngg_manage_gallery_fields', array( $this, 'filter_fields' ), 11 );
 		add_filter( 'ngg_manage_images_row', array( $this, 'translate_gallery_object' ) );
-		add_action( 'admin_init', array( $this, 'save_gallery' ) );
+		add_action( 'admin_head', array( $this, 'save_gallery' ) );
 	}
 
 
