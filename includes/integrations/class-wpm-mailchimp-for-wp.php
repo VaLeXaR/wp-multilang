@@ -9,10 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! defined( 'MC4WP_VERSION' ) ) {
-	return;
-}
-
 /**
  * Class WPM_MailChimp_For_WP
  * @package  WPM/Includes/Vendor
@@ -29,5 +25,3 @@ class WPM_MailChimp_For_WP {
 		add_action( 'mc4wp_admin_edit_form_output_fields_tab', 'wpm_show_notice' );
 	}
 }
-
-new WPM_MailChimp_For_WP();

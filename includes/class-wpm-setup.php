@@ -149,11 +149,13 @@ class WPM_Setup {
 	 *
 	 * @param string $key
 	 *
+	 * @param string $default
+	 *
 	 * @return array|string
 	 */
-	static function get_option( $key ) {
+	static function get_option( $key, $default = '' ) {
 		if ( ! isset( self::$options[ $key ] ) ) {
-			self::$options[ $key ] = get_option( 'wpm_' . $key );
+			self::$options[ $key ] = get_option( 'wpm_' . $key, $default );
 		}
 
 		return self::$options[ $key ];
@@ -239,7 +241,7 @@ class WPM_Setup {
 	 */
 	public function get_languages() {
 		if ( ! $this->languages ) {
-			$options   = self::get_option( 'languages' );
+			$options   = self::get_option( 'languages', array() );
 			$languages = array();
 
 			foreach ( $options as $slug => $language ) {
@@ -277,7 +279,7 @@ class WPM_Setup {
 	 */
 	public function get_default_language() {
 		if ( ! $this->default_language ) {
-			$default_language = self::get_option( 'site_language' );
+			$default_language = self::get_option( 'site_language', false );
 
 			if ( ! $default_language ) {
 				$locale           = explode( '_', $this->get_default_locale() );
@@ -412,7 +414,7 @@ class WPM_Setup {
 		$url_lang         = $this->get_lang_from_url();
 
 		if ( ! isset( $_GET['lang'] ) ) {
-			if ( self::get_option( 'use_prefix' ) ) {
+			if ( self::get_option( 'use_prefix', false ) ) {
 				if ( ! $url_lang ) {
 					wp_redirect( home_url( $this->get_original_request_uri() ) );
 					exit;
@@ -499,7 +501,7 @@ class WPM_Setup {
 		$default_language = wpm_get_default_language();
 
 
-		if ( $user_language !== $default_language || self::get_option( 'use_prefix' ) ) {
+		if ( $user_language !== $default_language || self::get_option( 'use_prefix', false ) ) {
 			$value .= '/' . $user_language;
 		}
 
@@ -525,11 +527,33 @@ class WPM_Setup {
 	 * Load integration classes
 	 */
 	public function load_integrations() {
-		$integrations_path = WPM_ABSPATH . 'includes/integrations/';
-		foreach ( glob( $integrations_path . '*.php' ) as $integration_file ) {
-			if ( apply_filters( 'wpm_load_integration_' . str_replace( '-', '_', basename( $integration_file, '.php' ) ), $integration_file ) ) {
-				if ( $integration_file && is_readable( $integration_file ) ) {
-					include_once( $integration_file );
+
+		do_action( 'wpm_integrations_init' );
+
+		$integrations = apply_filters( 'wpm_integrations', array(
+			'advanced-custom-fields'     => __NAMESPACE__ . '\Integrations\WPM_Acf',
+			'advanced-custom-fields-pro' => __NAMESPACE__ . '\Integrations\WPM_Acf',
+			'all-in-one-seo-pack'        => __NAMESPACE__ . '\Integrations\WPM_AIOSP',
+			'buddypress'                 => __NAMESPACE__ . '\Integrations\WPM_BuddyPress',
+			'contact-form-7'             => __NAMESPACE__ . '\Integrations\WPM_CF7',
+			'gutenberg'                  => __NAMESPACE__ . '\Integrations\WPM_Gutenberg',
+			'js_composer'                => __NAMESPACE__ . '\Integrations\WPM_VC',
+			'mailchimp-for-wp'           => __NAMESPACE__ . '\Integrations\WPM_MailChimp_For_WP',
+			'masterslider'               => __NAMESPACE__ . '\Integrations\WPM_Masterslider',
+			'megamenu'                   => __NAMESPACE__ . '\Integrations\WPM_Megamenu',
+			'newsletter'                 => __NAMESPACE__ . '\Integrations\WPM_Newsletter',
+			'nextgen-gallery'            => __NAMESPACE__ . '\Integrations\WPM_NGG',
+			'siteorigin-panels'          => __NAMESPACE__ . '\Integrations\WPM_PBSO',
+			'tablepress'                 => __NAMESPACE__ . '\Integrations\WPM_Tablepress',
+			'woocommerce'                => __NAMESPACE__ . '\Integrations\WPM_WooCommerce',
+			'wordpress-seo'              => __NAMESPACE__ . '\Integrations\WPM_Yoast_Seo',
+		) );
+
+		foreach ( get_plugins() as $pf => $pd ) {
+			if ( is_plugin_active( $pf ) ) {
+				$plugin = dirname( $pf );
+				if ( isset( $integrations[ $plugin ] ) && ! empty( $integrations[ $plugin ] ) ) {
+					new $integrations[ $plugin ]();
 				}
 			}
 		}
@@ -693,7 +717,7 @@ class WPM_Setup {
 	 * @return string
 	 */
 	public function fix_rest_url( $url ) {
-		if ( ! self::get_option( 'use_prefix' ) && wpm_get_language() != wpm_get_default_language() ) {
+		if ( ! self::get_option( 'use_prefix', false ) && wpm_get_language() != wpm_get_default_language() ) {
 			$url = str_replace( '/' . wpm_get_language() . '/', '/', $url );
 		}
 

@@ -9,10 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! defined( 'AIOSEOP_VERSION' ) ) {
-	return;
-}
-
 /**
  * @class    WPM_AIOSP
  * @package  WPM/Includes/Integrations
@@ -156,5 +152,3 @@ class WPM_AIOSP {
 		return $namespace;
 	}
 }
-
-new WPM_AIOSP();

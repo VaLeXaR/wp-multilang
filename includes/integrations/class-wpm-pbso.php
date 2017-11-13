@@ -9,10 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! defined( 'SITEORIGIN_PANELS_VERSION' ) ) {
-	return;
-}
-
 /**
  * Class WPM_PBSO
  * @package  WPM/Includes/Integrations
@@ -98,5 +94,3 @@ class WPM_PBSO {
 		return $config;
 	}
 }
-
-new WPM_PBSO();

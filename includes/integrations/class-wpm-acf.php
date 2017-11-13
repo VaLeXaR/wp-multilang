@@ -3,16 +3,11 @@
  * Class for capability with Advanced Custom Fields Plugin
  */
 
-namespace WPM\Integrations\Integrations;
+namespace WPM\Includes\Integrations;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
-if ( ! class_exists( 'acf' ) ) {
-	return;
-}
-
 
 /**
  * @class    WPM_Acf
@@ -301,5 +296,3 @@ class WPM_Acf {
 		return $string;
 	}
 }
-
-new WPM_Acf();

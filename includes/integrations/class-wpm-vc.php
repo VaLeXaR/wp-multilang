@@ -1,16 +1,12 @@
 <?php
 /**
- * Class for capability with Visual Composer
+ * Class for capability with WPBakery Visual Composer
  */
 
 namespace WPM\Includes\Integrations;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-}
-
-if ( ! defined( 'WPB_VC_VERSION' ) ) {
-	return;
 }
 
 /**
@@ -109,5 +105,3 @@ class WPM_VC {
 		return add_query_arg( 'edit_lang', wpm_get_language(), $link );
 	}
 }
-
-new WPM_VC();

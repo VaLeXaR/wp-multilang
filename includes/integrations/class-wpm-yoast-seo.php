@@ -9,10 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! defined( 'WPSEO_VERSION' ) ) {
-	return;
-}
-
 /**
  * @class    WPM_Yoast_Seo
  * @package  WPM/Includes/Integrations
@@ -280,5 +276,3 @@ class WPM_Yoast_Seo {
 		return $locale;
 	}
 }
-
-new WPM_Yoast_Seo();

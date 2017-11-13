@@ -9,10 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! defined( 'MEGAMENU_VERSION' ) ) {
-	return;
-}
-
 /**
  * Class WPM_Megamenu
  * @package  WPM/Includes/Integrations
@@ -51,5 +47,3 @@ class WPM_Megamenu {
 		" );
 	}
 }
-
-new WPM_Megamenu();

@@ -9,10 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! defined( 'WC_VERSION' ) ) {
-	return;
-}
-
 /**
  * Class WPM_WooCommerce
  * @package  WPM/Includes/Integrations
@@ -235,5 +231,3 @@ class WPM_WooCommerce {
 		$_POST['attribute_label'] = $label;
 	}
 }
-
-new WPM_WooCommerce();

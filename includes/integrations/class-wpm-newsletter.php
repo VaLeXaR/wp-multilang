@@ -9,10 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! defined( 'NEWSLETTER_VERSION' ) ) {
-	return;
-}
-
 /**
  * Class WPM_Newsletter
  * @package  WPM/Includes/Integrations
@@ -61,7 +57,7 @@ class WPM_Newsletter {
 	/**
 	 * Translate options
 	 */
-	public function translate_options(){
+	public function translate_options() {
 		\NewsletterSubscription::instance()->options = wpm_translate_value( \NewsletterSubscription::instance()->options );
 		\Newsletter::instance()->options = wpm_translate_value( \Newsletter::instance()->options );
 
@@ -75,7 +71,7 @@ class WPM_Newsletter {
 		/**
 		 * Compatibility with extension Locked Content
 		 */
-		if (class_exists( 'NewsletterLock')) {
+		if ( class_exists( 'NewsletterLock' ) ) {
 			\NewsletterLock::$instance->options = wpm_translate_value( \NewsletterLock::$instance->options );
 		}
 	}
@@ -90,12 +86,10 @@ class WPM_Newsletter {
 
 	public function translate_email( $text, $user ) {
 
-		if ( is_object( $user) && $user->profile_20 ) {
+		if ( is_object( $user ) && $user->profile_20 ) {
 			$text = wpm_translate_string( $text, $user->profile_20 );
 		}
 
 		return $text;
 	}
 }
-
-new WPM_Newsletter();

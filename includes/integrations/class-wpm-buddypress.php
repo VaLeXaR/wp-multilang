@@ -9,10 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'BuddyPress' ) ) {
-	return;
-}
-
 /**
  * Class WPM_BuddyPress
  * @package  WPM/Includes/Integrations
@@ -211,5 +207,3 @@ class WPM_BuddyPress {
 		return $children;
 	}
 }
-
-new WPM_BuddyPress();

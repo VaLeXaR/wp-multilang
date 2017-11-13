@@ -9,10 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! defined( 'WPCF7_VERSION' ) ) {
-	return;
-}
-
 /**
  * Class WPM_CF7
  * @package  WPM/Includes/Integrations
@@ -52,5 +48,3 @@ class WPM_CF7 {
 		return $fields;
 	}
 }
-
-new WPM_CF7();

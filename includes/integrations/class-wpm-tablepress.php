@@ -9,10 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'TablePress' ) ) {
-	return;
-}
-
 /**
  * Class WPM_Tablepress
  * @package  WPM/Includes/Integrations
@@ -62,8 +58,8 @@ class WPM_Tablepress {
 
 		$options = array(
 			'wpm_each' => array(
-				"wpm_each" => array()
-			)
+				'wpm_each' => array(),
+			),
 		);
 
 		$old_table            = json_decode( get_post_field( 'post_content', wpm_clean( $postarr['ID'] ), 'edit' ) );
@@ -74,5 +70,3 @@ class WPM_Tablepress {
 		return $data;
 	}
 }
-
-new WPM_Tablepress();

@@ -9,10 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! defined( 'GUTENBERG_VERSION' ) ) {
-	return;
-}
-
 /**
  * Class WPM_Gutenberg
  * @package  WPM/Includes/Integrations
@@ -71,5 +67,3 @@ class WPM_Gutenberg {
 		");
 	}
 }
-
-new WPM_Gutenberg();

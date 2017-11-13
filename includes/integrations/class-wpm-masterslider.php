@@ -9,10 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! defined( 'MSWP_AVERTA_VERSION' ) ) {
-	return;
-}
-
 /**
  * Class WPM_Masterslider
  * @package  WPM/Includes/Vendor
@@ -196,5 +192,3 @@ class WPM_Masterslider {
 		return $capabilities;
 	}
 }
-
-new WPM_Masterslider();

@@ -9,10 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! defined( 'NGG_PLUGIN' ) ) {
-	return;
-}
-
 /**
  * Class WPM_NGG
  * @package  WPM/Includes/Integrations
@@ -234,5 +230,3 @@ class WPM_NGG {
 		return $object;
 	}
 }
-
-new WPM_NGG();
