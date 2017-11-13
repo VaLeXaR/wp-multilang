@@ -481,7 +481,7 @@ class WPM_Setup {
 		$config['post_fields']    = apply_filters( 'wpm_post_fields_config', $config['post_fields'] );
 		$config['term_fields']    = apply_filters( 'wpm_term_fields_config', $config['term_fields'] );
 		$config['user_fields']    = apply_filters( 'wpm_user_fields_config', $config['user_fields'] );
-		$config['comment_fields'] = apply_filters( 'wpm_user_comment_fields_config', $config['comment_fields'] );
+		$config['comment_fields'] = apply_filters( 'wpm_comment_fields_config', $config['comment_fields'] );
 
 		return $config;
 	}
