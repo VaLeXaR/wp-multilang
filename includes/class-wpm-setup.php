@@ -534,6 +534,7 @@ class WPM_Setup {
 			'advanced-custom-fields'     => __NAMESPACE__ . '\Integrations\WPM_Acf',
 			'advanced-custom-fields-pro' => __NAMESPACE__ . '\Integrations\WPM_Acf',
 			'all-in-one-seo-pack'        => __NAMESPACE__ . '\Integrations\WPM_AIOSP',
+			'better-search'              => __NAMESPACE__ . '\Integrations\WPM_Better_Search',
 			'buddypress'                 => __NAMESPACE__ . '\Integrations\WPM_BuddyPress',
 			'contact-form-7'             => __NAMESPACE__ . '\Integrations\WPM_CF7',
 			'gutenberg'                  => __NAMESPACE__ . '\Integrations\WPM_Gutenberg',

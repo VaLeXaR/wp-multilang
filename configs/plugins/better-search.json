@@ -1,0 +1,13 @@
+{
+  "admin_pages": [
+    "settings_page_bsearch_options"
+  ],
+  "options": {
+    "ald_bsearch_settings": {
+      "title": {},
+      "title_daily": {},
+      "heatmap_before": {},
+      "heatmap_after": {}
+    }
+  }
+}

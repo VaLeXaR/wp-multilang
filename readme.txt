@@ -57,6 +57,7 @@ WP Multilang compatible with plugins:
 * Meta Slider
 * TablePress
 * Download Monitor (Redefine templates for links in your theme and translate link texts)
+* Better Search
 
 Supports configuration via json.
 
@@ -181,7 +182,8 @@ If you have opened several browser tabs for editing this post in different langu
 = 2.0.3 =
 + add flag select autocomplete
 + add setting for set Yoast SEO Opengraph locale
-* add support WooCommerce attributes
++ add support WooCommerce attributes
++ add compatibility with Better Search
 * fix add $_GET 'lang' param
 * Other fixes and improvements
 
