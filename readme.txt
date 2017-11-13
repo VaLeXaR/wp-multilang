@@ -56,8 +56,7 @@ WP Multilang compatible with plugins:
 * BuddyPress
 * Meta Slider
 * TablePress
-* Download Monitor (Redefine templates for links in your theme and translate link texts),
-* Better Search
+* Download Monitor (Redefine templates for links in your theme and translate link texts)
 
 Supports configuration via json.
 
