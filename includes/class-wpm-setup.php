@@ -550,12 +550,9 @@ class WPM_Setup {
 			'wordpress-seo'              => __NAMESPACE__ . '\Integrations\WPM_Yoast_Seo',
 		) );
 
-		foreach ( get_plugins() as $pf => $pd ) {
-			if ( is_plugin_active( $pf ) ) {
-				$plugin = dirname( $pf );
-				if ( isset( $integrations[ $plugin ] ) && ! empty( $integrations[ $plugin ] ) ) {
-					new $integrations[ $plugin ]();
-				}
+		foreach ( wp_cache_get( 'wpm_active_plugins' ) as $plugin ) {
+			if ( isset( $integrations[ $plugin ] ) && ! empty( $integrations[ $plugin ] ) ) {
+				new $integrations[ $plugin ]();
 			}
 		}
 	}
