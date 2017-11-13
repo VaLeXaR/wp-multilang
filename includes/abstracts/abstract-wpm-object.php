@@ -65,8 +65,7 @@ abstract class WPM_Object {
 		}
 
 		$config               = wpm_get_config();
-		$object_fields_config = $config[ $this->object_type . '_fields' ];
-		$object_fields_config = apply_filters( "wpm_{$this->object_type}_meta_config", $object_fields_config );
+		$object_fields_config = apply_filters( "wpm_{$this->object_type}_fields_config", $config[ "{$this->object_type}_fields" ] );
 
 		if ( ! isset( $object_fields_config[ $meta_key ] ) ) {
 			return $value;
@@ -87,9 +86,7 @@ abstract class WPM_Object {
 
 		if ( ! $meta_values ) {
 
-			$meta_values = $wpdb->get_results( $wpdb->prepare(
-				"SELECT {$id_column}, meta_value FROM {$wpdb->{$this->object_table}} WHERE meta_key = %s AND {$column} = %d;",
-				$meta_key, $object_id ), ARRAY_A );
+			$meta_values = $wpdb->get_results( $wpdb->prepare( "SELECT {$id_column}, meta_value FROM {$wpdb->{$this->object_table}} WHERE meta_key = %s AND {$column} = %d;", $meta_key, $object_id ), ARRAY_A );
 
 			wp_cache_set( $object_id, $meta_values, $this->object_type . '_' . $meta_key . '_wpm_meta' );
 		}
@@ -146,8 +143,7 @@ abstract class WPM_Object {
 		}
 
 		$config               = wpm_get_config();
-		$object_fields_config = $config[ $this->object_type . '_fields' ];
-		$object_fields_config = apply_filters( "wpm_{$this->object_type}_meta_config", $object_fields_config );
+		$object_fields_config = apply_filters( "wpm_{$this->object_type}_fields_config", $config[ "{$this->object_type}_fields" ] );
 
 		if ( ! isset( $object_fields_config[ $meta_key ] ) ) {
 			return $check;
@@ -308,8 +304,7 @@ abstract class WPM_Object {
 		}
 
 		$config               = wpm_get_config();
-		$object_fields_config = $config[ $this->object_type . '_fields' ];
-		$object_fields_config = apply_filters( "wpm_{$this->object_type}_meta_config", $object_fields_config );
+		$object_fields_config = apply_filters( "wpm_{$this->object_type}_fields_config", $config[ "{$this->object_type}_fields" ] );
 
 		if ( ! isset( $object_fields_config[ $meta_key ] ) ) {
 			return $check;
@@ -330,9 +325,7 @@ abstract class WPM_Object {
 		}
 
 
-		if ( $unique && $wpdb->get_var( $wpdb->prepare(
-				"SELECT COUNT(*) FROM $table WHERE meta_key = %s AND $column = %d",
-				$meta_key, $object_id ) )
+		if ( $unique && $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $table WHERE meta_key = %s AND $column = %d", $meta_key, $object_id ) )
 		) {
 			return false;
 		}
@@ -387,6 +380,13 @@ abstract class WPM_Object {
 		return $mid;
 	}
 
+	/**
+	 * Delete meta field
+	 *
+	 * @param $meta_ids
+	 * @param $object_id
+	 * @param $meta_key
+	 */
 	public function delete_meta_field( $meta_ids, $object_id, $meta_key ) {
 
 		switch ( $this->object_type ) {
@@ -405,10 +405,9 @@ abstract class WPM_Object {
 		}
 
 		$config               = wpm_get_config();
-		$object_fields_config = $config[ $this->object_type . '_fields' ];
-		$object_fields_config = apply_filters( "wpm_{$this->object_type}_meta_config", $object_fields_config );
+		$object_fields_config = apply_filters( "wpm_{$this->object_type}_fields_config", $config[ "{$this->object_type}_fields" ] );
 
-		if ( ! isset( $object_fields_config[ $meta_key ] ) ) {
+		if ( ! isset( $object_fields_config[ $meta_key ] ) || is_null( $object_fields_config[ $meta_key ] ) ) {
 			return;
 		}
 
