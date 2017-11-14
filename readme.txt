@@ -22,27 +22,24 @@ Features of the plugin WP Multilang:
 * 100% free.
 * Translation at PHP.
 * Compatible with REST.
-* Support configuration files.
-* Support configuration for translate multidimensional arrays.
-* Separate menu items by language
-* Separate widgets by language
-* Separate posts by language
-* Many filters for dynamic applying translation settings
-* No duplicate posts
-* No subdomains for language version
+* Support configuration for translate multidimensional arrays in options, meta fields, post content.
 * Support multisite
 * Support WordPress in subfolder
+* Separate menu items, posts, terms, widgets by language
+* Many filters for dynamic applying translation settings
+* No duplicate posts
+* No subdomain for each language version
 * Possibility set many languages with one localization. For example, for localization in the region.
 * Possibility to set custom locale for html(If installed locale is en_US, you can set locale like: en, en-UK, en-AU etc. without installation another localization)
-* Possibility for add new languages for any user with capability `manage options`
-* Exist the role "Translator" for editing posts, terms. It can not publish or delete
+* Possibility for add new languages for any user with capability `manage_options`
+* Exist the role "Translator" for editing posts, terms. It can not publish or delete.
 
 WP Multilang compatible with plugins:
 
 * ACF, ACF Pro
 * WooCommerce
 * Yoast Seo
-* Contact Form 7 (added mail tag [_language] for send user lang in mail)
+* Contact Form 7 (added mail tag [_language] for send user language in mail)
 * WPBakery Visual Composer
 * Page Builder by SiteOrigin
 * NextGEN Gallery
@@ -89,27 +86,27 @@ There are two ways:
     `add_filter ( 'wpm_post_post_config', '__return_null');`
 
 To enable translation pass an empty array in php `array()` or empty object in json `{}`.
-Supports translation multilevel array of options, custom fields and post_content.
+Supports translation multidimensional array of options, meta fields and post_content.
 
-Supports the removal of established localizations. Has the ability to add your own localizations.
+Supports the removal of established localizations.
 
 Supports translation via GET parameter. Add in the GET parameter `lang` code desired language.
 
-Supports clean database of translations when removing the plugin.
+Supports clean database of translations when removing the plugin. Translations are only removed from the built-in tables.
 
 Supports import term translations from qTranslate(by Soft79).
 
 Ideal for developers.
 
-For display language switcher in any place add code to your template
+For display language switcher in any place add the code to your template
 
 `if ( function_exists ( 'wpm_language_switcher' ) ) wpm_language_switcher ();`
 
 Function accepts two parameters:
 
 $args - array
-  `type` - `list`, `dropdown`, `select`. Default - `list`.
-  `show` - `flag`, `name`, `both`. Default - `both`.
+  `type` - 'list', 'dropdown', 'select'. Default - 'list'.
+  `show` - 'flag', 'name', 'both'. Default - 'both'.
 
 $echo - bool
 
@@ -135,16 +132,17 @@ Add your tags in config:
     }
 }
 `
+
 Where:
 `admin_screen_id` - admin screen id.
-`attribute` - attribute what need to translate. Available `text` - for translate text node, `value` - for translate form values. Or other tag attribute, like `title`, `alt`.
+`attribute` - attribute what need to translate. Available 'text' - for translate text node, 'value' - for translate form values. Or other tag attribute, like 'title', 'alt'.
 `selector` - javascript selector for search needed tag. Each selector is a new array item.
 
 For set translation uses the syntax:
 
 `[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut`
 
-Supports translating from syntax qTranslate, qTranslate-X, WPGlobus, etc.
+Supports translating from syntax qTranslate, qTranslate-X, WPGlobus etc.
 
 Compatible with REST-API.
 Supports transfer the required translation through option `lang` in the GET request to REST.
@@ -182,7 +180,7 @@ If you have opened several browser tabs for editing this post in different langu
 == Changelog ==
 
 = 2.1.0 =
-+ add flag select autocomplete
++ add flag selector autocomplete
 + add setting for set Yoast SEO Opengraph locale
 + add support WooCommerce attributes
 + add compatibility with Better Search

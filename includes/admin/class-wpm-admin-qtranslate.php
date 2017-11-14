@@ -25,7 +25,7 @@ class WPM_Admin_Qtranslate {
 	 * WPM_Admin_Qtx constructor.
 	 */
 	public function __construct() {
-		if ( current_user_can( 'manage_translations' ) ) {
+		if ( current_user_can( 'manage_options' ) ) {
 			add_action( 'wp_loaded', array( $this, 'handle_qtranslate' ) );
 			add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 		}
