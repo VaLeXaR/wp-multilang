@@ -17,7 +17,7 @@ WP Multilang is a multilingual plugin for WordPress.
 
 Translations of post types, taxonomies, meta fields, options, text fields in miltimedia files, menus, titles and text fields in widgets.
 
-Features of the plugin WP Multilang:
+== Features of the plugin WP Multilang ==
 
 * 100% free.
 * Translation at PHP.
@@ -34,7 +34,7 @@ Features of the plugin WP Multilang:
 * Possibility for add new languages for any user with capability `manage_options`
 * Exist the role "Translator" for editing posts, terms. It can not publish or delete.
 
-WP Multilang compatible with plugins:
+== WP Multilang compatible with plugins ==
 
 * ACF, ACF Pro
 * WooCommerce
