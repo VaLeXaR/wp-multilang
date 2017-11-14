@@ -95,13 +95,13 @@ function wpm_update_200_db_version() {
 /**
  * Delete configs from base. Move configs to cache.
  */
-function wpm_update_203_delete_config() {
+function wpm_update_210_delete_config() {
 	delete_option( 'wpm_config' );
 }
 
 /**
  * Update DB Version.
  */
-function wpm_update_203_db_version() {
-	WPM_Install::update_db_version( '2.0.3' );
+function wpm_update_210_db_version() {
+	WPM_Install::update_db_version( '2.1.0' );
 }

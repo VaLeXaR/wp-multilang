@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 2.0.3
+Stable tag: 2.1.0
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -59,7 +59,7 @@ WP Multilang compatible with plugins:
 * Download Monitor (Redefine templates for links in your theme and translate link texts)
 * Better Search
 
-Supports configuration via json.
+Manage translation settings via json.
 
 Add in the root of your theme or plugin file `wpm-config.json`.
 
@@ -96,6 +96,8 @@ Supports the removal of established localizations. Has the ability to add your o
 Supports translation via GET parameter. Add in the GET parameter `lang` code desired language.
 
 Supports clean database of translations when removing the plugin.
+
+Supports import term translations from qTranslate(by Soft79).
 
 Ideal for developers.
 
@@ -138,11 +140,11 @@ Where:
 `attribute` - attribute what need to translate. Available `text` - for translate text node, `value` - for translate form values. Or other tag attribute, like `title`, `alt`.
 `selector` - javascript selector for search needed tag. Each selector is a new array item.
 
-Translation uses the syntax:
+For set translation uses the syntax:
 
 `[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut`
 
-Supports syntax qTranslate, qTranslate-X, WPGlobus, etc.
+Supports translating from syntax qTranslate, qTranslate-X, WPGlobus, etc.
 
 Compatible with REST-API.
 Supports transfer the required translation through option `lang` in the GET request to REST.
@@ -179,7 +181,7 @@ If you have opened several browser tabs for editing this post in different langu
 
 == Changelog ==
 
-= 2.0.3 =
+= 2.1.0 =
 + add flag select autocomplete
 + add setting for set Yoast SEO Opengraph locale
 + add support WooCommerce attributes
