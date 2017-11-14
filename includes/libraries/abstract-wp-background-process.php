@@ -252,7 +252,7 @@ abstract class WP_Background_Process extends WP_Async_Request {
 	/**
 	 * Get batch
 	 *
-	 * @return stdClass Return the first batch from the queue
+	 * @return \stdClass Return the first batch from the queue
 	 */
 	protected function get_batch() {
 		global $wpdb;
@@ -279,7 +279,7 @@ abstract class WP_Background_Process extends WP_Async_Request {
 		LIMIT 1
 		", $key ) );
 
-		$batch       = new stdClass();
+		$batch       = new \stdClass();
 		$batch->key  = $query->$column;
 		$batch->data = maybe_unserialize( $query->$value_column );
 
