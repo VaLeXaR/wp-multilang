@@ -49,7 +49,7 @@ class WPM_Admin_Qtranslate {
 			return;
 		}
 
-		if ( isset( $_GET['wpm-qtranslate-import'] ) && check_admin_referer( 'wpm-qtranslate-import' ) ) {
+		if ( isset( $_GET['wpm-qtranslate-import'] ) ) {
 			$this->execute_import();
 
 			return;
@@ -59,7 +59,7 @@ class WPM_Admin_Qtranslate {
 			return;
 		}
 
-		WPM_Admin_Notices::add_custom_notice( 'qtranslate_import', sprintf( __( 'qTranslate term translations found. Please click <a href="%s">here</a> to migrate them to WP Multilang.', 'wp-multilang' ), wp_nonce_url( add_query_arg( 'wpm-qtranslate-import', 'true' ), 'wpm-qtranslate-import' ) ) );
+		WPM_Admin_Notices::add_custom_notice( 'qtranslate_import', sprintf( __( 'qTranslate term translations found. Please click <a href="%s">here</a> to migrate them to WP Multilang or <a href="%s">disable</a> this notice.', 'wp-multilang' ), wp_nonce_url( add_query_arg( 'wpm-qtranslate-import', true ), 'wpm-qtranslate-import' ), wp_nonce_url( add_query_arg( 'wpm-qtranslate-import', false ), 'wpm-qtranslate-import' ) ) );
 	}
 
 
@@ -82,56 +82,62 @@ class WPM_Admin_Qtranslate {
 	 * @return void
 	 */
 	private function execute_import() {
-		$n_errors = 0;
-		$n_ok = 0;
+		check_admin_referer( 'wpm-qtranslate-import' );
 
-		update_option( self::OPTION_IMPORTING, true, false );
+		if ( wpm_clean( $_GET['wpm-qtranslate-import'] ) ) {
+			$n_errors = 0;
+			$n_ok     = 0;
 
-		$qtranslate_terms = $this->get_qtranslate_terms();
+			update_option( self::OPTION_IMPORTING, true, false );
 
-		$taxonomies = get_taxonomies();
+			$qtranslate_terms = $this->get_qtranslate_terms();
 
-		$terms = get_terms( $taxonomies );
-		foreach ( $terms as $term ) {
-			$original = $term->name;
+			$taxonomies = get_taxonomies();
 
-			//Translation available?
-			if ( ! isset( $qtranslate_terms[ $original ] ) ) {
-				continue;
-			}
+			$terms = get_terms( $taxonomies );
+			foreach ( $terms as $term ) {
+				$original = $term->name;
 
-			//Translate the name
-			$strings = wpm_value_to_ml_array( $original );
-			foreach ( $qtranslate_terms[ $original ] as $lang => $translation ) {
-				$strings = wpm_set_language_value( $strings, $translation, array(), $lang );
-			}
+				//Translation available?
+				if ( ! isset( $qtranslate_terms[ $original ] ) ) {
+					continue;
+				}
 
-			//Update the name
-			$term->name = wpm_ml_value_to_string( $strings );
-			if ( $term->name !== $original ) {
-				$result = wp_update_term( $term->term_id, $term->taxonomy, array( 'name' => $term->name ) );
-				if ( is_wp_error( $result ) ) {
-					error_log( sprintf( "Error updating term %s: %s", $original, $result->get_error_message() ) );
-					$n_errors++;
-				} else {
-					$n_ok++;
+				//Translate the name
+				$strings = wpm_value_to_ml_array( $original );
+				foreach ( $qtranslate_terms[ $original ] as $lang => $translation ) {
+					$strings = wpm_set_language_value( $strings, $translation, array(), $lang );
+				}
+
+				//Update the name
+				$term->name = wpm_ml_value_to_string( $strings );
+				if ( $term->name !== $original ) {
+					$result = wp_update_term( $term->term_id, $term->taxonomy, array( 'name' => $term->name ) );
+					if ( is_wp_error( $result ) ) {
+						error_log( sprintf( __( 'Error updating term %s: %s', 'wp-multilang' ), $original, $result->get_error_message() ) );
+						$n_errors++;
+					} else {
+						$n_ok++;
+					}
 				}
 			}
-		}
 
-		if ( $n_errors ) {
-			$msg = __( 'Something went while importing qTranslate term translations.', 'wp-multilang' );
-			$this->enqueue_notice( $msg, 'notice-error' );
-		}
+			if ( $n_errors ) {
+				$msg = __( 'Something went while importing qTranslate term translations.', 'wp-multilang' );
+				$this->enqueue_notice( $msg, 'notice-error' );
+			}
 
-		if ( $n_ok ) {
-			$this->enqueue_notice( sprintf( __( '%d terms were imported succesfully.', 'wp-multilang' ), $n_ok ), 'notice-info' );
+			if ( $n_ok ) {
+				$this->enqueue_notice( sprintf( __( '%d terms were imported succesfully.', 'wp-multilang' ), $n_ok ), 'notice-info' );
 
-			//Hide the notice
+				//Hide the notice
+				delete_option( self::OPTION_QTRANSLATE_TERM_NAME );
+			}
+
+			delete_option( self::OPTION_IMPORTING );
+		} else {
 			delete_option( self::OPTION_QTRANSLATE_TERM_NAME );
-		}
-
-		delete_option( self::OPTION_IMPORTING );
+		}// End if().
 	}
 
 
