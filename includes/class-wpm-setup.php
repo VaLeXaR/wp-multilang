@@ -467,8 +467,7 @@ class WPM_Setup {
 				$config = wp_cache_get( 'wpm_config' );
 			}
 
-			$theme_config = WPM_Config::load_theme_config();
-			$this->config = wpm_array_merge_recursive( $config, $theme_config );
+			$this->config = $config;
 		}
 
 		$config            = apply_filters( 'wpm_load_config', $this->config );

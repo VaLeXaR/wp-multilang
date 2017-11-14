@@ -38,6 +38,7 @@ Translations of post types, taxonomies, meta fields, options, text fields in mil
 
 * ACF, ACF Pro
 * WooCommerce
+* WooCommerce Customizer
 * Yoast Seo
 * Contact Form 7 (added mail tag [_language] for send user language in mail)
 * WPBakery Visual Composer
@@ -185,6 +186,7 @@ If you have opened several browser tabs for editing this post in different langu
 + add flag selector autocomplete
 + add setting for set Yoast SEO Opengraph locale
 + add support WooCommerce attributes
++ add compatibility with WooCommerce Customizer
 + add compatibility with Better Search
 + add import taxonomies from qTranslate(Thanks for Soft79)
 * fix add $_GET 'lang' param

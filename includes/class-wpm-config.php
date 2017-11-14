@@ -25,6 +25,7 @@ class WPM_Config {
 	static public function load_config_run() {
 		self::load_plugins_config();
 		self::load_core_configs();
+		self::load_theme_config();
 		self::parse_config_files();
 		wp_cache_set( 'wpm_active_plugins', self::$active_plugins );
 		wp_cache_set( 'wpm_config', self::$config );
@@ -73,11 +74,28 @@ class WPM_Config {
 			}
 		}
 
-		$theme             = wp_get_theme();
-		$theme_name        = $theme->get_template();
+		$theme_name        = get_template();
 		$theme_config_file = WPM_ABSPATH . 'configs/themes/' . $theme_name . '.json';
 		if ( file_exists( $theme_config_file ) ) {
 			self::$config_files[ 'theme_' . $theme_name ] = $theme_config_file;
+		}
+	}
+
+	/**
+	 * Load configs from current theme
+	 */
+	static public function load_theme_config() {
+
+		$config_file = get_template_directory() . '/wpm-config.json';
+		if ( file_exists( $config_file ) ) {
+			self::$config_files[ 'theme_' . get_template() ] = $config_file;
+		}
+
+		if ( get_template_directory() !== get_stylesheet_directory() ) {
+			$config_file = get_stylesheet_directory() . '/wpm-config.json';
+			if ( file_exists( $config_file ) ) {
+				self::$config_files[ 'theme_' . get_stylesheet() ] = $config_file;
+			}
 		}
 	}
 
@@ -95,28 +113,5 @@ class WPM_Config {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Load configs from current theme
-	 */
-	static public function load_theme_config() {
-		self::$config_files = self::$config = array();
-
-		$config_file = get_template_directory() . '/wpm-config.json';
-		if ( file_exists( $config_file ) ) {
-			self::$config_files[] = $config_file;
-		}
-
-		if ( get_template_directory() !== get_stylesheet_directory() ) {
-			$config_file = get_stylesheet_directory() . '/wpm-config.json';
-			if ( file_exists( $config_file ) ) {
-				self::$config_files[] = $config_file;
-			}
-		}
-
-		self::parse_config_files();
-
-		return self::$config;
 	}
 }
