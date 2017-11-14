@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-11-14 14:12+0200\n"
+"POT-Creation-Date: 2017-11-14 14:43+0200\n"
 "PO-Revision-Date: 2017-05-22 12:43+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -108,14 +108,19 @@ msgstr ""
 #, php-format
 msgid ""
 "qTranslate term translations found. Please click <a href=\"%s\">here</a> "
-"to migrate them to WP Multilang."
+"to migrate them to WP Multilang or <a href=\"%s\">disable</a> this notice."
 msgstr ""
 
-#: includes/admin/class-wpm-admin-qtranslate.php:123
+#: includes/admin/class-wpm-admin-qtranslate.php:117
+#, php-format
+msgid "Error updating term %s: %s"
+msgstr ""
+
+#: includes/admin/class-wpm-admin-qtranslate.php:126
 msgid "Something went while importing qTranslate term translations."
 msgstr ""
 
-#: includes/admin/class-wpm-admin-qtranslate.php:128
+#: includes/admin/class-wpm-admin-qtranslate.php:131
 #, php-format
 msgid "%d terms were imported succesfully."
 msgstr ""
