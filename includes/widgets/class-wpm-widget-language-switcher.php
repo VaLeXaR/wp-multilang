@@ -3,6 +3,7 @@
  * Language switcher widget for frontend
  */
 namespace WPM\Includes\Widgets;
+use WPM\Includes\Abstracts\WPM_Widget;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -14,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @category Class
  * @author   VaLeXaR
  */
-class WPM_Widget_Language_Switcher extends \WPM_Widget {
+class WPM_Widget_Language_Switcher extends WPM_Widget {
 
 	/**
 	 * WPM_Widget_Language_Switcher constructor.

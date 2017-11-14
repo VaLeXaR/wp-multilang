@@ -9,10 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! defined( 'WPCF7_VERSION' ) ) {
-	return;
-}
-
 /**
  * Class WPM_CF7
  * @package  WPM/Includes/Integrations
@@ -30,7 +26,7 @@ class WPM_CF7 {
 
 	public function add_language_tag( $output, $name ) {
 		if ( '_language' == $name ) {
-			$options = wpm_get_options();
+			$options = wpm_get_lang_option();
 
 			return $options[ wpm_get_language() ]['name'];
 		}
@@ -52,5 +48,3 @@ class WPM_CF7 {
 		return $fields;
 	}
 }
-
-new WPM_CF7();

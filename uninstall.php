@@ -14,7 +14,7 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 
 global $wpdb;
 
-require_once __DIR__ . '/includes/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 if ( get_option( 'wpm_uninstall_translations', false ) ) {
 
@@ -30,40 +30,65 @@ if ( get_option( 'wpm_uninstall_translations', false ) ) {
 	$config           = wpm_get_config();
 	$default_language = wpm_get_default_language();
 
+	$post_types = get_post_types( '', 'names' );
+
+	foreach ( $post_types as $post_type ) {
+
+		if ( is_null( wpm_get_post_config( $post_type ) ) ) {
+			continue;
+		}
+
+		$results = $wpdb->get_results( $wpdb->prepare( "SELECT ID, post_content, post_title, post_excerpt FROM {$wpdb->posts} WHERE post_type = '%s';", esc_sql( $post_type ) ) );
+
+		foreach ( $results as $result ) {
+			$post_title   = wpm_translate_string( $result->post_title, $default_language );
+			$post_excerpt = wpm_translate_string( $result->post_excerpt, $default_language );
+			$post_content = $result->post_content;
+
+			if ( is_serialized_string( $post_content ) ) {
+				$post_content = maybe_serialize( wpm_translate_value( maybe_unserialize( $post_content ), $default_language ) );
+			}
+
+			if ( json_decode( $post_content ) ) {
+				$post_content = wp_json_encode( wpm_translate_value( json_decode( $post_content, true ), $default_language ) );
+			}
+
+			$wpdb->update( $wpdb->posts, compact( 'post_content', 'post_title', 'post_excerpt' ), array( 'ID' => $result->ID ) );
+		}
+	}
+
+	$taxonomies = get_taxonomies();
+
+	foreach ( $taxonomies as $taxonomy ) {
+
+		if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
+			continue;
+		}
+
+		$results = $wpdb->get_results( $wpdb->prepare( "SELECT t.term_id, `name`, description FROM {$wpdb->terms} t LEFT JOIN {$wpdb->term_taxonomy} tt ON t.term_id = tt.term_id WHERE tt.taxonomy = '%s';", esc_sql( $term ) ) );
+
+		foreach ( $results as $result ) {
+			$description = $result->description;
+
+			if ( is_serialized_string( $description ) ) {
+				$description = maybe_serialize( wpm_translate_value( maybe_unserialize( $description ), $default_language ) );
+			}
+
+			if ( json_decode( $description ) ) {
+				$description = wp_json_encode( wpm_translate_value( json_decode( $description, true ), $default_language ) );
+			}
+
+			$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_id' => $result->term_id ) );
+			$name = wpm_translate_string( $result->name, $default_language );
+			$wpdb->update( $wpdb->terms, compact( 'name' ), array( 'term_id' => $result->term_id ) );
+		}
+	}
+
 	foreach ( $config as $key => $item_config ) {
 
 		switch ( $key ) {
 
-			case 'post_types':
-
-				foreach ( $item_config as $post_type => $post_config ) {
-
-					if ( is_null( $post_config ) ) {
-						continue;
-					}
-
-					$results = $wpdb->get_results( $wpdb->prepare( "SELECT ID, post_content, post_title, post_excerpt FROM {$wpdb->posts} WHERE post_type = '%s';", esc_sql( $post_type ) ) );
-
-					foreach ( $results as $result ) {
-						$post_title   = wpm_translate_string( $result->post_title, $default_language );
-						$post_excerpt = wpm_translate_string( $result->post_excerpt, $default_language );
-						$post_content = $result->post_content;
-
-						if ( is_serialized_string( $post_content ) ) {
-							$post_content = maybe_serialize( wpm_translate_value( maybe_unserialize( $post_content ), $default_language ) );
-						}
-
-						if ( json_decode( $post_content ) ) {
-							$post_content = wp_json_encode( wpm_translate_value( json_decode( $post_content, true ), $default_language ) );
-						}
-
-						$wpdb->update( $wpdb->posts, compact( 'post_content', 'post_title', 'post_excerpt' ), array( 'ID' => $result->ID ) );
-					}
-				}
-
-				break;
-
-			case 'post_fields' :
+			case 'post_fields':
 				$wpdb->delete( $wpdb->postmeta, array( 'meta_key' => '_languages' ) );
 
 				$results = $wpdb->get_results( "SELECT meta_id, meta_value FROM {$wpdb->postmeta} WHERE meta_value LIKE '%![:__!]%' ESCAPE '!' OR meta_value LIKE '%{:__}%' OR meta_value LIKE '%<!--:__-->%';" );
@@ -83,36 +108,7 @@ if ( get_option( 'wpm_uninstall_translations', false ) ) {
 
 				break;
 
-			case 'taxonomies' :
-
-				foreach ( $item_config as $term => $taxonomy_config ) {
-
-					if ( is_null( $taxonomy_config ) ) {
-						continue;
-					}
-
-					$results = $wpdb->get_results( $wpdb->prepare( "SELECT t.term_id, `name`, description FROM {$wpdb->terms} t LEFT JOIN {$wpdb->term_taxonomy} tt ON t.term_id = tt.term_id WHERE tt.taxonomy = '%s';", esc_sql( $term ) ) );
-
-					foreach ( $results as $result ) {
-						$description = $result->description;
-
-						if ( is_serialized_string( $description ) ) {
-							$description = maybe_serialize( wpm_translate_value( maybe_unserialize( $description ), $default_language ) );
-						}
-
-						if ( json_decode( $description ) ) {
-							$description = wp_json_encode( wpm_translate_value( json_decode( $description, true ), $default_language ) );
-						}
-
-						$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_id' => $result->term_id ) );
-						$name = wpm_translate_string( $result->name, $default_language );
-						$wpdb->update( $wpdb->terms, compact( 'name' ), array( 'term_id' => $result->term_id ) );
-					}
-				}
-
-				break;
-
-			case 'term_fields' :
+			case 'term_fields':
 				$wpdb->delete( $wpdb->termmeta, array( 'meta_key' => '_languages' ) );
 
 				$results = $wpdb->get_results( "SELECT meta_id, meta_value FROM {$wpdb->termmeta} WHERE meta_value LIKE '%![:__!]%' ESCAPE '!' OR meta_value LIKE '%{:__}%' OR meta_value LIKE '%<!--:__-->%';" );
@@ -133,7 +129,7 @@ if ( get_option( 'wpm_uninstall_translations', false ) ) {
 
 				break;
 
-			case 'comment_fields' :
+			case 'comment_fields':
 
 				$results = $wpdb->get_results( "SELECT meta_id, meta_value FROM {$wpdb->commentmeta} WHERE meta_value LIKE '%s' OR meta_value LIKE '%![:__!]%' ESCAPE '!' OR meta_value LIKE '%{:__}%' OR meta_value LIKE '%<!--:__-->%';" );
 
@@ -153,7 +149,7 @@ if ( get_option( 'wpm_uninstall_translations', false ) ) {
 
 				break;
 
-			case 'user_fields' :
+			case 'user_fields':
 
 				$results = $wpdb->get_results( "SELECT umeta_id, meta_value FROM {$wpdb->usermeta} WHERE meta_value LIKE '%![:__!]%' ESCAPE '!' OR meta_value LIKE '%{:__}%' OR meta_value LIKE '%<!--:__-->%';" );
 
@@ -173,7 +169,7 @@ if ( get_option( 'wpm_uninstall_translations', false ) ) {
 
 				break;
 
-			case 'options' :
+			case 'options':
 
 				$results = $wpdb->get_results( "SELECT option_id, option_value FROM {$wpdb->options} WHERE option_value LIKE '%![:__!]%' ESCAPE '!' OR option_value LIKE '%{:__}%' OR option_value LIKE '%<!--:__-->%';" );
 
@@ -189,6 +185,26 @@ if ( get_option( 'wpm_uninstall_translations', false ) ) {
 					}
 
 					$wpdb->update( $wpdb->options, compact( 'option_value' ), array( 'option_id' => $result->option_id ) );
+				}
+
+				break;
+
+			case 'site_options':
+
+				$results = $wpdb->get_results( "SELECT meta_id, meta_value FROM {$wpdb->sitemeta} WHERE meta_value LIKE '%![:__!]%' ESCAPE '!' OR meta_value LIKE '%{:__}%' OR meta_value LIKE '%<!--:__-->%';" );
+
+				foreach ( $results as $result ) {
+					$meta_value = $result->meta_value;
+
+					if ( is_serialized_string( $meta_value ) ) {
+						$meta_value = maybe_serialize( wpm_translate_value( maybe_unserialize( $meta_value ), $default_language ) );
+					}
+
+					if ( json_decode( $meta_value ) ) {
+						$meta_value = wp_json_encode( wpm_translate_value( json_decode( $meta_value, true ), $default_language ) );
+					}
+
+					$wpdb->update( $wpdb->sitemeta, compact( 'meta_value' ), array( 'meta_id' => $result->option_id ) );
 				}
 
 				break;

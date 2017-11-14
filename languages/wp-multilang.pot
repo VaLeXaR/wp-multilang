@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-11-07 23:32+0200\n"
+"POT-Creation-Date: 2017-11-14 14:43+0200\n"
 "PO-Revision-Date: 2017-05-22 12:43+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -23,7 +23,7 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-2: assets\n"
 "X-Poedit-SearchPathExcluded-3: vendor\n"
 
-#: includes/admin/class-wpm-admin-assets.php:64
+#: includes/admin/class-wpm-admin-assets.php:66
 msgid "Are you sure you want to delete this language?"
 msgstr ""
 
@@ -31,11 +31,11 @@ msgstr ""
 #: includes/admin/class-wpm-admin-menus.php:135
 #: includes/admin/class-wpm-admin-menus.php:150
 #: includes/admin/class-wpm-admin-menus.php:153
-#: includes/admin/class-wpm-admin-meta-boxes.php:99
-#: includes/admin/class-wpm-admin-posts.php:77
+#: includes/admin/class-wpm-admin-meta-boxes.php:96
+#: includes/admin/class-wpm-admin-posts.php:76
 #: includes/admin/class-wpm-admin-settings.php:60
-#: includes/admin/class-wpm-admin-taxonomies.php:67
-#: includes/widgets/class-wpm-widget-language-switcher.php:30
+#: includes/admin/class-wpm-admin-taxonomies.php:68
+#: includes/widgets/class-wpm-widget-language-switcher.php:31
 msgid "Languages"
 msgstr ""
 
@@ -50,6 +50,7 @@ msgstr ""
 
 #. Plugin Name of the plugin/theme
 #: includes/admin/class-wpm-admin-menus.php:118
+#: includes/admin/class-wpm-admin-qtranslate.php:72
 msgid "WP Multilang"
 msgstr ""
 
@@ -58,30 +59,30 @@ msgid "Add to menu"
 msgstr ""
 
 #: includes/admin/class-wpm-admin-menus.php:189
-#: includes/widgets/class-wpm-widget-language-switcher.php:37
+#: includes/widgets/class-wpm-widget-language-switcher.php:38
 msgid "Both"
 msgstr ""
 
 #: includes/admin/class-wpm-admin-menus.php:190
 #: includes/admin/class-wpm-admin-settings.php:207
 #: includes/admin/class-wpm-admin-settings.php:209
-#: includes/admin/class-wpm-admin-settings.php:300
-#: includes/admin/class-wpm-admin-settings.php:302
-#: includes/widgets/class-wpm-widget-language-switcher.php:38
+#: includes/admin/class-wpm-admin-settings.php:297
+#: includes/admin/class-wpm-admin-settings.php:299
+#: includes/widgets/class-wpm-widget-language-switcher.php:39
 msgid "Flag"
 msgstr ""
 
 #: includes/admin/class-wpm-admin-menus.php:191
 #: includes/admin/class-wpm-admin-settings.php:153
 #: includes/admin/class-wpm-admin-settings.php:155
-#: includes/admin/class-wpm-admin-settings.php:250
-#: includes/admin/class-wpm-admin-settings.php:252
-#: includes/widgets/class-wpm-widget-language-switcher.php:39
+#: includes/admin/class-wpm-admin-settings.php:247
+#: includes/admin/class-wpm-admin-settings.php:249
+#: includes/widgets/class-wpm-widget-language-switcher.php:40
 msgid "Name"
 msgstr ""
 
 #: includes/admin/class-wpm-admin-menus.php:195
-#: includes/widgets/class-wpm-widget-language-switcher.php:41
+#: includes/widgets/class-wpm-widget-language-switcher.php:42
 msgid "Show"
 msgstr ""
 
@@ -94,8 +95,34 @@ msgstr ""
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-posts.php:133
+#: includes/admin/class-wpm-admin-posts.php:134
 msgid "Current edit language:"
+msgstr ""
+
+#: includes/admin/class-wpm-admin-qtranslate.php:42
+#, php-format
+msgid "%s is active. Please deactivate it."
+msgstr ""
+
+#: includes/admin/class-wpm-admin-qtranslate.php:62
+#, php-format
+msgid ""
+"qTranslate term translations found. Please click <a href=\"%s\">here</a> "
+"to migrate them to WP Multilang or <a href=\"%s\">disable</a> this notice."
+msgstr ""
+
+#: includes/admin/class-wpm-admin-qtranslate.php:117
+#, php-format
+msgid "Error updating term %s: %s"
+msgstr ""
+
+#: includes/admin/class-wpm-admin-qtranslate.php:126
+msgid "Something went while importing qTranslate term translations."
+msgstr ""
+
+#: includes/admin/class-wpm-admin-qtranslate.php:131
+#, php-format
+msgid "%d terms were imported succesfully."
 msgstr ""
 
 #: includes/admin/class-wpm-admin-settings.php:53
@@ -109,27 +136,27 @@ msgid "Site Language"
 msgstr ""
 
 #: includes/admin/class-wpm-admin-settings.php:65
-#: includes/admin/class-wpm-admin-settings.php:335
+#: includes/admin/class-wpm-admin-settings.php:332
 msgid "Installed translations"
 msgstr ""
 
 #: includes/admin/class-wpm-admin-settings.php:67
-#: includes/admin/class-wpm-admin-settings.php:361
+#: includes/admin/class-wpm-admin-settings.php:358
 msgid "Translating settings"
 msgstr ""
 
 #: includes/admin/class-wpm-admin-settings.php:73
-#: includes/admin/class-wpm-admin-settings.php:380
+#: includes/admin/class-wpm-admin-settings.php:377
 msgid "Browser redirect"
 msgstr ""
 
 #: includes/admin/class-wpm-admin-settings.php:79
-#: includes/admin/class-wpm-admin-settings.php:399
+#: includes/admin/class-wpm-admin-settings.php:396
 msgid "Use prefix"
 msgstr ""
 
 #: includes/admin/class-wpm-admin-settings.php:86
-#: includes/admin/class-wpm-admin-settings.php:418
+#: includes/admin/class-wpm-admin-settings.php:415
 msgid "Uninstalling"
 msgstr ""
 
@@ -148,97 +175,97 @@ msgstr ""
 
 #: includes/admin/class-wpm-admin-settings.php:159
 #: includes/admin/class-wpm-admin-settings.php:162
+#: includes/admin/class-wpm-admin-settings.php:253
 #: includes/admin/class-wpm-admin-settings.php:256
-#: includes/admin/class-wpm-admin-settings.php:259
 msgid "Enable"
 msgstr ""
 
 #: includes/admin/class-wpm-admin-settings.php:169
 #: includes/admin/class-wpm-admin-settings.php:171
-#: includes/admin/class-wpm-admin-settings.php:263
-#: includes/admin/class-wpm-admin-settings.php:265
+#: includes/admin/class-wpm-admin-settings.php:260
+#: includes/admin/class-wpm-admin-settings.php:262
 msgid "Slug *"
 msgstr ""
 
 #: includes/admin/class-wpm-admin-settings.php:175
 #: includes/admin/class-wpm-admin-settings.php:177
-#: includes/admin/class-wpm-admin-settings.php:269
-#: includes/admin/class-wpm-admin-settings.php:271
+#: includes/admin/class-wpm-admin-settings.php:266
+#: includes/admin/class-wpm-admin-settings.php:268
 msgid "Locale *"
 msgstr ""
 
 #: includes/admin/class-wpm-admin-settings.php:181
-#: includes/admin/class-wpm-admin-settings.php:275
+#: includes/admin/class-wpm-admin-settings.php:272
 msgid "Translation"
 msgstr ""
 
 #: includes/admin/class-wpm-admin-settings.php:195
 #: includes/admin/class-wpm-admin-settings.php:197
-#: includes/admin/class-wpm-admin-settings.php:288
-#: includes/admin/class-wpm-admin-settings.php:290
+#: includes/admin/class-wpm-admin-settings.php:285
+#: includes/admin/class-wpm-admin-settings.php:287
 msgid "Date Format"
 msgstr ""
 
 #: includes/admin/class-wpm-admin-settings.php:201
 #: includes/admin/class-wpm-admin-settings.php:203
-#: includes/admin/class-wpm-admin-settings.php:294
-#: includes/admin/class-wpm-admin-settings.php:296
+#: includes/admin/class-wpm-admin-settings.php:291
+#: includes/admin/class-wpm-admin-settings.php:293
 msgid "Time Format"
 msgstr ""
 
 #: includes/admin/class-wpm-admin-settings.php:210
-#: includes/admin/class-wpm-admin-settings.php:303
+#: includes/admin/class-wpm-admin-settings.php:300
 msgid "&mdash; Select &mdash;"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-settings.php:225
-#: includes/admin/class-wpm-admin-settings.php:314
+#: includes/admin/class-wpm-admin-settings.php:222
+#: includes/admin/class-wpm-admin-settings.php:311
 msgid "Delete"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-settings.php:322
+#: includes/admin/class-wpm-admin-settings.php:319
 msgid "Add language"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-settings.php:349
+#: includes/admin/class-wpm-admin-settings.php:346
 msgid "Delete translation"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-settings.php:350
+#: includes/admin/class-wpm-admin-settings.php:347
 msgid "Delete unused not built-in language pack"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-settings.php:366
+#: includes/admin/class-wpm-admin-settings.php:363
 #: includes/class-wpm-rest-settings.php:85
 msgid "Show untranslated strings in default language"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-settings.php:385
+#: includes/admin/class-wpm-admin-settings.php:382
 #: includes/class-wpm-rest-settings.php:94
 msgid "Use redirect to user browser language in first time"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-settings.php:404
+#: includes/admin/class-wpm-admin-settings.php:401
 #: includes/class-wpm-rest-settings.php:103
 msgid "Use prefix for default language"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-settings.php:423
+#: includes/admin/class-wpm-admin-settings.php:420
 msgid ""
 "Delete translations when uninstalling plugin (some translations may not be "
 "deleted and you must delete them manually)."
 msgstr ""
 
-#: includes/admin/class-wpm-admin-settings.php:503
+#: includes/admin/class-wpm-admin-settings.php:500
 msgid "New language pack successfully installed"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-taxonomies.php:128
-#: includes/admin/class-wpm-admin-taxonomies.php:168
+#: includes/admin/class-wpm-admin-taxonomies.php:116
+#: includes/admin/class-wpm-admin-taxonomies.php:143
 msgid "Show term only in:"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-widgets.php:78
+#: includes/admin/class-wpm-admin-widgets.php:74
 msgid "Show widget only in:"
 msgstr ""
 
@@ -284,15 +311,15 @@ msgstr ""
 msgid "Taking a while? Click here to run it now."
 msgstr ""
 
-#: includes/class-wpm-install.php:298
+#: includes/class-wpm-install.php:302
 msgid "Translator"
 msgstr ""
 
-#: includes/class-wpm-install.php:391
+#: includes/class-wpm-install.php:395
 msgid "View WP Multilang settings"
 msgstr ""
 
-#: includes/class-wpm-install.php:391
+#: includes/class-wpm-install.php:395
 msgid "Settings"
 msgstr ""
 
@@ -314,37 +341,49 @@ msgstr ""
 msgid "Sile Language"
 msgstr ""
 
-#: includes/libraries/wp-background-process.php:420
+#: includes/integrations/class-wpm-yoast-seo.php:215
+msgid "Yoast SEO Opengraph Locale"
+msgstr ""
+
+#: includes/integrations/class-wpm-yoast-seo.php:217
+msgid "Opengraph Locale"
+msgstr ""
+
+#: includes/integrations/class-wpm-yoast-seo.php:218
+msgid "Locale must be with country domain: like en_US"
+msgstr ""
+
+#: includes/libraries/abstract-wp-background-process.php:422
 #, php-format
 msgid "Every %d minutes"
 msgstr ""
 
-#: includes/widgets/class-wpm-widget-language-switcher.php:26
+#: includes/widgets/class-wpm-widget-language-switcher.php:27
 #: templates/language-switcher-select.php:1
 msgid "Language Switcher"
 msgstr ""
 
-#: includes/widgets/class-wpm-widget-language-switcher.php:31
+#: includes/widgets/class-wpm-widget-language-switcher.php:32
 msgid "Title"
 msgstr ""
 
-#: includes/widgets/class-wpm-widget-language-switcher.php:47
+#: includes/widgets/class-wpm-widget-language-switcher.php:48
 msgid "List"
 msgstr ""
 
-#: includes/widgets/class-wpm-widget-language-switcher.php:48
+#: includes/widgets/class-wpm-widget-language-switcher.php:49
 msgid "Dropdown"
 msgstr ""
 
-#: includes/widgets/class-wpm-widget-language-switcher.php:49
+#: includes/widgets/class-wpm-widget-language-switcher.php:50
 msgid "Select"
 msgstr ""
 
-#: includes/widgets/class-wpm-widget-language-switcher.php:51
+#: includes/widgets/class-wpm-widget-language-switcher.php:52
 msgid "Switcher Type"
 msgstr ""
 
-#: includes/wpm-core-functions.php:189
+#: includes/wpm-core-functions.php:190
 #, php-format
 msgid "For multilingual string, use syntax like %s."
 msgstr ""

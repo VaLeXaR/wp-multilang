@@ -1,6 +1,7 @@
 <?php
 
 namespace WPM\Includes;
+use WPM\Includes\Abstracts\WPM_Object;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -10,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WPM_Posts
  * @package  WPM/Includes
  */
-class WPM_Posts extends \WPM_Object {
+class WPM_Posts extends WPM_Object {
 
 	/**
 	 * Object name
@@ -26,20 +27,11 @@ class WPM_Posts extends \WPM_Object {
 	 */
 	public $object_table = 'postmeta';
 
-	/**
-	 * Post config
-	 *
-	 * @var array
-	 */
-	public $post_config = array();
-
 
 	/**
 	 * WPM_Posts constructor.
 	 */
 	public function __construct() {
-		parent::__construct();
-		$this->post_config = $this->config['post_types'];
 		add_filter( 'get_pages', array( $this, 'translate_posts' ), 5 );
 		add_filter( 'posts_results', array( $this, 'translate_posts' ), 5 );
 		add_action( 'parse_query', array( $this, 'filter_posts_by_language' ) );
@@ -62,7 +54,13 @@ class WPM_Posts extends \WPM_Object {
 	 * @return array
 	 */
 	public function translate_posts( $posts ) {
-		return array_map( 'wpm_translate_post', $posts );
+		foreach ( $posts as &$post ) {
+			if ( ! is_null( wpm_get_post_config( $post->post_type ) ) ) {
+				$post = wpm_translate_object( $post );
+			}
+		}
+
+		return $posts;
 	}
 
 
@@ -74,14 +72,13 @@ class WPM_Posts extends \WPM_Object {
 	 * @return object WP_Query
 	 */
 	public function filter_posts_by_language( $query ) {
+
 		if ( ( ! is_admin() || wp_doing_ajax() ) && ! defined( 'DOING_CRON' ) ) {
 
 			if ( isset( $query->query_vars['post_type'] ) && ! empty( $query->query_vars['post_type'] ) ) {
-
 				$post_type = $query->query_vars['post_type'];
-
-				if ( is_string( $post_type ) && ( 'any' != $post_type ) ) {
-					if ( ! isset( $this->post_config[ $post_type ] ) || is_null( $this->post_config[ $post_type ] ) ) {
+				if ( is_string( $post_type ) ) {
+					if ( is_null( wpm_get_post_config( $post_type ) ) ) {
 						return $query;
 					}
 				}
@@ -126,8 +123,12 @@ class WPM_Posts extends \WPM_Object {
 	 */
 	public function translate_queried_object() {
 		global $wp_query;
-		if ( is_singular() && ( null != $wp_query->queried_object ) && isset( $this->post_config[ $wp_query->queried_object->post_type ] ) && ! is_null( $this->post_config[ $wp_query->queried_object->post_type ] ) ) {
-			$wp_query->queried_object = wpm_translate_object( $wp_query->queried_object );
+
+		if ( is_singular() && ( null != $wp_query->queried_object ) ) {
+			$post = $wp_query->queried_object;
+			if ( ! is_null( wpm_get_post_config( $post->post_type ) ) ) {
+				$wp_query->queried_object = wpm_translate_object( $post );
+			}
 		}
 	}
 
@@ -146,7 +147,9 @@ class WPM_Posts extends \WPM_Object {
 			return $data;
 		}
 
-		if ( ! isset( $this->post_config[ $data['post_type'] ] ) || is_null( $this->post_config[ $data['post_type'] ] ) ) {
+		$post_config = wpm_get_post_config( $data['post_type'] );
+
+		if ( is_null( $post_config ) ) {
 			return $data;
 		}
 
@@ -161,8 +164,7 @@ class WPM_Posts extends \WPM_Object {
 			}
 		}
 
-		$post_id     = isset( $data['ID'] ) ? wpm_clean( $data['ID'] ) : ( isset( $postarr['ID'] ) ? wpm_clean( $postarr['ID'] ) : 0 );
-		$post_config = $this->post_config[ $data['post_type'] ];
+		$post_id = isset( $data['ID'] ) ? wpm_clean( $data['ID'] ) : ( isset( $postarr['ID'] ) ? wpm_clean( $postarr['ID'] ) : 0 );
 
 		$default_fields = array(
 			'post_title'   => array(),
@@ -180,13 +182,11 @@ class WPM_Posts extends \WPM_Object {
 
 				if ( $post_id ) {
 					$old_value = get_post_field( $key, $post_id, 'edit' );
-					$old_value = wpm_value_to_ml_array( $old_value );
 				} else {
 					$old_value = '';
 				}
 
-				$value        = wpm_set_language_value( $old_value, $data[ $key ], $post_field_config );
-				$data[ $key ] = wpm_ml_value_to_string( $value );
+				$data[ $key ] = wpm_set_new_value( $old_value, $data[ $key ], $post_field_config );
 			}
 		}
 

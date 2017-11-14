@@ -1,5 +1,7 @@
 <?php
 
+namespace WPM\Includes\Abstracts;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -13,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @extends  WP_Widget
  */
 
-abstract class WPM_Widget extends WP_Widget {
+abstract class WPM_Widget extends \WP_Widget {
 
 	/**
 	 * CSS class.

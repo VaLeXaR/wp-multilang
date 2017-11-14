@@ -9,10 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! defined( 'MSWP_AVERTA_VERSION' ) ) {
-	return;
-}
-
 /**
  * Class WPM_Masterslider
  * @package  WPM/Includes/Vendor
@@ -79,15 +75,12 @@ class WPM_Masterslider {
 					foreach ( $old_params['MSPanel.Slide'] as $old_slide ) {
 						$old_slide = json_decode( $old_slide, true );
 						if ( $slide['id'] === $old_slide['id'] ) {
-							$strings   = wpm_value_to_ml_array( $old_slide );
-							$new_value = wpm_set_language_value( $strings, $slide, $slider_config );
-							$slide     = wpm_ml_value_to_string( $new_value );
+							$slide = wpm_set_new_value( $old_slide, $slide, $slider_config );
 						}
 					}
 				} else {
 					if ( ! wpm_is_ml_value( $slide ) ) {
-						$slide = wpm_set_language_value( array(), $slide, $slider_config );
-						$slide = wpm_ml_value_to_string( $slide );
+						$slide = wpm_set_new_value( array(), $slide, $slider_config );
 					}
 				}
 				$params['MSPanel.Slide'][ $key ] = wp_json_encode( $slide );
@@ -107,15 +100,12 @@ class WPM_Masterslider {
 					foreach ( $old_params['MSPanel.Layer'] as $old_layer ) {
 						$old_layer = json_decode( $old_layer, true );
 						if ( $layer['id'] === $old_layer['id'] ) {
-							$strings   = wpm_value_to_ml_array( $old_layer );
-							$new_value = wpm_set_language_value( $strings, $layer, $layer_config );
-							$layer     = wpm_ml_value_to_string( $new_value );
+							$layer = wpm_set_new_value( $old_layer, $layer, $layer_config );
 						}
 					}
 				} else {
 					if ( ! wpm_is_ml_value( $layer ) ) {
-						$layer = wpm_set_language_value( array(), $layer, $layer_config );
-						$layer = wpm_ml_value_to_string( $layer );
+						$layer = wpm_set_new_value( array(), $layer, $layer_config );
 					}
 				}
 				$params['MSPanel.Layer'][ $key ] = wp_json_encode( $layer );
@@ -202,5 +192,3 @@ class WPM_Masterslider {
 		return $capabilities;
 	}
 }
-
-new WPM_Masterslider();

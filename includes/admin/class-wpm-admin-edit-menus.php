@@ -109,7 +109,7 @@ class WPM_Admin_Edit_Menus {
 		$name      = sprintf( '%s[%s]', $_key, $item_id );
 		$value     = $item->languages;
 		$class     = sprintf( 'field-%s', $_key );
-		$languages = wpm_get_options();
+		$languages = wpm_get_lang_option();
 		$i         = 0;
 		?>
 		<p class="description description-wide <?php echo esc_attr( $class ) ?>">

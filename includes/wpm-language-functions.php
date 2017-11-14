@@ -62,25 +62,14 @@ function wpm_get_default_language() {
 }
 
 /**
- * Get config
- *
- * @see WPM_Setup::get_config()
- *
- * @return array
- */
-function wpm_get_config() {
-	return WPM_Setup::instance()->get_config();
-}
-
-/**
  * Get options
  *
  * @see WPM_Setup::get_options()
  *
  * @return array
  */
-function wpm_get_options() {
-	return WPM_Setup::instance()->get_options();
+function wpm_get_lang_option() {
+	return WPM_Setup::get_option( 'languages' );
 }
 
 /**

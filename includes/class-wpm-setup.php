@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WPM_Setup {
 
 	/**
-	 * Original url
+	 * Original home url
 	 *
 	 * @var string
 	 */
@@ -29,7 +29,7 @@ class WPM_Setup {
 	private $original_request_uri = '';
 
 	/**
-	 * Original uri
+	 * Site uri
 	 *
 	 * @var string
 	 */
@@ -61,7 +61,7 @@ class WPM_Setup {
 	 *
 	 * @var array
 	 */
-	private $options = array();
+	private static $options = array();
 
 	/**
 	 * Installed languages
@@ -76,6 +76,13 @@ class WPM_Setup {
 	 * @var string
 	 */
 	private $user_language = '';
+
+	/**
+	 * URL language
+	 *
+	 * @var string
+	 */
+	private $url_language = '';
 
 	/**
 	 * Available translations
@@ -124,31 +131,34 @@ class WPM_Setup {
 		add_action( 'after_switch_theme', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
 		add_action( 'activated_plugin', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
 		add_action( 'upgrader_process_complete', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
-		add_action( 'after_setup_theme', array( $this, 'redirect_default_url' ) );
 		add_action( 'wpm_init', array( $this, 'load_integrations' ) );
 		add_action( 'parse_request', array( $this, 'setup_query_var' ), 0 );
-		add_action( 'wp', array( $this, 'redirect_to_user_language' ) );
+		add_action( 'template_redirect', array( $this, 'redirect_default_url' ) );
+		add_action( 'template_redirect', array( $this, 'redirect_to_user_language' ) );
 		add_filter( 'request', array( $this, 'set_home_page' ) );
 		add_filter( 'rest_url', array( $this, 'fix_rest_url' ) );
 		add_filter( 'option_date_format', array( $this, 'set_date_format' ) );
 		add_filter( 'option_time_format', array( $this, 'set_time_format' ) );
 		add_filter( 'locale', array( $this, 'set_locale' ) );
 		add_filter( 'gettext', array( $this, 'set_html_locale' ), 10, 2 );
-		add_filter( 'redirect_canonical', array( $this, 'fix_canonical_redirect' ), 10, 2 );
 	}
 
 
 	/**
 	 * Load options from base
 	 *
+	 * @param string $key
+	 *
+	 * @param string $default
+	 *
 	 * @return array|string
 	 */
-	public function get_options() {
-		if ( ! $this->options ) {
-			$this->options = get_option( 'wpm_languages', array() );
+	static function get_option( $key, $default = '' ) {
+		if ( ! isset( self::$options[ $key ] ) ) {
+			self::$options[ $key ] = get_option( 'wpm_' . $key, $default );
 		}
 
-		return $this->options;
+		return self::$options[ $key ];
 	}
 
 
@@ -192,7 +202,17 @@ class WPM_Setup {
 	 */
 	public function get_site_request_uri() {
 		if ( ! $this->site_request_uri ) {
-			$site_request_uri       = str_replace( home_url(), '', $this->get_original_home_url() . $this->get_original_request_uri() );
+			$original_uri = $this->get_original_request_uri();
+
+			if ( isset( $_GET['lang'] ) ) {
+				$site_request_uri = $original_uri;
+				if ( $url_lang = $this->get_lang_from_url() ) {
+					$site_request_uri = str_replace( '/' . $url_lang . '/', '/', $original_uri );
+				}
+			} else {
+				$site_request_uri = str_replace( home_url(), '', $this->get_original_home_url() . $original_uri );
+			}
+
 			$this->site_request_uri = $site_request_uri ? $site_request_uri : '/';
 		}
 
@@ -221,7 +241,7 @@ class WPM_Setup {
 	 */
 	public function get_languages() {
 		if ( ! $this->languages ) {
-			$options   = $this->get_options();
+			$options   = self::get_option( 'languages', array() );
 			$languages = array();
 
 			foreach ( $options as $slug => $language ) {
@@ -259,7 +279,7 @@ class WPM_Setup {
 	 */
 	public function get_default_language() {
 		if ( ! $this->default_language ) {
-			$default_language = get_option( 'wpm_site_language' );
+			$default_language = self::get_option( 'site_language', false );
 
 			if ( ! $default_language ) {
 				$locale           = explode( '_', $this->get_default_locale() );
@@ -311,7 +331,7 @@ class WPM_Setup {
 	 * Set user language for frontend from url or browser
 	 * Set admin language from cookie or url
 	 */
-	public function set_user_language() {
+	private function set_user_language() {
 
 		$languages     = $this->get_languages();
 		$url           = '';
@@ -337,8 +357,8 @@ class WPM_Setup {
 		if ( $url ) {
 			$this->original_request_uri = str_replace( $this->get_original_home_url(), '', $url );
 
-			if ( preg_match( '!^/([a-z]{2})(-[a-z]{2})?(/|$)!i', $this->get_original_request_uri(), $match ) ) {
-				$user_language = $match[1];
+			if ( $url_lang = $this->get_lang_from_url() ) {
+				$user_language = $url_lang;
 			}
 
 			if ( $user_language && ! is_admin() && ! isset( $languages[ $user_language ] ) ) {
@@ -391,25 +411,25 @@ class WPM_Setup {
 	public function redirect_default_url() {
 		$user_language    = $this->get_user_language();
 		$default_language = $this->get_default_language();
-		$languages        = $this->get_languages();
-		$url_lang         = '';
+		$url_lang         = $this->get_lang_from_url();
 
-		if ( preg_match( '!^/([a-z]{2})(-[a-z]{2})?(/|$)!i', $this->get_original_request_uri(), $match ) ) {
-			$url_lang = $match[1];
-		}
-
-		if ( ! isset( $_REQUEST['lang'] ) ) {
-			if ( get_option( 'wpm_use_prefix' ) ) {
-				if ( ! $url_lang && ! is_admin() && ! preg_match( '/^.*\.php$/i', wp_parse_url( $this->get_original_request_uri(), PHP_URL_PATH ) ) ) {
-					wp_redirect( home_url( '/' . $default_language . $this->get_original_request_uri() ) );
+		if ( ! isset( $_GET['lang'] ) ) {
+			if ( self::get_option( 'use_prefix', false ) ) {
+				if ( ! $url_lang ) {
+					wp_redirect( home_url( $this->get_original_request_uri() ) );
 					exit;
 				}
 			} else {
-				if ( $url_lang && isset( $languages[ $url_lang ] ) && $user_language === $default_language ) {
-					wp_redirect( home_url( str_replace( '/' . $user_language . '/', '/', $this->get_original_request_uri() ) ) );
+				if ( $url_lang && $user_language === $default_language ) {
+					wp_redirect( home_url( preg_replace( '!^/([a-z]{2})(-[a-z]{2})?(/|$)!i', '/', $this->get_original_request_uri() ) ) );
 					exit;
 				}
 			}
+		}
+
+		if ( isset( $_GET['lang'] ) && ! empty( $_GET['lang'] ) && $url_lang ) {
+			wp_redirect( $this->get_original_home_url() . $this->get_site_request_uri() );
+			exit;
 		}
 	}
 
@@ -419,7 +439,6 @@ class WPM_Setup {
 	 * @return array
 	 */
 	public function get_translations() {
-
 		if ( ! $this->translations ) {
 			require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
 			$available_translations          = wp_get_available_translations();
@@ -443,31 +462,15 @@ class WPM_Setup {
 	public function get_config() {
 
 		if ( ! $this->config ) {
-			$config       = get_option( 'wpm_config', array() );
-			$theme_config = WPM_Config::load_theme_config();
-			$this->config = wpm_array_merge_recursive( $config, $theme_config );
+			if ( ! $config = wp_cache_get( 'wpm_config' ) ) {
+				WPM_Config::load_config_run();
+				$config = wp_cache_get( 'wpm_config' );
+			}
+
+			$this->config = $config;
 		}
 
-		$config = apply_filters( 'wpm_load_config', $this->config );
-
-		$posts_config = apply_filters( 'wpm_posts_config', $config['post_types'] );
-		$post_types   = get_post_types( '', 'names' );
-
-		foreach ( $post_types as $post_type ) {
-			$posts_config[ $post_type ] = apply_filters( "wpm_post_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
-		}
-
-		$config['post_types'] = $posts_config;
-
-		$taxonomies_config = apply_filters( 'wpm_taxonomies_config', $config['taxonomies'] );
-		$taxonomies        = get_taxonomies();
-
-		foreach ( $taxonomies as $taxonomy ) {
-			$taxonomies_config[ $taxonomy ] = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
-		}
-
-		$config['taxonomies'] = $taxonomies_config;
-
+		$config            = apply_filters( 'wpm_load_config', $this->config );
 		$config['options'] = apply_filters( 'wpm_options_config', $config['options'] );
 
 		if ( is_multisite() ) {
@@ -475,8 +478,6 @@ class WPM_Setup {
 		} else {
 			unset( $config['site_options'] );
 		}
-
-		$config['widgets'] = apply_filters( 'wpm_widgets_config', $config['widgets'] );
 
 		return $config;
 	}
@@ -499,7 +500,7 @@ class WPM_Setup {
 		$default_language = wpm_get_default_language();
 
 
-		if ( $user_language !== $default_language || get_option( 'wpm_use_prefix' ) ) {
+		if ( $user_language !== $default_language || self::get_option( 'use_prefix', false ) ) {
 			$value .= '/' . $user_language;
 		}
 
@@ -515,7 +516,6 @@ class WPM_Setup {
 	 * @return array
 	 */
 	public function set_lang_var( $public_query_vars ) {
-
 		$public_query_vars[] = 'lang';
 
 		return $public_query_vars;
@@ -526,12 +526,32 @@ class WPM_Setup {
 	 * Load integration classes
 	 */
 	public function load_integrations() {
-		$integrations_path = WPM_ABSPATH . 'includes/integrations/';
-		foreach ( glob( $integrations_path . '*.php' ) as $integration_file ) {
-			if ( apply_filters( 'wpm_load_integration_' . str_replace( '-', '_', basename( $integration_file, '.php' ) ), $integration_file ) ) {
-				if ( $integration_file && is_readable( $integration_file ) ) {
-					include_once( $integration_file );
-				}
+
+		do_action( 'wpm_integrations_init' );
+
+		$integrations = apply_filters( 'wpm_integrations', array(
+			'advanced-custom-fields'     => __NAMESPACE__ . '\Integrations\WPM_Acf',
+			'advanced-custom-fields-pro' => __NAMESPACE__ . '\Integrations\WPM_Acf',
+			'all-in-one-seo-pack'        => __NAMESPACE__ . '\Integrations\WPM_AIOSP',
+			'better-search'              => __NAMESPACE__ . '\Integrations\WPM_Better_Search',
+			'buddypress'                 => __NAMESPACE__ . '\Integrations\WPM_BuddyPress',
+			'contact-form-7'             => __NAMESPACE__ . '\Integrations\WPM_CF7',
+			'gutenberg'                  => __NAMESPACE__ . '\Integrations\WPM_Gutenberg',
+			'js_composer'                => __NAMESPACE__ . '\Integrations\WPM_VC',
+			'mailchimp-for-wp'           => __NAMESPACE__ . '\Integrations\WPM_MailChimp_For_WP',
+			'masterslider'               => __NAMESPACE__ . '\Integrations\WPM_Masterslider',
+			'megamenu'                   => __NAMESPACE__ . '\Integrations\WPM_Megamenu',
+			'newsletter'                 => __NAMESPACE__ . '\Integrations\WPM_Newsletter',
+			'nextgen-gallery'            => __NAMESPACE__ . '\Integrations\WPM_NGG',
+			'siteorigin-panels'          => __NAMESPACE__ . '\Integrations\WPM_PBSO',
+			'tablepress'                 => __NAMESPACE__ . '\Integrations\WPM_Tablepress',
+			'woocommerce'                => __NAMESPACE__ . '\Integrations\WPM_WooCommerce',
+			'wordpress-seo'              => __NAMESPACE__ . '\Integrations\WPM_Yoast_Seo',
+		) );
+
+		foreach ( wp_cache_get( 'wpm_active_plugins' ) as $plugin ) {
+			if ( isset( $integrations[ $plugin ] ) && ! empty( $integrations[ $plugin ] ) ) {
+				new $integrations[ $plugin ]();
 			}
 		}
 	}
@@ -574,7 +594,7 @@ class WPM_Setup {
 			if ( ! isset( $_COOKIE['language'] ) ) {
 
 				wpm_setcookie( 'language', $user_language, time() + YEAR_IN_SECONDS );
-				$redirect_to_browser_language = get_option( 'wpm_use_redirect', false );
+				$redirect_to_browser_language = self::get_option( 'use_redirect', false );
 
 				if ( $redirect_to_browser_language ) {
 
@@ -655,7 +675,7 @@ class WPM_Setup {
 	 * @return array
 	 */
 	public function set_home_page( $query_vars ) {
-		if ( isset( $_GET['lang'] ) && ( ( '/' == wp_parse_url( $this->get_site_request_uri(), PHP_URL_PATH ) || ( count( $query_vars ) == 2 && isset( $query_vars['paged'] ) ) ) ) ) {
+		if ( isset( $_GET['lang'] ) && ( ( '/' == wp_parse_url( $this->get_site_request_uri(), PHP_URL_PATH ) ) || ( count( $query_vars ) == 2 && isset( $query_vars['paged'] ) ) ) ) {
 			unset( $query_vars['lang'] );
 		}
 
@@ -694,7 +714,7 @@ class WPM_Setup {
 	 * @return string
 	 */
 	public function fix_rest_url( $url ) {
-		if ( ! get_option( 'wpm_use_prefix' ) && get_locale() != wpm_get_default_locale() ) {
+		if ( ! self::get_option( 'use_prefix', false ) && wpm_get_language() != wpm_get_default_language() ) {
 			$url = str_replace( '/' . wpm_get_language() . '/', '/', $url );
 		}
 
@@ -797,20 +817,23 @@ class WPM_Setup {
 	}
 
 	/**
-	 * Fix redirect when using lang param in $_GET
+	 * Get lang from url
 	 *
-	 * @since 2.0.1
-	 *
-	 * @param string $redirect_url
-	 * @param string $requested_url
+	 * @since 2.0.3
 	 *
 	 * @return string
 	 */
-	public function fix_canonical_redirect( $redirect_url, $requested_url ) {
-		if ( isset( $_GET['lang'] ) && ! empty( $_GET['lang'] ) ) {
-			return $requested_url;
+	private function get_lang_from_url() {
+		if ( ! $this->url_language ) {
+			$url_lang = '';
+
+			if ( preg_match( '!^/([a-z]{2})(-[a-z]{2})?(/|$)!i', $this->get_original_request_uri(), $match ) ) {
+				$url_lang = $match[1];
+			}
+
+			$this->url_language = $url_lang;
 		}
 
-		return $redirect_url;
+		return $this->url_language;
 	}
 }

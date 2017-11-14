@@ -28,10 +28,10 @@ class WPM_Admin_Posts {
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'init' ) );
 		add_action( 'post_submitbox_misc_actions', array( $this, 'add_lang_indicator' ) );
-		add_filter( 'page_link', array( $this, 'translate_page_link' ), 10, 2 );
-		add_filter( 'attachment_link', array( $this, 'translate_page_link' ), 10, 2 );
-		add_filter( 'post_link', array( $this, 'translate_post_link' ), 10, 2 );
-		add_filter( 'post_type_link', array( $this, 'translate_post_link' ), 10, 2 );
+		add_filter( 'page_link', array( $this, 'translate_post_link' ) );
+		add_filter( 'attachment_link', array( $this, 'translate_post_link' ) );
+		add_filter( 'post_link', array( $this, 'translate_post_link' ) );
+		add_filter( 'post_type_link', array( $this, 'translate_post_link' ) );
 		new WPM_Admin_Meta_Boxes();
 	}
 
@@ -41,12 +41,11 @@ class WPM_Admin_Posts {
 	 */
 	public function init() {
 
-		$config       = wpm_get_config();
-		$posts_config = $config['post_types'];
+		$post_types = get_post_types( '', 'names' );
 
-		foreach ( $posts_config as $post_type => $post_config ) {
+		foreach ( $post_types as $post_type ) {
 
-			if ( is_null( $post_config ) ) {
+			if ( is_null( wpm_get_post_config( $post_type ) ) ) {
 				continue;
 			}
 
@@ -103,7 +102,7 @@ class WPM_Admin_Posts {
 			$output    = array();
 			$text      = $post->post_title . $post->post_content;
 			$strings   = wpm_value_to_ml_array( $text );
-			$languages = wpm_get_options();
+			$languages = wpm_get_lang_option();
 
 			foreach ( $languages as $lang => $language ) {
 				if ( isset( $strings[ $lang ] ) && ! empty( $strings[ $lang ] ) ) {
@@ -124,10 +123,12 @@ class WPM_Admin_Posts {
 	 * @param \WP_Post $post
 	 */
 	public function add_lang_indicator( $post ) {
-		$languages = wpm_get_languages();
-		$language  = wpm_get_language();
-		$config    = wpm_get_config();
-		if ( isset( $config['post_types'][ $post->post_type ] ) && is_null( $config['post_types'][ $post->post_type ] ) && ( wpm_is_ml_string( $post->post_title ) || wpm_is_ml_value( $post->post_content ) ) ) {
+
+		if ( is_null( wpm_get_post_config( $post->post_type ) ) && ( wpm_is_ml_string( $post->post_title ) || wpm_is_ml_value( $post->post_content ) ) ) {
+
+			$languages = wpm_get_languages();
+			$language  = wpm_get_language();
+
 			?>
 			<div class="misc-pub-section language">
 				<?php esc_html_e( 'Current edit language:', 'wp-multilang' ); ?>
@@ -142,35 +143,13 @@ class WPM_Admin_Posts {
 	}
 
 	/**
-	 * Translate pages link
-	 *
-	 * @param $permalink
-	 * @param $page_id
-	 *
-	 * @return string
-	 */
-	public function translate_page_link( $permalink, $page_id ) {
-		$post = get_post( $page_id );
-
-		return $this->translate_post_link( $permalink, $post );
-	}
-
-	/**
 	 * Translate posts link
 	 *
 	 * @param $permalink
-	 * @param $post
 	 *
 	 * @return string
 	 */
-	public function translate_post_link( $permalink, $post ) {
-		$config      = wpm_get_config();
-		$post_config = $config['post_types'];
-
-		if ( ! isset( $post_config[ $post->post_type ] ) || is_null( $post_config[ $post->post_type ] ) ) {
-			return $permalink;
-		}
-
+	public function translate_post_link( $permalink ) {
 		return wpm_translate_url( $permalink, wpm_get_language() );
 	}
 }

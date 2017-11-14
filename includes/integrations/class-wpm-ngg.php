@@ -9,10 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! defined( 'NGG_PLUGIN' ) ) {
-	return;
-}
-
 /**
  * Class WPM_NGG
  * @package  WPM/Includes/Integrations
@@ -28,7 +24,7 @@ class WPM_NGG {
 		add_filter( 'wpm_admin_html_tags', array( $this, 'add_admin_html_tags' ) );
 		add_filter( 'ngg_manage_gallery_fields', array( $this, 'filter_fields' ), 11 );
 		add_filter( 'ngg_manage_images_row', array( $this, 'translate_gallery_object' ) );
-		add_action( 'admin_init', array( $this, 'save_gallery' ) );
+		add_action( 'admin_head', array( $this, 'save_gallery' ) );
 	}
 
 
@@ -49,9 +45,7 @@ class WPM_NGG {
 			if ( $album = \C_Album_Mapper::get_instance()->find( wpm_clean( $_POST['act_album'] ) ) ) {
 				foreach ( $data as $key => $value ) {
 					if ( ! wpm_is_ml_string( $value ) ) {
-						$old_value     = wpm_string_to_ml_array( $album->{$fields[ $key ]} );
-						$value         = wpm_set_language_value( $old_value, $value );
-						$_POST[ $key ] = wpm_ml_value_to_string( $value );
+						$_POST[ $key ] = wpm_set_new_value( $album->{$fields[ $key ]}, $value );
 					}
 				}
 			}
@@ -77,9 +71,7 @@ class WPM_NGG {
 					if ( $entity = $mapper->find( wpm_clean( $_GET['gid'] ) ) ) {
 						foreach ( $data as $key => $value ) {
 							if ( ! wpm_is_ml_string( $value ) ) {
-								$old_value     = wpm_string_to_ml_array( $entity->$key );
-								$value         = wpm_set_language_value( $old_value, $value );
-								$_POST[ $key ] = wpm_ml_value_to_string( $value );
+								$_POST[ $key ] = wpm_set_new_value( $entity->$key, $value );
 							}
 						}
 					}
@@ -103,9 +95,7 @@ class WPM_NGG {
 					// Update all fields
 					foreach ( $data as $key => $value ) {
 						if ( ! wpm_is_ml_string( $value ) ) {
-							$old_value                       = wpm_string_to_ml_array( $old_image->$key );
-							$value                           = wpm_set_language_value( $old_value, $value );
-							$_POST['images'][ $pid ][ $key ] = wpm_ml_value_to_string( $value );
+							$_POST['images'][ $pid ][ $key ] = wpm_set_new_value( $old_image->$key, $value );
 						}
 					}
 				}
@@ -240,5 +230,3 @@ class WPM_NGG {
 		return $object;
 	}
 }
-
-new WPM_NGG();

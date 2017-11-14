@@ -9,16 +9,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! defined( 'WC_VERSION' ) ) {
-	return;
-}
-
 /**
  * Class WPM_WooCommerce
  * @package  WPM/Includes/Integrations
  * @category Integrations
  */
 class WPM_WooCommerce {
+
+	private $attribute_taxonomies_config = array();
 
 	/**
 	 * WPM_WooCommerce constructor.
@@ -50,6 +48,10 @@ class WPM_WooCommerce {
 		add_filter( 'woocommerce_gateway_method_title', 'wpm_translate_string' );
 		add_filter( 'woocommerce_gateway_method_description', 'wpm_translate_string' );
 		add_filter( 'wpm_role_translator_capability_types', array( $this, 'add_capabilities_types' ) );
+		add_filter( 'wpm_taxonomies_config', array( $this, 'add_attribute_taxonomies' ) );
+		add_filter( 'woocommerce_attribute_label', 'wpm_translate_string' );
+		add_filter( 'woocommerce_attribute_taxonomies', array( $this, 'translate_attribute_taxonomies' ) );
+		add_action( 'admin_head', array( $this, 'set_translation_for_attribute_taxonomies' ) );
 	}
 
 
@@ -76,22 +78,15 @@ class WPM_WooCommerce {
 	 */
 	public function update_shipping_settings( $settings, $shipping ) {
 
-		$old_settings = get_option( $shipping->get_instance_option_key(), null );
-
-		$strings = array();
-
-		if ( $old_settings ) {
-			$strings  = wpm_value_to_ml_array( $old_settings );
-		}
+		$old_settings = get_option( $shipping->get_instance_option_key(), array() );
 
 		$setting_config = array(
 			'title' => array(),
 		);
 
-		$new_value    = wpm_set_language_value( $strings, $settings, $setting_config );
-		$new_settings = wpm_ml_value_to_string( $new_value );
+		$settings = wpm_set_new_value( $old_settings, $settings, $setting_config );
 
-		return $new_settings;
+		return $settings;
 	}
 
 	/**
@@ -118,6 +113,7 @@ class WPM_WooCommerce {
 	 * @return array
 	 */
 	public function remove_filter( $query_args ) {
+
 		$query_args['suppress_filters'] = true;
 
 		return $query_args;
@@ -133,10 +129,105 @@ class WPM_WooCommerce {
 	 * @return array
 	 */
 	public function add_capabilities_types( $types ) {
+
 		$types[] = 'product';
 
 		return $types;
 	}
-}
 
-new WPM_WooCommerce();
+	/**
+	 * Set attribute taxonomies for translate
+	 *
+	 * @param $taxonomies_config
+	 *
+	 * @return array
+	 */
+	public function add_attribute_taxonomies( $taxonomies_config ) {
+
+		if ( ! $this->attribute_taxonomies_config ) {
+
+			if ( ! $attribute_taxonomies = get_transient( 'wc_attribute_taxonomies' ) ) {
+				$attribute_taxonomies = array();
+			}
+
+			foreach ( $attribute_taxonomies as $tax ) {
+				if ( $name = wc_attribute_taxonomy_name( $tax->attribute_name ) ) {
+					$this->attribute_taxonomies_config[ $name ] = array();
+				}
+			}
+		}
+
+		return wpm_array_merge_recursive( $this->attribute_taxonomies_config, $taxonomies_config );
+	}
+
+	/**
+	 * Translate attribute taxonomies
+	 *
+	 * @param $attribute_taxonomies
+	 *
+	 * @return mixed
+	 */
+	public function translate_attribute_taxonomies( $attribute_taxonomies ) {
+
+		foreach ( $attribute_taxonomies as &$tax ) {
+			$tax->attribute_label = wpm_translate_string( $tax->attribute_label );
+		}
+
+		return $attribute_taxonomies;
+	}
+
+	/**
+	 * Filter action for save and add attribute taxonomies
+	 */
+	public function set_translation_for_attribute_taxonomies() {
+		$action = '';
+
+		// Action to perform: add, edit, delete or none
+		if ( ! empty( $_POST['add_new_attribute'] ) ) {
+			$action = 'add';
+		} elseif ( ! empty( $_POST['save_attribute'] ) && ! empty( $_GET['edit'] ) ) {
+			$action = 'edit';
+		}
+
+		switch ( $action ) {
+			case 'add':
+				$this->process_add_attribute();
+				break;
+			case 'edit':
+				$this->process_edit_attribute();
+				break;
+		}
+	}
+
+	/**
+	 * Add new attribute with translate
+	 */
+	private function process_add_attribute() {
+		check_admin_referer( 'woocommerce-add-new_attribute' );
+
+		$label = '';
+
+		if ( isset( $_POST['attribute_label'] ) ) {
+			$label = wpm_set_new_value( '', wc_clean( stripslashes( $_POST['attribute_label'] ) ) );
+		}
+
+		$_POST['attribute_label'] = $label;
+	}
+
+	/**
+	 * Save new attribute with translate
+	 */
+	private function process_edit_attribute() {
+		$attribute_id = absint( $_GET['edit'] );
+		check_admin_referer( 'woocommerce-save-attribute_' . $attribute_id );
+
+		$label = '';
+
+		if ( isset( $_POST['attribute_label'] ) ) {
+			$attribute = wc_get_attribute( $attribute_id );
+			$label     = wpm_set_new_value( $attribute->name, wc_clean( stripslashes( $_POST['attribute_label'] ) ) );
+		}
+
+		$_POST['attribute_label'] = $label;
+	}
+}

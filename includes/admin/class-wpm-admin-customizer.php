@@ -35,7 +35,7 @@ class WPM_Admin_Customizer {
 		$suffix    = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$src = wpm_asset_path( '/scripts/add-lang-to-customizer' . $suffix . '.js' );
 		wp_enqueue_script( 'wpm-add-lang-to-customizer', $src, array( 'customize-controls' ), WPM_VERSION , true );
-		$base_url = apply_filters( 'wpm_customizer_url', get_home_url() );
+		$base_url = apply_filters( 'wpm_customizer_url', home_url() );
 		$url = add_query_arg( 'lang', wpm_get_language(), $base_url );
 		wp_add_inline_script( 'wpm-add-lang-to-customizer', sprintf( 'WPMLang.init( %s );', wp_json_encode( array( 'url' => $url ) ) ) );
 	}

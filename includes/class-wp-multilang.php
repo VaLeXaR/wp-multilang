@@ -16,7 +16,7 @@ final class WP_Multilang {
 	 *
 	 * @var string
 	 */
-	public $version = '2.0.1';
+	public $version = '2.1.0';
 
 	/**
 	 * The single instance of the class.
@@ -123,12 +123,6 @@ final class WP_Multilang {
 	 * Include required core files used in admin and on the frontend.
 	 */
 	public function includes() {
-		/**
-		 * Abstract classes.
-		 */
-		include_once( WPM_ABSPATH . 'includes/abstracts/abstract-wpm-object.php' );
-		include_once( WPM_ABSPATH . 'includes/abstracts/abstract-wpm-widget.php' );
-
 		/**
 		 * Core classes.
 		 */

@@ -1,0 +1,25 @@
+{
+  "options": {
+    "wc_customizer_active_customizations": {
+      "add_to_cart_text": {},
+      "variable_add_to_cart_text": {},
+      "grouped_add_to_cart_text": {},
+      "out_of_stock_add_to_cart_text": {},
+      "loop_sale_flash_text": {},
+      "woocommerce_product_description_tab_title": {},
+      "woocommerce_product_additional_information_tab_title": {},
+      "woocommerce_product_description_heading": {},
+      "woocommerce_product_additional_information_heading": {},
+      "single_add_to_cart_text": {},
+      "single_sale_flash_text": {},
+      "woocommerce_checkout_must_be_logged_in_message": {},
+      "woocommerce_checkout_coupon_message": {},
+      "woocommerce_checkout_login_message": {},
+      "woocommerce_create_account_default_checked": {},
+      "woocommerce_order_button_text": {},
+      "woocommerce_countries_tax_or_vat": {},
+      "woocommerce_countries_inc_tax_or_vat": {},
+      "woocommerce_countries_ex_tax_or_vat": {}
+    }
+  }
+}

@@ -28,7 +28,7 @@ class WPM_Admin_Taxonomies {
 		add_action( 'admin_init', array( $this, 'init' ) );
 		add_action( 'created_term', array( $this, 'save_taxonomy_fields' ), 10, 3 );
 		add_action( 'edit_term', array( $this, 'save_taxonomy_fields' ), 10, 3 );
-		add_action( 'term_link', array( $this, 'translate_term_link' ), 10, 3 );
+		add_action( 'term_link', array( $this, 'translate_term_link' ) );
 	}
 
 
@@ -36,11 +36,12 @@ class WPM_Admin_Taxonomies {
 	 * Add language column to taxonomies list
 	 */
 	public function init() {
-		$config = wpm_get_config();
 
-		foreach ( $config['taxonomies'] as $taxonomy => $taxonomy_config ) {
+		$taxonomies = get_taxonomies();
 
-			if ( is_null( $taxonomy_config ) ) {
+		foreach ( $taxonomies as $taxonomy ) {
+
+			if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
 				continue;
 			}
 
@@ -86,7 +87,7 @@ class WPM_Admin_Taxonomies {
 			$output    = array();
 			$text      = $term->name . $term->description;
 			$strings   = wpm_value_to_ml_array( $text );
-			$languages = wpm_get_options();
+			$languages = wpm_get_lang_option();
 
 			foreach ( $languages as $lang => $language ) {
 				if ( isset( $strings[ $lang ] ) && ! empty( $strings[ $lang ] ) ) {
@@ -108,19 +109,6 @@ class WPM_Admin_Taxonomies {
 	 */
 	public function add_taxonomy_fields() {
 
-		$screen = get_current_screen();
-
-		if ( empty( $screen->taxonomy ) ) {
-			return;
-		}
-
-		$config            = wpm_get_config();
-		$taxonomies_config = $config['taxonomies'];
-
-		if ( is_null( $taxonomies_config[ $screen->taxonomy ] ) ) {
-			return;
-		}
-
 		$languages = wpm_get_languages();
 		$i         = 0;
 		?>
@@ -141,19 +129,6 @@ class WPM_Admin_Taxonomies {
 	 * @param $term
 	 */
 	public function edit_taxonomy_fields( $term ) {
-
-		$screen = get_current_screen();
-
-		if ( empty( $screen->taxonomy ) ) {
-			return;
-		}
-
-		$config            = wpm_get_config();
-		$taxonomies_config = $config['taxonomies'];
-
-		if ( is_null( $taxonomies_config[ $screen->taxonomy ] ) ) {
-			return;
-		}
 
 		$term_languages = get_term_meta( $term->term_id, '_languages', true );
 
@@ -193,14 +168,7 @@ class WPM_Admin_Taxonomies {
 	 */
 	public function save_taxonomy_fields( $term_id, $tt_id = '', $taxonomy = '' ) {
 
-		if ( empty( $taxonomy ) ) {
-			return;
-		}
-
-		$config            = wpm_get_config();
-		$taxonomies_config = $config['taxonomies'];
-
-		if ( is_null( $taxonomies_config[ $taxonomy ] ) ) {
+		if ( empty( $taxonomy ) || is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
 			return;
 		}
 
@@ -220,13 +188,7 @@ class WPM_Admin_Taxonomies {
 	 *
 	 * @return string
 	 */
-	public function translate_term_link( $termlink, $term, $taxonomy ) {
-		$config      = wpm_get_config();
-		$term_config = $config['taxonomies'];
-
-		if ( ! isset( $term_config[ $taxonomy ] ) || is_null( $term_config[ $taxonomy ] ) ) {
-			return $termlink;
-		}
+	public function translate_term_link( $termlink ) {
 
 		return wpm_translate_url( $termlink, wpm_get_language() );
 	}

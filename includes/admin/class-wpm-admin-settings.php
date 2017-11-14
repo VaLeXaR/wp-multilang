@@ -35,7 +35,7 @@ class WPM_Admin_Settings {
 		<div class="wrap">
 			<h2><?php esc_html_e( 'WP Multilang Settings', 'wp-multilang' ) ?></h2>
 
-			<form method="post" action="options.php">
+			<form method="post" action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>">
 				<?php settings_fields( 'wpm-settings' ); ?>
 				<?php do_settings_sections( 'wpm-settings' ); ?>
 				<?php submit_button(); ?>
@@ -122,7 +122,7 @@ class WPM_Admin_Settings {
 	 * Display languages
 	 */
 	public function languages_setting() {
-		$languages = wpm_get_options();
+		$languages = wpm_get_lang_option();
 		$flags     = wpm_get_flags();
 		?>
 		<div id="poststuff">
@@ -209,12 +209,9 @@ class WPM_Admin_Settings {
 										<select class="wpm-flags" name="wpm_languages[<?php echo $i; ?>][flag]" title="<?php esc_attr_e( 'Flag', 'wp-multilang' ); ?>">
 											<option value=""><?php esc_attr_e( '&mdash; Select &mdash;' ); ?></option>
 											<?php foreach ( $flags as $flag ) { ?>
-												<option value="<?php esc_attr_e( $flag ); ?>"<?php selected( $language['flag'], $flag ); ?>><?php esc_attr_e( pathinfo( $flag, PATHINFO_FILENAME ) ); ?></option>
+												<option value="<?php esc_attr_e( $flag ); ?>" data-flag="<?php echo esc_url( wpm_get_flag_url( $flag ) ); ?>" <?php selected( $language['flag'], $flag ); ?>><?php esc_attr_e( pathinfo( $flag, PATHINFO_FILENAME ) ); ?></option>
 											<?php } ?>
 										</select>
-										<?php if ( ( $language['flag'] ) ) { ?>
-											<img src="<?php echo esc_url( wpm_get_flag_url( $language['flag'] ) ); ?>" alt="<?php esc_attr_e( $language['name'] ); ?>">
-										<?php } ?>
 									</td>
 								</tr>
 								<?php do_action( 'wpm_language_settings', $key, $i ); ?>
@@ -302,7 +299,7 @@ class WPM_Admin_Settings {
 								<select class="wpm-flags" name="wpm_languages[{{ data.count }}][flag]" title="<?php esc_attr_e( 'Flag', 'wp-multilang' ); ?>">
 									<option value=""><?php esc_attr_e( '&mdash; Select &mdash;' ); ?></option>
 									<?php foreach ( $flags as $flag ) { ?>
-										<option value="<?php esc_attr_e( $flag ); ?>"><?php esc_attr_e( pathinfo( $flag, PATHINFO_FILENAME ) ); ?></option>
+										<option value="<?php esc_attr_e( $flag ); ?>" data-flag="<?php echo esc_url( wpm_get_flag_url( $flag ) ); ?>"><?php esc_attr_e( pathinfo( $flag, PATHINFO_FILENAME ) ); ?></option>
 									<?php } ?>
 								</select>
 							</td>
@@ -330,7 +327,7 @@ class WPM_Admin_Settings {
 	public function installed_translations() {
 		$installed_translations = wpm_get_installed_languages();
 		$available_translations = wpm_get_available_translations();
-		$options                = wpm_get_options();
+		$options                = wpm_get_lang_option();
 		?>
 		<select id="wpm_installed_translations" title="<?php esc_html_e( 'Installed translations', 'wp-multilang' ); ?>">
 			<?php foreach ( $installed_translations as $translation ) { ?>

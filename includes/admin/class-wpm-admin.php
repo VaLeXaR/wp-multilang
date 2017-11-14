@@ -52,6 +52,7 @@ class WPM_Admin {
 		new WPM_Admin_Settings();
 		new WPM_Admin_Widgets();
 		new WPM_Admin_Assets();
+		new WPM_Admin_Qtranslate();
 	}
 
 	/**

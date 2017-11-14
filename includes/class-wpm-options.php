@@ -60,10 +60,8 @@ class WPM_Options {
 		remove_filter( "option_{$option}", 'wpm_translate_value', 5 );
 		$old_value = get_option( $option );
 		add_filter( "option_{$option}", 'wpm_translate_value', 5 );
-		$strings   = wpm_value_to_ml_array( $old_value );
-		$new_value = wpm_set_language_value( $strings, $value, $this->options_config[ $option ] );
-		$new_value = wpm_ml_value_to_string( $new_value );
+		$value = wpm_set_new_value( $old_value, $value, $this->options_config[ $option ] );
 
-		return $new_value;
+		return $value;
 	}
 }

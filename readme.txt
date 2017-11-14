@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 2.0.1
+Stable tag: 2.1.0
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -17,32 +17,30 @@ WP Multilang is a multilingual plugin for WordPress.
 
 Translations of post types, taxonomies, meta fields, options, text fields in miltimedia files, menus, titles and text fields in widgets.
 
-Features of the plugin WP Multilang:
+== Features of the plugin WP Multilang ==
 
 * 100% free.
 * Translation at PHP.
 * Compatible with REST.
-* Support configuration files.
-* Support configuration for translate multidimensional arrays.
-* Separate menu items by language
-* Separate widgets by language
-* Separate posts by language
-* Many filters for dynamic applying translation settings
-* No duplicate posts
-* No subdomains for language version
+* Support configuration for translate multidimensional arrays in options, meta fields, post content.
 * Support multisite
 * Support WordPress in subfolder
+* Separate menu items, posts, terms, widgets by language
+* Many filters for dynamic applying translation settings
+* No duplicate posts
+* No subdomain for each language version
 * Possibility set many languages with one localization. For example, for localization in the region.
 * Possibility to set custom locale for html(If installed locale is en_US, you can set locale like: en, en-UK, en-AU etc. without installation another localization)
-* Possibility for add new languages for any user with capability `manage options`
-* Exist the role "Translator" for editing posts, terms. It can not publish or delete
+* Possibility for add new languages for any user with capability `manage_options`
+* Exist the role "Translator" for editing posts, terms. It can not publish or delete.
 
-WP Multilang compatible with plugins:
+== WP Multilang compatible with plugins ==
 
 * ACF, ACF Pro
 * WooCommerce
+* WooCommerce Customizer
 * Yoast Seo
-* Contact Form 7 (added mail tag [_language] for send user lang in mail)
+* Contact Form 7 (added mail tag [_language] for send user language in mail)
 * WPBakery Visual Composer
 * Page Builder by SiteOrigin
 * NextGEN Gallery
@@ -57,8 +55,9 @@ WP Multilang compatible with plugins:
 * Meta Slider
 * TablePress
 * Download Monitor (Redefine templates for links in your theme and translate link texts)
+* Better Search
 
-Supports configuration via json.
+Manage translation settings via json.
 
 Add in the root of your theme or plugin file `wpm-config.json`.
 
@@ -88,25 +87,27 @@ There are two ways:
     `add_filter ( 'wpm_post_post_config', '__return_null');`
 
 To enable translation pass an empty array in php `array()` or empty object in json `{}`.
-Supports translation multilevel array of options, custom fields and post_content.
+Supports translation multidimensional array of options, meta fields and post_content.
 
-Supports the removal of established localizations. Has the ability to add your own localizations.
+Supports the removal of established localizations.
 
 Supports translation via GET parameter. Add in the GET parameter `lang` code desired language.
 
-Supports clean database of translations when removing the plugin.
+Supports clean database of translations when removing the plugin. Translations are only removed from the built-in tables.
+
+Supports import term translations from qTranslate(by Soft79).
 
 Ideal for developers.
 
-For a switch as add code to your template
+For display language switcher in any place add the code to your template
 
 `if ( function_exists ( 'wpm_language_switcher' ) ) wpm_language_switcher ();`
 
 Function accepts two parameters:
 
 $args - array
-  `type` - `list`, `dropdown`, `select`. Default - `list`.
-  `show` - `flag`, `name`, `both`. Default - `both`.
+  `type` - 'list', 'dropdown', 'select'. Default - 'list'.
+  `show` - 'flag', 'name', 'both'. Default - 'both'.
 
 $echo - bool
 
@@ -132,16 +133,17 @@ Add your tags in config:
     }
 }
 `
+
 Where:
 `admin_screen_id` - admin screen id.
-`attribute` - attribute what need to translate. Available `text` - for translate text node, `value` - for translate form values. Or other tag attribute, like `title`, `alt`.
+`attribute` - attribute what need to translate. Available 'text' - for translate text node, 'value' - for translate form values. Or other tag attribute, like 'title', 'alt'.
 `selector` - javascript selector for search needed tag. Each selector is a new array item.
 
-Translation uses the syntax:
+For set translation uses the syntax:
 
 `[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut`
 
-Supports syntax qTranslate, qTranslate-X, WPGlobus, etc.
+Supports translating from syntax qTranslate, qTranslate-X, WPGlobus etc.
 
 Compatible with REST-API.
 Supports transfer the required translation through option `lang` in the GET request to REST.
@@ -149,6 +151,8 @@ Has the ability to keep recording the target language through the transmission p
 
 
 == Warning ==
+Do not support different slug for each language(Yet).
+
 Not compatible with:
 - WP Maintenance
 
@@ -156,7 +160,7 @@ Not compatible with:
 
 1. Upload the plugin files to the `/wp-content/plugins/wp-multilang` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress.
-3. Adjust languages on General Options Page.
+3. Adjust languages on WP Multilang Settings page.
 
 == Frequently Asked Questions ==
 
@@ -177,6 +181,19 @@ If you have opened several browser tabs for editing this post in different langu
 5. Post edit page
 
 == Changelog ==
+
+= 2.1.0 =
++ add flag selector autocomplete
++ add setting for set Yoast SEO Opengraph locale
++ add support WooCommerce attributes
++ add compatibility with WooCommerce Customizer
++ add compatibility with Better Search
++ add import taxonomies from qTranslate(Thanks for Soft79)
+* fix add $_GET 'lang' param
+* Other fixes and improvements
+
+= 2.0.2 =
+* fix separate posts by language
 
 = 2.0.1 =
 * fix set 'lang' GET param for home page

@@ -1,4 +1,6 @@
 <?php
+namespace WPM\Includes\Libraries;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
