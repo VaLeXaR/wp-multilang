@@ -150,6 +150,8 @@ Has the ability to keep recording the target language through the transmission p
 
 
 == Warning ==
+Do not support different slug for each language(Yet).
+
 Not compatible with:
 - WP Maintenance
 
