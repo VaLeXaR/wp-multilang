@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-11-14 14:43+0200\n"
+"POT-Creation-Date: 2017-11-14 23:55+0200\n"
 "PO-Revision-Date: 2017-05-22 12:43+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -132,6 +132,7 @@ msgstr ""
 
 #: includes/admin/class-wpm-admin-settings.php:55
 #: includes/admin/class-wpm-admin-settings.php:113
+#: includes/class-wpm-rest-settings.php:34
 msgid "Site Language"
 msgstr ""
 
@@ -335,10 +336,6 @@ msgstr ""
 
 #: includes/class-wpm-menus.php:115
 msgid "Custom Link"
-msgstr ""
-
-#: includes/class-wpm-rest-settings.php:34
-msgid "Sile Language"
 msgstr ""
 
 #: includes/integrations/class-wpm-yoast-seo.php:215

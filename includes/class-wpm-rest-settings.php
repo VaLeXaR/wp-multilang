@@ -31,7 +31,7 @@ class WPM_REST_Settings {
 	 */
 	public function register_initial_settings() {
 		register_setting( 'wpm-settings', 'wpm_site_language', array(
-			'description'  => __( 'Sile Language', 'wp-multilang' ),
+			'description'  => __( 'Site Language', 'wp-multilang' ),
 			'type'         => 'string',
 			'default'      => false,
 			'show_in_rest' => array(
