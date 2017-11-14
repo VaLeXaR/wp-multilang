@@ -1,7 +1,7 @@
 <?php
 /**
  * Handles migration of qTranslate / qTranslate-X stuff.
- * 
+ *
  * @author   Soft79
  * @category Admin
  * @package  WPM/Includes/Admin
@@ -16,10 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WPM_Admin_Qtranslate {
 
 	private $notices = array();
-	private $qtranslate_terms = null;
+	private $qtranslate_terms = array();
 
-	const OPTION_HIDE_NOTICE = 'wpm_qtranslate_hide_notice';
-	const OPTION_IMPORT_DONE = 'wpm_qtranslate_import_done';
+	const OPTION_IMPORTING = 'wpm_qtranslate_importing';
 	const OPTION_QTRANSLATE_TERM_NAME = 'qtranslate_term_name';
 
 	/**
@@ -28,12 +27,11 @@ class WPM_Admin_Qtranslate {
 	public function __construct() {
 		if ( current_user_can( 'manage_translations' ) ) {
 			add_action( 'wp_loaded', array( $this, 'handle_qtranslate' ) );
-			add_action( 'admin_notices', array( $this, 'admin_notices') );
-			add_action( 'wpm_hide_qtranslate_import_notice', array( $this, 'wpm_hide_qtranslate_import_notice' ) );
+			add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 		}
 	}
 
-//ACTIONS
+	//ACTIONS
 
 	/**
 	 * Handle qTranslate admin stuff
@@ -42,39 +40,28 @@ class WPM_Admin_Qtranslate {
 		//qTranslate must be disabled
 		if ( $qtranslate = $this->detect_qtranslate() ) {
 			$this->enqueue_notice( sprintf( __( '%s is active. Please deactivate it.', 'wp-multilang' ), $qtranslate ), 'notice-error' );
+
 			return;
 		}
 
 		//If there are no translations available, skip everything
-		if ( $this->get_qtranslate_terms() === false ) {
+		if ( ! $this->get_qtranslate_terms() ) {
 			return;
 		}
 
-		if ( isset( $_GET['wpm-qtranslate-import'] ) && check_admin_referer( 'wpm-qtranslate-import' )  ) {
+		if ( isset( $_GET['wpm-qtranslate-import'] ) && check_admin_referer( 'wpm-qtranslate-import' ) ) {
 			$this->execute_import();
+
 			return;
 		}
 
-		if ( get_option( self::OPTION_HIDE_NOTICE ) || get_option( self::OPTION_IMPORT_DONE ) ) {
+		if ( get_option( self::OPTION_IMPORTING ) ) {
 			return;
 		}
 
-		$url_import = wp_nonce_url( add_query_arg( 'wpm-qtranslate-import', 'true' ), 'wpm-qtranslate-import' );
-		WPM_Admin_Notices::add_custom_notice( 
-			'qtranslate_import', 
-			sprintf( 
-				__( 'qTranslate term translations found. Please click <a href="%s">here</a> to migrate them to WP Multilang.', 'wp-multilang' ), 
-				$url_import
-			)
-		);
+		WPM_Admin_Notices::add_custom_notice( 'qtranslate_import', sprintf( __( 'qTranslate term translations found. Please click <a href="%s">here</a> to migrate them to WP Multilang.', 'wp-multilang' ), wp_nonce_url( add_query_arg( 'wpm-qtranslate-import', 'true' ), 'wpm-qtranslate-import' ) ) );
 	}
 
-	/**
-	 * Hide 'qTranslate term translations found'-notice
-	 */
-	public function wpm_hide_qtranslate_import_notice() {
-		update_option( self::OPTION_HIDE_NOTICE, true, false );
-	}
 
 	/**
 	 * Display enqueued notices
@@ -86,9 +73,9 @@ class WPM_Admin_Qtranslate {
 			echo '</p></div>';
 		}
 		$this->notices = array();
-	}	
+	}
 
-//LOGIC
+	//LOGIC
 
 	/**
 	 * Read term translations from qTranslate / qTranslate-X and save them wp-multilang-style
@@ -98,22 +85,24 @@ class WPM_Admin_Qtranslate {
 		$n_errors = 0;
 		$n_ok = 0;
 
-		$qtranslate_terms = $this->get_qtranslate_terms();
+		update_option( self::OPTION_IMPORTING, true, false );
 
-		if ( empty( $qtranslate_terms ) ) return;
+		$qtranslate_terms = $this->get_qtranslate_terms();
 
 		$taxonomies = get_taxonomies();
 
 		$terms = get_terms( $taxonomies );
-		foreach( $terms as $term ) {
+		foreach ( $terms as $term ) {
 			$original = $term->name;
 
 			//Translation available?
-			if ( ! isset( $qtranslate_terms[$original] ) ) continue;
+			if ( ! isset( $qtranslate_terms[ $original ] ) ) {
+				continue;
+			}
 
 			//Translate the name
 			$strings = wpm_value_to_ml_array( $original );
-			foreach( $qtranslate_terms[$original] as $lang => $translation ) {
+			foreach ( $qtranslate_terms[ $original ] as $lang => $translation ) {
 				$strings = wpm_set_language_value( $strings, $translation, array(), $lang );
 			}
 
@@ -138,40 +127,46 @@ class WPM_Admin_Qtranslate {
 		if ( $n_ok ) {
 			$this->enqueue_notice( sprintf( __( '%d terms were imported succesfully.', 'wp-multilang' ), $n_ok ), 'notice-info' );
 
-            //Hide the notice
-            update_option( self::OPTION_IMPORT_DONE, true, false );
-            WPM_Admin_Notices::remove_notice( 'qtranslate_import' );
+			//Hide the notice
+			delete_option( self::OPTION_QTRANSLATE_TERM_NAME );
 		}
+
+		delete_option( self::OPTION_IMPORTING );
 	}
 
 
 	/**
 	 * Detects whether qTranslate or qTranslate-X is active.
 	 * Returns the name of the plugin if it's detected, false otherwise.
-	 * 
+	 *
 	 * @return bool|string Either false or the plugin name
 	 */
 	private function detect_qtranslate() {
-		if ( defined ('QTX_VERSION' ) ) return 'qTranslate-X';
-		if ( defined ('QT_SUPPORTED_WP_VERSION' ) ) return 'qTranslate';
+		if ( defined( 'QTX_VERSION' ) ) {
+			return 'qTranslate-X';
+		}
+		if ( defined( 'QT_SUPPORTED_WP_VERSION' ) ) {
+			return 'qTranslate';
+		}
+
 		return false;
 	}
 
 	/**
 	 * Gets the term translations as stored by qTranslate / qTranslate-X
-	 * @return type
+	 * @return array
 	 */
 	private function get_qtranslate_terms() {
 		if ( ! isset( $this->qtranslate_terms ) ) {
-			$this->qtranslate_terms = get_option( self::OPTION_QTRANSLATE_TERM_NAME );
+			$this->qtranslate_terms = get_option( self::OPTION_QTRANSLATE_TERM_NAME, array() );
 		}
 		return $this->qtranslate_terms;
 	}
 
 	/**
 	 * Enqueue a notice to display on the admin page
-	 * @param stirng $html Please embed in <p> tags
-	 * @param string $class 
+	 * @param string $html
+	 * @param string $class
 	 */
 	private function enqueue_notice( $html, $class = 'notice-info' ) {
 		$this->notices[] = array( 'class' => $class, 'html' => $html );

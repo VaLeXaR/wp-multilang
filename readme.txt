@@ -184,6 +184,7 @@ If you have opened several browser tabs for editing this post in different langu
 + add setting for set Yoast SEO Opengraph locale
 + add support WooCommerce attributes
 + add compatibility with Better Search
++ add import taxonomies from qTranslate(Thanks for Soft79)
 * fix add $_GET 'lang' param
 * Other fixes and improvements
 
