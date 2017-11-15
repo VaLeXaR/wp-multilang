@@ -174,12 +174,14 @@ class WPM_Taxonomies extends WPM_Object {
 	 */
 	public function insert_term( $data, $taxonomy, $args ) {
 
-		if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
+		$taxonomy_config = wpm_get_taxonomy_config( $taxonomy );
+
+		if ( is_null( $taxonomy_config ) ) {
 			return $data;
 		}
 
 		if ( ! wpm_is_ml_value( $data['name'] ) ) {
-			$data['name'] = wpm_set_new_value( array(), $data['name'] );
+			$data['name'] = wpm_set_new_value( array(), $data['name'], $taxonomy_config['name'] );
 		}
 
 		$this->description = array(
@@ -198,9 +200,10 @@ class WPM_Taxonomies extends WPM_Object {
 	 * @param $taxonomy
 	 */
 	public function insert_description( $term_id, $tt_id, $taxonomy ) {
-		global $wpdb;
 
-		if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) || ! $this->description ) {
+		$taxonomy_config = wpm_get_taxonomy_config( $taxonomy );
+
+		if ( is_null( $taxonomy_config ) || ! $this->description ) {
 			return;
 		}
 
@@ -210,8 +213,9 @@ class WPM_Taxonomies extends WPM_Object {
 			return;
 		}
 
-		$description = wpm_set_new_value( array(), $value );
+		$description = wpm_set_new_value( array(), $value, $taxonomy_config['description'] );
 
+		global $wpdb;
 		$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_taxonomy_id' => $tt_id ) );
 	}
 
@@ -228,7 +232,9 @@ class WPM_Taxonomies extends WPM_Object {
 	 */
 	public function update_term( $data, $term_id, $taxonomy, $args ) {
 
-		if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
+		$taxonomy_config = wpm_get_taxonomy_config( $taxonomy );
+
+		if ( is_null( $taxonomy_config ) ) {
 			return $data;
 		}
 
@@ -238,7 +244,7 @@ class WPM_Taxonomies extends WPM_Object {
 		add_filter( 'get_term', 'wpm_translate_term', 5, 2 );
 
 		if ( ! wpm_is_ml_value( $data['name'] ) ) {
-			$data['name'] = wpm_set_new_value( $old_name, $data['name'] );
+			$data['name'] = wpm_set_new_value( $old_name, $data['name'], $taxonomy_config['name'] );
 		}
 
 		$this->description = array(
@@ -257,9 +263,10 @@ class WPM_Taxonomies extends WPM_Object {
 	 * @param $taxonomy
 	 */
 	public function update_description( $tt_id, $taxonomy ) {
-		global $wpdb;
 
-		if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) || ! $this->description ) {
+		$taxonomy_config = wpm_get_taxonomy_config( $taxonomy );
+
+		if ( is_null( $taxonomy_config ) || ! $this->description ) {
 			return;
 		}
 
@@ -269,8 +276,9 @@ class WPM_Taxonomies extends WPM_Object {
 			return;
 		}
 
-		$description = wpm_set_new_value( $this->description['old'], $value );
+		$description = wpm_set_new_value( $this->description['old'], $value, $taxonomy_config['description'] );
 
+		global $wpdb;
 		$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_taxonomy_id' => $tt_id ) );
 	}
 }
