@@ -174,20 +174,16 @@ class WPM_Acf {
 		switch ( $info['type'] ) {
 
 			case 'post':
-				$posts_config = $config['post_types'];
-				$post_type    = get_post_type( $info['id'] );
-
-				if ( ! isset( $posts_config[ $post_type ] ) || is_null( $posts_config[ $post_type ] ) ) {
+				if ( is_null( wpm_get_post_config( get_post_type( $info['id'] ) ) ) ) {
 					return $value;
 				}
 
 				break;
 
 			case 'term':
-				$taxonomies_config = $config['taxonomies'];
-				$term              = get_term( $info['id'] );
+				$term = get_term( $info['id'] );
 
-				if ( is_null( $taxonomies_config[ $term->taxonomy ] ) ) {
+				if ( is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
 					return $value;
 				}
 		}
@@ -231,21 +227,17 @@ class WPM_Acf {
 		switch ( $field_type ) {
 
 			case 'post':
-				$posts_config = $config['post_types'];
-				$post_type    = get_post_type( $post_id );
-
-				if ( ! isset( $posts_config[ $post_type ] ) || is_null( $posts_config[ $post_type ] ) ) {
+				if ( is_null( wpm_get_post_config( get_post_type( $post_id ) ) ) ) {
 					$translate = false;
 				}
 
 				break;
 
 			case 'term':
-				$term_id           = substr( $post_id, strripos( $post_id, '_' ) + 1 );
-				$taxonomies_config = $config['taxonomies'];
-				$term              = get_term( $term_id );
+				$term_id = substr( $post_id, strripos( $post_id, '_' ) + 1 );
+				$term    = get_term( $term_id );
 
-				if ( is_null( $taxonomies_config[ $term->taxonomy ] ) ) {
+				if ( is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
 					$translate = false;
 				}
 		}

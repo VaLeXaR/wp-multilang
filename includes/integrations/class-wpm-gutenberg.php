@@ -30,10 +30,8 @@ class WPM_Gutenberg {
 	public function add_language_switcher() {
 		$screen       = get_current_screen();
 		$screen_id    = $screen ? $screen->id : '';
-		$config       = wpm_get_config();
-		$posts_config = $config['post_types'];
 
-		if ( is_null( $screen ) || ! $screen->post_type || ! isset( $posts_config [ $screen->post_type ] ) || is_null( $posts_config [ $screen->post_type ] ) || ( $screen_id !== $screen->post_type ) ) {
+		if ( is_null( $screen ) || ! $screen->post_type || is_null( wpm_get_post_config( $screen->post_type ) ) || ( $screen_id !== $screen->post_type ) ) {
 			return;
 		}
 

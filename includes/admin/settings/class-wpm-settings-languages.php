@@ -54,7 +54,7 @@ class WPM_Settings_Languages extends WPM_Settings_Page {
 			array(
 				'title'    => __( 'Installed localizations', 'wp-multilang' ),
 				'desc'     => '',
-				'id'       => 'wpm_localizations',
+				'id'       => 'wpm_installed_localizations',
 				'default'  => '',
 				'type'     => 'localizations',
 				'css'      => '',
@@ -309,7 +309,7 @@ class WPM_Settings_Languages extends WPM_Settings_Page {
 				<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
 			</th>
 			<td class="forminp">
-				<select id="wpm_installed_localizations" title="<?php esc_html_e( 'Installed localizations', 'wp-multilang' ); ?>">
+				<select id="<?php echo esc_attr( $value['id'] ); ?>" title="<?php esc_html_e( 'Installed localizations', 'wp-multilang' ); ?>">
 					<?php foreach ( $installed_localizations as $localization ) { ?>
 						<?php
 						$used = false;

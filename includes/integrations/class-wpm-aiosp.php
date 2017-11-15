@@ -70,11 +70,7 @@ class WPM_AIOSP {
 			return $check;
 		}
 
-		$config       = wpm_get_config();
-		$posts_config = $config['post_types'];
-		$post_type    = get_post_type( $object_id );
-
-		if ( ! isset( $posts_config[ $post_type ] ) || is_null( $posts_config[ $post_type ] ) ) {
+		if ( is_null( wpm_get_post_config( get_post_type( $object_id ) ) ) ) {
 			return $check;
 		}
 
@@ -104,11 +100,7 @@ class WPM_AIOSP {
 	public function update_old_fields( $check, $object_id, $meta_key, $meta_value ) {
 		global $wpdb;
 
-		$config       = wpm_get_config();
-		$posts_config = $config['post_types'];
-		$post_type    = get_post_type( $object_id );
-
-		if ( ! isset( $posts_config[ $post_type ] ) || is_null( $posts_config[ $post_type ] ) ) {
+		if ( is_null( wpm_get_post_config( get_post_type( $object_id ) ) ) ) {
 			return $check;
 		}
 
