@@ -27,6 +27,7 @@ class WPM_Settings_General extends WPM_Settings_Page {
 
 		parent::__construct();
 		add_filter( 'wpm_general_settings', array( $this, 'add_uninstall_setting' ) );
+		add_action( 'wpm_update_options_general', array( $this, 'update_wplang' ) );
 	}
 
 	/**
@@ -89,19 +90,30 @@ class WPM_Settings_General extends WPM_Settings_Page {
 		return apply_filters( 'wpm_get_settings_' . $this->id, $settings );
 	}
 
-
+	/**
+	 * Add uninstall settings only for Super Admin
+	 *
+	 * @param $settings
+	 *
+	 * @return array
+	 */
 	public function add_uninstall_setting( $settings ) {
 
 		if ( ! is_multisite() || ( is_main_site() ) ) {
-			$settings[] = array( 'title' => __( 'Uninstalling', 'wp-multilang' ), 'type' => 'title', 'desc' => '', 'id' => 'uninstall_options' );
+			$settings[] = array(
+				'title' => __( 'Uninstalling', 'wp-multilang' ),
+				'type'  => 'title',
+				'desc'  => '',
+				'id'    => 'uninstall_options',
+			);
 
 			$settings[] = array(
-					'title'   => __( 'Delete translations', 'wp-multilang' ),
-					'desc'    => __( 'Delete translations when uninstalling plugin (some translations may not be deleted and you must delete them manually).', 'wp-multilang' ),
-					'id'      => 'wpm_uninstall_translations',
-					'default' => 'no',
-					'type'    => 'checkbox',
-				);
+				'title'   => __( 'Delete translations', 'wp-multilang' ),
+				'desc'    => __( 'Delete translations when uninstalling plugin (some translations may not be deleted and you must delete them manually).', 'wp-multilang' ),
+				'id'      => 'wpm_uninstall_translations',
+				'default' => 'no',
+				'type'    => 'checkbox',
+			);
 
 			$settings[] = array( 'type' => 'sectionend', 'id' => 'uninstall_options' );
 		}
@@ -116,5 +128,15 @@ class WPM_Settings_General extends WPM_Settings_Page {
 		$settings = $this->get_settings();
 
 		WPM_Admin_Settings::save_fields( $settings );
+	}
+
+	/**
+	 * Update WPLANG option
+	 */
+	public function update_wplang() {
+		$value     = WPM_Admin_Settings::get_option( 'wpm_site_language' );
+		$languages = wpm_get_languages();
+		$locale    = $languages[ $value ]['translation'];
+		update_option( 'WPLANG', 'en_US' !== $locale ? $locale : '' );
 	}
 }

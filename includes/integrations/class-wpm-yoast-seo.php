@@ -204,7 +204,7 @@ class WPM_Yoast_Seo {
 	 * @param $lang
 	 */
 	public function set_opengraph_locale( $lang, $count ) {
-		$options = wpm_get_lang_option();
+		$options = get_option( 'wpm_languages', array() );
 		$value   = '';
 
 		if ( isset( $options[ $lang ]['wpseo_og_locale'] ) ) {
