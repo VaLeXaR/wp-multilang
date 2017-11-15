@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-11-14 23:55+0200\n"
+"POT-Creation-Date: 2017-11-15 19:12+0200\n"
 "PO-Revision-Date: 2017-05-22 12:43+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -108,19 +108,20 @@ msgstr ""
 #, php-format
 msgid ""
 "qTranslate term translations found. Please click <a href=\"%s\">here</a> "
-"to migrate them to WP Multilang or <a href=\"%s\">disable</a> this notice."
+"to migrate them to WP Multilang. qTranslate term translations will be "
+"deleted. Or <a href=\"%s\">disable</a> this notice."
 msgstr ""
 
-#: includes/admin/class-wpm-admin-qtranslate.php:117
+#: includes/admin/class-wpm-admin-qtranslate.php:115
 #, php-format
 msgid "Error updating term %s: %s"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-qtranslate.php:126
+#: includes/admin/class-wpm-admin-qtranslate.php:124
 msgid "Something went while importing qTranslate term translations."
 msgstr ""
 
-#: includes/admin/class-wpm-admin-qtranslate.php:131
+#: includes/admin/class-wpm-admin-qtranslate.php:129
 #, php-format
 msgid "%d terms were imported succesfully."
 msgstr ""
@@ -266,7 +267,7 @@ msgstr ""
 msgid "Show term only in:"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-widgets.php:74
+#: includes/admin/class-wpm-admin-widgets.php:69
 msgid "Show widget only in:"
 msgstr ""
 
@@ -339,6 +340,7 @@ msgid "Custom Link"
 msgstr ""
 
 #: includes/integrations/class-wpm-yoast-seo.php:215
+#: includes/integrations/class-wpm-yoast-seo.php:217
 msgid "Yoast SEO Opengraph Locale"
 msgstr ""
 
@@ -347,7 +349,7 @@ msgid "Opengraph Locale"
 msgstr ""
 
 #: includes/integrations/class-wpm-yoast-seo.php:218
-msgid "Locale must be with country domain: like en_US"
+msgid "Locale must be with country domain. Like en_US"
 msgstr ""
 
 #: includes/libraries/abstract-wp-background-process.php:422
