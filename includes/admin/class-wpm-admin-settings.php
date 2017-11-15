@@ -118,10 +118,10 @@ class WPM_Admin_Settings {
 
 		do_action( 'wpm_settings_start' );
 
-		wp_enqueue_script( 'wpm_settings', wpm()->plugin_url() . '/assets/js/admin/settings' . $suffix . '.js', array( 'jquery', 'jquery-ui-sortable' ), wpm()->version, true );
+		wp_enqueue_script( 'wpm_settings', wpm_asset_path( 'scripts/settings' . $suffix . '.js' ), array( 'jquery' ), wpm()->version, true );
 
 		wp_localize_script( 'wpm_settings', 'wpm_settings_params', array(
-			'i18n_nav_warning' => __( 'The changes you made will be lost if you navigate away from this page.', 'wp-multilang' ),
+			'nav_warning' => __( 'The changes you made will be lost if you navigate away from this page.', 'wp-multilang' ),
 		) );
 
 		// Get tabs for the settings page

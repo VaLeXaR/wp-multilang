@@ -91,7 +91,7 @@ class WPM_AJAX {
 	public static function add_ajax_events() {
 		$ajax_events = array(
 			'delete_lang'        => false,
-			'delete_translation' => false,
+			'delete_localization' => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -130,9 +130,9 @@ class WPM_AJAX {
 	/**
 	 * Remove installed language files and option
 	 */
-	public static function delete_translation() {
+	public static function delete_localization() {
 
-		check_ajax_referer( 'delete-translation', 'security' );
+		check_ajax_referer( 'delete-localization', 'security' );
 
 		$locale  = wpm_get_post_data_by_key( 'locale' );
 		$options = wpm_get_lang_option();

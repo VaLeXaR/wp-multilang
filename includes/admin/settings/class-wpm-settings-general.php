@@ -46,7 +46,12 @@ class WPM_Settings_General extends WPM_Settings_Page {
 
 		$settings = apply_filters( 'wpm_general_settings', array(
 
-			array( 'title' => __( 'General options', 'wp-multilang' ), 'type' => 'title', 'desc' => '', 'id' => 'general_options' ),
+			array(
+				'title' => __( 'General options', 'wp-multilang' ),
+				'type'  => 'title',
+				'desc'  => sprintf( __( 'Read <a href="%s" target="_blank">Google guidelines</a> before.', 'wp-multilang' ), esc_url( 'https://support.google.com/webmasters/answer/182192?hl=en' ) ),
+				'id'    => 'general_options'
+			),
 
 			array(
 				'title'    => __( 'Site Language', 'wp-multilang' ),

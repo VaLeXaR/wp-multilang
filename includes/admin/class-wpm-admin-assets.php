@@ -51,21 +51,11 @@ class WPM_Admin_Assets {
 
 		// Register scripts
 		wp_register_script( 'select2', '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js', array( 'jquery' ), null );
-		wp_register_script( 'wpm_main', wpm_asset_path( 'scripts/main' . $suffix . '.js' ), array(
+		wp_register_script( 'wpm_languages', wpm_asset_path( 'scripts/languages' . $suffix . '.js' ), array(
 			'wp-util',
 			'jquery-ui-sortable',
 			'select2',
 		), WPM_VERSION );
-
-		$main_params = array(
-			'plugin_url'               => wpm()->plugin_url(),
-			'flags_dir'                => wpm_get_flags_dir(),
-			'ajax_url'                 => admin_url( 'admin-ajax.php' ),
-			'delete_lang_nonce'        => wp_create_nonce( 'delete-lang' ),
-			'delete_translation_nonce' => wp_create_nonce( 'delete-translation' ),
-			'confirm_question'         => __( 'Are you sure you want to delete this language?', 'wp-multilang' ),
-		);
-		wp_localize_script( 'wpm_main', 'wpm_params', $main_params );
 
 		wp_register_script( 'wpm_language_switcher', wpm_asset_path( 'scripts/language-switcher' . $suffix . '.js' ), array( 'wp-util' ), WPM_VERSION );
 		wp_register_script( 'wpm_language_switcher_customizer', wpm_asset_path( 'scripts/customizer' . $suffix . '.js' ), array( 'wp-util' ), WPM_VERSION );
@@ -112,20 +102,13 @@ class WPM_Admin_Assets {
 
 		if ( $show_switcher ) {
 			$this->set_language_switcher();
-		}
 
-		if ( 'settings_page_wpm-settings' === $screen_id ) {
-			wp_enqueue_script( 'wpm_main' );
-			wp_enqueue_style( 'select2' );
-		}
+			$admin_html_tags = apply_filters( 'wpm_admin_html_tags', $config['admin_html_tags'] );
 
-		$admin_html_tags = apply_filters( 'wpm_admin_html_tags', $config['admin_html_tags'] );
-
-		foreach ( $admin_html_tags as $html_screen => $html_config ) {
-			if ( $html_screen === $screen_id ) {
+			if ( isset( $admin_html_tags[ $screen_id ] ) && ! is_null( $admin_html_tags[ $screen_id ] ) ) {
 				wp_enqueue_script( 'wpm_translator' );
 				$js_code = '(function ( $ ) {';
-				foreach ( $html_config as $attr => $selector ) {
+				foreach ( $admin_html_tags[ $screen_id ] as $attr => $selector ) {
 					$js_code .= '$( "' . implode( ', ', $selector ) . '" ).each( function () {';
 					if ( 'text' == $attr ) {
 						$js_code .= '$(this).text(wpm_translator.translate_string($(this).text()));';
@@ -139,6 +122,16 @@ class WPM_Admin_Assets {
 				$js_code .= '})( window.jQuery );';
 				wpm_enqueue_js( $js_code );
 			}
+		}
+
+		if ( 'options-general' == $screen_id ) {
+			wpm_enqueue_js( "
+			(function( $ ) {
+			  $(function() {
+                $('#WPLANG').parents('tr').hide();
+			  });
+			})( jQuery );
+			" );
 		}
 	}
 

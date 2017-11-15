@@ -14,15 +14,15 @@
 
       var button = $(this);
 
-      if (confirm(wpm_params.confirm_question)) {
+      if (confirm(wpm_languages_params.confirm_question)) {
 
         var data = {
           action: 'wpm_delete_lang',
           language: button.data('language'),
-          security: wpm_params.delete_lang_nonce
+          security: wpm_languages_params.delete_lang_nonce
         };
         $.ajax({
-          url: wpm_params.ajax_url,
+          url: wpm_languages_params.ajax_url,
           type: 'post',
           data: data,
           dataType: 'json',
@@ -70,36 +70,36 @@
       $(this).parents('.postbox').find('h2 .language-order+span').text(text);
     });
 
-    $('#wpm_installed_translations').change(function(){
+    $('#wpm_installed_localizations').change(function(){
       if ($(this).val()) {
-        $('#delete_translation').prop('disabled', false);
+        $('#delete_localization').prop('disabled', false);
       } else {
-        $('#delete_translation').prop('disabled', true);
+        $('#delete_localization').prop('disabled', true);
       }
     });
 
-    $('#wpm_installed_translations').trigger('change');
+    $('#wpm_installed_localizations').trigger('change');
 
 
-    $('#delete_translation').click(function(){
+    $('#delete_localization').click(function(){
 
-      if (confirm(wpm_params.confirm_question)) {
+      if (confirm(wpm_languages_params.confirm_question)) {
 
-        var locale = $('#wpm_installed_translations').val();
+        var locale = $('#wpm_installed_localizations').val();
 
         var data = {
           action: 'wpm_delete_translation',
           locale: locale,
-          security: wpm_params.delete_translation_nonce
+          security: wpm_languages_params.delete_localization_nonce
         };
         $.ajax({
-          url: wpm_params.ajax_url,
+          url: wpm_languages_params.ajax_url,
           type: 'post',
           data: data,
           dataType: 'json',
           success: function () {
-            $('#wpm_installed_translations option[value="' + locale + '"]').remove();
-            $('#wpm_installed_translations').trigger('change');
+            $('#wpm_installed_localization option[value="' + locale + '"]').remove();
+            $('#wpm_installed_localizations').trigger('change');
           },
           error: function (xhr, ajaxOptions, thrownError) {
             alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
