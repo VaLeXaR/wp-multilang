@@ -166,14 +166,6 @@ class WPM_Posts extends WPM_Object {
 
 		$post_id = isset( $data['ID'] ) ? wpm_clean( $data['ID'] ) : ( isset( $postarr['ID'] ) ? wpm_clean( $postarr['ID'] ) : 0 );
 
-		$default_fields = array(
-			'post_title'   => array(),
-			'post_excerpt' => array(),
-			'post_content' => array(),
-		);
-
-		$post_config = wpm_array_merge_recursive( $default_fields, $post_config );
-
 		foreach ( $data as $key => $content ) {
 			if ( isset( $post_config[ $key ] ) ) {
 

@@ -23,8 +23,19 @@ function wpm_get_config() {
 function wpm_get_post_config( $post_type ) {
 	$config       = wpm_get_config();
 	$posts_config = apply_filters( 'wpm_posts_config', $config['post_types'] );
+	$post_config  = apply_filters( "wpm_post_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
 
-	return apply_filters( "wpm_post_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
+	if ( ! is_null( $post_config ) ) {
+		$default_fields = array(
+			'post_title'   => array(),
+			'post_excerpt' => array(),
+			'post_content' => array(),
+		);
+
+		$post_config = wpm_array_merge_recursive( $default_fields, $post_config );
+	}
+
+	return $post_config;
 }
 
 /**
@@ -37,8 +48,18 @@ function wpm_get_post_config( $post_type ) {
 function wpm_get_taxonomy_config( $taxonomy ) {
 	$config            = wpm_get_config();
 	$taxonomies_config = apply_filters( 'wpm_taxonomies_config', $config['taxonomies'] );
+	$taxonomy_config = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
 
-	return apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
+	if ( ! is_null( $taxonomy_config ) ) {
+		$default_fields = array(
+			'name'        => array(),
+			'description' => array(),
+		);
+
+		$taxonomy_config = wpm_array_merge_recursive( $default_fields, $taxonomy_config );
+	}
+
+	return $taxonomy_config;
 }
 
 /**
