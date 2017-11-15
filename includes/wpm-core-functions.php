@@ -390,3 +390,22 @@ function wpm_delete_expired_transients() {
 	return absint( $rows + $rows2 );
 }
 add_action( 'wpm_installed', 'wpm_delete_expired_transients' );
+
+/**
+ * Display a WP Multilang help tip.
+ *
+ * @since  2.1.1
+ *
+ * @param  string $tip        Help tip text
+ * @param  bool   $allow_html Allow sanitized HTML if true or escape
+ * @return string
+ */
+function wpm_help_tip( $tip, $allow_html = false ) {
+	if ( $allow_html ) {
+		$tip = wpm_sanitize_tooltip( $tip );
+	} else {
+		$tip = esc_attr( $tip );
+	}
+
+	return '<span class="wpm-help-tip" data-tip="' . $tip . '"></span>';
+}

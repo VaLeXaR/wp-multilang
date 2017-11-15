@@ -105,3 +105,27 @@ function wpm_update_210_delete_config() {
 function wpm_update_210_db_version() {
 	WPM_Install::update_db_version( '2.1.0' );
 }
+
+/**
+ * Delete configs from base. Move configs to cache.
+ */
+function wpm_update_211_delete_config() {
+	$options = array(
+		'wpm_show_untranslated_strings' => 'yes',
+		'wpm_use_redirect'              => 'no',
+		'wpm_use_prefix'                => 'no',
+		'wpm_uninstall_translations'    => 'no',
+	);
+
+	foreach ( $options as $option => $default ) {
+		$value = get_option( $option, $default );
+		update_option( $option, 1 === $value ? 'yes' : 'no' );
+	}
+}
+
+/**
+ * Update DB Version.
+ */
+function wpm_update_211_db_version() {
+	WPM_Install::update_db_version( '2.1.1' );
+}

@@ -16,7 +16,7 @@ global $wpdb;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-if ( get_option( 'wpm_uninstall_translations', false ) ) {
+if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 
 	if ( ! defined( 'WPM_PLUGIN_FILE' ) ) {
 		define( 'WPM_PLUGIN_FILE', __DIR__ . '/wp-multilang.php' );

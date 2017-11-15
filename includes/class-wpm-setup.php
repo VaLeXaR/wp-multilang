@@ -414,7 +414,7 @@ class WPM_Setup {
 		$url_lang         = $this->get_lang_from_url();
 
 		if ( ! isset( $_GET['lang'] ) ) {
-			if ( self::get_option( 'use_prefix', false ) ) {
+			if ( self::get_option( 'use_prefix', 'no' ) === 'yes' ) {
 				if ( ! $url_lang ) {
 					wp_redirect( home_url( $this->get_original_request_uri() ) );
 					exit;
@@ -500,7 +500,7 @@ class WPM_Setup {
 		$default_language = wpm_get_default_language();
 
 
-		if ( $user_language !== $default_language || self::get_option( 'use_prefix', false ) ) {
+		if ( $user_language !== $default_language || self::get_option( 'use_prefix', 'no' ) === 'yes' ) {
 			$value .= '/' . $user_language;
 		}
 
@@ -594,9 +594,8 @@ class WPM_Setup {
 			if ( ! isset( $_COOKIE['language'] ) ) {
 
 				wpm_setcookie( 'language', $user_language, time() + YEAR_IN_SECONDS );
-				$redirect_to_browser_language = self::get_option( 'use_redirect', false );
 
-				if ( $redirect_to_browser_language ) {
+				if ( self::get_option( 'use_redirect', 'no' ) === 'yes' ) {
 
 					$browser_language = $this->get_browser_language();
 
@@ -714,7 +713,7 @@ class WPM_Setup {
 	 * @return string
 	 */
 	public function fix_rest_url( $url ) {
-		if ( ! self::get_option( 'use_prefix', false ) && wpm_get_language() != wpm_get_default_language() ) {
+		if ( ! self::get_option( 'use_prefix', 'no' ) === 'yes' && wpm_get_language() != wpm_get_default_language() ) {
 			$url = str_replace( '/' . wpm_get_language() . '/', '/', $url );
 		}
 

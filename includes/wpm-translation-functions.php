@@ -54,7 +54,7 @@ function wpm_translate_url( $url, $language = '' ) {
 	}
 
 	$default_language    = wpm_get_default_language();
-	$default_lang_prefix = get_option( 'wpm_use_prefix' ) ? $default_language : '';
+	$default_lang_prefix = get_option( 'wpm_use_prefix', 'no' ) === 'yes' ? $default_language : '';
 
 	if ( $language ) {
 		if ( $language === $default_language ) {
@@ -119,7 +119,7 @@ function wpm_translate_string( $string, $language = '' ) {
 	$language         = wpm_get_language();
 	$default_language = wpm_get_default_language();
 
-	if ( ( '' == $strings[ $language ] ) && get_option( 'wpm_show_untranslated_strings', true ) ) {
+	if ( ( '' == $strings[ $language ] ) && get_option( 'wpm_show_untranslated_strings', 'yes' ) === 'yes' ) {
 		return $strings[ $default_language ];
 	}
 

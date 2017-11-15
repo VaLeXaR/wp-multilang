@@ -76,7 +76,7 @@ class WPM_Admin_Assets {
 			'languages'                 => array_keys( wpm_get_languages() ),
 			'default_language'          => wpm_get_default_language(),
 			'language'                  => wpm_get_language(),
-			'show_untranslated_strings' => get_option( 'wpm_show_untranslated_strings', true ),
+			'show_untranslated_strings' => get_option( 'wpm_show_untranslated_strings', 'yes' ),
 		);
 		wp_localize_script( 'wpm_translator', 'wpm_translator_params', $translator_params );
 

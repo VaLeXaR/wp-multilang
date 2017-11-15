@@ -96,3 +96,25 @@ function wpm_array_insert_after( array $array, $key, array $new ) {
 	$pos = false === $index ? count( $array ) : $index + 1;
 	return array_merge( array_slice( $array, 0, $pos ), $new, array_slice( $array, $pos ) );
 }
+
+
+/**
+ * Sanitize a string destined to be a tooltip.
+ *
+ * @since 2.1.1 Tooltips are encoded with htmlspecialchars to prevent XSS. Should not be used in conjunction with esc_attr()
+ * @param string $var
+ * @return string
+ */
+function wpm_sanitize_tooltip( $var ) {
+	return htmlspecialchars( wp_kses( html_entity_decode( $var ), array(
+		'br'     => array(),
+		'em'     => array(),
+		'strong' => array(),
+		'small'  => array(),
+		'span'   => array(),
+		'ul'     => array(),
+		'li'     => array(),
+		'ol'     => array(),
+		'p'      => array(),
+	) ) );
+}

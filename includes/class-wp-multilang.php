@@ -128,12 +128,15 @@ final class WP_Multilang {
 		 */
 		include_once( WPM_ABSPATH . 'includes/wpm-core-functions.php' );
 		include_once( WPM_ABSPATH . 'includes/wpm-widget-functions.php' );
+
 		WPM_Install::init();
 		WPM_Setup::instance();
 
 		if ( $this->is_request( 'frontend' ) ) {
 			WPM_Frontend_Scripts::init(); // Frontend Scripts
 		}
+
+		new WPM_API();
 	}
 
 	/**

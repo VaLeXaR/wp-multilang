@@ -2,6 +2,7 @@
 
 namespace WPM\Includes;
 use WPM\Includes\Admin\WPM_Admin_Notices;
+use WPM\Includes\Admin\WPM_Admin_Settings;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -233,16 +234,37 @@ class WPM_Install {
 	 */
 	private static function create_options() {
 
+		$settings = WPM_Admin_Settings::get_settings_pages();
+
+		foreach ( $settings as $section ) {
+			if ( ! method_exists( $section, 'get_settings' ) ) {
+				continue;
+			}
+			$subsections = array_unique( array_merge( array( '' ), array_keys( $section->get_sections() ) ) );
+
+			foreach ( $subsections as $subsection ) {
+				foreach ( $section->get_settings( $subsection ) as $value ) {
+					if ( isset( $value['default'] ) && isset( $value['id'] ) ) {
+						$autoload = isset( $value['autoload'] ) ? (bool) $value['autoload'] : true;
+						add_option( $value['id'], $value['default'], '', ( $autoload ? 'yes' : 'no' ) );
+					}
+				}
+			}
+		}
+
 		$languages              = array();
 		$available_translations = wpm_get_available_translations();
 		$default_locale         = wpm_get_default_locale();
 		$default_language       = '';
 
 		foreach ( wpm_get_installed_languages() as $locale ) {
+
 			$slug = sanitize_title( current( $available_translations[ $locale ]['iso'] ) );
+
 			if ( $locale == $default_locale ) {
 				$default_language = $slug;
 			}
+
 			$languages[ $slug ] = array(
 				'enable'      => 1,
 				'locale'      => $locale,
