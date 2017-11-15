@@ -214,8 +214,8 @@ class WPM_Yoast_Seo {
 		<tr>
 			<td class="row-title"><?php esc_attr_e( 'Yoast SEO Opengraph Locale', 'wp-multilang' ); ?></td>
 			<td>
-				<input type="text" name="wpm_languages[<?php esc_attr_e( $count ); ?>][wpseo_og_locale]" value="<?php esc_attr_e( $value ); ?>" title="<?php esc_attr_e( 'Opengraph Locale', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Opengraph Locale', 'wp-multilang' ); ?>">
-				<p><?php esc_html_e( 'Locale must be with country domain: like en_US', 'wp-multilang' ); ?></p>
+				<input type="text" name="wpm_languages[<?php esc_attr_e( $count ); ?>][wpseo_og_locale]" value="<?php esc_attr_e( $value ); ?>" title="<?php esc_attr_e( 'Yoast SEO Opengraph Locale', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Opengraph Locale', 'wp-multilang' ); ?>">
+				<p><?php esc_html_e( 'Locale must be with country domain. Like en_US', 'wp-multilang' ); ?></p>
 			</td>
 		</tr>
 		<?php

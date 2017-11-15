@@ -59,7 +59,7 @@ class WPM_Admin_Qtranslate {
 			return;
 		}
 
-		WPM_Admin_Notices::add_custom_notice( 'qtranslate_import', sprintf( __( 'qTranslate term translations found. Please click <a href="%s">here</a> to migrate them to WP Multilang or <a href="%s">disable</a> this notice.', 'wp-multilang' ), wp_nonce_url( add_query_arg( 'wpm-qtranslate-import', true ), 'wpm-qtranslate-import' ), wp_nonce_url( add_query_arg( 'wpm-qtranslate-import', false ), 'wpm-qtranslate-import' ) ) );
+		WPM_Admin_Notices::add_custom_notice( 'qtranslate_import', sprintf( __( 'qTranslate term translations found. Please click <a href="%s">here</a> to migrate them to WP Multilang. qTranslate term translations will be deleted. Or <a href="%s">disable</a> this notice.', 'wp-multilang' ), wp_nonce_url( add_query_arg( 'wpm-qtranslate-import', true ), 'wpm-qtranslate-import' ), wp_nonce_url( add_query_arg( 'wpm-qtranslate-import', false ), 'wpm-qtranslate-import' ) ) );
 	}
 
 
@@ -128,6 +128,7 @@ class WPM_Admin_Qtranslate {
 			if ( $n_ok ) {
 				$this->enqueue_notice( sprintf( __( '%d terms were imported succesfully.', 'wp-multilang' ), $n_ok ), 'notice-info' );
 				update_option( self::OPTION_HIDE_NOTICE, true, false );
+				delete_option( self::OPTION_QTRANSLATE_TERM_NAME );
 			}
 		} else {
 			update_option( self::OPTION_HIDE_NOTICE, true, false );

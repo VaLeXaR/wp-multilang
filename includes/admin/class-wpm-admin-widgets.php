@@ -41,18 +41,13 @@ class WPM_Admin_Widgets {
 	 */
 	public function pre_save_widget( $instance, $new_instance, $old_instance, $widget ) {
 
-		$base_widget_config = array(
-			'title' => array(),
-			'text'  => array(),
-		);
-
 		$widget_config = wpm_get_widget_config( $widget->id_base );
 
-		if ( ! is_null( $widget_config ) ) {
-			$base_widget_config = wpm_array_merge_recursive( $base_widget_config, $widget_config );
+		if ( is_null( $widget_config ) ) {
+			return $instance;
 		}
 
-		$instance = wpm_set_new_value( $old_instance, $new_instance, $base_widget_config );
+		$instance = wpm_set_new_value( $old_instance, $new_instance, $widget_config );
 
 		return $instance;
 	}
