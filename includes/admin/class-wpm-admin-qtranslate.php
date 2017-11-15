@@ -16,9 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WPM_Admin_Qtranslate {
 
 	private $notices = array();
-	private $qtranslate_terms = array();
+	private $qtranslate_terms = null;
 
-	const OPTION_IMPORTING = 'wpm_qtranslate_importing';
+	const OPTION_HIDE_NOTICE = 'wpm_qtranslate_hide_notice';
 	const OPTION_QTRANSLATE_TERM_NAME = 'qtranslate_term_name';
 
 	/**
@@ -55,7 +55,7 @@ class WPM_Admin_Qtranslate {
 			return;
 		}
 
-		if ( get_option( self::OPTION_IMPORTING ) ) {
+		if ( get_option( self::OPTION_HIDE_NOTICE ) ) {
 			return;
 		}
 
@@ -87,8 +87,6 @@ class WPM_Admin_Qtranslate {
 		if ( wpm_clean( $_GET['wpm-qtranslate-import'] ) ) {
 			$n_errors = 0;
 			$n_ok     = 0;
-
-			update_option( self::OPTION_IMPORTING, true, false );
 
 			$qtranslate_terms = $this->get_qtranslate_terms();
 
@@ -129,14 +127,10 @@ class WPM_Admin_Qtranslate {
 
 			if ( $n_ok ) {
 				$this->enqueue_notice( sprintf( __( '%d terms were imported succesfully.', 'wp-multilang' ), $n_ok ), 'notice-info' );
-
-				//Hide the notice
-				delete_option( self::OPTION_QTRANSLATE_TERM_NAME );
+				update_option( self::OPTION_HIDE_NOTICE, true, false );
 			}
-
-			delete_option( self::OPTION_IMPORTING );
 		} else {
-			delete_option( self::OPTION_QTRANSLATE_TERM_NAME );
+			update_option( self::OPTION_HIDE_NOTICE, true, false );
 		}// End if().
 	}
 
