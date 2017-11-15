@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -104,12 +104,8 @@ For display language switcher in any place add the code to your template
 `if ( function_exists ( 'wpm_language_switcher' ) ) wpm_language_switcher ();`
 
 Function accepts two parameters:
-
-$args - array
-  `type` - 'list', 'dropdown', 'select'. Default - 'list'.
-  `show` - 'flag', 'name', 'both'. Default - 'both'.
-
-$echo - bool
+$type - 'list', 'dropdown', 'select'. Default - 'list'.
+$show - 'flag', 'name', 'both'. Default - 'both'.
 
 Available features for translation:
 
@@ -181,6 +177,10 @@ If you have opened several browser tabs for editing this post in different langu
 5. Post edit page
 
 == Changelog ==
+
+= 2.1.1 =
+* fix cache for language switcher widget
+* change parameters for functions 'wpm_language_switcher', 'wpm_get_language_switcher'
 
 = 2.1.0 =
 + add flag selector autocomplete
