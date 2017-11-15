@@ -63,9 +63,9 @@ class WPM_Widget_Language_Switcher extends WPM_Widget {
 	 */
 	public function widget( $args, $instance ) {
 
-		if ( $this->get_cached_widget( $args ) ) {
-			return;
-		}
+		// if ( $this->get_cached_widget( $args ) ) {
+		// 	return;
+		// }
 
 		ob_start();
 
@@ -79,7 +79,7 @@ class WPM_Widget_Language_Switcher extends WPM_Widget {
 
 		echo $content;
 
-		$this->cache_widget( $args, $content );
+		// $this->cache_widget( $args, $content );
 
 	}
 }
