@@ -43,13 +43,11 @@ function wpm_translate_url( $url, $language = '' ) {
 	}
 
 	$url         = remove_query_arg( 'lang', $url );
-	$path        = wp_parse_url( $url, PHP_URL_PATH );
-	$path        = $path ? $path : '/';
 	$default_uri = str_replace( $host, '', $url );
 	$default_uri = $default_uri ? $default_uri : '/';
 	$pattern     = '!^/([a-z]{2})(-[a-z]{2})?(/|$)!i';
 
-	if ( preg_match( $pattern, $path ) ) {
+	if ( preg_match( $pattern, $default_uri ) ) {
 		$default_uri = preg_replace( $pattern, '/', $default_uri );
 	}
 
