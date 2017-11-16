@@ -53,6 +53,10 @@ if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 				$post_content = wp_json_encode( wpm_translate_value( json_decode( $post_content, true ), $default_language ) );
 			}
 
+			if ( wpm_is_ml_string( $post_content ) ) {
+				$post_content = wpm_translate_string( $post_content, $default_language );
+			}
+
 			$wpdb->update( $wpdb->posts, compact( 'post_content', 'post_title', 'post_excerpt' ), array( 'ID' => $result->ID ) );
 		}
 	}
@@ -76,6 +80,10 @@ if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 
 			if ( json_decode( $description ) ) {
 				$description = wp_json_encode( wpm_translate_value( json_decode( $description, true ), $default_language ) );
+			}
+
+			if ( wpm_is_ml_string( $description ) ) {
+				$description = wpm_translate_string( $description, $default_language );
 			}
 
 			$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_id' => $result->term_id ) );
@@ -103,6 +111,10 @@ if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 						$meta_value = wp_json_encode( wpm_translate_value( json_decode( $meta_value, true ), $default_language ) );
 					}
 
+					if ( wpm_is_ml_string( $meta_value ) ) {
+						$meta_value = wpm_translate_string( $meta_value, $default_language );
+					}
+
 					$wpdb->update( $wpdb->postmeta, compact( 'meta_value' ), array( 'meta_id' => $result->meta_id ) );
 				}
 
@@ -122,6 +134,10 @@ if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 
 					if ( json_decode( $meta_value ) ) {
 						$meta_value = wp_json_encode( wpm_translate_value( json_decode( $meta_value, true ), $default_language ) );
+					}
+
+					if ( wpm_is_ml_string( $meta_value ) ) {
+						$meta_value = wpm_translate_string( $meta_value, $default_language );
 					}
 
 					$wpdb->update( $wpdb->termmeta, compact( 'meta_value' ), array( 'meta_id' => $result->meta_id ) );
@@ -144,6 +160,10 @@ if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 						$meta_value = wp_json_encode( wpm_translate_value( json_decode( $meta_value, true ), $default_language ) );
 					}
 
+					if ( wpm_is_ml_string( $meta_value ) ) {
+						$meta_value = wpm_translate_string( $meta_value, $default_language );
+					}
+
 					$wpdb->update( $wpdb->commentmeta, compact( 'meta_value' ), array( 'meta_id' => $result->meta_id ) );
 				}
 
@@ -162,6 +182,10 @@ if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 
 					if ( json_decode( $meta_value ) ) {
 						$meta_value = wp_json_encode( wpm_translate_value( json_decode( $meta_value, true ), $default_language ) );
+					}
+
+					if ( wpm_is_ml_string( $meta_value ) ) {
+						$meta_value = wpm_translate_string( $meta_value, $default_language );
 					}
 
 					$wpdb->update( $wpdb->usermeta, compact( 'meta_value' ), array( 'umeta_id' => $result->umeta_id ) );
@@ -184,6 +208,10 @@ if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 						$option_value = wp_json_encode( wpm_translate_value( json_decode( $option_value, true ), $default_language ) );
 					}
 
+					if ( wpm_is_ml_string( $option_value ) ) {
+						$option_value = wpm_translate_string( $option_value, $default_language );
+					}
+
 					$wpdb->update( $wpdb->options, compact( 'option_value' ), array( 'option_id' => $result->option_id ) );
 				}
 
@@ -204,7 +232,11 @@ if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 						$meta_value = wp_json_encode( wpm_translate_value( json_decode( $meta_value, true ), $default_language ) );
 					}
 
-					$wpdb->update( $wpdb->sitemeta, compact( 'meta_value' ), array( 'meta_id' => $result->option_id ) );
+					if ( wpm_is_ml_string( $meta_value ) ) {
+						$meta_value = wpm_translate_string( $meta_value, $default_language );
+					}
+
+					$wpdb->update( $wpdb->sitemeta, compact( 'meta_value' ), array( 'meta_id' => $result->meta_id ) );
 				}
 
 				break;

@@ -1,5 +1,5 @@
-/* global woocommerce_settings_params */
 ( function( $ ) {
+  "use strict";
 
 	// Edit prompt
 	$( function() {

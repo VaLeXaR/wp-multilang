@@ -39,7 +39,9 @@ if ( ! $tab_exists ) {
 			do_action( 'wpm_settings_' . $current_tab );
 		?>
 		<p class="submit">
-			<?php submit_button(); ?>
+			<?php if ( empty( $GLOBALS['hide_save_button'] ) ) : ?>
+				<?php submit_button(); ?>
+			<?php endif; ?>
 			<?php wp_nonce_field( 'wpm-settings' ); ?>
 		</p>
 	</form>

@@ -56,7 +56,7 @@
         count: wpm_lang_count
       };
       $('#wpm-languages').append(t_language(data));
-      $(".wpm-flags").trigger('change');
+      $(".wpm-flags").trigger('init_select2');
       wpm_lang_count++;
     });
 
@@ -70,7 +70,7 @@
       $(this).parents('.postbox').find('h2 .language-order+span').text(text);
     });
 
-    $('#wpm_installed_localizations').change(function(){
+    $('#wpm_installed_localizations').on('init_localizations', function(){
       if ($(this).val()) {
         $('#delete_localization').prop('disabled', false);
       } else {
@@ -78,7 +78,7 @@
       }
     });
 
-    $('#wpm_installed_localizations').trigger('change');
+    $('#wpm_installed_localizations').trigger('init_localizations');
 
 
     $('#delete_localization').click(function(){
@@ -99,7 +99,7 @@
           dataType: 'json',
           success: function () {
             $('#wpm_installed_localization option[value="' + locale + '"]').remove();
-            $('#wpm_installed_localizations').trigger('change');
+            $('#wpm_installed_localizations').trigger('init_localizations');
           },
           error: function (xhr, ajaxOptions, thrownError) {
             alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -108,14 +108,14 @@
       }
     });
 
-    $(document).on('change', '.wpm-flags', function(){
+    $(document).on('init_select2', '.wpm-flags', function(){
       $(this).select2({
         templateResult: formatState,
         templateSelection: formatState
       });
     });
 
-    $(".wpm-flags").trigger('change');
+    $(".wpm-flags").trigger('init_select2');
 
   });
 }(jQuery));

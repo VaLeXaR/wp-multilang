@@ -367,12 +367,12 @@ function wpm_translate_object( $object, $lang = '' ) {
 			switch ( $key ) {
 				case 'attr_title':
 				case 'post_title':
-				case 'post_excerpt':
 				case 'name':
 				case 'title':
-				case 'description':
 					$object->$key = wpm_translate_string( $content, $lang );
 					break;
+				case 'post_excerpt':
+				case 'description':
 				case 'post_content':
 					if ( is_serialized_string( $content ) ) {
 						$object->$key = serialize( wpm_translate_value( unserialize( $content ), $lang ) );
@@ -539,9 +539,9 @@ function wpm_is_ml_value( $value ) {
 	}
 }
 
-function wpm_set_new_value( $old_value, $new_value, $config = array() ) {
+function wpm_set_new_value( $old_value, $new_value, $config = array(), $lang = '' ) {
 	$old_value = wpm_value_to_ml_array( $old_value );
-	$value     = wpm_set_language_value( $old_value, $new_value, $config );
+	$value     = wpm_set_language_value( $old_value, $new_value, $config, $lang );
 	$value     = wpm_ml_value_to_string( $value );
 
 	return $value;
