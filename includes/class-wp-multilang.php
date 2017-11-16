@@ -135,8 +135,6 @@ final class WP_Multilang {
 		if ( $this->is_request( 'frontend' ) ) {
 			WPM_Frontend_Scripts::init(); // Frontend Scripts
 		}
-
-		new WPM_API();
 	}
 
 	/**

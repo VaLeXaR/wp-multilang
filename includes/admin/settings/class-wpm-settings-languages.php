@@ -357,7 +357,7 @@ class WPM_Settings_Languages extends WPM_Settings_Page {
 					break;
 				}
 
-				$slug = sanitize_title( $item['slug'] );
+				$slug = wpm_sanitize_lang_slug( $item['slug'] );
 
 				if ( ! $slug ) {
 					$error = true;

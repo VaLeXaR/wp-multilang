@@ -135,7 +135,7 @@ function wpm_set_alternate_links() {
 			$hreflangs['x-default'] = sprintf( "<link rel=\"alternate\" hreflang=\"x-default\" href=\"%s\"/>\n", esc_url( wpm_translate_url( $current_url, $lang ) ) );
 		}
 
-		$hreflangs[ $lang ] = sprintf( "<link rel=\"alternate\" hreflang=\"%s\" href=\"%s\"/>\n", esc_attr( str_replace( '_', '-', strtolower( $language['locale'] ) ) ), esc_url( wpm_translate_url( $current_url, $lang ) ) );
+		$hreflangs[ $lang ] = sprintf( "<link rel=\"alternate\" hreflang=\"%s\" href=\"%s\"/>\n", esc_attr( wpm_sanitize_lang_slug( $language['locale'] ) ), esc_url( wpm_translate_url( $current_url, $lang ) ) );
 	}
 
 	$hreflangs = apply_filters( 'wpm_alternate_links', $hreflangs, $current_url );

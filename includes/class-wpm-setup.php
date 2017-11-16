@@ -656,7 +656,7 @@ class WPM_Setup {
 
 				$locale = str_replace( '-', '_', $locale );
 
-				if ( $browser_language == $locale || strtolower( str_replace( '_', '-', $browser_language ) ) == $key ) {
+				if ( $browser_language == $locale || wpm_sanitize_lang_slug( $browser_language ) == $key ) {
 					$detect = $key;
 					break 2;
 				}

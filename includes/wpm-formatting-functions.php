@@ -97,7 +97,6 @@ function wpm_array_insert_after( array $array, $key, array $new ) {
 	return array_merge( array_slice( $array, 0, $pos ), $new, array_slice( $array, $pos ) );
 }
 
-
 /**
  * Sanitize a string destined to be a tooltip.
  *
@@ -117,4 +116,17 @@ function wpm_sanitize_tooltip( $var ) {
 		'ol'     => array(),
 		'p'      => array(),
 	) ) );
+}
+
+/**
+ * Formatting language slug
+ *
+ * @param string $slag
+ *
+ * @return string
+ */
+function wpm_sanitize_lang_slug( $slag ) {
+	$slag = str_replace( '_', '-', strtolower( sanitize_title( $slag ) ) );
+
+	return $slag;
 }
