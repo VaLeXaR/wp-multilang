@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @class    WPM_AJAX
  * @package  WPM/Classes
  * @category Class
+ * @author   Valentyn Riaboshtan
  */
 class WPM_AJAX {
 
@@ -199,6 +200,9 @@ class WPM_AJAX {
 
 		check_ajax_referer( 'set-default-language', 'security' );
 
+		global $wpdb;
+
+		$lang       = wpm_get_default_language();
 		$post_types = get_post_types( '', 'names' );
 
 		foreach ( $post_types as $post_type ) {
@@ -209,10 +213,21 @@ class WPM_AJAX {
 				continue;
 			}
 
-			$posts = get_posts( array( 'numberposts' => -1, 'post_type' => $post_type ) );
+			$fields  = wpm_filter_post_config_fields( array_keys( $post_config ) );
+			$results = $wpdb->get_results( $wpdb->prepare( "SELECT ID, " . implode( ', ', $fields ) . " FROM {$wpdb->posts} WHERE post_type = '%s';", esc_sql( $post_type ) ) );
 
-			foreach ( $posts as $post ) {
-				wp_update_post( self::set_default_language_for_object( $post, $post_config ) );
+			foreach ( $results as $result ) {
+				$args       = array();
+				$new_result = self::set_default_language_for_object( $result, $post_config );
+				foreach ( get_object_vars( $new_result ) as $key => $content ) {
+					if ( 'ID' == $key ) {
+						continue;
+					}
+
+					$args[ $key ] = $content;
+				}
+
+				$wpdb->update( $wpdb->posts, $args, array( 'ID' => $result->ID ) );
 			}
 		}
 
@@ -226,20 +241,20 @@ class WPM_AJAX {
 				continue;
 			}
 
-			remove_filter( 'get_term', 'wpm_translate_term', 5 );
-			$terms = get_terms( array( 'taxonomy' => $taxonomy, 'hide_empty' => false ) );
-			add_filter( 'get_term', 'wpm_translate_term', 5, 2 );
+			$results = $wpdb->get_results( $wpdb->prepare( "SELECT t.term_id, `name`, description FROM {$wpdb->terms} t LEFT JOIN {$wpdb->term_taxonomy} tt ON t.term_id = tt.term_id WHERE tt.taxonomy = '%s';", esc_sql( $taxonomy ) ) );
 
-			foreach ( $terms as $term ) {
-				$new_args = get_object_vars( self::set_default_language_for_object( $term, $taxonomy_config ) );
-				wp_update_term( $term->term_id, $taxonomy, $new_args );
+			foreach ( $results as $result ) {
+
+				$result      = self::set_default_language_for_object( $result, $taxonomy_config );
+				$description = $result->description;
+				$name        = $result->name;
+
+				$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_id' => $result->term_id ) );
+				$wpdb->update( $wpdb->terms, compact( 'name' ), array( 'term_id' => $result->term_id ) );
 			}
 		}
 
-		global $wpdb;
-
 		$config = wpm_get_config();
-		$lang   = wpm_get_default_language();
 
 		foreach ( $config['post_fields'] as $field => $config ) {
 
@@ -251,18 +266,22 @@ class WPM_AJAX {
 
 			foreach ( $results as $result ) {
 				$meta_value = $result->meta_value;
+				$serialized = false;
+				$jsoned     = false;
 
 				if ( is_serialized_string( $meta_value ) ) {
+					$serialized = true;
 					$meta_value = unserialize( $meta_value );
 					$meta_value = serialize( wpm_set_new_value( $meta_value, wpm_translate_value( $meta_value, $lang ), $config, $lang ) );
 				}
 
 				if ( json_decode( $meta_value ) ) {
+					$jsoned     = true;
 					$meta_value = json_decode( $meta_value, true );
 					$meta_value = wp_json_encode( wpm_set_new_value( $meta_value, wpm_translate_value( $meta_value, $lang ), $config, $lang ) );
 				}
 
-				if ( wpm_is_ml_string( $meta_value ) ) {
+				if ( ! $jsoned && ! $serialized && ! wpm_is_ml_string( $meta_value ) ) {
 					$meta_value = wpm_set_new_value( $meta_value, wpm_translate_value( $meta_value, $lang ), $config, $lang );
 				}
 
@@ -280,18 +299,22 @@ class WPM_AJAX {
 
 			foreach ( $results as $result ) {
 				$meta_value = $result->meta_value;
+				$serialized = false;
+				$jsoned     = false;
 
 				if ( is_serialized_string( $meta_value ) ) {
+					$serialized = true;
 					$meta_value = unserialize( $meta_value );
 					$meta_value = serialize( wpm_set_new_value( $meta_value, wpm_translate_value( $meta_value, $lang ), $config, $lang ) );
 				}
 
 				if ( json_decode( $meta_value ) ) {
+					$jsoned     = true;
 					$meta_value = json_decode( $meta_value, true );
 					$meta_value = wp_json_encode( wpm_set_new_value( $meta_value, wpm_translate_value( $meta_value, $lang ), $config, $lang ) );
 				}
 
-				if ( wpm_is_ml_string( $meta_value ) ) {
+				if ( ! $jsoned && ! $serialized && ! wpm_is_ml_string( $meta_value ) ) {
 					$meta_value = wpm_set_new_value( $meta_value, wpm_translate_value( $meta_value, $lang ), $config, $lang );
 				}
 
@@ -309,18 +332,22 @@ class WPM_AJAX {
 
 			foreach ( $results as $result ) {
 				$meta_value = $result->meta_value;
+				$serialized = false;
+				$jsoned     = false;
 
 				if ( is_serialized_string( $meta_value ) ) {
+					$serialized = true;
 					$meta_value = unserialize( $meta_value );
 					$meta_value = serialize( wpm_set_new_value( $meta_value, wpm_translate_value( $meta_value, $lang ), $config, $lang ) );
 				}
 
 				if ( json_decode( $meta_value ) ) {
+					$jsoned     = true;
 					$meta_value = json_decode( $meta_value, true );
 					$meta_value = wp_json_encode( wpm_set_new_value( $meta_value, wpm_translate_value( $meta_value, $lang ), $config, $lang ) );
 				}
 
-				if ( wpm_is_ml_string( $meta_value ) ) {
+				if ( ! $jsoned && ! $serialized && ! wpm_is_ml_string( $meta_value ) ) {
 					$meta_value = wpm_set_new_value( $meta_value, wpm_translate_value( $meta_value, $lang ), $config, $lang );
 				}
 
@@ -338,18 +365,22 @@ class WPM_AJAX {
 
 			foreach ( $results as $result ) {
 				$meta_value = $result->meta_value;
+				$serialized = false;
+				$jsoned     = false;
 
 				if ( is_serialized_string( $meta_value ) ) {
+					$serialized = true;
 					$meta_value = unserialize( $meta_value );
 					$meta_value = serialize( wpm_set_new_value( $meta_value, wpm_translate_value( $meta_value, $lang ), $config, $lang ) );
 				}
 
 				if ( json_decode( $meta_value ) ) {
+					$jsoned     = true;
 					$meta_value = json_decode( $meta_value, true );
 					$meta_value = wp_json_encode( wpm_set_new_value( $meta_value, wpm_translate_value( $meta_value, $lang ), $config, $lang ) );
 				}
 
-				if ( wpm_is_ml_string( $meta_value ) ) {
+				if ( ! $jsoned && ! $serialized && ! wpm_is_ml_string( $meta_value ) ) {
 					$meta_value = wpm_set_new_value( $meta_value, wpm_translate_value( $meta_value, $lang ), $config, $lang );
 				}
 
@@ -363,22 +394,27 @@ class WPM_AJAX {
 				continue;
 			}
 
+
 			$results = $wpdb->get_results( $wpdb->prepare( "SELECT option_id, option_value FROM {$wpdb->options} WHERE option_name = '%s';", $option ) );
 
 			foreach ( $results as $result ) {
 				$option_value = $result->option_value;
+				$serialized = false;
+				$jsoned     = false;
 
 				if ( is_serialized_string( $option_value ) ) {
+					$serialized = true;
 					$option_value = unserialize( $option_value );
 					$option_value = serialize( wpm_set_new_value( $option_value, wpm_translate_value( $option_value, $lang ), $config, $lang ) );
 				}
 
 				if ( json_decode( $option_value ) ) {
+					$jsoned       = true;
 					$option_value = json_decode( $option_value, true );
 					$option_value = wp_json_encode( wpm_set_new_value( $option_value, wpm_translate_value( $option_value, $lang ), $config, $lang ) );
 				}
 
-				if ( wpm_is_ml_string( $option_value ) ) {
+				if ( ! $jsoned && ! $serialized && ! wpm_is_ml_string( $option_value ) ) {
 					$option_value = wpm_set_new_value( $option_value, wpm_translate_value( $option_value, $lang ), $config, $lang );
 				}
 
@@ -399,18 +435,22 @@ class WPM_AJAX {
 
 				foreach ( $results as $result ) {
 					$meta_value = $result->meta_value;
+					$serialized = false;
+					$jsoned     = false;
 
 					if ( is_serialized_string( $meta_value ) ) {
+						$serialized = true;
 						$meta_value = unserialize( $meta_value );
 						$meta_value = serialize( wpm_set_new_value( $meta_value, wpm_translate_value( $meta_value, $lang ), $config, $lang ) );
 					}
 
 					if ( json_decode( $meta_value ) ) {
+						$jsoned     = true;
 						$meta_value = json_decode( $meta_value, true );
 						$meta_value = wp_json_encode( wpm_set_new_value( $meta_value, wpm_translate_value( $meta_value, $lang ), $config, $lang ) );
 					}
 
-					if ( wpm_is_ml_string( $meta_value ) ) {
+					if ( ! $jsoned && ! $serialized && ! wpm_is_ml_string( $meta_value ) ) {
 						$meta_value = wpm_set_new_value( $meta_value, wpm_translate_value( $meta_value, $lang ), $config, $lang );
 					}
 
@@ -435,7 +475,7 @@ class WPM_AJAX {
 		$lang = wpm_get_default_language();
 
 		foreach ( get_object_vars( $object ) as $key => $content ) {
-			if ( ! isset( $post_config[ $key ] ) || is_null( $object_config[ $key ] ) ) {
+			if ( ! isset( $object_config[ $key ] ) || is_null( $object_config[ $key ] ) ) {
 				continue;
 			}
 
@@ -461,7 +501,7 @@ class WPM_AJAX {
 						break;
 					}
 
-					if ( wpm_is_ml_string( $content ) ) {
+					if ( ! wpm_is_ml_string( $content ) ) {
 						$object->$key = wpm_set_new_value( $content, wpm_translate_string( $content, $lang ), $object_config[ $key ], $lang );
 						break;
 					}

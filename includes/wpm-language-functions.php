@@ -7,6 +7,7 @@
  * @category      Core
  * @package       WPM/Functions
  * @version       1.0.2
+ * @author   Valentyn Riaboshtan
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

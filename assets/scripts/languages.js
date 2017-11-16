@@ -78,9 +78,6 @@
       }
     });
 
-    $('#wpm_installed_localizations').trigger('init_localizations');
-
-
     $('#delete_localization').click(function(){
 
       if (confirm(wpm_languages_params.confirm_question)) {
@@ -88,7 +85,7 @@
         var locale = $('#wpm_installed_localizations').val();
 
         var data = {
-          action: 'wpm_delete_translation',
+          action: 'wpm_delete_localization',
           locale: locale,
           security: wpm_languages_params.delete_localization_nonce
         };

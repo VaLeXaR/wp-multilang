@@ -2,7 +2,7 @@
 /**
  * Setup menus in WP admin.
  *
- * @author   VaLeXaR
+ * @author   Valentyn Riaboshtan
  * @category Admin
  * @package  WPM/Includes/Admin
  */

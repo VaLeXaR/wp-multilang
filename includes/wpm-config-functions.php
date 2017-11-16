@@ -1,4 +1,9 @@
 <?php
+/**
+ * Config functions
+ *
+ * @author   Valentyn Riaboshtan
+ */
 
 use WPM\Includes\WPM_Setup;
 

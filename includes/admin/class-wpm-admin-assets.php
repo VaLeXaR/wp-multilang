@@ -2,7 +2,7 @@
 /**
  * Load assets
  *
- * @author      VaLeXaR
+ * @author   Valentyn Riaboshtan
  * @category    Admin
  * @package     WPM/Includes/Admin
  * @class       WPM_Admin_Assets

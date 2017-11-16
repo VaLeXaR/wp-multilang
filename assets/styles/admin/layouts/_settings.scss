@@ -1,0 +1,15 @@
+#set_default_language {
+
+	+ .spinner {
+		float: none;
+	}
+
+	+ .updated {
+		color: $green;
+		font-style: italic;
+		display: inline-block;
+		margin-left: 10px;
+		line-height: 26px;
+		font-weight: bold;
+	}
+}

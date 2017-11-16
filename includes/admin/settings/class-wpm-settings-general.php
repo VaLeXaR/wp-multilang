@@ -4,6 +4,7 @@
  *
  * @category    Admin
  * @package     WPM/Admin
+ * @author   Valentyn Riaboshtan
  */
 
 namespace WPM\Includes\Admin\Settings;

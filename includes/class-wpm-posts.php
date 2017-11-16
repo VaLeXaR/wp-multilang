@@ -10,6 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class WPM_Posts
  * @package  WPM/Includes
+ * @author   Valentyn Riaboshtan
  */
 class WPM_Posts extends WPM_Object {
 

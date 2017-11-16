@@ -9,7 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Abstract Widget Class
  *
- * @author   VaLeXaR
  * @category Widgets
  * @package  WPM/Abstracts
  * @extends  WP_Widget

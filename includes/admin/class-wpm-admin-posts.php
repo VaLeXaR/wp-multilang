@@ -2,7 +2,7 @@
 /**
  * Translate Post Types in Admin
  *
- * @author   VaLeXaR
+ * @author   Valentyn Riaboshtan
  * @category Admin
  * @package  WPM/Includes/Admin
  * @version  1.0.3

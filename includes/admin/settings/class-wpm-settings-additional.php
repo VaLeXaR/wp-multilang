@@ -4,6 +4,7 @@
  *
  * @category    Admin
  * @package     WPM/Admin
+ * @author   Valentyn Riaboshtan
  */
 
 namespace WPM\Includes\Admin\Settings;
@@ -69,13 +70,16 @@ class WPM_Settings_Additional extends WPM_Settings_Page {
 		);
 		wp_localize_script( 'wpm_additional_settings', 'wpm_additional_settings_params', $main_params );
 		wp_enqueue_script( 'wpm_additional_settings' );
+
+		$languages        = wpm_get_languages();
+		$default_language = wpm_get_default_language();
 		?>
 		<tr valign="top">
 			<th scope="row" class="titledesc">
 				<h4><?php echo esc_html( $value['title'] ); ?></h4>
 			</th>
 			<td class="forminp">
-				<input type="button" id="set_default_language" class="button button-primary" value="<?php esc_attr_e( 'Set default translation', 'wp-multilang' ); ?>">
+				<input type="button" id="set_default_language" class="button" value="<?php printf(__( 'Set %s by default', 'wp-multilang' ), $languages[ $default_language ]['name'] ); ?>">
 				<p class="description"><?php _e( 'Set default translation for all posts, taxonomies, fields and options that available in config and not be translated before.<br><strong>WARNING:</strong> Changes are not reversible. Make a backup of the site database before starting.', 'wp-multilang' ) ?></p>
 			</td>
 		</tr>

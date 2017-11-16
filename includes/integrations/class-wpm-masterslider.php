@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WPM_Masterslider
  * @package  WPM/Includes/Vendor
  * @category Vendor
+ * @author   Valentyn Riaboshtan
  */
 class WPM_Masterslider {
 

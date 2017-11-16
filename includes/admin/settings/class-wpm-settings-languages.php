@@ -4,6 +4,7 @@
  *
  * @category    Admin
  * @package     WPM/Admin
+ * @author   Valentyn Riaboshtan
  */
 
 namespace WPM\Includes\Admin\Settings;
@@ -102,7 +103,8 @@ class WPM_Settings_Languages extends WPM_Settings_Page {
 
 		$installed_localizations = wpm_get_installed_languages();
 		$available_translations  = wpm_get_available_translations();
-		$options                 = wpm_get_lang_option();
+		$options                 = get_option( 'wpm_languages', array() );
+		$button = 0;
 		?>
 		<tr valign="top">
 			<th scope="row" class="titledesc">
@@ -119,12 +121,13 @@ class WPM_Settings_Languages extends WPM_Settings_Page {
 									$used = true;
 									break;
 								}
+								$button++;
 							}
 							?>
-							<option value="<?php esc_attr_e( $localization ); ?>"<?php if ( ( 'en_US' == $localization ) || $used ) { ?> disabled="disabled" <?php } ?>><?php esc_attr_e( $available_translations[ $localization ]['native_name'] ); ?></option>
+							<option value="<?php esc_attr_e( $localization ); ?>" <?php disabled( ( 'en_US' == $localization ) || $used ); ?>><?php esc_attr_e( $available_translations[ $localization ]['native_name'] ); ?></option>
 						<?php } ?>
 					</select>
-					<input type="button" id="delete_localization" class="button" value="<?php esc_attr_e( 'Delete localization', 'wp-multilang' ); ?>">
+					<input type="button" id="delete_localization" class="button" value="<?php esc_attr_e( 'Delete localization', 'wp-multilang' ); ?>" <?php disabled( $button == 0 ); ?>>
 				</p>
 				<p><?php esc_html_e( 'Delete unused not built-in language pack', 'wp-multilang' ); ?></p>
 			</td>

@@ -10,6 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class WPM_Taxonomies
  * @package  WPM/Includes
+ * @author   Valentyn Riaboshtan
  */
 class WPM_Taxonomies extends WPM_Object {
 

@@ -4,7 +4,6 @@
  *
  * Functions for formatting data.
  *
- * @author        VaLeXaR
  * @category      Core
  * @package       WPM/Functions
  */
@@ -129,4 +128,43 @@ function wpm_sanitize_lang_slug( $slag ) {
 	$slag = str_replace( '_', '-', strtolower( sanitize_title( $slag ) ) );
 
 	return $slag;
+}
+
+/**
+ * Filter fields in config for safe requests to base for post
+ *
+ * @since 2.1.1
+ *
+ * @param $fields
+ *
+ * @return array
+ */
+function wpm_filter_post_config_fields( $fields ) {
+
+	$default_fields = array(
+		'post_author',
+		'post_date',
+		'post_date_gmt',
+		'post_content',
+		'post_title',
+		'post_excerpt',
+		'post_status',
+		'comment_status',
+		'ping_status',
+		'post_password',
+		'post_name',
+		'to_ping',
+		'pinged',
+		'post_modified',
+		'post_modified_gmt',
+		'post_content_filtered',
+		'post_parent',
+		'guid',
+		'menu_order',
+		'post_type',
+		'post_mime_type',
+		'comment_count',
+	);
+
+	return array_intersect( $default_fields, $fields );
 }

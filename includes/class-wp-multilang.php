@@ -5,6 +5,7 @@
  *
  * @class   WPM
  * @version 1.1.1
+ * @author   Valentyn Riaboshtan
  */
 
 namespace WPM\Includes;

@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class WPM_Widgets
  * @package WPM/Includes
- * @author   VaLeXaR
+ * @author   Valentyn Riaboshtan
  */
 class WPM_Widgets {
 

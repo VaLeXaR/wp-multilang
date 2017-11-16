@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @class    WPM_Yoast_Seo
  * @package  WPM/Includes/Integrations
  * @category Integrations
+ * @author   Valentyn Riaboshtan
  */
 class WPM_Yoast_Seo {
 

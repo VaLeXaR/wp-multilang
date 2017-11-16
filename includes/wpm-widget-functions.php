@@ -4,7 +4,6 @@
  *
  * Widget related functions and widget registration.
  *
- * @author        VaLeXaR
  * @category      Core
  * @package       WPM/Functions
  */

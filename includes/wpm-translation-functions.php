@@ -4,10 +4,10 @@
  *
  * Functions for translation, set translations to multidimensional arrays.
  *
- * @author        VaLeXaR
+ * @author   Valentyn Riaboshtan
  * @category      Core
  * @package       WPM/Functions
- * @version       1.1.0
+ * @version       2.0.0
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -361,34 +361,31 @@ function wpm_set_language_value( $localize_array, $value, $config = array(), $la
  */
 function wpm_translate_object( $object, $lang = '' ) {
 
-	if ( $object instanceof WP_Post || $object instanceof WP_Term ) {
+	foreach ( get_object_vars( $object ) as $key => $content ) {
+		switch ( $key ) {
+			case 'attr_title':
+			case 'post_title':
+			case 'name':
+			case 'title':
+				$object->$key = wpm_translate_string( $content, $lang );
+				break;
+			case 'post_excerpt':
+			case 'description':
+			case 'post_content':
+				if ( is_serialized_string( $content ) ) {
+					$object->$key = serialize( wpm_translate_value( unserialize( $content ), $lang ) );
+					break;
+				}
 
-		foreach ( get_object_vars( $object ) as $key => $content ) {
-			switch ( $key ) {
-				case 'attr_title':
-				case 'post_title':
-				case 'name':
-				case 'title':
+				if ( json_decode( $content ) ) {
+					$object->$key = wp_json_encode( wpm_translate_value( json_decode( $content, true ), $lang ) );
+					break;
+				}
+
+				if ( wpm_is_ml_string( $content ) ) {
 					$object->$key = wpm_translate_string( $content, $lang );
 					break;
-				case 'post_excerpt':
-				case 'description':
-				case 'post_content':
-					if ( is_serialized_string( $content ) ) {
-						$object->$key = serialize( wpm_translate_value( unserialize( $content ), $lang ) );
-						break;
-					}
-
-					if ( json_decode( $content ) ) {
-						$object->$key = wp_json_encode( wpm_translate_value( json_decode( $content, true ), $lang ) );
-						break;
-					}
-
-					if ( wpm_is_ml_string( $content ) ) {
-						$object->$key = wpm_translate_string( $content, $lang );
-						break;
-					}
-			}
+				}
 		}
 	}
 
@@ -539,6 +536,16 @@ function wpm_is_ml_value( $value ) {
 	}
 }
 
+/**
+ * Set new data to value
+ *
+ * @param $old_value
+ * @param $new_value
+ * @param array $config
+ * @param string $lang
+ *
+ * @return array|bool|string
+ */
 function wpm_set_new_value( $old_value, $new_value, $config = array(), $lang = '' ) {
 	$old_value = wpm_value_to_ml_array( $old_value );
 	$value     = wpm_set_language_value( $old_value, $new_value, $config, $lang );

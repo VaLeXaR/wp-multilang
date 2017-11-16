@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WPM_VC
  * @package  WPM/Includes/Integrations
  * @category Integrations
+ * @author   Valentyn Riaboshtan
  */
 class WPM_VC {
 

@@ -8,17 +8,24 @@
       var button = $(this);
       var data = {
         action: 'wpm_set_default_language',
-        locale: locale,
-        security: wpm_additional_settings.set_default_language_nonce
+        security: wpm_additional_settings_params.set_default_language_nonce
       };
 
       $.ajax({
-        url: wpm_additional_settings.ajax_url,
+        url: wpm_additional_settings_params.ajax_url,
         type: 'post',
         data: data,
         dataType: 'json',
-        success: function () {
-
+        beforeSend: function() {
+          button.prop('disabled', true).after('<span class="spinner is-active"></span>');
+        },
+        success: function (json) {
+          //@TODO add message
+          button.next().remove();
+          button.after('<span class="updated">' + json + '</span>');
+        },
+        complete: function() {
+          button.prop('disabled', false);
         },
         error: function (xhr, ajaxOptions, thrownError) {
           alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);

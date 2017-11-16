@@ -4,6 +4,7 @@
  *
  * @category Class
  * @package  WPM/Includes
+ * @author   Valentyn Riaboshtan
  */
 
 namespace WPM\Includes;

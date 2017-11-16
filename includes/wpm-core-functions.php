@@ -4,7 +4,7 @@
  *
  * General core functions available on both the front-end and admin.
  *
- * @author        VaLeXaR
+ * @author   Valentyn Riaboshtan
  * @category      Core
  * @package       WPM/Functions
  */
