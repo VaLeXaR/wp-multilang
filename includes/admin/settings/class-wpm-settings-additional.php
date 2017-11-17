@@ -47,30 +47,21 @@ class WPM_Settings_Additional extends WPM_Settings_Page {
 			array( 'title' => __( 'Actions', 'wp-multilang' ), 'type' => 'title', 'desc' => '', 'id' => 'additional_options' ),
 
 			array(
-				'title'    => __( 'Set default translation', 'wp-multilang' ),
-				'desc'     => '',
-				'id'       => 'wpm_set_default_translation',
-				'default'  => '',
-				'type'     => 'set_default_translation',
-				'css'      => '',
+				'title' => __( 'Set default translation', 'wp-multilang' ),
+				'id'    => 'wpm_set_default_translation',
+				'type'  => 'set_default_translation',
 			),
 
 			array(
-				'title'    => __( 'Installed localizations', 'wp-multilang' ),
-				'desc'     => '',
-				'id'       => 'wpm_installed_localizations',
-				'default'  => '',
-				'type'     => 'localizations',
-				'css'      => '',
+				'title' => __( 'Installed localizations', 'wp-multilang' ),
+				'id'    => 'wpm_installed_localizations',
+				'type'  => 'localizations',
 			),
 
 			array(
-				'title'    => __( 'qTranslate import', 'wp-multilang' ),
-				'desc'     => '',
-				'id'       => 'wpm_qts_import',
-				'default'  => '',
-				'type'     => 'qts_import',
-				'css'      => '',
+				'title' => __( 'qTranslate import', 'wp-multilang' ),
+				'id'    => 'wpm_qts_import',
+				'type'  => 'qts_import',
 			),
 
 			array( 'type' => 'sectionend', 'id' => 'additional_options' ),
@@ -135,7 +126,7 @@ class WPM_Settings_Additional extends WPM_Settings_Page {
 		?>
 		<tr valign="top">
 			<th scope="row" class="titledesc">
-				<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
+				<h4><?php echo esc_html( $value['title'] ); ?></h4>
 			</th>
 			<td class="forminp">
 				<p>
@@ -181,7 +172,7 @@ class WPM_Settings_Additional extends WPM_Settings_Page {
 		?>
 		<tr valign="top">
 			<th scope="row" class="titledesc">
-				<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
+				<h4><?php echo esc_html( $value['title'] ); ?></h4>
 			</th>
 			<td class="forminp">
 				<p>
