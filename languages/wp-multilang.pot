@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-11-17 15:10+0200\n"
+"POT-Creation-Date: 2017-11-17 21:53+0200\n"
 "PO-Revision-Date: 2017-05-22 12:43+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -134,25 +134,25 @@ msgstr ""
 msgid "Set default translation"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-additional.php:59
-#: includes/admin/settings/class-wpm-settings-additional.php:142
+#: includes/admin/settings/class-wpm-settings-additional.php:56
+#: includes/admin/settings/class-wpm-settings-additional.php:133
 msgid "Installed localizations"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-additional.php:68
+#: includes/admin/settings/class-wpm-settings-additional.php:62
 msgid "qTranslate import"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-additional.php:94
+#: includes/admin/settings/class-wpm-settings-additional.php:85
 msgid "Are you sure you want to delete this localization?"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-additional.php:117
+#: includes/admin/settings/class-wpm-settings-additional.php:108
 #, php-format
 msgid "Set <strong>%s</strong> by default"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-additional.php:118
+#: includes/admin/settings/class-wpm-settings-additional.php:109
 msgid ""
 "Set default translation for all posts, taxonomies, fields and options that "
 "available in config and not be translated before.<br><strong>WARNING:</"
@@ -160,19 +160,19 @@ msgid ""
 "before starting."
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-additional.php:160
+#: includes/admin/settings/class-wpm-settings-additional.php:151
 msgid "Delete localization"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-additional.php:162
+#: includes/admin/settings/class-wpm-settings-additional.php:153
 msgid "Delete unused not built-in language pack"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-additional.php:188
+#: includes/admin/settings/class-wpm-settings-additional.php:179
 msgid "Import"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-additional.php:190
+#: includes/admin/settings/class-wpm-settings-additional.php:181
 msgid "Import names for terms from qTranslate."
 msgstr ""
 
@@ -240,11 +240,11 @@ msgstr ""
 msgid "Installed languages"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-languages.php:73
+#: includes/admin/settings/class-wpm-settings-languages.php:70
 msgid "Are you sure you want to delete this language?"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-languages.php:133
+#: includes/admin/settings/class-wpm-settings-languages.php:130
 msgid "New language pack successfully installed"
 msgstr ""
 
@@ -369,15 +369,15 @@ msgstr ""
 msgid "%d terms were imported successfully."
 msgstr ""
 
-#: includes/class-wpm-install.php:328
+#: includes/class-wpm-install.php:321
 msgid "Translator"
 msgstr ""
 
-#: includes/class-wpm-install.php:421
+#: includes/class-wpm-install.php:414
 msgid "View WP Multilang settings"
 msgstr ""
 
-#: includes/class-wpm-install.php:421
+#: includes/class-wpm-install.php:414
 msgid "Settings"
 msgstr ""
 
@@ -399,7 +399,7 @@ msgstr ""
 msgid "Multilingual Settings"
 msgstr ""
 
-#: includes/class-wpm-taxonomies.php:161
+#: includes/class-wpm-taxonomies.php:162
 #, php-format
 msgid "A term with the name provided for %s already exists in this taxonomy."
 msgstr ""
