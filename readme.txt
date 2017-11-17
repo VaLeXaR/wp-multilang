@@ -182,6 +182,7 @@ If you have opened several browser tabs for editing this post in different langu
 * change parameters for functions 'wpm_language_switcher', 'wpm_get_language_switcher'
 * add settings api
 * add possibility for set default language for all
+* add error for adding taxonomy in exist name for current language
 * disable integration with Gutenberg. Gutenberg very unstable.
 * fix uninstalling
 * fix translate url for site in subfolder(thanks for mwillberg)
@@ -196,7 +197,6 @@ If you have opened several browser tabs for editing this post in different langu
 + add compatibility with WooCommerce Customizer
 + add compatibility with Better Search
 + add import taxonomies from qTranslate(Thanks for Soft79)
-* add error for adding taxonomy in exist name for current language
 * fix add $_GET 'lang' param
 * Other fixes and improvements
 
