@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-11-17 13:14+0200\n"
+"POT-Creation-Date: 2017-11-17 15:10+0200\n"
 "PO-Revision-Date: 2017-05-22 12:43+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -360,11 +360,11 @@ msgstr ""
 msgid "Localization deleted"
 msgstr ""
 
-#: includes/class-wpm-ajax.php:458
+#: includes/class-wpm-ajax.php:460
 msgid "Update finished"
 msgstr ""
 
-#: includes/class-wpm-ajax.php:553
+#: includes/class-wpm-ajax.php:555
 #, php-format
 msgid "%d terms were imported successfully."
 msgstr ""
@@ -397,6 +397,11 @@ msgstr ""
 
 #: includes/class-wpm-rest-settings.php:70
 msgid "Multilingual Settings"
+msgstr ""
+
+#: includes/class-wpm-taxonomies.php:161
+#, php-format
+msgid "A term with the name provided for %s already exists in this taxonomy."
 msgstr ""
 
 #: includes/integrations/class-wpm-yoast-seo.php:216
