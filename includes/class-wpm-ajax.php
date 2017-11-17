@@ -455,6 +455,8 @@ class WPM_AJAX {
 			}
 		}
 
+		wp_cache_flush();
+
 		wp_send_json( __( 'Update finished', 'wp-multilang' ) );
 	}
 
