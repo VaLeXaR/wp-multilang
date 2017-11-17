@@ -18,6 +18,7 @@ if ( ! $tab_exists ) {
 }
 ?>
 <div class="wrap wpm">
+	<h1><?php echo get_admin_page_title(); ?></h1>
 	<form method="<?php echo esc_attr( apply_filters( 'wpm_settings_form_method_tab_' . $current_tab, 'post' ) ); ?>" id="mainform" action="" enctype="multipart/form-data">
 		<nav class="nav-tab-wrapper wpm-nav-tab-wrapper">
 			<?php
@@ -30,7 +31,7 @@ if ( ! $tab_exists ) {
 
 			?>
 		</nav>
-		<h1 class="screen-reader-text"><?php echo esc_html( $current_tab_label ); ?></h1>
+		<h2 class="screen-reader-text"><?php echo esc_html( $current_tab_label ); ?></h2>
 		<?php
 			do_action( 'wpm_sections_' . $current_tab );
 
