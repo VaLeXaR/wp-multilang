@@ -150,13 +150,15 @@ class WPM_Taxonomies extends WPM_Object {
 			return $term;
 		}
 
-		$like    = '%' . $wpdb->esc_like( esc_sql( $term ) ) . '%';
-		$results = $wpdb->get_results( $wpdb->prepare( "SELECT t.name AS `name` FROM {$wpdb->terms} AS t INNER JOIN {$wpdb->term_taxonomy} AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy = '%s' AND `name` LIKE '%s'", $taxonomy, $like ) );
+		$languages = wpm_get_languages();
+		$name      = wp_unslash( $term );
+		$like      = '%' . $wpdb->esc_like( esc_sql( $name ) ) . '%';
+		$results   = $wpdb->get_results( $wpdb->prepare( "SELECT t.term_id, t.name FROM {$wpdb->terms} AS t INNER JOIN {$wpdb->term_taxonomy} AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy = '%s' AND `name` LIKE '%s';", $taxonomy, $like ) );
 
 		foreach ( $results as $result ) {
 			$ml_term = wpm_translate_string( $result->name );
-			if ( $ml_term === $term ) {
-				return '';
+			if ( $ml_term === $name ) {
+				return new \WP_Error( 'term_exists', sprintf( __( 'A term with the name provided for %s already exists in this taxonomy.', 'wp-multilang' ), $languages[ wpm_get_language() ]['name'] ), $result->term_id );
 			}
 		}
 
