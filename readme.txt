@@ -6,8 +6,8 @@ Requires at least: 4.7
 Tested up to: 4.9
 Stable tag: 2.1.1
 Requires PHP: 5.6
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License: GPLv3
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Multilingual plugin for WordPress.
 
@@ -179,8 +179,14 @@ If you have opened several browser tabs for editing this post in different langu
 == Changelog ==
 
 = 2.1.1 =
-* fix cache for language switcher widget
 * change parameters for functions 'wpm_language_switcher', 'wpm_get_language_switcher'
+* add settings api
+* add possibility for set default language for all
+* disable integration with Gutenberg. Gutenberg very unstable.
+* fix uninstalling
+* fix translate url for site in subfolder(thanks for mwillberg)
+* fix integration with SiteOrigin (thanks for soft79)
+* fix cache for language switcher widget(thanks for soft79)
 
 = 2.1.0 =
 + add flag selector autocomplete

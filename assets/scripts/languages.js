@@ -14,15 +14,15 @@
 
       var button = $(this);
 
-      if (confirm(wpm_params.confirm_question)) {
+      if (confirm(wpm_languages_params.confirm_question)) {
 
         var data = {
           action: 'wpm_delete_lang',
           language: button.data('language'),
-          security: wpm_params.delete_lang_nonce
+          security: wpm_languages_params.delete_lang_nonce
         };
         $.ajax({
-          url: wpm_params.ajax_url,
+          url: wpm_languages_params.ajax_url,
           type: 'post',
           data: data,
           dataType: 'json',
@@ -56,7 +56,7 @@
         count: wpm_lang_count
       };
       $('#wpm-languages').append(t_language(data));
-      $(".wpm-flags").trigger('change');
+      $(".wpm-flags").trigger('init_select2');
       wpm_lang_count++;
     });
 
@@ -70,36 +70,39 @@
       $(this).parents('.postbox').find('h2 .language-order+span').text(text);
     });
 
-    $('#wpm_installed_translations').change(function(){
+    $('#wpm_installed_localizations').on('init_localizations', function(){
       if ($(this).val()) {
-        $('#delete_translation').prop('disabled', false);
+        $('#delete_localization').prop('disabled', false);
       } else {
-        $('#delete_translation').prop('disabled', true);
+        $('#delete_localization').prop('disabled', true);
       }
     });
 
-    $('#wpm_installed_translations').trigger('change');
+    $('#delete_localization').click(function(){
 
+      if (confirm(wpm_languages_params.confirm_question)) {
 
-    $('#delete_translation').click(function(){
-
-      if (confirm(wpm_params.confirm_question)) {
-
-        var locale = $('#wpm_installed_translations').val();
+        var locale = $('#wpm_installed_localizations').val();
+        var button = $(this);
 
         var data = {
-          action: 'wpm_delete_translation',
+          action: 'wpm_delete_localization',
           locale: locale,
-          security: wpm_params.delete_translation_nonce
+          security: wpm_languages_params.delete_localization_nonce
         };
         $.ajax({
-          url: wpm_params.ajax_url,
+          url: wpm_languages_params.ajax_url,
           type: 'post',
           data: data,
           dataType: 'json',
-          success: function () {
-            $('#wpm_installed_translations option[value="' + locale + '"]').remove();
-            $('#wpm_installed_translations').trigger('change');
+          beforeSend: function() {
+            button.prop('disabled', true).after('<span class="spinner is-active"></span>');
+          },
+          success: function (json) {
+            button.next().remove();
+            button.after('<span class="success">' + json + '</span>');
+            $('#wpm_installed_localizations option[value="' + locale + '"]').remove();
+            $('#wpm_installed_localizations').trigger('init_localizations');
           },
           error: function (xhr, ajaxOptions, thrownError) {
             alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -108,14 +111,14 @@
       }
     });
 
-    $(document).on('change', '.wpm-flags', function(){
+    $(document).on('init_select2', '.wpm-flags', function(){
       $(this).select2({
         templateResult: formatState,
         templateSelection: formatState
       });
     });
 
-    $(".wpm-flags").trigger('change');
+    $(".wpm-flags").trigger('init_select2');
 
   });
 }(jQuery));

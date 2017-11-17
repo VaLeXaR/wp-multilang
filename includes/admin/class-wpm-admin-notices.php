@@ -137,12 +137,18 @@ class WPM_Admin_Notices {
 
 	/**
 	 * Add a custom notice.
+	 *
 	 * @param string $name
 	 * @param string $notice_html
+	 * @param string $type
 	 */
-	public static function add_custom_notice( $name, $notice_html ) {
+	public static function add_custom_notice( $name, $notice_html, $type = 'success' ) {
 		self::add_notice( $name );
-		update_option( 'wpm_admin_notice_' . $name, wp_kses_post( $notice_html ) );
+		$notice = array(
+			'notice_html' => wp_kses_post( $notice_html ),
+			'type'        => $type,
+		);
+		update_option( 'wpm_admin_notice_' . $name, $notice );
 	}
 
 	/**

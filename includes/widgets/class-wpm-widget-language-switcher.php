@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @class WPM_Widget_Language_Switcher
  * @package WPM/Includes/Widgets
  * @category Class
- * @author   VaLeXaR
+ * @author   Valentyn Riaboshtan
  */
 class WPM_Widget_Language_Switcher extends WPM_Widget {
 

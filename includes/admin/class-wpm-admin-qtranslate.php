@@ -15,7 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class WPM_Admin_Qtranslate {
 
-	private $notices = array();
 	private $qtranslate_terms = null;
 
 	const OPTION_HIDE_NOTICE = 'wpm_qtranslate_hide_notice';
@@ -27,7 +26,6 @@ class WPM_Admin_Qtranslate {
 	public function __construct() {
 		if ( current_user_can( 'manage_options' ) ) {
 			add_action( 'wp_loaded', array( $this, 'handle_qtranslate' ) );
-			add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 		}
 	}
 
@@ -39,7 +37,7 @@ class WPM_Admin_Qtranslate {
 	public function handle_qtranslate() {
 		//qTranslate must be disabled
 		if ( $qtranslate = $this->detect_qtranslate() ) {
-			$this->enqueue_notice( sprintf( __( '%s is active. Please deactivate it.', 'wp-multilang' ), $qtranslate ), 'notice-error' );
+			WPM_Admin_Notices::add_custom_notice( 'qtranslate_active', sprintf( __( '%s is active. Please deactivate it.', 'wp-multilang' ), $qtranslate ), 'error' );
 
 			return;
 		}
@@ -60,19 +58,6 @@ class WPM_Admin_Qtranslate {
 		}
 
 		WPM_Admin_Notices::add_custom_notice( 'qtranslate_import', sprintf( __( 'qTranslate term translations found. Please click <a href="%s">here</a> to migrate them to WP Multilang. qTranslate term translations will be deleted. Or <a href="%s">disable</a> this notice.', 'wp-multilang' ), wp_nonce_url( add_query_arg( 'wpm-qtranslate-import', true ), 'wpm-qtranslate-import' ), wp_nonce_url( add_query_arg( 'wpm-qtranslate-import', false ), 'wpm-qtranslate-import' ) ) );
-	}
-
-
-	/**
-	 * Display enqueued notices
-	 */
-	public function admin_notices() {
-		foreach( $this->notices as $notice ) {
-			echo '<div class="notice ' . $notice['class'] . ' is-dismissible"><p>';
-			echo sprintf( '<strong>%s</strong> &#8211; %s', __( 'WP Multilang', 'wp-multilang' ), wp_kses_post( $notice['html'] ) );
-			echo '</p></div>';
-		}
-		$this->notices = array();
 	}
 
 	//LOGIC
@@ -122,11 +107,11 @@ class WPM_Admin_Qtranslate {
 
 			if ( $n_errors ) {
 				$msg = __( 'Something went while importing qTranslate term translations.', 'wp-multilang' );
-				$this->enqueue_notice( $msg, 'notice-error' );
+				WPM_Admin_Notices::add_custom_notice( 'qtranslate_import_error',  $msg, 'error' );
 			}
 
 			if ( $n_ok ) {
-				$this->enqueue_notice( sprintf( __( '%d terms were imported succesfully.', 'wp-multilang' ), $n_ok ), 'notice-info' );
+				WPM_Admin_Notices::add_custom_notice( 'qtranslate_import_success', sprintf( __( '%d terms were imported successfully.', 'wp-multilang' ), $n_ok ) );
 				update_option( self::OPTION_HIDE_NOTICE, true, false );
 				delete_option( self::OPTION_QTRANSLATE_TERM_NAME );
 			}
@@ -162,15 +147,6 @@ class WPM_Admin_Qtranslate {
 			$this->qtranslate_terms = get_option( self::OPTION_QTRANSLATE_TERM_NAME, array() );
 		}
 		return $this->qtranslate_terms;
-	}
-
-	/**
-	 * Enqueue a notice to display on the admin page
-	 * @param string $html
-	 * @param string $class
-	 */
-	private function enqueue_notice( $html, $class = 'notice-info' ) {
-		$this->notices[] = array( 'class' => $class, 'html' => $html );
 	}
 
 }

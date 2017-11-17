@@ -4,6 +4,7 @@
  *
  * Uninstalling  WP Multilang deletes translations and options.
  *
+ * @author   Valentyn Riaboshtan
  * @category    Core
  * @package     WPM/Uninstaller
  */
@@ -16,7 +17,7 @@ global $wpdb;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-if ( get_option( 'wpm_uninstall_translations', false ) ) {
+if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 
 	if ( ! defined( 'WPM_PLUGIN_FILE' ) ) {
 		define( 'WPM_PLUGIN_FILE', __DIR__ . '/wp-multilang.php' );
@@ -34,26 +35,29 @@ if ( get_option( 'wpm_uninstall_translations', false ) ) {
 
 	foreach ( $post_types as $post_type ) {
 
-		if ( is_null( wpm_get_post_config( $post_type ) ) ) {
+		$post_config = wpm_get_post_config( $post_type );
+
+		if ( is_null( $post_config ) ) {
 			continue;
 		}
 
-		$results = $wpdb->get_results( $wpdb->prepare( "SELECT ID, post_content, post_title, post_excerpt FROM {$wpdb->posts} WHERE post_type = '%s';", esc_sql( $post_type ) ) );
+		$fields  = wpm_filter_post_config_fields( array_keys( $post_config ) );
+		$results = $wpdb->get_results( $wpdb->prepare( "SELECT ID, " . implode( ', ', $fields ) . " FROM {$wpdb->posts} WHERE post_type = '%s';", esc_sql( $post_type ) ) );
 
 		foreach ( $results as $result ) {
-			$post_title   = wpm_translate_string( $result->post_title, $default_language );
-			$post_excerpt = wpm_translate_string( $result->post_excerpt, $default_language );
-			$post_content = $result->post_content;
 
-			if ( is_serialized_string( $post_content ) ) {
-				$post_content = maybe_serialize( wpm_translate_value( maybe_unserialize( $post_content ), $default_language ) );
+			$args       = array();
+			$new_result = wpm_translate_object( $result, $default_language );
+
+			foreach ( get_object_vars( $new_result ) as $key => $content ) {
+				if ( 'ID' == $key ) {
+					continue;
+				}
+
+				$args[ $key ] = $content;
 			}
 
-			if ( json_decode( $post_content ) ) {
-				$post_content = wp_json_encode( wpm_translate_value( json_decode( $post_content, true ), $default_language ) );
-			}
-
-			$wpdb->update( $wpdb->posts, compact( 'post_content', 'post_title', 'post_excerpt' ), array( 'ID' => $result->ID ) );
+			$wpdb->update( $wpdb->posts, $args, array( 'ID' => $result->ID ) );
 		}
 	}
 
@@ -65,21 +69,15 @@ if ( get_option( 'wpm_uninstall_translations', false ) ) {
 			continue;
 		}
 
-		$results = $wpdb->get_results( $wpdb->prepare( "SELECT t.term_id, `name`, description FROM {$wpdb->terms} t LEFT JOIN {$wpdb->term_taxonomy} tt ON t.term_id = tt.term_id WHERE tt.taxonomy = '%s';", esc_sql( $term ) ) );
+		$results = $wpdb->get_results( $wpdb->prepare( "SELECT t.term_id, `name`, description FROM {$wpdb->terms} t LEFT JOIN {$wpdb->term_taxonomy} tt ON t.term_id = tt.term_id WHERE tt.taxonomy = '%s';", esc_sql( $taxonomy ) ) );
 
 		foreach ( $results as $result ) {
+
+			$result      = wpm_translate_object( $result, $default_language );
 			$description = $result->description;
-
-			if ( is_serialized_string( $description ) ) {
-				$description = maybe_serialize( wpm_translate_value( maybe_unserialize( $description ), $default_language ) );
-			}
-
-			if ( json_decode( $description ) ) {
-				$description = wp_json_encode( wpm_translate_value( json_decode( $description, true ), $default_language ) );
-			}
+			$name        = $result->name;
 
 			$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_id' => $result->term_id ) );
-			$name = wpm_translate_string( $result->name, $default_language );
 			$wpdb->update( $wpdb->terms, compact( 'name' ), array( 'term_id' => $result->term_id ) );
 		}
 	}
@@ -103,6 +101,10 @@ if ( get_option( 'wpm_uninstall_translations', false ) ) {
 						$meta_value = wp_json_encode( wpm_translate_value( json_decode( $meta_value, true ), $default_language ) );
 					}
 
+					if ( wpm_is_ml_string( $meta_value ) ) {
+						$meta_value = wpm_translate_string( $meta_value, $default_language );
+					}
+
 					$wpdb->update( $wpdb->postmeta, compact( 'meta_value' ), array( 'meta_id' => $result->meta_id ) );
 				}
 
@@ -122,6 +124,10 @@ if ( get_option( 'wpm_uninstall_translations', false ) ) {
 
 					if ( json_decode( $meta_value ) ) {
 						$meta_value = wp_json_encode( wpm_translate_value( json_decode( $meta_value, true ), $default_language ) );
+					}
+
+					if ( wpm_is_ml_string( $meta_value ) ) {
+						$meta_value = wpm_translate_string( $meta_value, $default_language );
 					}
 
 					$wpdb->update( $wpdb->termmeta, compact( 'meta_value' ), array( 'meta_id' => $result->meta_id ) );
@@ -144,6 +150,10 @@ if ( get_option( 'wpm_uninstall_translations', false ) ) {
 						$meta_value = wp_json_encode( wpm_translate_value( json_decode( $meta_value, true ), $default_language ) );
 					}
 
+					if ( wpm_is_ml_string( $meta_value ) ) {
+						$meta_value = wpm_translate_string( $meta_value, $default_language );
+					}
+
 					$wpdb->update( $wpdb->commentmeta, compact( 'meta_value' ), array( 'meta_id' => $result->meta_id ) );
 				}
 
@@ -162,6 +172,10 @@ if ( get_option( 'wpm_uninstall_translations', false ) ) {
 
 					if ( json_decode( $meta_value ) ) {
 						$meta_value = wp_json_encode( wpm_translate_value( json_decode( $meta_value, true ), $default_language ) );
+					}
+
+					if ( wpm_is_ml_string( $meta_value ) ) {
+						$meta_value = wpm_translate_string( $meta_value, $default_language );
 					}
 
 					$wpdb->update( $wpdb->usermeta, compact( 'meta_value' ), array( 'umeta_id' => $result->umeta_id ) );
@@ -184,6 +198,10 @@ if ( get_option( 'wpm_uninstall_translations', false ) ) {
 						$option_value = wp_json_encode( wpm_translate_value( json_decode( $option_value, true ), $default_language ) );
 					}
 
+					if ( wpm_is_ml_string( $option_value ) ) {
+						$option_value = wpm_translate_string( $option_value, $default_language );
+					}
+
 					$wpdb->update( $wpdb->options, compact( 'option_value' ), array( 'option_id' => $result->option_id ) );
 				}
 
@@ -204,7 +222,11 @@ if ( get_option( 'wpm_uninstall_translations', false ) ) {
 						$meta_value = wp_json_encode( wpm_translate_value( json_decode( $meta_value, true ), $default_language ) );
 					}
 
-					$wpdb->update( $wpdb->sitemeta, compact( 'meta_value' ), array( 'meta_id' => $result->option_id ) );
+					if ( wpm_is_ml_string( $meta_value ) ) {
+						$meta_value = wpm_translate_string( $meta_value, $default_language );
+					}
+
+					$wpdb->update( $wpdb->sitemeta, compact( 'meta_value' ), array( 'meta_id' => $result->meta_id ) );
 				}
 
 				break;

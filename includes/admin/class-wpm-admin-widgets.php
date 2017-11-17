@@ -5,7 +5,7 @@
  * @package  WPM/Includes/Admin
  * @class    WPM_Admin_Widgets
  * @category Admin
- * @author   VaLeXaR
+ * @author   Valentyn Riaboshtan
  */
 
 namespace WPM\Includes\Admin;

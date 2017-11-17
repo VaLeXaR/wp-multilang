@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @class    WPM_Yoast_Seo
  * @package  WPM/Includes/Integrations
  * @category Integrations
+ * @author   Valentyn Riaboshtan
  */
 class WPM_Yoast_Seo {
 
@@ -184,7 +185,7 @@ class WPM_Yoast_Seo {
 					continue;
 				}
 
-				$alternate[ $key ] .= sprintf( "\t<xhtml:link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />\n\t", esc_attr( str_replace( '_', '-', strtolower( $lg['locale'] ) ) ), esc_url( wpm_translate_url( $url['loc'], $key ) ) );
+				$alternate[ $key ] .= sprintf( "\t<xhtml:link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />\n\t", esc_attr( wpm_sanitize_lang_slug( $lg['locale'] ) ), esc_url( wpm_translate_url( $url['loc'], $key ) ) );
 			}
 
 			$alternate  = apply_filters( 'wpm_sitemap_alternate_links', $alternate, $url['loc'], $lang );
@@ -204,7 +205,7 @@ class WPM_Yoast_Seo {
 	 * @param $lang
 	 */
 	public function set_opengraph_locale( $lang, $count ) {
-		$options = wpm_get_lang_option();
+		$options = get_option( 'wpm_languages', array() );
 		$value   = '';
 
 		if ( isset( $options[ $lang ]['wpseo_og_locale'] ) ) {

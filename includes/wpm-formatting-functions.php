@@ -4,7 +4,6 @@
  *
  * Functions for formatting data.
  *
- * @author        VaLeXaR
  * @category      Core
  * @package       WPM/Functions
  */
@@ -95,4 +94,77 @@ function wpm_array_insert_after( array $array, $key, array $new ) {
 	$index = array_search( $key, $keys );
 	$pos = false === $index ? count( $array ) : $index + 1;
 	return array_merge( array_slice( $array, 0, $pos ), $new, array_slice( $array, $pos ) );
+}
+
+/**
+ * Sanitize a string destined to be a tooltip.
+ *
+ * @since 2.1.1 Tooltips are encoded with htmlspecialchars to prevent XSS. Should not be used in conjunction with esc_attr()
+ * @param string $var
+ * @return string
+ */
+function wpm_sanitize_tooltip( $var ) {
+	return htmlspecialchars( wp_kses( html_entity_decode( $var ), array(
+		'br'     => array(),
+		'em'     => array(),
+		'strong' => array(),
+		'small'  => array(),
+		'span'   => array(),
+		'ul'     => array(),
+		'li'     => array(),
+		'ol'     => array(),
+		'p'      => array(),
+	) ) );
+}
+
+/**
+ * Formatting language slug
+ *
+ * @param string $slag
+ *
+ * @return string
+ */
+function wpm_sanitize_lang_slug( $slag ) {
+	$slag = str_replace( '_', '-', strtolower( sanitize_title( $slag ) ) );
+
+	return $slag;
+}
+
+/**
+ * Filter fields in config for safe requests to base for post
+ *
+ * @since 2.1.1
+ *
+ * @param $fields
+ *
+ * @return array
+ */
+function wpm_filter_post_config_fields( $fields ) {
+
+	$default_fields = array(
+		'post_author',
+		'post_date',
+		'post_date_gmt',
+		'post_content',
+		'post_title',
+		'post_excerpt',
+		'post_status',
+		'comment_status',
+		'ping_status',
+		'post_password',
+		'post_name',
+		'to_ping',
+		'pinged',
+		'post_modified',
+		'post_modified_gmt',
+		'post_content_filtered',
+		'post_parent',
+		'guid',
+		'menu_order',
+		'post_type',
+		'post_mime_type',
+		'comment_count',
+	);
+
+	return array_intersect( $default_fields, $fields );
 }

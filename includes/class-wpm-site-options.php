@@ -11,6 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Class WPM_Site_Options
  * @package WPM/Includes
+ * @author   Valentyn Riaboshtan
  */
 class WPM_Site_Options {
 

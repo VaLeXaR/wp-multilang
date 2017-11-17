@@ -146,4 +146,20 @@
 .gutenberg-meta-box-html .languagechecklist li {
   line-height: 26px; }
 
+.js-set_default_language + .spinner,
+.js-delete_localization + .spinner {
+  float: none; }
+
+.js-set_default_language + .success,
+.js-delete_localization + .success {
+  color: #46b450;
+  font-style: italic;
+  display: inline-block;
+  margin-left: 10px;
+  line-height: 26px;
+  font-weight: 700; }
+
+.js-delete_localization + .spinner {
+  vertical-align: top; }
+
 /*# sourceMappingURL=admin.css.map */

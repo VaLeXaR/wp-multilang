@@ -11,6 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Class WPM_Setup
  * @package  WPM/Includes
+ * @author   Valentyn Riaboshtan
  */
 class WPM_Setup {
 
@@ -414,7 +415,7 @@ class WPM_Setup {
 		$url_lang         = $this->get_lang_from_url();
 
 		if ( ! isset( $_GET['lang'] ) ) {
-			if ( self::get_option( 'use_prefix', false ) ) {
+			if ( self::get_option( 'use_prefix', 'no' ) === 'yes' ) {
 				if ( ! $url_lang ) {
 					wp_redirect( home_url( $this->get_original_request_uri() ) );
 					exit;
@@ -500,7 +501,7 @@ class WPM_Setup {
 		$default_language = wpm_get_default_language();
 
 
-		if ( $user_language !== $default_language || self::get_option( 'use_prefix', false ) ) {
+		if ( $user_language !== $default_language || self::get_option( 'use_prefix', 'no' ) === 'yes' ) {
 			$value .= '/' . $user_language;
 		}
 
@@ -536,7 +537,7 @@ class WPM_Setup {
 			'better-search'              => __NAMESPACE__ . '\Integrations\WPM_Better_Search',
 			'buddypress'                 => __NAMESPACE__ . '\Integrations\WPM_BuddyPress',
 			'contact-form-7'             => __NAMESPACE__ . '\Integrations\WPM_CF7',
-			'gutenberg'                  => __NAMESPACE__ . '\Integrations\WPM_Gutenberg',
+//			'gutenberg'                  => __NAMESPACE__ . '\Integrations\WPM_Gutenberg',
 			'js_composer'                => __NAMESPACE__ . '\Integrations\WPM_VC',
 			'mailchimp-for-wp'           => __NAMESPACE__ . '\Integrations\WPM_MailChimp_For_WP',
 			'masterslider'               => __NAMESPACE__ . '\Integrations\WPM_Masterslider',
@@ -594,9 +595,8 @@ class WPM_Setup {
 			if ( ! isset( $_COOKIE['language'] ) ) {
 
 				wpm_setcookie( 'language', $user_language, time() + YEAR_IN_SECONDS );
-				$redirect_to_browser_language = self::get_option( 'use_redirect', false );
 
-				if ( $redirect_to_browser_language ) {
+				if ( self::get_option( 'use_redirect', 'no' ) === 'yes' ) {
 
 					$browser_language = $this->get_browser_language();
 
@@ -657,7 +657,7 @@ class WPM_Setup {
 
 				$locale = str_replace( '-', '_', $locale );
 
-				if ( $browser_language == $locale || strtolower( str_replace( '_', '-', $browser_language ) ) == $key ) {
+				if ( $browser_language == $locale || wpm_sanitize_lang_slug( $browser_language ) == $key ) {
 					$detect = $key;
 					break 2;
 				}
@@ -714,7 +714,7 @@ class WPM_Setup {
 	 * @return string
 	 */
 	public function fix_rest_url( $url ) {
-		if ( ! self::get_option( 'use_prefix', false ) && wpm_get_language() != wpm_get_default_language() ) {
+		if ( ! self::get_option( 'use_prefix', 'no' ) === 'yes' && wpm_get_language() != wpm_get_default_language() ) {
 			$url = str_replace( '/' . wpm_get_language() . '/', '/', $url );
 		}
 

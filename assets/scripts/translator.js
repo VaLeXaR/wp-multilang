@@ -110,7 +110,7 @@ var wpm_translator = {
 
     language = wpm_translator_params.language;
 
-    if (!strings[language].length && wpm_translator_params.show_untranslated_strings === "1") {
+    if (!strings[language].length && wpm_translator_params.show_untranslated_strings === "yes") {
       return strings[wpm_translator_params.default_language];
     }
 

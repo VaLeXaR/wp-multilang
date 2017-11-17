@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WPM_PBSO
  * @package  WPM/Includes/Integrations
  * @category Integrations
+ * @author   Valentyn Riaboshtan
  */
 class WPM_PBSO {
 
@@ -42,7 +43,7 @@ class WPM_PBSO {
 
 			foreach ( $old_value['widgets'] as $_widget ) {
 
-				if ( $widget['_sow_form_id'] === $_widget['_sow_form_id'] ) {
+				if ( $widget['panels_info']['widget_id'] === $_widget['panels_info']['widget_id'] ) {
 					$new_old_value['widgets'][ $key ] = $_widget;
 
 					if ( isset( $widget['frames'] ) ) {

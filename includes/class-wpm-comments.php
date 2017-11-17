@@ -9,7 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Class WPM_Comments
+ *
  * @package  WPM/Classes
+ * @author   Valentyn Riaboshtan
  */
 class WPM_Comments extends WPM_Object {
 

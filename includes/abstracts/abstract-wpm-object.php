@@ -8,6 +8,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Class WPM_Object
+ *
+ * @author   Valentyn Riaboshtan
+ * @class    WPM_Object
+ * @package  WPM/Classes
+ * @category Class
  */
 abstract class WPM_Object {
 
