@@ -192,8 +192,13 @@ class WPM_Menus {
 
 				$menu_id = 0;
 
-				if ( preg_match( '/<li id=".+?(\d+)"/u', $item, $matches ) ) {
+				if ( preg_match( '/.+?menu-item-(\d+)/u', $item, $matches ) ) {
 					$menu_id = $matches[1];
+				}
+
+				if ( ! $menu_id ) {
+					unset( $menu_items[ $key ] );
+					continue;
 				}
 
 				$languages   = wpm_get_languages();
