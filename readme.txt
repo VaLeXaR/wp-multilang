@@ -196,6 +196,7 @@ If you have opened several browser tabs for editing this post in different langu
 + add compatibility with WooCommerce Customizer
 + add compatibility with Better Search
 + add import taxonomies from qTranslate(Thanks for Soft79)
+* add error for adding taxonomy in exist name for current language
 * fix add $_GET 'lang' param
 * Other fixes and improvements
 
