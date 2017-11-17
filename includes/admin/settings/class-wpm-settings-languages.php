@@ -104,7 +104,7 @@ class WPM_Settings_Languages extends WPM_Settings_Page {
 		$installed_localizations = wpm_get_installed_languages();
 		$available_translations  = wpm_get_available_translations();
 		$options                 = get_option( 'wpm_languages', array() );
-		$button = 0;
+		$active                  = 0;
 		?>
 		<tr valign="top">
 			<th scope="row" class="titledesc">
@@ -121,13 +121,16 @@ class WPM_Settings_Languages extends WPM_Settings_Page {
 									$used = true;
 									break;
 								}
-								$button++;
+							}
+
+							if ( 'en_US' !== $localization && false == $used ) {
+								$active++;
 							}
 							?>
 							<option value="<?php esc_attr_e( $localization ); ?>" <?php disabled( ( 'en_US' == $localization ) || $used ); ?>><?php esc_attr_e( $available_translations[ $localization ]['native_name'] ); ?></option>
 						<?php } ?>
 					</select>
-					<input type="button" id="delete_localization" class="button" value="<?php esc_attr_e( 'Delete localization', 'wp-multilang' ); ?>" <?php disabled( $button == 0 ); ?>>
+					<button type="button" id="delete_localization" class="button js-delete_localization" <?php disabled( 0 == $active ); ?>><?php esc_attr_e( 'Delete localization', 'wp-multilang' ); ?></button>
 				</p>
 				<p><?php esc_html_e( 'Delete unused not built-in language pack', 'wp-multilang' ); ?></p>
 			</td>
@@ -191,6 +194,11 @@ class WPM_Settings_Languages extends WPM_Settings_Page {
 			if ( $error ) {
 				return;
 			}
+
+			$locale = $languages[ wpm_get_default_language() ]['translation'];
+			update_option( 'WPLANG', 'en_US' !== $locale ? $locale : '' );
+			$user_locale = $languages[ wpm_get_user_language() ]['translation'];
+			update_user_meta( get_current_user_id(), 'locale', $user_locale );
 
 			$languages = apply_filters( 'wpm_save_languages', $languages, $value );
 

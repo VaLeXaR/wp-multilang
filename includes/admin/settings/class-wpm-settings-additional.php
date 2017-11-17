@@ -79,7 +79,7 @@ class WPM_Settings_Additional extends WPM_Settings_Page {
 				<h4><?php echo esc_html( $value['title'] ); ?></h4>
 			</th>
 			<td class="forminp">
-				<input type="button" id="set_default_language" class="button" value="<?php printf(__( 'Set %s by default', 'wp-multilang' ), $languages[ $default_language ]['name'] ); ?>">
+				<button type="button" id="set_default_language" class="button js-set_default_language"><?php printf( __( 'Set <strong>%s</strong> by default', 'wp-multilang' ), $languages[ $default_language ]['name'] ); ?></button>
 				<p class="description"><?php _e( 'Set default translation for all posts, taxonomies, fields and options that available in config and not be translated before.<br><strong>WARNING:</strong> Changes are not reversible. Make a backup of the site database before starting.', 'wp-multilang' ) ?></p>
 			</td>
 		</tr>

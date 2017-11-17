@@ -20,9 +20,8 @@
           button.prop('disabled', true).after('<span class="spinner is-active"></span>');
         },
         success: function (json) {
-          //@TODO add message
           button.next().remove();
-          button.after('<span class="updated">' + json + '</span>');
+          button.after('<span class="success">' + json + '</span>');
         },
         complete: function() {
           button.prop('disabled', false);

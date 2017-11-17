@@ -1,15 +1,24 @@
-#set_default_language {
+.js-set_default_language,
+.js-delete_localization {
 
 	+ .spinner {
 		float: none;
 	}
 
-	+ .updated {
+	+ .success {
 		color: $green;
 		font-style: italic;
 		display: inline-block;
 		margin-left: 10px;
 		line-height: 26px;
-		font-weight: bold;
+		font-weight: 700;
 	}
 }
+
+.js-delete_localization {
+
+	+ .spinner {
+		vertical-align: top;
+	}
+}
+

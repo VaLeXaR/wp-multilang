@@ -190,7 +190,7 @@ class WPM_AJAX {
 			wp_delete_file( $file );
 		}
 
-		die();
+		wp_send_json( __( 'Localization deleted', 'wp-multilang' ) );
 	}
 
 	/**

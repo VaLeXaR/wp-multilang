@@ -83,6 +83,7 @@
       if (confirm(wpm_languages_params.confirm_question)) {
 
         var locale = $('#wpm_installed_localizations').val();
+        var button = $(this);
 
         var data = {
           action: 'wpm_delete_localization',
@@ -94,8 +95,13 @@
           type: 'post',
           data: data,
           dataType: 'json',
-          success: function () {
-            $('#wpm_installed_localization option[value="' + locale + '"]').remove();
+          beforeSend: function() {
+            button.prop('disabled', true).after('<span class="spinner is-active"></span>');
+          },
+          success: function (json) {
+            button.next().remove();
+            button.after('<span class="success">' + json + '</span>');
+            $('#wpm_installed_localizations option[value="' + locale + '"]').remove();
             $('#wpm_installed_localizations').trigger('init_localizations');
           },
           error: function (xhr, ajaxOptions, thrownError) {
