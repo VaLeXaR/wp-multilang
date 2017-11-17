@@ -29,7 +29,6 @@ class WPM_Settings_Languages extends WPM_Settings_Page {
 		parent::__construct();
 
 		add_action( 'wpm_admin_field_languages', array( $this, 'get_languages' ) );
-		add_action( 'wpm_admin_field_localizations', array( $this, 'get_localizations' ) );
 	}
 
 	/**
@@ -52,15 +51,6 @@ class WPM_Settings_Languages extends WPM_Settings_Page {
 				'css'      => '',
 			),
 
-			array(
-				'title'    => __( 'Installed localizations', 'wp-multilang' ),
-				'desc'     => '',
-				'id'       => 'wpm_installed_localizations',
-				'default'  => '',
-				'type'     => 'localizations',
-				'css'      => '',
-			),
-
 			array( 'type' => 'sectionend', 'id' => 'languages_options' ),
 
 		) );
@@ -80,7 +70,6 @@ class WPM_Settings_Languages extends WPM_Settings_Page {
 			'flags_dir'                 => wpm_get_flags_dir(),
 			'ajax_url'                  => admin_url( 'admin-ajax.php' ),
 			'delete_lang_nonce'         => wp_create_nonce( 'delete-lang' ),
-			'delete_localization_nonce' => wp_create_nonce( 'delete-localization' ),
 			'confirm_question'          => __( 'Are you sure you want to delete this language?', 'wp-multilang' ),
 		);
 		wp_localize_script( 'wpm_languages', 'wpm_languages_params', $main_params );
@@ -92,51 +81,6 @@ class WPM_Settings_Languages extends WPM_Settings_Page {
 		$flags     = wpm_get_flags();
 
 		include_once( dirname( __FILE__ ) . '/views/html-languages.php' );
-	}
-
-	/**
-	 * Get localizations field
-	 *
-	 * @param $value
-	 */
-	public function get_localizations( $value ) {
-
-		$installed_localizations = wpm_get_installed_languages();
-		$available_translations  = wpm_get_available_translations();
-		$options                 = get_option( 'wpm_languages', array() );
-		$active                  = 0;
-		?>
-		<tr valign="top">
-			<th scope="row" class="titledesc">
-				<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
-			</th>
-			<td class="forminp">
-				<p>
-					<select id="<?php echo esc_attr( $value['id'] ); ?>" title="<?php esc_html_e( 'Installed localizations', 'wp-multilang' ); ?>">
-						<?php foreach ( $installed_localizations as $localization ) { ?>
-							<?php
-							$used = false;
-							foreach ( $options as $lang => $language ) {
-								if ( $language['translation'] == $localization ) {
-									$used = true;
-									break;
-								}
-							}
-
-							if ( 'en_US' !== $localization && false == $used ) {
-								$active++;
-							}
-							?>
-							<option value="<?php esc_attr_e( $localization ); ?>" <?php disabled( ( 'en_US' == $localization ) || $used ); ?>><?php esc_attr_e( $available_translations[ $localization ]['native_name'] ); ?></option>
-						<?php } ?>
-					</select>
-					<button type="button" id="delete_localization" class="button js-delete_localization" <?php disabled( 0 == $active ); ?>><?php esc_attr_e( 'Delete localization', 'wp-multilang' ); ?></button>
-				</p>
-				<p><?php esc_html_e( 'Delete unused not built-in language pack', 'wp-multilang' ); ?></p>
-			</td>
-		</tr>
-		<?php
-
 	}
 
 	/**
