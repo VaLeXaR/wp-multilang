@@ -51,6 +51,7 @@ class WPM_Taxonomies extends WPM_Object {
 		add_action( 'created_term', array( $this, 'insert_description' ), 99, 3 );
 		add_filter( 'wp_update_term_data', array( $this, 'update_term' ), 99, 4 );
 		add_action( 'edited_term_taxonomy', array( $this, 'update_description' ), 5, 2 );
+		add_filter( 'get_terms_args', array( $this, 'get_term_by_name' ), 99, 2 );
 	}
 
 
@@ -283,5 +284,28 @@ class WPM_Taxonomies extends WPM_Object {
 
 		global $wpdb;
 		$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_taxonomy_id' => $tt_id ) );
+	}
+
+	/**
+	 * Set name__like for getting terms by name
+	 *
+	 * @since 2.1.1
+	 *
+	 * @param $args
+	 * @param $taxonomies
+	 *
+	 * @return mixed
+	 */
+	public function get_term_by_name( $args, $taxonomies ) {
+
+		if ( ! empty( $args['name'] ) ) {
+			$taxonomy = current( $taxonomies );
+			if ( ! is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
+				$args['name__like'] = $args['name'];
+				$args['name']       = '';
+			}
+		}
+
+		return $args;
 	}
 }

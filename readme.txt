@@ -145,12 +145,15 @@ Compatible with REST-API.
 Supports transfer the required translation through option `lang` in the GET request to REST.
 Has the ability to keep recording the target language through the transmission parameter `lang` in the request.
 
-
 == Warning ==
 Do not support different slug for each language(Yet).
 
 Not compatible with:
 - WP Maintenance
+
+== Known issues ==
+Function 'get_page_by_title' not working, because in title field are stored titles for all languages.
+Function 'get_term_by' for search term by name works partly. The search is not in full coincidence but through 'LIKE'.
 
 == Installation ==
 

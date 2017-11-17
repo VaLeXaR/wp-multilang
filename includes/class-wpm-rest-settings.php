@@ -122,7 +122,7 @@ class WPM_REST_Settings {
 	 */
 	public function update_languages_setting( $updated, $name, $request ) {
 
-		if ( 'multilingual_settings' != $name ) {
+		if ( 'multilingual_settings' != $name || ! current_user_can( 'manage_options' ) ) {
 			return $updated;
 		}
 
@@ -168,8 +168,12 @@ class WPM_REST_Settings {
 				}
 			}
 
+
 			if ( ! $error ) {
-				update_option( 'wpm_languages', apply_filters( 'wpm_save_languages', $languages, $request ) );
+				$languages = apply_filters( 'wpm_save_languages', $languages, $request );
+				$locale    = $languages[ wpm_get_default_language() ]['translation'];
+				update_option( 'WPLANG', 'en_US' !== $locale ? $locale : '' );
+				update_option( 'wpm_languages', $languages );
 			}
 		}// End if().
 
@@ -190,7 +194,7 @@ class WPM_REST_Settings {
 	 */
 	public function update_site_language_setting( $updated, $name, $request ) {
 
-		if ( 'site_language' != $name ) {
+		if ( 'site_language' != $name || ! current_user_can( 'manage_options' ) ) {
 			return $updated;
 		}
 

@@ -139,12 +139,12 @@ class WPM_Settings_Languages extends WPM_Settings_Page {
 				return;
 			}
 
-			$locale = $languages[ wpm_get_default_language() ]['translation'];
+			$languages = apply_filters( 'wpm_save_languages', $languages, $value );
+			$locale    = $languages[ wpm_get_default_language() ]['translation'];
 			update_option( 'WPLANG', 'en_US' !== $locale ? $locale : '' );
 			$user_locale = $languages[ wpm_get_user_language() ]['translation'];
 			update_user_meta( get_current_user_id(), 'locale', $user_locale );
 
-			$languages = apply_filters( 'wpm_save_languages', $languages, $value );
 
 			update_option( $option_name, $languages );
 		}// End if().
