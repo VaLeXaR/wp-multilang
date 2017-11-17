@@ -91,9 +91,10 @@ class WPM_AJAX {
 	 */
 	public static function add_ajax_events() {
 		$ajax_events = array(
-			'delete_lang'          => false,
-			'delete_localization'  => false,
-			'set_default_language' => false,
+			'delete_lang'           => false,
+			'delete_localization'   => false,
+			'set_default_language'  => false,
+			'qts_import' => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -509,5 +510,51 @@ class WPM_AJAX {
 		}
 
 		return $object;
+	}
+
+	/**
+	 * Import translations for terms from qTranslate
+	 *
+	 * @author   Soft79
+	 */
+	public static function qts_import() {
+
+		check_ajax_referer( 'qts-import', 'security' );
+
+		$term_count = 0;
+
+		if ( $qtranslate_terms = get_option( 'qtranslate_term_name', array() ) ) {
+
+			$taxonomies = get_taxonomies();
+			$terms      = get_terms( array('taxonomy' => $taxonomies, 'hide_empty' => false ) );
+
+			foreach ( $terms as $term ) {
+				$original = $term->name;
+
+				//Translation available?
+				if ( ! isset( $qtranslate_terms[ $original ] ) ) {
+					continue;
+				}
+
+				//Translate the name
+				$strings = wpm_value_to_ml_array( $original );
+				foreach ( $qtranslate_terms[ $original ] as $lang => $translation ) {
+					$strings = wpm_set_language_value( $strings, $translation, array(), $lang );
+				}
+
+				//Update the name
+				$term->name = wpm_ml_value_to_string( $strings );
+				if ( $term->name !== $original ) {
+					$result = wp_update_term( $term->term_id, $term->taxonomy, array( 'name' => $term->name ) );
+					if ( ! is_wp_error( $result ) ) {
+						$term_count++;
+					}
+				}
+			}
+
+			delete_option( 'qtranslate_term_name' );
+		}
+
+		wp_send_json( sprintf( __( '%d terms were imported successfully.', 'wp-multilang' ), $term_count ) );
 	}
 }

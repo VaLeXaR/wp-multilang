@@ -1,5 +1,4 @@
-.js-set_default_language,
-.js-delete_localization {
+.js-wpm-action {
 
 	+ .spinner {
 		float: none;
@@ -15,7 +14,8 @@
 	}
 }
 
-.js-delete_localization {
+#delete_localization,
+#qts_import {
 
 	+ .spinner {
 		vertical-align: top;

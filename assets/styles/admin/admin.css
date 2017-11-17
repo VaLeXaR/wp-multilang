@@ -146,12 +146,10 @@
 .gutenberg-meta-box-html .languagechecklist li {
   line-height: 26px; }
 
-.js-set_default_language + .spinner,
-.js-delete_localization + .spinner {
+.js-wpm-action + .spinner {
   float: none; }
 
-.js-set_default_language + .success,
-.js-delete_localization + .success {
+.js-wpm-action + .success {
   color: #46b450;
   font-style: italic;
   display: inline-block;
@@ -159,7 +157,8 @@
   line-height: 26px;
   font-weight: 700; }
 
-.js-delete_localization + .spinner {
+#delete_localization + .spinner,
+#qts_import + .spinner {
   vertical-align: top; }
 
 /*# sourceMappingURL=admin.css.map */

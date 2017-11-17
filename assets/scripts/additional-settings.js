@@ -74,5 +74,31 @@
       }
     });
 
+    $('#qts_import').click(function(){
+      var button = $(this);
+
+      var data = {
+        action: 'wpm_qts_import',
+        security: wpm_additional_settings_params.qts_import_nonce
+      };
+
+      $.ajax({
+        url: wpm_additional_settings_params.ajax_url,
+        type: 'post',
+        data: data,
+        dataType: 'json',
+        beforeSend: function() {
+          button.prop('disabled', true).after('<span class="spinner is-active"></span>');
+        },
+        success: function (json) {
+          button.next().remove();
+          button.after('<span class="success">' + json + '</span>');
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+          alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+      });
+    });
+
   });
 })( jQuery );
