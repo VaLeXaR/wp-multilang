@@ -187,6 +187,7 @@ If you have opened several browser tabs for editing this post in different langu
 * fix translate url for site in subfolder(thanks for mwillberg)
 * fix integration with SiteOrigin (thanks for soft79)
 * fix cache for language switcher widget(thanks for soft79)
+* fix adding languages to menu
 
 = 2.1.0 =
 + add flag selector autocomplete
