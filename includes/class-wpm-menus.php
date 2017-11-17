@@ -4,6 +4,7 @@
  *
  * @category Class
  * @package  WPM/Includes
+ * @author   Valentyn Riaboshtan
  */
 
 namespace WPM\Includes;
@@ -189,10 +190,11 @@ class WPM_Menus {
 
 			if ( preg_match( '/^.*href="#wpm-languages".*$/u', $item ) ) {
 
-				$menu_id = 0;
-
-				if ( preg_match( '/<li id=".+?(\d+)"/u', $item, $matches ) ) {
+				if ( preg_match( '/.+?menu-item-(\d+)/u', $item, $matches ) ) {
 					$menu_id = $matches[1];
+				} else {
+					unset( $menu_items[ $key ] );
+					continue;
 				}
 
 				$languages   = wpm_get_languages();

@@ -4,7 +4,6 @@
  *
  * Sets up the write panels used by products and orders (custom post types).
  *
- * @author   VaLeXaR
  * @category Admin
  * @package  WPM/Includes/Admin
  * @version  1.0.1

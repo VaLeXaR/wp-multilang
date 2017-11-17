@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @class    WPM_Yoast_Seo
  * @package  WPM/Includes/Integrations
  * @category Integrations
+ * @author   Valentyn Riaboshtan
  */
 class WPM_Yoast_Seo {
 
@@ -184,7 +185,7 @@ class WPM_Yoast_Seo {
 					continue;
 				}
 
-				$alternate[ $key ] .= sprintf( "\t<xhtml:link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />\n\t", esc_attr( str_replace( '_', '-', strtolower( $lg['locale'] ) ) ), esc_url( wpm_translate_url( $url['loc'], $key ) ) );
+				$alternate[ $key ] .= sprintf( "\t<xhtml:link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />\n\t", esc_attr( wpm_sanitize_lang_slug( $lg['locale'] ) ), esc_url( wpm_translate_url( $url['loc'], $key ) ) );
 			}
 
 			$alternate  = apply_filters( 'wpm_sitemap_alternate_links', $alternate, $url['loc'], $lang );
@@ -204,7 +205,7 @@ class WPM_Yoast_Seo {
 	 * @param $lang
 	 */
 	public function set_opengraph_locale( $lang, $count ) {
-		$options = wpm_get_lang_option();
+		$options = get_option( 'wpm_languages', array() );
 		$value   = '';
 
 		if ( isset( $options[ $lang ]['wpseo_og_locale'] ) ) {
@@ -214,8 +215,8 @@ class WPM_Yoast_Seo {
 		<tr>
 			<td class="row-title"><?php esc_attr_e( 'Yoast SEO Opengraph Locale', 'wp-multilang' ); ?></td>
 			<td>
-				<input type="text" name="wpm_languages[<?php esc_attr_e( $count ); ?>][wpseo_og_locale]" value="<?php esc_attr_e( $value ); ?>" title="<?php esc_attr_e( 'Opengraph Locale', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Opengraph Locale', 'wp-multilang' ); ?>">
-				<p><?php esc_html_e( 'Locale must be with country domain: like en_US', 'wp-multilang' ); ?></p>
+				<input type="text" name="wpm_languages[<?php esc_attr_e( $count ); ?>][wpseo_og_locale]" value="<?php esc_attr_e( $value ); ?>" title="<?php esc_attr_e( 'Yoast SEO Opengraph Locale', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Opengraph Locale', 'wp-multilang' ); ?>">
+				<p><?php esc_html_e( 'Locale must be with country domain. Like en_US', 'wp-multilang' ); ?></p>
 			</td>
 		</tr>
 		<?php

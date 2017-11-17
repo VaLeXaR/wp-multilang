@@ -10,6 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class WPM_Taxonomies
  * @package  WPM/Includes
+ * @author   Valentyn Riaboshtan
  */
 class WPM_Taxonomies extends WPM_Object {
 
@@ -50,6 +51,7 @@ class WPM_Taxonomies extends WPM_Object {
 		add_action( 'created_term', array( $this, 'insert_description' ), 99, 3 );
 		add_filter( 'wp_update_term_data', array( $this, 'update_term' ), 99, 4 );
 		add_action( 'edited_term_taxonomy', array( $this, 'update_description' ), 5, 2 );
+		add_filter( 'get_terms_args', array( $this, 'get_term_by_name' ), 99, 2 );
 	}
 
 
@@ -149,13 +151,15 @@ class WPM_Taxonomies extends WPM_Object {
 			return $term;
 		}
 
-		$like    = '%' . $wpdb->esc_like( esc_sql( $term ) ) . '%';
-		$results = $wpdb->get_results( $wpdb->prepare( "SELECT t.name AS `name` FROM {$wpdb->terms} AS t INNER JOIN {$wpdb->term_taxonomy} AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy = '%s' AND `name` LIKE '%s'", $taxonomy, $like ) );
+		$languages = wpm_get_languages();
+		$name      = wp_unslash( $term );
+		$like      = '%' . $wpdb->esc_like( esc_sql( $name ) ) . '%';
+		$results   = $wpdb->get_results( $wpdb->prepare( "SELECT t.term_id, t.name FROM {$wpdb->terms} AS t INNER JOIN {$wpdb->term_taxonomy} AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy = '%s' AND `name` LIKE '%s';", $taxonomy, $like ) );
 
 		foreach ( $results as $result ) {
 			$ml_term = wpm_translate_string( $result->name );
-			if ( $ml_term === $term ) {
-				return '';
+			if ( $ml_term === $name ) {
+				return new \WP_Error( 'term_exists', sprintf( __( 'A term with the name provided for %s already exists in this taxonomy.', 'wp-multilang' ), $languages[ wpm_get_language() ]['name'] ), $result->term_id );
 			}
 		}
 
@@ -174,12 +178,14 @@ class WPM_Taxonomies extends WPM_Object {
 	 */
 	public function insert_term( $data, $taxonomy, $args ) {
 
-		if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
+		$taxonomy_config = wpm_get_taxonomy_config( $taxonomy );
+
+		if ( is_null( $taxonomy_config ) ) {
 			return $data;
 		}
 
 		if ( ! wpm_is_ml_value( $data['name'] ) ) {
-			$data['name'] = wpm_set_new_value( array(), $data['name'] );
+			$data['name'] = wpm_set_new_value( array(), $data['name'], $taxonomy_config['name'] );
 		}
 
 		$this->description = array(
@@ -198,9 +204,10 @@ class WPM_Taxonomies extends WPM_Object {
 	 * @param $taxonomy
 	 */
 	public function insert_description( $term_id, $tt_id, $taxonomy ) {
-		global $wpdb;
 
-		if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) || ! $this->description ) {
+		$taxonomy_config = wpm_get_taxonomy_config( $taxonomy );
+
+		if ( is_null( $taxonomy_config ) || ! $this->description ) {
 			return;
 		}
 
@@ -210,8 +217,9 @@ class WPM_Taxonomies extends WPM_Object {
 			return;
 		}
 
-		$description = wpm_set_new_value( array(), $value );
+		$description = wpm_set_new_value( array(), $value, $taxonomy_config['description'] );
 
+		global $wpdb;
 		$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_taxonomy_id' => $tt_id ) );
 	}
 
@@ -228,7 +236,9 @@ class WPM_Taxonomies extends WPM_Object {
 	 */
 	public function update_term( $data, $term_id, $taxonomy, $args ) {
 
-		if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
+		$taxonomy_config = wpm_get_taxonomy_config( $taxonomy );
+
+		if ( is_null( $taxonomy_config ) ) {
 			return $data;
 		}
 
@@ -238,7 +248,7 @@ class WPM_Taxonomies extends WPM_Object {
 		add_filter( 'get_term', 'wpm_translate_term', 5, 2 );
 
 		if ( ! wpm_is_ml_value( $data['name'] ) ) {
-			$data['name'] = wpm_set_new_value( $old_name, $data['name'] );
+			$data['name'] = wpm_set_new_value( $old_name, $data['name'], $taxonomy_config['name'] );
 		}
 
 		$this->description = array(
@@ -257,9 +267,10 @@ class WPM_Taxonomies extends WPM_Object {
 	 * @param $taxonomy
 	 */
 	public function update_description( $tt_id, $taxonomy ) {
-		global $wpdb;
 
-		if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) || ! $this->description ) {
+		$taxonomy_config = wpm_get_taxonomy_config( $taxonomy );
+
+		if ( is_null( $taxonomy_config ) || ! $this->description ) {
 			return;
 		}
 
@@ -269,8 +280,32 @@ class WPM_Taxonomies extends WPM_Object {
 			return;
 		}
 
-		$description = wpm_set_new_value( $this->description['old'], $value );
+		$description = wpm_set_new_value( $this->description['old'], $value, $taxonomy_config['description'] );
 
+		global $wpdb;
 		$wpdb->update( $wpdb->term_taxonomy, compact( 'description' ), array( 'term_taxonomy_id' => $tt_id ) );
+	}
+
+	/**
+	 * Set name__like for getting terms by name
+	 *
+	 * @since 2.1.1
+	 *
+	 * @param $args
+	 * @param $taxonomies
+	 *
+	 * @return mixed
+	 */
+	public function get_term_by_name( $args, $taxonomies ) {
+
+		if ( ! empty( $args['name'] ) ) {
+			$taxonomy = current( $taxonomies );
+			if ( ! is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
+				$args['name__like'] = $args['name'];
+				$args['name']       = '';
+			}
+		}
+
+		return $args;
 	}
 }

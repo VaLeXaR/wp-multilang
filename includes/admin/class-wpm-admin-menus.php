@@ -2,7 +2,7 @@
 /**
  * Setup menus in WP admin.
  *
- * @author   VaLeXaR
+ * @author   Valentyn Riaboshtan
  * @category Admin
  * @package  WPM/Includes/Admin
  */
@@ -115,7 +115,37 @@ class WPM_Admin_Menus {
 	 * Add menu item.
 	 */
 	public function settings_menu() {
-		add_options_page( __( 'WP Multilang Settings', 'wp-multilang' ), __( 'WP Multilang', 'wp-multilang' ), 'manage_options', 'wpm-settings', array( $this, 'settings_page' ) );
+		$settings_page = add_options_page( __( 'WP Multilang Settings', 'wp-multilang' ), __( 'WP Multilang', 'wp-multilang' ), 'manage_options', 'wpm-settings', array( $this, 'settings_page' ) );
+
+		add_action( 'load-' . $settings_page, array( $this, 'settings_page_init' ) );
+	}
+
+	/**
+	 * Load settings.
+	 */
+	public function settings_page_init() {
+		global $current_tab, $current_section;
+
+		// Include settings pages
+		WPM_Admin_Settings::get_settings_pages();
+
+		// Get current tab/section
+		$current_tab     = empty( $_GET['tab'] ) ? 'general' : sanitize_title( $_GET['tab'] );
+		$current_section = empty( $_REQUEST['section'] ) ? '' : sanitize_title( $_REQUEST['section'] );
+
+		// Save settings if data has been posted
+		if ( ! empty( $_POST ) ) {
+			WPM_Admin_Settings::save();
+		}
+
+		// Add any posted messages
+		if ( ! empty( $_GET['wpm_error'] ) ) {
+			WPM_Admin_Settings::add_error( stripslashes( $_GET['wpm_error'] ) );
+		}
+
+		if ( ! empty( $_GET['wpm_message'] ) ) {
+			WPM_Admin_Settings::add_message( stripslashes( $_GET['wpm_message'] ) );
+		}
 	}
 
 	/**

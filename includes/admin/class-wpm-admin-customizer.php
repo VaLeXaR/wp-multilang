@@ -2,7 +2,7 @@
 /**
  * Add 'lang' param to iframe url
  *
- * @author      VaLeXaR
+ * @author   Valentyn Riaboshtan
  * @category    Admin
  * @package     WPM/Includes/Admin
  * @class       WPM_Admin_Customizer

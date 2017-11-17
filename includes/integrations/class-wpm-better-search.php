@@ -13,6 +13,7 @@ exit;
 * @class    WPM_Better_Search
 * @package  WPM/Includes/Integrations
 * @category Integrations
+ * @author   Valentyn Riaboshtan
 */
 class WPM_Better_Search {
 

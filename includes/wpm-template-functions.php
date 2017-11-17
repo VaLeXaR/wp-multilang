@@ -48,16 +48,14 @@ function wpm_get_flag_url( $filename = '' ) {
 /**
  * Display language switcher in templates
  *
- * @param array $args
+ * @param string $type
+ * @param string $show
  *
  * @return string
+ * @internal param array $args
+ *
  */
-function wpm_get_language_switcher( $args = array() ) {
-	$default = array(
-		'type' => 'list',
-		'show' => 'both',
-	);
-	$args    = wp_parse_args( $args, $default );
+function wpm_get_language_switcher( $type = 'list', $show = 'both' ) {
 
 	$languages = wpm_get_languages();
 
@@ -69,21 +67,22 @@ function wpm_get_language_switcher( $args = array() ) {
 		'languages'   => wpm_get_languages(),
 		'lang'        => wpm_get_language(),
 		'current_url' => wpm_get_current_url(),
-		'args'        => $args,
+		'type'        => $type,
+		'show'        => $show,
 	);
 
-	switch ( $args['type'] ) {
+	switch ( $type ) {
 
 		case 'dropdown':
-			$template = wpm_get_template( 'language-switcher', $args['type'], '', $vars );
+			$template = wpm_get_template( 'language-switcher', $type, '', $vars );
 			break;
 
 		case 'select':
-			$template = wpm_get_template( 'language-switcher', $args['type'], '', $vars );
+			$template = wpm_get_template( 'language-switcher', $type, '', $vars );
 			break;
 
 		default:
-			$template = wpm_get_template( 'language-switcher', $args['type'], '', $vars );
+			$template = wpm_get_template( 'language-switcher', $type, '', $vars );
 	}
 
 	return $template;
@@ -93,10 +92,13 @@ function wpm_get_language_switcher( $args = array() ) {
 /**
  * Display language switcher
  *
- * @param array $args
+ * @param string $type
+ * @param string $show
+ *
+ * @internal param array $args
  */
-function wpm_language_switcher( $args = array() ) {
-	echo wpm_get_language_switcher( $args );
+function wpm_language_switcher( $type = 'list', $show = 'both' ) {
+	echo wpm_get_language_switcher( $type, $show );
 }
 
 
@@ -133,7 +135,7 @@ function wpm_set_alternate_links() {
 			$hreflangs['x-default'] = sprintf( "<link rel=\"alternate\" hreflang=\"x-default\" href=\"%s\"/>\n", esc_url( wpm_translate_url( $current_url, $lang ) ) );
 		}
 
-		$hreflangs[ $lang ] = sprintf( "<link rel=\"alternate\" hreflang=\"%s\" href=\"%s\"/>\n", esc_attr( str_replace( '_', '-', strtolower( $language['locale'] ) ) ), esc_url( wpm_translate_url( $current_url, $lang ) ) );
+		$hreflangs[ $lang ] = sprintf( "<link rel=\"alternate\" hreflang=\"%s\" href=\"%s\"/>\n", esc_attr( wpm_sanitize_lang_slug( $language['locale'] ) ), esc_url( wpm_translate_url( $current_url, $lang ) ) );
 	}
 
 	$hreflangs = apply_filters( 'wpm_alternate_links', $hreflangs, $current_url );

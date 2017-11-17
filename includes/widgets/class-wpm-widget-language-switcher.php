@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @class WPM_Widget_Language_Switcher
  * @package WPM/Includes/Widgets
  * @category Class
- * @author   VaLeXaR
+ * @author   Valentyn Riaboshtan
  */
 class WPM_Widget_Language_Switcher extends WPM_Widget {
 
@@ -63,23 +63,17 @@ class WPM_Widget_Language_Switcher extends WPM_Widget {
 	 */
 	public function widget( $args, $instance ) {
 
-		if ( $this->get_cached_widget( $args ) ) {
-			return;
-		}
-
 		ob_start();
 
 		$this->widget_start( $args, $instance );
 
-		wpm_language_switcher( $instance );
+		wpm_language_switcher( $instance['type'], $instance['show'] );
 
 		$this->widget_end( $args );
 
 		$content = ob_get_clean();
 
 		echo $content;
-
-		$this->cache_widget( $args, $content );
 
 	}
 }

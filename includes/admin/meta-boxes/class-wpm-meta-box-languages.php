@@ -2,7 +2,7 @@
 /**
  * Languages
  *
- * @author        VaLeXaR
+ * @author   Valentyn Riaboshtan
  * @category      Admin
  * @package       WPM/Admin/Meta Boxes
  */

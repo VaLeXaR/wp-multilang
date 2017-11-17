@@ -77,7 +77,7 @@
   text-align: center; }
 
 .wp-core-ui .button-link.delete-language {
-  color: #dd0e11; }
+  color: #dc3232; }
 
 .wpm-languages {
   max-width: 500px; }
@@ -145,5 +145,28 @@
 
 .gutenberg-meta-box-html .languagechecklist li {
   line-height: 26px; }
+
+.js-wpm-action + .spinner {
+  float: none; }
+
+.js-wpm-action + .success {
+  color: #46b450;
+  font-style: italic;
+  display: inline-block;
+  margin-left: 10px;
+  line-height: 26px;
+  font-weight: 700; }
+
+.js-wpm-action + .error {
+  color: #dc3232;
+  font-style: italic;
+  display: inline-block;
+  margin-left: 10px;
+  line-height: 26px;
+  font-weight: 700; }
+
+#delete_localization + .spinner,
+#qts_import + .spinner {
+  vertical-align: top; }
 
 /*# sourceMappingURL=admin.css.map */

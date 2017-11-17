@@ -2,7 +2,7 @@
 /**
  * WPM Admin Functions
  *
- * @author   VaLeXaR
+ * @author   Valentyn Riaboshtan
  * @category Core
  * @package  WPM/Admin/Functions
  * @since    1.1.2

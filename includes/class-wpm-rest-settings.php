@@ -31,7 +31,7 @@ class WPM_REST_Settings {
 	 */
 	public function register_initial_settings() {
 		register_setting( 'wpm-settings', 'wpm_site_language', array(
-			'description'  => __( 'Sile Language', 'wp-multilang' ),
+			'description'  => __( 'Site Language', 'wp-multilang' ),
 			'type'         => 'string',
 			'default'      => false,
 			'show_in_rest' => array(
@@ -80,33 +80,6 @@ class WPM_REST_Settings {
 				),
 			),
 		) );
-
-		register_setting( 'wpm-settings', 'wpm_show_untranslated_strings', array(
-			'description'  => __( 'Show untranslated strings in default language', 'wp-multilang' ),
-			'type'         => 'boolean',
-			'default'      => true,
-			'show_in_rest' => array(
-				'name' => 'show_untranslated_strings',
-			),
-		) );
-
-		register_setting( 'wpm-settings', 'wpm_use_redirect', array(
-			'description'  => __( 'Use redirect to user browser language in first time', 'wp-multilang' ),
-			'type'         => 'boolean',
-			'default'      => false,
-			'show_in_rest' => array(
-				'name' => 'use_redirect',
-			),
-		) );
-
-		register_setting( 'wpm-settings', 'wpm_use_prefix', array(
-			'description'  => __( 'Use prefix for default language', 'wp-multilang' ),
-			'type'         => 'boolean',
-			'default'      => false,
-			'show_in_rest' => array(
-				'name' => 'use_prefix',
-			),
-		) );
 	}
 
 	/**
@@ -149,7 +122,7 @@ class WPM_REST_Settings {
 	 */
 	public function update_languages_setting( $updated, $name, $request ) {
 
-		if ( 'multilingual_settings' != $name ) {
+		if ( 'multilingual_settings' != $name || ! current_user_can( 'manage_options' ) ) {
 			return $updated;
 		}
 
@@ -174,7 +147,7 @@ class WPM_REST_Settings {
 					break;
 				}
 
-				$slug = sanitize_title( $item['slug'] );
+				$slug = wpm_sanitize_lang_slug( $item['slug'] );
 
 				if ( ! $slug ) {
 					break;
@@ -195,8 +168,12 @@ class WPM_REST_Settings {
 				}
 			}
 
+
 			if ( ! $error ) {
-				update_option( 'wpm_languages', apply_filters( 'wpm_save_languages', $languages, $request ) );
+				$languages = apply_filters( 'wpm_save_languages', $languages, $request );
+				$locale    = $languages[ wpm_get_default_language() ]['translation'];
+				update_option( 'WPLANG', 'en_US' !== $locale ? $locale : '' );
+				update_option( 'wpm_languages', $languages );
 			}
 		}// End if().
 
@@ -217,15 +194,16 @@ class WPM_REST_Settings {
 	 */
 	public function update_site_language_setting( $updated, $name, $request ) {
 
-		if ( 'site_language' != $name ) {
+		if ( 'site_language' != $name || ! current_user_can( 'manage_options' ) ) {
 			return $updated;
 		}
 
 		$request   = wpm_clean( $request );
 		$languages = wpm_get_languages();
+		$locale    = $languages[ $request ]['translation'];
 
 		if ( $languages ) {
-			update_option( 'WPLANG', $languages[ $request ]['translation'] );
+			update_option( 'WPLANG', 'en_US' !== $locale ? $locale : '' );
 		}
 
 		return $updated;

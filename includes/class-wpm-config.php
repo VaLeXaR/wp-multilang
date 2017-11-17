@@ -10,8 +10,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Set configs
  *
  * Class WPM_Config
+ *
  * @package  WPM/Includes
  * @category Class
+ * @author   Valentyn Riaboshtan
  */
 class WPM_Config {
 

@@ -7,8 +7,9 @@
       "attr_title": {},
       "title": {}
     },
+    "any": {},
     "customize_changeset": null,
-    "any": {}
+    "revision": null
   },
   "post_fields": {
     "_wp_attachment_image_alt": {}

@@ -5,6 +5,7 @@
  *
  * @class   WPM
  * @version 1.1.1
+ * @author   Valentyn Riaboshtan
  */
 
 namespace WPM\Includes;
@@ -16,7 +17,7 @@ final class WP_Multilang {
 	 *
 	 * @var string
 	 */
-	public $version = '2.1.0';
+	public $version = '2.1.1';
 
 	/**
 	 * The single instance of the class.
@@ -128,6 +129,7 @@ final class WP_Multilang {
 		 */
 		include_once( WPM_ABSPATH . 'includes/wpm-core-functions.php' );
 		include_once( WPM_ABSPATH . 'includes/wpm-widget-functions.php' );
+
 		WPM_Install::init();
 		WPM_Setup::instance();
 

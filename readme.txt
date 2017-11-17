@@ -4,10 +4,10 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 Requires PHP: 5.6
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License: GPLv3
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Multilingual plugin for WordPress.
 
@@ -104,12 +104,8 @@ For display language switcher in any place add the code to your template
 `if ( function_exists ( 'wpm_language_switcher' ) ) wpm_language_switcher ();`
 
 Function accepts two parameters:
-
-$args - array
-  `type` - 'list', 'dropdown', 'select'. Default - 'list'.
-  `show` - 'flag', 'name', 'both'. Default - 'both'.
-
-$echo - bool
+$type - 'list', 'dropdown', 'select'. Default - 'list'.
+$show - 'flag', 'name', 'both'. Default - 'both'.
 
 Available features for translation:
 
@@ -149,12 +145,15 @@ Compatible with REST-API.
 Supports transfer the required translation through option `lang` in the GET request to REST.
 Has the ability to keep recording the target language through the transmission parameter `lang` in the request.
 
-
 == Warning ==
 Do not support different slug for each language(Yet).
 
 Not compatible with:
 - WP Maintenance
+
+== Known issues ==
+Function 'get_page_by_title' not working, because in title field are stored titles for all languages.
+Function 'get_term_by' for search term by name works partly. The search is not in full coincidence but through 'LIKE'.
 
 == Installation ==
 
@@ -181,6 +180,18 @@ If you have opened several browser tabs for editing this post in different langu
 5. Post edit page
 
 == Changelog ==
+
+= 2.1.1 =
+* change parameters for functions 'wpm_language_switcher', 'wpm_get_language_switcher'
+* add settings api
+* add possibility for set default language for all
+* add error for adding taxonomy in exist name for current language
+* disable integration with Gutenberg. Gutenberg very unstable.
+* fix uninstalling
+* fix translate url for site in subfolder(thanks for mwillberg)
+* fix integration with SiteOrigin (thanks for soft79)
+* fix cache for language switcher widget(thanks for soft79)
+* fix adding languages to menu
 
 = 2.1.0 =
 + add flag selector autocomplete

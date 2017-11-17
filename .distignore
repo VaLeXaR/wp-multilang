@@ -6,6 +6,7 @@
 .gitlab-ci.yml
 .travis.yml
 .DS_Store
+.idea
 Thumbs.db
 behat.yml
 bin
@@ -20,8 +21,13 @@ phpunit.xml.dist
 phpcs.ruleset.xml
 README.md
 wp-cli.local.yml
+wp-cli.yml
+phpcs.xml
+_config.yml
+.stylelintrc
 tests
-vendor
+/vendor/kint-php
+/vendor/xrstf
 node_modules
 *.zip
 *.tar.gz
