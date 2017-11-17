@@ -43,12 +43,9 @@ class WPM_Settings_Languages extends WPM_Settings_Page {
 			array( 'title' => __( 'Languages', 'wp-multilang' ), 'type' => 'title', 'desc' => '', 'id' => 'languages_options' ),
 
 			array(
-				'title'    => __( 'Installed languages', 'wp-multilang' ),
-				'desc'     => '',
-				'id'       => 'wpm_languages',
-				'default'  => '',
-				'type'     => 'languages',
-				'css'      => '',
+				'title' => __( 'Installed languages', 'wp-multilang' ),
+				'id'    => 'wpm_languages',
+				'type'  => 'languages',
 			),
 
 			array( 'type' => 'sectionend', 'id' => 'languages_options' ),

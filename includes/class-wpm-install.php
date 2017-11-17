@@ -258,16 +258,10 @@ class WPM_Install {
 
 		$languages              = array();
 		$available_translations = wpm_get_available_translations();
-		$default_locale         = wpm_get_default_locale();
-		$default_language       = '';
 
 		foreach ( wpm_get_installed_languages() as $locale ) {
 
 			$slug = sanitize_title( current( $available_translations[ $locale ]['iso'] ) );
-
-			if ( $locale == $default_locale ) {
-				$default_language = $slug;
-			}
 
 			$languages[ $slug ] = array(
 				'enable'      => 1,
@@ -281,7 +275,6 @@ class WPM_Install {
 		}
 
 		add_option( 'wpm_languages', $languages );
-		add_option( 'wpm_site_language', $default_language );
 	}
 
 

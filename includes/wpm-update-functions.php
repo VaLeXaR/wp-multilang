@@ -119,7 +119,7 @@ function wpm_update_211_change_options() {
 
 	foreach ( $options as $option => $default ) {
 		$value = get_option( $option, $default );
-		update_option( $option, 1 === $value ? 'yes' : 'no' );
+		update_option( $option, $value ? 'yes' : 'no' );
 	}
 }
 
