@@ -65,7 +65,7 @@ function wpm_update_200_options() {
 
 	$updated_languages = array();
 
-	foreach ( wpm_get_languages() as $locale => $language ) {
+	foreach ( get_option( 'wpm_languages', array() ) as $locale => $language ) {
 		if ( isset( $language['slug'] ) ) {
 			$slug = $language['slug'];
 			$updated_languages[ $slug ] = array(
@@ -107,9 +107,9 @@ function wpm_update_210_db_version() {
 }
 
 /**
- * Delete configs from base. Move configs to cache.
+ * Change options value.
  */
-function wpm_update_211_delete_config() {
+function wpm_update_211_change_options() {
 	$options = array(
 		'wpm_show_untranslated_strings' => 'yes',
 		'wpm_use_redirect'              => 'no',

@@ -38,6 +38,10 @@ class WPM_Install {
 			'wpm_update_210_delete_config',
 			'wpm_update_210_db_version',
 		),
+		'2.1.1' => array(
+			'wpm_update_211_change_options',
+			'wpm_update_211_db_version',
+		),
 	);
 
 	/**
