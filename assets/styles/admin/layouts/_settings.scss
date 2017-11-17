@@ -12,6 +12,15 @@
 		line-height: 26px;
 		font-weight: 700;
 	}
+
+	+ .error {
+		color: $red;
+		font-style: italic;
+		display: inline-block;
+		margin-left: 10px;
+		line-height: 26px;
+		font-weight: 700;
+	}
 }
 
 #delete_localization,

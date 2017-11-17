@@ -142,12 +142,12 @@ class WPM_AJAX {
 		$options = wpm_get_lang_option();
 
 		if ( ! $locale ) {
-			return;
+			wp_send_json_error( __( 'No locale sending', 'wp-multilang' ) );
 		}
 
-		foreach ( $options as $lang => $language ) {
+		foreach ( $options as $language ) {
 			if ( $language['translation'] == $locale ) {
-				return;
+				wp_send_json_error( __( 'Localisation using', 'wp-multilang' ) );
 			}
 		}
 
@@ -179,19 +179,14 @@ class WPM_AJAX {
 			}
 		}
 
-		if ( file_exists( WP_LANG_DIR . '/' . $locale . '.mo' ) ) {
-			$files_delete[] = WP_LANG_DIR . '/' . $locale . '.mo';
-		}
-
-		if ( file_exists( WP_LANG_DIR . '/' . $locale . '.po' ) ) {
-			$files_delete[] = WP_LANG_DIR . '/' . $locale . '.po';
-		}
+		$files_delete[] = WP_LANG_DIR . '/' . $locale . '.po';
+		$files_delete[] = WP_LANG_DIR . '/' . $locale . '.mo';
 
 		foreach ( $files_delete as $file ) {
 			wp_delete_file( $file );
 		}
 
-		wp_send_json( __( 'Localization deleted', 'wp-multilang' ) );
+		wp_send_json_success( __( 'Localization deleted', 'wp-multilang' ) );
 	}
 
 	/**

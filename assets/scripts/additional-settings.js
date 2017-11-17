@@ -63,8 +63,12 @@
           },
           success: function (json) {
             button.next().remove();
-            button.after('<span class="success">' + json + '</span>');
-            $('#wpm_installed_localizations option[value="' + locale + '"]').remove();
+            if (json.success) {
+              button.after('<span class="success">' + json + '</span>');
+              $('#wpm_installed_localizations option[value="' + locale + '"]').remove();
+            } else {
+              button.after('<span class="error">' + json + '</span>');
+            }
             $('#wpm_installed_localizations').trigger('init_localizations');
           },
           error: function (xhr, ajaxOptions, thrownError) {
