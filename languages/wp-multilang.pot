@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-11-17 21:53+0200\n"
+"POT-Creation-Date: 2017-11-18 11:49+0200\n"
 "PO-Revision-Date: 2017-05-22 12:43+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -369,15 +369,15 @@ msgstr ""
 msgid "%d terms were imported successfully."
 msgstr ""
 
-#: includes/class-wpm-install.php:321
+#: includes/class-wpm-install.php:322
 msgid "Translator"
 msgstr ""
 
-#: includes/class-wpm-install.php:414
+#: includes/class-wpm-install.php:415
 msgid "View WP Multilang settings"
 msgstr ""
 
-#: includes/class-wpm-install.php:414
+#: includes/class-wpm-install.php:415
 msgid "Settings"
 msgstr ""
 
