@@ -808,7 +808,7 @@ class WPM_Setup {
 			$languages     = $this->get_languages();
 			$user_language = $this->get_user_language();
 
-			if ( $languages[ $user_language ]['locale'] ) {
+			if ( $languages && $languages[ $user_language ]['locale'] ) {
 				$translation = $languages[ $user_language ]['locale'];
 			}
 		}

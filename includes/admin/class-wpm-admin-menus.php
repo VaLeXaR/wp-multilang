@@ -73,7 +73,7 @@ class WPM_Admin_Menus {
 			'id'     => 'wpm-language-switcher',
 			'parent' => 'top-secondary',
 			'title'  => '<span class="ab-icon">' .
-			            '<img src="' . esc_url( wpm_get_flag_url( $languages[ $user_language ]['flag'] ) ) . '"/>' .
+			            ( $languages ? '<img src="' . esc_url( wpm_get_flag_url( $languages[ $user_language ]['flag'] ) ) . '"/>' : '' ) .
 			            '</span><span class="ab-label">' .
 			            $available_translations[ get_locale() ]['native_name'] .
 			            '</span>',

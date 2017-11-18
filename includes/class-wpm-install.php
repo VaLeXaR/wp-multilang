@@ -262,6 +262,7 @@ class WPM_Install {
 		foreach ( wpm_get_installed_languages() as $locale ) {
 
 			$slug = sanitize_title( current( $available_translations[ $locale ]['iso'] ) );
+			$flag = explode( '_', strtolower( $locale ) );
 
 			$languages[ $slug ] = array(
 				'enable'      => 1,
@@ -270,7 +271,7 @@ class WPM_Install {
 				'translation' => $locale,
 				'date'        => '',
 				'time'        => '',
-				'flag'        => $slug . '.png',
+				'flag'        => ( isset( $flag[1] ) ? $flag[1] : $flag[0] ) . '.png',
 			);
 		}
 
