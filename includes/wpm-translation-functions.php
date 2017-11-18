@@ -207,8 +207,8 @@ function wpm_string_to_ml_array( $string ) {
 		}
 	}
 
-	foreach ( $result as $lang => $string ) {
-		$result[ $lang ] = trim( $string );
+	foreach ( $result as $code => $string ) {
+		$result[ $code ] = trim( $string );
 	}
 
 	return $result;

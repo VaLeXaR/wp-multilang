@@ -114,8 +114,8 @@ class WPM_Admin_Edit_Menus {
 		?>
 		<p class="description description-wide <?php echo esc_attr( $class ) ?>">
 			<?php _e( 'Show item only in:', 'wp-multilang' ); ?><br>
-			<?php foreach ( $languages as $lang => $language ) { if ( ! $language['enable'] ) continue; ?>
-			<label><input type="checkbox" name="<?php esc_attr_e( $name ); ?>[<?php esc_attr_e( $i ); ?>]" id="<?php echo $id . '-' . $lang; ?>" value="<?php esc_attr_e( $lang ); ?>"<?php checked( in_array( $lang, $value ) ); ?>><?php echo $language['name']; ?></label><br>
+			<?php foreach ( $languages as $code => $language ) { if ( ! $language['enable'] ) continue; ?>
+			<label><input type="checkbox" name="<?php esc_attr_e( $name ); ?>[<?php esc_attr_e( $i ); ?>]" id="<?php echo $id . '-' . $code; ?>" value="<?php esc_attr_e( $code ); ?>"<?php checked( in_array( $code, $value ) ); ?>><?php echo $language['name']; ?></label><br>
 			<?php $i++; } ?>
 		</p>
 		<?php

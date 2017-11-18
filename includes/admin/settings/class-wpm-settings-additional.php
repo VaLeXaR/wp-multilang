@@ -134,7 +134,7 @@ class WPM_Settings_Additional extends WPM_Settings_Page {
 						<?php foreach ( $installed_localizations as $localization ) { ?>
 							<?php
 							$used = false;
-							foreach ( $options as $lang => $language ) {
+							foreach ( $options as $code => $language ) {
 								if ( $language['translation'] == $localization ) {
 									$used = true;
 									break;

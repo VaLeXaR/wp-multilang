@@ -101,19 +101,19 @@ class WPM_Settings_Languages extends WPM_Settings_Page {
 
 			foreach ( $value as $item ) {
 
-				if ( empty( $item['slug'] ) || empty( $item['locale'] ) ) {
+				if ( empty( $item['code'] ) || empty( $item['locale'] ) ) {
 					$error = true;
 					break;
 				}
 
-				$slug = wpm_sanitize_lang_slug( $item['slug'] );
+				$code = wpm_sanitize_lang_slug( $item['code'] );
 
-				if ( ! $slug ) {
+				if ( ! $code ) {
 					$error = true;
 					break;
 				}
 
-				$languages[ $slug ] = array(
+				$languages[ $code ] = array(
 					'enable'      => $item['enable'] ? 1 : 0,
 					'locale'      => $item['locale'],
 					'name'        => $item['name'],

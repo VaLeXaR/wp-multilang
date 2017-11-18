@@ -85,11 +85,11 @@ class WPM_Admin_Menus {
 				continue;
 			}
 
-			$lang     = '';
+			$code     = '';
 			$language = array();
 			$add = false;
 
-			foreach ( $languages as $lang => $language ) {
+			foreach ( $languages as $code => $language ) {
 				if ( $language['translation'] == $locale ) {
 					$add = true;
 					break;
@@ -99,12 +99,12 @@ class WPM_Admin_Menus {
 			if ( $add ) {
 				$wp_admin_bar->add_menu( array(
 					'parent' => 'wpm-language-switcher',
-					'id'     => 'wpm-language-' . $lang,
+					'id'     => 'wpm-language-' . $code,
 					'title'  => '<span class="ab-icon">' .
 					            '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" />' .
 					            '</span>' .
 					            '<span class="ab-label">' . $available_translations[$locale]['native_name'] . '</span>',
-					'href'   => wpm_translate_url( $current_url, $lang ),
+					'href'   => wpm_translate_url( $current_url, $code ),
 				) );
 			}
 		}

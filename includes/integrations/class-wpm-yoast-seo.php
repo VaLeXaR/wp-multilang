@@ -171,14 +171,14 @@ class WPM_Yoast_Seo {
 		$loc        = $output;
 		$new_output = '';
 
-		foreach ( wpm_get_languages() as $lang => $language ) {
+		foreach ( wpm_get_languages() as $code => $language ) {
 
-			if ( isset( $url['languages'] ) && ! in_array( $lang, $url['languages'] ) ) {
+			if ( isset( $url['languages'] ) && ! in_array( $code, $url['languages'] ) ) {
 				continue;
 			}
 
 			$alternate = array();
-			$new_loc   = str_replace( $url['loc'], esc_url( wpm_translate_url( $url['loc'], $lang ) ), $loc );
+			$new_loc   = str_replace( $url['loc'], esc_url( wpm_translate_url( $url['loc'], $code ) ), $loc );
 
 			foreach ( wpm_get_languages() as $key => $lg ) {
 				if ( isset( $url['languages'] ) && ! in_array( $key, $url['languages'] ) ) {
@@ -188,7 +188,7 @@ class WPM_Yoast_Seo {
 				$alternate[ $key ] .= sprintf( "\t<xhtml:link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />\n\t", esc_attr( wpm_sanitize_lang_slug( $lg['locale'] ) ), esc_url( wpm_translate_url( $url['loc'], $key ) ) );
 			}
 
-			$alternate  = apply_filters( 'wpm_sitemap_alternate_links', $alternate, $url['loc'], $lang );
+			$alternate  = apply_filters( 'wpm_sitemap_alternate_links', $alternate, $url['loc'], $code );
 			$new_loc    = str_replace( '</url>', implode( '', $alternate ) . '</url>', $new_loc );
 			$new_output .= $new_loc;
 		}
@@ -249,8 +249,8 @@ class WPM_Yoast_Seo {
 	 */
 	public function save_languages( $languages, $request ) {
 		foreach ( $request as $value ) {
-			if ( isset( $languages[ $value['slug'] ] ) && isset( $value['wpseo_og_locale'] ) ) {
-				$languages[ $value['slug'] ]['wpseo_og_locale'] = $value['wpseo_og_locale'];
+			if ( isset( $languages[ $value['code'] ] ) && isset( $value['wpseo_og_locale'] ) ) {
+				$languages[ $value['code'] ]['wpseo_og_locale'] = $value['wpseo_og_locale'];
 			}
 		}
 

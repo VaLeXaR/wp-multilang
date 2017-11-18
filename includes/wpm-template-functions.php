@@ -125,17 +125,17 @@ function wpm_set_alternate_links() {
 
 	$hreflangs = array();
 
-	foreach ( wpm_get_languages() as $lang => $language ) {
+	foreach ( wpm_get_languages() as $code => $language ) {
 
-		if ( $languages && ! isset( $languages[ $lang ] ) ) {
+		if ( $languages && ! isset( $languages[ $code ] ) ) {
 			continue;
 		}
 
-		if ( wpm_get_default_language() == $lang ) {
-			$hreflangs['x-default'] = sprintf( "<link rel=\"alternate\" hreflang=\"x-default\" href=\"%s\"/>\n", esc_url( wpm_translate_url( $current_url, $lang ) ) );
+		if ( wpm_get_default_language() == $code ) {
+			$hreflangs['x-default'] = sprintf( "<link rel=\"alternate\" hreflang=\"x-default\" href=\"%s\"/>\n", esc_url( wpm_translate_url( $current_url, $code ) ) );
 		}
 
-		$hreflangs[ $lang ] = sprintf( "<link rel=\"alternate\" hreflang=\"%s\" href=\"%s\"/>\n", esc_attr( wpm_sanitize_lang_slug( $language['locale'] ) ), esc_url( wpm_translate_url( $current_url, $lang ) ) );
+		$hreflangs[ $code ] = sprintf( "<link rel=\"alternate\" hreflang=\"%s\" href=\"%s\"/>\n", esc_attr( wpm_sanitize_lang_slug( $language['locale'] ) ), esc_url( wpm_translate_url( $current_url, $code ) ) );
 	}
 
 	$hreflangs = apply_filters( 'wpm_alternate_links', $hreflangs, $current_url );

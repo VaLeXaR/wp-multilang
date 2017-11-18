@@ -67,8 +67,8 @@ class WPM_Admin_Widgets {
 		?>
 		<p>
 			<?php _e( 'Show widget only in:', 'wp-multilang' ); ?><br>
-			<?php foreach ( $languages as $lang => $language ) { ?>
-				<label><input type="checkbox" name="<?php esc_attr_e( $widget->get_field_name('languages') ); ?>[<?php echo $i; ?>]" id="<?php echo $widget->get_field_id('languages') . '-' . $lang; ?>" value="<?php esc_attr_e( $lang ); ?>"<?php checked( in_array( $lang, $instance['languages'] ) ); ?>><?php esc_attr_e( $language['name'] ); ?></label><br>
+			<?php foreach ( $languages as $code => $language ) { ?>
+				<label><input type="checkbox" name="<?php esc_attr_e( $widget->get_field_name('languages') ); ?>[<?php echo $i; ?>]" id="<?php echo $widget->get_field_id('languages') . '-' . $code; ?>" value="<?php esc_attr_e( $code ); ?>"<?php checked( in_array( $code, $instance['languages'] ) ); ?>><?php esc_attr_e( $language['name'] ); ?></label><br>
 			<?php $i++; } ?>
 		</p>
 		<?php

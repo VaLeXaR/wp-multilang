@@ -261,10 +261,10 @@ class WPM_Install {
 
 		foreach ( wpm_get_installed_languages() as $locale ) {
 
-			$slug = sanitize_title( current( $available_translations[ $locale ]['iso'] ) );
+			$code = sanitize_title( current( $available_translations[ $locale ]['iso'] ) );
 			$flag = explode( '_', strtolower( $locale ) );
 
-			$languages[ $slug ] = array(
+			$languages[ $code ] = array(
 				'enable'      => 1,
 				'locale'      => $locale,
 				'name'        => $available_translations[ $locale ]['native_name'],

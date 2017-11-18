@@ -89,8 +89,8 @@ class WPM_Admin_Taxonomies {
 			$strings   = wpm_value_to_ml_array( $text );
 			$languages = wpm_get_lang_option();
 
-			foreach ( $languages as $lang => $language ) {
-				if ( isset( $strings[ $lang ] ) && ! empty( $strings[ $lang ] ) ) {
+			foreach ( $languages as $code => $language ) {
+				if ( isset( $strings[ $code ] ) && ! empty( $strings[ $code ] ) ) {
 					$output[] = '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" alt="' . $language['name'] . '" title="' . $language['name'] . '">';
 				}
 			}
@@ -114,8 +114,8 @@ class WPM_Admin_Taxonomies {
 		?>
 		<div class="form-field term-languages">
 			<p><?php _e( 'Show term only in:', 'wp-multilang' ); ?></p>
-			<?php foreach ( $languages as $lang => $language ) { ?>
-				<label><input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $lang; ?>" value="<?php esc_attr_e( $lang ); ?>"><?php esc_attr_e( $language['name'] ); ?></label>
+			<?php foreach ( $languages as $code => $language ) { ?>
+				<label><input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $code; ?>" value="<?php esc_attr_e( $code ); ?>"><?php esc_attr_e( $language['name'] ); ?></label>
 				<?php $i ++;
 			} ?>
 		</div>
@@ -143,10 +143,10 @@ class WPM_Admin_Taxonomies {
 			<th scope="row" valign="top"><?php _e( 'Show term only in:', 'wp-multilang' ); ?></th>
 			<td>
 				<ul class="languagechecklist">
-					<?php foreach ( $languages as $lang => $language ) { ?>
+					<?php foreach ( $languages as $code => $language ) { ?>
 						<li>
 							<label>
-								<input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $lang; ?>" value="<?php esc_attr_e( $lang ); ?>"<?php checked( in_array( $lang, $term_languages ) ); ?>>
+								<input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $code; ?>" value="<?php esc_attr_e( $code ); ?>"<?php checked( in_array( $code, $term_languages ) ); ?>>
 								<?php esc_attr_e( $language['name'] ); ?>
 							</label>
 						</li>

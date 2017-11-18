@@ -104,8 +104,8 @@ class WPM_Admin_Posts {
 			$strings   = wpm_value_to_ml_array( $text );
 			$languages = wpm_get_lang_option();
 
-			foreach ( $languages as $lang => $language ) {
-				if ( isset( $strings[ $lang ] ) && ! empty( $strings[ $lang ] ) ) {
+			foreach ( $languages as $code => $language ) {
+				if ( isset( $strings[ $code ] ) && ! empty( $strings[ $code ] ) ) {
 					$output[] = '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" alt="' . $language['name'] . '" title="' . $language['name'] . '">';
 				}
 			}

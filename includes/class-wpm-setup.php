@@ -249,9 +249,9 @@ class WPM_Setup {
 				return array();
 			}
 
-			foreach ( $options as $slug => $language ) {
+			foreach ( $options as $code => $language ) {
 				if ( $language['enable'] ) {
-					$languages[ $slug ] = $language;
+					$languages[ $code ] = $language;
 				}
 			}
 

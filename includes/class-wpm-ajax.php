@@ -535,8 +535,8 @@ class WPM_AJAX {
 
 				//Translate the name
 				$strings = wpm_value_to_ml_array( $original );
-				foreach ( $qtranslate_terms[ $original ] as $lang => $translation ) {
-					$strings = wpm_set_language_value( $strings, $translation, array(), $lang );
+				foreach ( $qtranslate_terms[ $original ] as $code => $translation ) {
+					$strings = wpm_set_language_value( $strings, $translation, array(), $code );
 				}
 
 				//Update the name
