@@ -409,3 +409,45 @@ function wpm_help_tip( $tip, $allow_html = false ) {
 
 	return '<span class="wpm-help-tip" data-tip="' . $tip . '"></span>';
 }
+
+/**
+ * Get post by title
+ *
+ * @param $page_title
+ * @param string $output
+ * @param string $post_type
+ *
+ * @return array|null|WP_Post
+ */
+function wpm_get_page_by_title( $page_title, $output = OBJECT, $post_type = 'page' ) {
+	global $wpdb;
+
+	$like = '%' . $wpdb->esc_like( esc_sql( $page_title ) ) . '%';
+
+	if ( is_array( $post_type ) ) {
+		$post_type = esc_sql( $post_type );
+		$post_type_in_string = "'" . implode( "','", $post_type ) . "'";
+		$sql = $wpdb->prepare( "
+			SELECT ID, post_title
+			FROM $wpdb->posts
+			WHERE post_title LIKE %s
+			AND post_type IN ($post_type_in_string)
+		", $like );
+	} else {
+		$sql = $wpdb->prepare( "
+			SELECT ID, post_title
+			FROM $wpdb->posts
+			WHERE post_title LIKE %s
+			AND post_type = %s
+		", $like, $post_type );
+	}
+
+	$results = $wpdb->get_results( $sql );
+
+	foreach ( $results as $result ) {
+		$title = wpm_translate_string( $result->post_title );
+		if ( $title == $page_title ) {
+			return get_post( $result->ID, $output );
+		}
+	}
+}
