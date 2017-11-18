@@ -70,6 +70,10 @@ function wpm_get_default_language() {
  * @return array
  */
 function wpm_get_lang_option() {
+	if ( version_compare( WPM_Setup::get_option( 'version' ), '2.0.0', '<' ) ) {
+		return array();
+	}
+
 	return WPM_Setup::get_option( 'languages' );
 }
 

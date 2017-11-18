@@ -245,6 +245,10 @@ class WPM_Setup {
 			$options   = self::get_option( 'languages', array() );
 			$languages = array();
 
+			if ( version_compare( self::get_option( 'version' ), '2.0.0', '<' ) ) {
+				return array();
+			}
+
 			foreach ( $options as $slug => $language ) {
 				if ( $language['enable'] ) {
 					$languages[ $slug ] = $language;
@@ -491,15 +495,14 @@ class WPM_Setup {
 	 *
 	 * @return string
 	 */
-	public static function set_home_url( $value ) {
+	public function set_home_url( $value ) {
 
-		if ( ( is_admin() && ! wp_doing_ajax() ) || ! did_action( 'wpm_init' ) || ! $value ) {
+		if ( ( is_admin() && ! wp_doing_ajax() ) || ! did_action( 'wpm_init' ) || ! $value || ! $this->user_language ) {
 			return $value;
 		}
 
 		$user_language    = wpm_get_user_language();
 		$default_language = wpm_get_default_language();
-
 
 		if ( $user_language !== $default_language || self::get_option( 'use_prefix', 'no' ) === 'yes' ) {
 			$value .= '/' . $user_language;
