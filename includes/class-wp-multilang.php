@@ -10,6 +10,10 @@
 
 namespace WPM\Includes;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 final class WP_Multilang {
 
 	/**
