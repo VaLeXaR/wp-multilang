@@ -41,7 +41,7 @@ class WPM_Admin_Posts {
 	 */
 	public function init() {
 
-		$post_types = get_post_types( '', 'names' );
+		$post_types = get_post_types( array(), 'names' );
 
 		foreach ( $post_types as $post_type ) {
 

@@ -118,7 +118,9 @@ function wpm_translate_string( $string, $language = '' ) {
 	$default_language = wpm_get_default_language();
 
 	if ( ( '' == $strings[ $language ] ) && get_option( 'wpm_show_untranslated_strings', 'yes' ) === 'yes' ) {
-		return $strings[ $default_language ];
+		$default_text = apply_filters( 'wpm_text_for_untranslated', $strings[ $default_language ], $strings, $language );
+
+		return $default_text;
 	}
 
 	return $strings[ $language ];

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-11-18 11:49+0200\n"
+"POT-Creation-Date: 2017-11-19 18:43+0200\n"
 "PO-Revision-Date: 2017-05-22 12:43+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -87,7 +87,7 @@ msgid "Action failed. Please refresh the page and retry."
 msgstr ""
 
 #: includes/admin/class-wpm-admin-notices.php:108
-#: includes/class-wp-multilang.php:50 includes/class-wp-multilang.php:57
+#: includes/class-wp-multilang.php:54 includes/class-wp-multilang.php:61
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
@@ -116,6 +116,10 @@ msgstr ""
 
 #: includes/admin/class-wpm-admin-widgets.php:69
 msgid "Show widget only in:"
+msgstr ""
+
+#: includes/admin/class-wpm-admin-widgets.php:71
+msgid "-"
 msgstr ""
 
 #: includes/admin/meta-boxes/class-wpm-meta-box-languages.php:36
@@ -267,7 +271,7 @@ msgstr ""
 #: includes/admin/settings/views/html-languages.php:55
 #: includes/admin/settings/views/html-languages.php:144
 #: includes/admin/settings/views/html-languages.php:146
-msgid "Slug *"
+msgid "Language Code *"
 msgstr ""
 
 #: includes/admin/settings/views/html-languages.php:59

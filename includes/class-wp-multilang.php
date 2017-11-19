@@ -3,7 +3,7 @@
 /**
  * Main WP_Multilang.
  *
- * @class   WPM
+ * @class   WP_Multilang
  * @version 1.1.1
  * @author   Valentyn Riaboshtan
  */
