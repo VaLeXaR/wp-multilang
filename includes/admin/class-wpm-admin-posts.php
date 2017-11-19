@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * WPM_Admin_Posts Class.
  *
- * Handles the edit posts views and some functionality on the edit post screen for WPM post types.
+ * Handles the edit posts views and some functionality on the edit post screen for posts.
  */
 class WPM_Admin_Posts {
 
