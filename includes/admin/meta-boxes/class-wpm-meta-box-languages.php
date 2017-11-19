@@ -38,8 +38,8 @@ class WPM_Meta_Box_Languages {
 			<?php foreach ( $languages as $code => $language ) { ?>
 				<li>
 					<label>
-						<input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $code; ?>" value="<?php esc_attr_e( $code ); ?>"<?php checked( in_array( $code, $post_languages ) ); ?>>
-						<?php esc_attr_e( $language['name'] ); ?>
+						<input type="checkbox" name="wpm_languages[<?php echo esc_attr( $i ); ?>]" id="wpm-languages-<?php echo esc_attr( $code ); ?>" value="<?php echo esc_attr( $code ); ?>"<?php checked( in_array( $code, $post_languages ) ); ?>>
+						<?php esc_html_e( $language['name'] ); ?>
 					</label>
 				</li>
 				<?php $i++; } ?>
