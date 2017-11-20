@@ -144,7 +144,6 @@ class WPM_Setup {
 		add_filter( 'gettext', array( $this, 'set_html_locale' ), 10, 2 );
 	}
 
-
 	/**
 	 * Load options from base
 	 *
@@ -161,7 +160,6 @@ class WPM_Setup {
 
 		return self::$options[ $key ];
 	}
-
 
 	/**
 	 * Get original home url
@@ -181,7 +179,6 @@ class WPM_Setup {
 		return $this->original_home_url;
 	}
 
-
 	/**
 	 * Get original request url
 	 *
@@ -192,7 +189,6 @@ class WPM_Setup {
 	public function get_original_request_uri() {
 		return $this->original_request_uri ? $this->original_request_uri : '/';
 	}
-
 
 	/**
 	 * Get site request url
@@ -220,7 +216,6 @@ class WPM_Setup {
 		return $this->site_request_uri ;
 	}
 
-
 	/**
 	 * Get installed languages
 	 *
@@ -233,7 +228,6 @@ class WPM_Setup {
 
 		return $this->installed_languages;
 	}
-
 
 	/**
 	 * Get enables languages. Add installed languages to options.
@@ -297,7 +291,6 @@ class WPM_Setup {
 		return $this->default_language;
 	}
 
-
 	/**
 	 * Set site locale
 	 *
@@ -317,7 +310,6 @@ class WPM_Setup {
 
 		return $languages[ $this->get_user_language() ]['translation'];
 	}
-
 
 	/**
 	 * Get user language
@@ -409,7 +401,6 @@ class WPM_Setup {
 		return $user_language;
 	}
 
-
 	/**
 	 * Redirect to default language
 	 */
@@ -458,7 +449,6 @@ class WPM_Setup {
 		return $this->translations;
 	}
 
-
 	/**
 	 * Get config from options
 	 *
@@ -487,7 +477,6 @@ class WPM_Setup {
 		return $config;
 	}
 
-
 	/**
 	 * Add lang slug to home url
 	 *
@@ -511,7 +500,6 @@ class WPM_Setup {
 		return $value;
 	}
 
-
 	/**
 	 * Add 'lang' param to allow params
 	 *
@@ -524,7 +512,6 @@ class WPM_Setup {
 
 		return $public_query_vars;
 	}
-
 
 	/**
 	 * Load integration classes
@@ -617,7 +604,6 @@ class WPM_Setup {
 		} // End if().
 	}
 
-
 	/**
 	 * Detect browser language
 	 *
@@ -685,7 +671,6 @@ class WPM_Setup {
 		return $query_vars;
 	}
 
-
 	/**
 	 * Set user locale for AJAX front requests
 	 *
@@ -708,7 +693,6 @@ class WPM_Setup {
 		return $check;
 	}
 
-
 	/**
 	 * Fix REST url
 	 *
@@ -723,7 +707,6 @@ class WPM_Setup {
 
 		return $url;
 	}
-
 
 	/**
 	 * Set date format for current language
@@ -759,7 +742,6 @@ class WPM_Setup {
 		return $value;
 	}
 
-
 	/**
 	 * Set time format for current language
 	 *
@@ -793,7 +775,6 @@ class WPM_Setup {
 
 		return $value;
 	}
-
 
 	/**
 	 * Set locale for html
