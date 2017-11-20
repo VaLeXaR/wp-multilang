@@ -21,10 +21,28 @@ class WPM_Better_Search {
 	 * WPM_Better_Search constructor.
 	 */
 	public function __construct() {
+		add_action( 'init', array( $this, 'translate_settings' ) );
 		add_filter( 'get_bsearch_excerpt', array( $this, 'translate_excerpt' ), 10, 4 );
 	}
 
+	/**
+	 * Translate settings
+	 */
+	public function translate_settings() {
+		global $bsearch_settings;
+		$bsearch_settings = wpm_translate_value( $bsearch_settings );
+	}
 
+	/**
+	 * Translate excerpt
+	 *
+	 * @param $output
+	 * @param $id
+	 * @param $excerpt_length
+	 * @param $use_excerpt
+	 *
+	 * @return string
+	 */
 	public function translate_excerpt( $output, $id, $excerpt_length, $use_excerpt ) {
 		$content = $excerpt = '';
 		if ( $use_excerpt ) {
