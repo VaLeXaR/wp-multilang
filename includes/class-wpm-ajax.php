@@ -91,10 +91,11 @@ class WPM_AJAX {
 	 */
 	public static function add_ajax_events() {
 		$ajax_events = array(
-			'delete_lang'           => false,
-			'delete_localization'   => false,
-			'set_default_language'  => false,
-			'qts_import' => false,
+			'delete_lang'          => false,
+			'delete_localization'  => false,
+			'set_default_language' => false,
+			'qts_import'           => false,
+			'rated'                => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -553,5 +554,16 @@ class WPM_AJAX {
 		}
 
 		wp_send_json( sprintf( __( '%d terms were imported successfully.', 'wp-multilang' ), $term_count ) );
+	}
+
+	/**
+	 * Triggered when clicking the rating footer.
+	 */
+	public static function rated() {
+		if ( ! current_user_can( 'manage_translations' ) ) {
+			wp_die( -1 );
+		}
+		update_option( 'wpm_admin_footer_text_rated', 1 );
+		wp_die();
 	}
 }
