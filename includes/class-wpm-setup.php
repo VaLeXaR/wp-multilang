@@ -173,7 +173,8 @@ class WPM_Setup {
 	public function get_original_home_url( $unslash = true ) {
 		if ( ! $this->original_home_url ) {
 			$home_url = home_url();
-			$this->original_home_url = $unslash ? untrailingslashit( $home_url ) : $home_url;
+			$home_url                = $unslash ? untrailingslashit( $home_url ) : $home_url;
+			$this->original_home_url = set_url_scheme( $home_url );
 		}
 
 		return $this->original_home_url;

@@ -38,12 +38,12 @@ class WPM_Acf {
 	public function init_filters() {
 		if ( version_compare( acf()->settings['version'], 5, 'ge' ) ) {
 			add_filter( 'wpm_post_acf-field-group_config', array( $this, 'add_config' ) );
-			add_filter( 'acf/translate_field_group', 'wpm_translate_string', 5 );
+			add_filter( 'acf/translate_field_group', 'wpm_translate_value', 5 );
 			add_filter( 'acf/update_field', array( $this, 'update_field_pro' ), 99 );
 			add_filter( 'acf/update_value', array( $this, 'update_value_pro' ), 99, 3 );
 		} else {
 			add_filter( 'wpm_post_acf_config', array( $this, 'add_config' ) );
-			add_filter( 'acf/field_group/get_fields', 'wpm_translate_value' );
+			add_filter( 'acf/field_group/get_fields', 'wpm_translate_value', 5 );
 			remove_class_action( 'acf/update_field', 'acf_field_functions', 'update_field', 5 );
 			add_filter( 'acf/update_field', array( $this, 'update_field' ), 5, 2 );
 			remove_class_action( 'acf/update_value', 'acf_field_functions', 'update_value', 5 );
