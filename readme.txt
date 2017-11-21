@@ -181,6 +181,9 @@ If you have opened several browser tabs for editing this post in different langu
 
 == Changelog ==
 
+= 2.1.2 =
+* fix save settings for titles in Yoast SEO and AIOS
+
 = 2.1.1 =
 * change parameters for functions 'wpm_language_switcher', 'wpm_get_language_switcher'
 * add settings api
