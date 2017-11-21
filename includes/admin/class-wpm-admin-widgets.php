@@ -41,6 +41,12 @@ class WPM_Admin_Widgets {
 	 */
 	public function pre_save_widget( $instance, $new_instance, $old_instance, $widget ) {
 
+		if ( isset( $new_instance['languages'] ) ) {
+			$instance['languages'] = $new_instance['languages'];
+		} else {
+			unset( $instance['languages'] );
+		}
+
 		$widget_config = wpm_get_widget_config( $widget->id_base );
 
 		if ( is_null( $widget_config ) ) {
