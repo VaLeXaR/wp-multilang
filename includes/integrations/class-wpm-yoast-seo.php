@@ -48,12 +48,11 @@ class WPM_Yoast_Seo {
 	 */
 	public function set_posts_config( $option_config ) {
 
-		$config     = wpm_get_config();
-		$post_types = $config['post_types'];
+		$post_types = get_post_types( array(), 'names' );
 
-		foreach ( $post_types as $post_type => $post_config ) {
+		foreach ( $post_types as $post_type ) {
 
-			if ( is_null( $post_config ) ) {
+			if ( is_null( wpm_get_post_config( $post_type ) ) ) {
 				continue;
 			}
 
@@ -65,14 +64,14 @@ class WPM_Yoast_Seo {
 				"metadesc-ptarchive-{$post_type}" => array(),
 			);
 
-			$option_config = wpm_array_merge_recursive( $option_post_config, $post_config );
+			$option_config = wpm_array_merge_recursive( $option_post_config, $option_config );
 		}
 
-		$taxonomies = $config['taxonomies'];
+		$taxonomies = get_taxonomies();
 
-		foreach ( $taxonomies as $taxonomy => $taxonomy_config ) {
+		foreach ( $taxonomies as $taxonomy ) {
 
-			if ( is_null( $taxonomy_config ) ) {
+			if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
 				continue;
 			}
 
