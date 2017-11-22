@@ -9,6 +9,8 @@
  * @package       WPM/Functions
  */
 
+use WPM\Includes\WPM_Setup;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -170,8 +172,6 @@ function wpm_setcookie( $name, $value, $expire = 0, $secure = false ) {
 /**
  * Get current url from $_SERVER
  *
- * @param string $lang
- *
  * @return string
  */
 function wpm_get_current_url() {
@@ -182,7 +182,7 @@ function wpm_get_current_url() {
 
 
 /**
- * Get current url from $_SERVER
+ * Get current url from $_SERVER and translate it
  *
  * @param string $lang
  *
@@ -200,21 +200,47 @@ function wpm_translate_current_url( $lang = '' ) {
 	return apply_filters( 'wpm_get_current_url ', $url, $lang );
 }
 
-
 /**
- * Show notice for strings that cant`t be translated for displaying in admin.
+ * Get original home url
  *
- * @param bool $echo
+ * @see WPM_Setup::get_original_home_url()
+ *
+ * @since 1.7.0
+ *
+ * @param bool $unslash
  *
  * @return string
  */
-function wpm_show_notice( $echo = true ) {
-	$notise = '<div class="notice notice-info inline"><p>' . sprintf( esc_attr__( 'For multilingual string, use syntax like %s.', 'wp-multilang' ), '<code>[:en]Text on english[:de]Text auf Deutsch</code>' ) . '</p></div>';
-	if ( $echo ) {
-		echo $notise;
-	} else {
-		return $notise;
-	}
+function wpm_get_orig_home_url( $unslash = true ) {
+	$home_url = WPM_Setup::instance()->get_original_home_url( $unslash );
+
+	return apply_filters( 'wpm_get_original_home_url', $home_url );
+}
+
+/**
+ * Get original request uri
+ *
+ * @see WPM_Setup::get_original_request_uri()
+ *
+ * @since 1.7.0
+ *
+ * @return string
+ */
+function wpm_get_orig_request_uri() {
+	return WPM_Setup::instance()->get_original_request_uri();
+}
+
+/**
+ * Get site request uri
+ *
+ * @see WPM_Setup::get_site_request_uri()
+ *
+ * @since 2.0.1
+ *
+ * @return string
+ */
+function wpm_get_site_request_uri() {
+	return WPM_Setup::instance()->get_site_request_uri();
 }
 
 
