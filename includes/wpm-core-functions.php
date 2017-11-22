@@ -9,6 +9,8 @@
  * @package       WPM/Functions
  */
 
+use WPM\Includes\WPM_Setup;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -180,19 +182,65 @@ function wpm_get_current_url() {
 
 
 /**
- * Show notice for strings that cant`t be translated for displaying in admin.
+ * Get current url from $_SERVER and translate it
  *
- * @param bool $echo
+ * @param string $lang
  *
  * @return string
  */
-function wpm_show_notice( $echo = true ) {
-	$notise = '<div class="notice notice-info inline"><p>' . sprintf( esc_attr__( 'For multilingual string, use syntax like %s.', 'wp-multilang' ), '<code>[:en]Text on english[:de]Text auf Deutsch</code>' ) . '</p></div>';
-	if ( $echo ) {
-		echo $notise;
-	} else {
-		return $notise;
+function wpm_translate_current_url( $lang = '' ) {
+	$url = wpm_get_current_url();
+
+	if ( ! $lang ) {
+		$lang = wpm_get_language();
 	}
+
+	$url = wpm_translate_url( $url, $lang );
+
+	return apply_filters( 'wpm_get_current_url ', $url, $lang );
+}
+
+/**
+ * Get original home url
+ *
+ * @see WPM_Setup::get_original_home_url()
+ *
+ * @since 1.7.0
+ *
+ * @param bool $unslash
+ *
+ * @return string
+ */
+function wpm_get_orig_home_url( $unslash = true ) {
+	$home_url = WPM_Setup::instance()->get_original_home_url( $unslash );
+
+	return apply_filters( 'wpm_get_original_home_url', $home_url );
+}
+
+/**
+ * Get original request uri
+ *
+ * @see WPM_Setup::get_original_request_uri()
+ *
+ * @since 1.7.0
+ *
+ * @return string
+ */
+function wpm_get_orig_request_uri() {
+	return WPM_Setup::instance()->get_original_request_uri();
+}
+
+/**
+ * Get site request uri
+ *
+ * @see WPM_Setup::get_site_request_uri()
+ *
+ * @since 2.0.1
+ *
+ * @return string
+ */
+function wpm_get_site_request_uri() {
+	return WPM_Setup::instance()->get_site_request_uri();
 }
 
 
@@ -408,4 +456,46 @@ function wpm_help_tip( $tip, $allow_html = false ) {
 	}
 
 	return '<span class="wpm-help-tip" data-tip="' . $tip . '"></span>';
+}
+
+/**
+ * Get post by title
+ *
+ * @param $page_title
+ * @param string $output
+ * @param string $post_type
+ *
+ * @return array|null|WP_Post
+ */
+function wpm_get_page_by_title( $page_title, $output = OBJECT, $post_type = 'page' ) {
+	global $wpdb;
+
+	$like = '%' . $wpdb->esc_like( esc_sql( $page_title ) ) . '%';
+
+	if ( is_array( $post_type ) ) {
+		$post_type = esc_sql( $post_type );
+		$post_type_in_string = "'" . implode( "','", $post_type ) . "'";
+		$sql = $wpdb->prepare( "
+			SELECT ID, post_title
+			FROM $wpdb->posts
+			WHERE post_title LIKE %s
+			AND post_type IN ($post_type_in_string)
+		", $like );
+	} else {
+		$sql = $wpdb->prepare( "
+			SELECT ID, post_title
+			FROM $wpdb->posts
+			WHERE post_title LIKE %s
+			AND post_type = %s
+		", $like, $post_type );
+	}
+
+	$results = $wpdb->get_results( $sql );
+
+	foreach ( $results as $result ) {
+		$title = wpm_translate_string( $result->post_title );
+		if ( $title == $page_title ) {
+			return get_post( $result->ID, $output );
+		}
+	}
 }

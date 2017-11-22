@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * WPM_Admin_Posts Class.
  *
- * Handles the edit posts views and some functionality on the edit post screen for WPM post types.
+ * Handles the edit posts views and some functionality on the edit post screen for posts.
  */
 class WPM_Admin_Posts {
 
@@ -41,7 +41,7 @@ class WPM_Admin_Posts {
 	 */
 	public function init() {
 
-		$post_types = get_post_types( '', 'names' );
+		$post_types = get_post_types( array(), 'names' );
 
 		foreach ( $post_types as $post_type ) {
 
@@ -104,8 +104,8 @@ class WPM_Admin_Posts {
 			$strings   = wpm_value_to_ml_array( $text );
 			$languages = wpm_get_lang_option();
 
-			foreach ( $languages as $lang => $language ) {
-				if ( isset( $strings[ $lang ] ) && ! empty( $strings[ $lang ] ) ) {
+			foreach ( $languages as $code => $language ) {
+				if ( isset( $strings[ $code ] ) && ! empty( $strings[ $code ] ) ) {
 					$output[] = '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" alt="' . $language['name'] . '" title="' . $language['name'] . '">';
 				}
 			}
@@ -135,7 +135,7 @@ class WPM_Admin_Posts {
 				<?php if ( $languages[ $language ]['flag'] ) { ?>
 					<img src="<?php echo esc_url( wpm_get_flag_url( $languages[ $language ]['flag'] ) ); ?>" alt="<?php esc_attr_e( $languages[ $language ]['name'] ) ; ?>">
 				<?php } else { ?>
-					<b><?php esc_attr_e( $languages[ $language ]['name'] ) ; ?></b>
+					<b><?php esc_html_e( $languages[ $language ]['name'] ) ; ?></b>
 				<?php } ?>
 			</div>
 			<?php

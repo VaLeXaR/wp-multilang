@@ -67,8 +67,8 @@ function wpm_update_200_options() {
 
 	foreach ( get_option( 'wpm_languages', array() ) as $locale => $language ) {
 		if ( isset( $language['slug'] ) ) {
-			$slug = $language['slug'];
-			$updated_languages[ $slug ] = array(
+			$code = $language['slug'];
+			$updated_languages[ $code ] = array(
 				'enable'      => $language['enable'],
 				'locale'      => $locale,
 				'name'        => $language['name'],

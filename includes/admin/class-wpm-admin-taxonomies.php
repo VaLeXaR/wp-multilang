@@ -20,17 +20,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class WPM_Admin_Taxonomies {
 
-
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'init' ) );
-		add_action( 'created_term', array( $this, 'save_taxonomy_fields' ), 10, 3 );
-		add_action( 'edit_term', array( $this, 'save_taxonomy_fields' ), 10, 3 );
 		add_action( 'term_link', array( $this, 'translate_term_link' ) );
 	}
-
 
 	/**
 	 * Add language column to taxonomies list
@@ -49,6 +45,8 @@ class WPM_Admin_Taxonomies {
 			add_filter( "manage_{$taxonomy}_custom_column", array( $this, 'render_language_column' ), 10, 3 );
 			add_action( "{$taxonomy}_add_form_fields", array( $this, 'add_taxonomy_fields' ) );
 			add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_taxonomy_fields' ), 10 );
+			add_action( 'created_term', array( $this, 'save_taxonomy_fields' ), 10, 3 );
+			add_action( 'edit_term', array( $this, 'save_taxonomy_fields' ), 10, 3 );
 		}
 	}
 
@@ -89,8 +87,8 @@ class WPM_Admin_Taxonomies {
 			$strings   = wpm_value_to_ml_array( $text );
 			$languages = wpm_get_lang_option();
 
-			foreach ( $languages as $lang => $language ) {
-				if ( isset( $strings[ $lang ] ) && ! empty( $strings[ $lang ] ) ) {
+			foreach ( $languages as $code => $language ) {
+				if ( isset( $strings[ $code ] ) && ! empty( $strings[ $code ] ) ) {
 					$output[] = '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" alt="' . $language['name'] . '" title="' . $language['name'] . '">';
 				}
 			}
@@ -114,14 +112,13 @@ class WPM_Admin_Taxonomies {
 		?>
 		<div class="form-field term-languages">
 			<p><?php _e( 'Show term only in:', 'wp-multilang' ); ?></p>
-			<?php foreach ( $languages as $lang => $language ) { ?>
-				<label><input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $lang; ?>" value="<?php esc_attr_e( $lang ); ?>"><?php esc_attr_e( $language['name'] ); ?></label>
+			<?php foreach ( $languages as $code => $language ) { ?>
+				<label><input type="checkbox" name="wpm_languages[<?php echo esc_attr( $i ); ?>]" id="wpm-languages-<?php echo esc_attr( $code ); ?>" value="<?php echo esc_attr( $code ); ?>"><?php esc_html_e( $language['name'] ); ?></label>
 				<?php $i ++;
 			} ?>
 		</div>
 		<?php
 	}
-
 
 	/**
 	 * Add languages to edit term form
@@ -143,11 +140,11 @@ class WPM_Admin_Taxonomies {
 			<th scope="row" valign="top"><?php _e( 'Show term only in:', 'wp-multilang' ); ?></th>
 			<td>
 				<ul class="languagechecklist">
-					<?php foreach ( $languages as $lang => $language ) { ?>
+					<?php foreach ( $languages as $code => $language ) { ?>
 						<li>
 							<label>
-								<input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $lang; ?>" value="<?php esc_attr_e( $lang ); ?>"<?php checked( in_array( $lang, $term_languages ) ); ?>>
-								<?php esc_attr_e( $language['name'] ); ?>
+								<input type="checkbox" name="wpm_languages[<?php echo esc_attr( $i ); ?>]" id="wpm-languages-<?php echo esc_attr( $code ); ?>" value="<?php echo esc_attr( $code ); ?>"<?php checked( in_array( $code, $term_languages ) ); ?>>
+								<?php esc_html_e( $language['name'] ); ?>
 							</label>
 						</li>
 						<?php $i ++;
@@ -158,7 +155,6 @@ class WPM_Admin_Taxonomies {
 		<?php
 	}
 
-
 	/**
 	 * save_taxonomy_fields function.
 	 *
@@ -168,7 +164,7 @@ class WPM_Admin_Taxonomies {
 	 */
 	public function save_taxonomy_fields( $term_id, $tt_id = '', $taxonomy = '' ) {
 
-		if ( empty( $taxonomy ) || is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
+		if ( empty( $taxonomy ) ) {
 			return;
 		}
 
@@ -183,8 +179,6 @@ class WPM_Admin_Taxonomies {
 	 * Translate taxonomies link
 	 *
 	 * @param $termlink
-	 * @param $term
-	 * @param $taxonomy
 	 *
 	 * @return string
 	 */

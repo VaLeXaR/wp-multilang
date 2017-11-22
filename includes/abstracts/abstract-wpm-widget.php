@@ -114,6 +114,8 @@ abstract class WPM_Widget extends \WP_Widget {
 	 * Output the html at the start of a widget.
 	 *
 	 * @param  array $args
+	 * @param $instance
+	 *
 	 * @return string
 	 */
 	public function widget_start( $args, $instance ) {

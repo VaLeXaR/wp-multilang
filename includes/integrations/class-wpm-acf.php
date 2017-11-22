@@ -38,12 +38,12 @@ class WPM_Acf {
 	public function init_filters() {
 		if ( version_compare( acf()->settings['version'], 5, 'ge' ) ) {
 			add_filter( 'wpm_post_acf-field-group_config', array( $this, 'add_config' ) );
-			add_filter( 'acf/translate_field_group', 'wpm_translate_string', 5 );
+			add_filter( 'acf/translate_field_group', 'wpm_translate_value', 5 );
 			add_filter( 'acf/update_field', array( $this, 'update_field_pro' ), 99 );
 			add_filter( 'acf/update_value', array( $this, 'update_value_pro' ), 99, 3 );
 		} else {
 			add_filter( 'wpm_post_acf_config', array( $this, 'add_config' ) );
-			add_filter( 'acf/field_group/get_fields', 'wpm_translate_value' );
+			add_filter( 'acf/field_group/get_fields', 'wpm_translate_value', 5 );
 			remove_class_action( 'acf/update_field', 'acf_field_functions', 'update_field', 5 );
 			add_filter( 'acf/update_field', array( $this, 'update_field' ), 5, 2 );
 			remove_class_action( 'acf/update_value', 'acf_field_functions', 'update_value', 5 );
@@ -169,13 +169,13 @@ class WPM_Acf {
 			return $value;
 		}
 
-		$info   = acf_get_post_id_info( $post_id );
-		$config = wpm_get_config();
+		$info = acf_get_post_id_info( $post_id );
 
 		switch ( $info['type'] ) {
 
 			case 'post':
-				if ( is_null( wpm_get_post_config( get_post_type( $info['id'] ) ) ) ) {
+				$post_type = get_post_type( $info['id'] );
+				if ( ! $post_type || is_null( wpm_get_post_config( $post_type ) ) ) {
 					return $value;
 				}
 
@@ -183,8 +183,7 @@ class WPM_Acf {
 
 			case 'term':
 				$term = get_term( $info['id'] );
-
-				if ( is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
+				if ( ! $term || is_wp_error( $term ) || is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
 					return $value;
 				}
 		}
@@ -196,9 +195,9 @@ class WPM_Acf {
 			return $value;
 		}
 
-		remove_filter( "acf/load_value", 'wpm_translate_value', 5 );
+		remove_filter( 'acf/load_value', 'wpm_translate_value', 5 );
 		$old_value = get_field( $field['name'], $post_id, false );
-		add_filter( "acf/load_value", 'wpm_translate_value', 5 );
+		add_filter( 'acf/load_value', 'wpm_translate_value', 5 );
 		$value = wpm_set_new_value( $old_value, $value, $acf_field_config );
 
 		return $value;
@@ -223,12 +222,12 @@ class WPM_Acf {
 		}
 
 		$translate = true;
-		$config    = wpm_get_config();
 
 		switch ( $field_type ) {
 
 			case 'post':
-				if ( is_null( wpm_get_post_config( get_post_type( $post_id ) ) ) ) {
+				$post_type = get_post_type( $post_id );
+				if ( ! $post_type || is_null( wpm_get_post_config( $post_type ) ) ) {
 					$translate = false;
 				}
 
@@ -238,7 +237,7 @@ class WPM_Acf {
 				$term_id = substr( $post_id, strripos( $post_id, '_' ) + 1 );
 				$term    = get_term( $term_id );
 
-				if ( is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
+				if ( ! $term || is_wp_error( $term ) || is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
 					$translate = false;
 				}
 		}
@@ -257,17 +256,17 @@ class WPM_Acf {
 		}
 
 		if ( $translate ) {
-			remove_filter( "acf/load_value", 'wpm_translate_value', 5 );
+			remove_filter( 'acf/load_value', 'wpm_translate_value', 5 );
 			$old_value = get_field( $field['name'], $post_id, false );
-			add_filter( "acf/load_value", 'wpm_translate_value', 5 );
+			add_filter( 'acf/load_value', 'wpm_translate_value', 5 );
 			$value = wpm_set_new_value( $old_value, $value, $acf_field_config );
 		}
 
 
-		if ( $field_type == 'post' ) {
+		if ( 'post' == $field_type ) {
 			update_metadata( 'post', $post_id, $field['name'], $value );
 			update_metadata( 'post', $post_id, '_' . $field['name'], $field['key'] );
-		} elseif ( $field_type == 'user' ) {
+		} elseif ( 'user' == $field_type ) {
 			$user_id = str_replace( 'user_', '', $post_id );
 			update_metadata( 'user', $user_id, $field['name'], $value );
 			update_metadata( 'user', $user_id, '_' . $field['name'], $field['key'] );

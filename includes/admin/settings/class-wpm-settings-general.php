@@ -41,8 +41,8 @@ class WPM_Settings_General extends WPM_Settings_Page {
 		$languages = wpm_get_languages();
 
 		$language_options = array();
-		foreach ( $languages as $lang => $language ) {
-			$language_options[ $lang ] = $language['name'];
+		foreach ( $languages as $code => $language ) {
+			$language_options[ $code ] = $language['name'];
 		}
 
 		$settings = apply_filters( 'wpm_general_settings', array(

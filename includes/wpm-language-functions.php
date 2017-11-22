@@ -70,6 +70,10 @@ function wpm_get_default_language() {
  * @return array
  */
 function wpm_get_lang_option() {
+	if ( version_compare( WPM_Setup::get_option( 'version' ), '2.0.0', '<' ) ) {
+		return array();
+	}
+
 	return WPM_Setup::get_option( 'languages' );
 }
 
@@ -93,47 +97,6 @@ function wpm_get_installed_languages() {
  */
 function wpm_get_available_translations() {
 	return WPM_Setup::instance()->get_translations();
-}
-
-/**
- * Get original home url
- *
- * @see WPM_Setup::get_original_home_url()
- *
- * @since 1.7.0
- *
- * @param bool $unslash
- *
- * @return string
- */
-function wpm_get_orig_home_url( $unslash = true ) {
-	return WPM_Setup::instance()->get_original_home_url( $unslash );
-}
-
-/**
- * Get original request uri
- *
- * @see WPM_Setup::get_original_request_uri()
- *
- * @since 1.7.0
- *
- * @return string
- */
-function wpm_get_orig_request_uri() {
-	return WPM_Setup::instance()->get_original_request_uri();
-}
-
-/**
- * Get site request uri
- *
- * @see WPM_Setup::get_site_request_uri()
- *
- * @since 2.0.1
- *
- * @return string
- */
-function wpm_get_site_request_uri() {
-	return WPM_Setup::instance()->get_site_request_uri();
 }
 
 /**

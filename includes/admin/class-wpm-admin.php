@@ -26,6 +26,7 @@ class WPM_Admin {
 		add_action( 'admin_init', array( $this, 'buffer' ), 1 );
 		add_action( 'admin_init', array( $this, 'set_edit_lang' ) );
 		add_action( 'admin_footer', 'wpm_print_js', 25 );
+		add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 1 );
 	}
 
 	/**
@@ -64,5 +65,46 @@ class WPM_Admin {
 		if ( isset( $_GET['edit_lang'] ) || ! get_user_meta( $user_id, 'edit_lang', true ) ) {
 			update_user_meta( $user_id, 'edit_lang', wpm_get_language() );
 		}
+	}
+
+	/**
+	 * Change the admin footer text on WP Multilang settings pages.
+	 *
+	 * @since  2.1.2
+	 * @param  string $footer_text
+	 * @return string
+	 */
+	public function admin_footer_text( $footer_text ) {
+		if ( ! current_user_can( 'manage_translations' ) ) {
+			return $footer_text;
+		}
+		$current_screen = get_current_screen();
+
+		// Check to make sure we're on a WP Multilang settings page.
+		if ( isset( $current_screen->id ) && ( 'settings_page_wpm-settings' == $current_screen->id ) ) {
+			// Change the footer text
+			if ( ! get_option( 'wpm_admin_footer_text_rated' ) ) {
+				$footer_text = sprintf(
+					/* translators: 1: WP Multilang 2:: five stars */
+					__( 'If you like %1$s please leave us a %2$s rating. A huge thanks in advance!', 'wp-multilang' ),
+					sprintf( '<strong>%s</strong>', esc_html__( 'WP Multilang', 'wp-multilang' ) ),
+					'<a href="https://wordpress.org/support/plugin/wp-multilang/reviews?rate=5#new-post" target="_blank" class="wpm-rating-link" data-rated="' . esc_attr__( 'Thanks :)', 'wp-multilang' ) . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
+				);
+				wpm_enqueue_js( "
+					(function( $ ) {
+					  $(function() {
+						$('a.wpm-rating-link').click( function() {
+							$.post('" . wpm()->ajax_url() . "', {action: 'wpm_rated'});
+							$(this).parent().text($(this).data('rated'));
+						});
+					  });
+					})( jQuery );
+				" );
+			} else {
+				$footer_text = __( 'Thank you for translating with WP Multilang.', 'wp-multilang' );
+			}
+		}
+
+		return $footer_text;
 	}
 }

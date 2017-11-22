@@ -35,11 +35,11 @@ class WPM_Meta_Box_Languages {
 		?>
 		<h4><?php _e( 'Show post only in:', 'wp-multilang' ); ?></h4>
 		<ul class="languagechecklist">
-			<?php foreach ( $languages as $lang => $language ) { ?>
+			<?php foreach ( $languages as $code => $language ) { ?>
 				<li>
 					<label>
-						<input type="checkbox" name="wpm_languages[<?php esc_attr_e( $i ); ?>]" id="wpm-languages-<?php echo $lang; ?>" value="<?php esc_attr_e( $lang ); ?>"<?php checked( in_array( $lang, $post_languages ) ); ?>>
-						<?php esc_attr_e( $language['name'] ); ?>
+						<input type="checkbox" name="wpm_languages[<?php echo esc_attr( $i ); ?>]" id="wpm-languages-<?php echo esc_attr( $code ); ?>" value="<?php echo esc_attr( $code ); ?>"<?php checked( in_array( $code, $post_languages ) ); ?>>
+						<?php esc_html_e( $language['name'] ); ?>
 					</label>
 				</li>
 				<?php $i++; } ?>

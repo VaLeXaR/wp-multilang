@@ -12,8 +12,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div id="poststuff">
 			<div id="wpm-languages" class="wpm-languages meta-box-sortables">
 				<?php $i = 1;
-				foreach ( $languages as $key => $language ) { ?>
-					<?php if ( ! is_string( $key ) ) {
+				foreach ( $languages as $code => $language ) { ?>
+					<?php if ( ! is_string( $code ) ) {
 						continue;
 					} ?>
 					<div class="postbox closed">
@@ -21,14 +21,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<span class="toggle-indicator" aria-hidden="true"></span>
 						</button>
 						<div class="language-status">
-							<?php if ( wpm_get_user_language() === $key ) { ?>
+							<?php if ( wpm_get_user_language() === $code ) { ?>
 								<?php esc_html_e( 'Current', 'wp-multilang' ); ?>
-							<?php } elseif ( wpm_get_default_language() === $key ) { ?>
+							<?php } elseif ( wpm_get_default_language() === $code ) { ?>
 								<?php esc_html_e( 'Default', 'wp-multilang' ); ?>
 							<?php } ?>
 						</div>
 						<h2 class="hndle ui-sortable-handle">
-							<span class="language-order"><?php esc_attr_e( $i ); ?></span>
+							<span class="language-order"><?php echo esc_attr( $i ); ?></span>
 							<span><?php esc_attr_e( $language['name'] ); ?></span>
 						</h2>
 						<div class="inside">
@@ -36,29 +36,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 								<tr>
 									<td class="row-title"><?php esc_attr_e( 'Name', 'wp-multilang' ); ?></td>
 									<td>
-										<input type="text" name="wpm_languages[<?php echo $i; ?>][name]" value="<?php esc_attr_e( $language['name'] ); ?>" title="<?php esc_attr_e( 'Name', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Name', 'wp-multilang' ); ?>">
+										<input type="text" name="wpm_languages[<?php echo esc_attr( $i ); ?>][name]" value="<?php esc_attr_e( $language['name'] ); ?>" title="<?php esc_attr_e( 'Name', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Name', 'wp-multilang' ); ?>">
 									</td>
 								</tr>
 								<tr>
 									<td class="row-title"><?php esc_attr_e( 'Enable', 'wp-multilang' ); ?></td>
 									<td>
-										<input type="hidden" name="wpm_languages[<?php esc_attr_e( $i ) ; ?>][enable]" value="0">
-										<input name="wpm_languages[<?php echo $i; ?>][enable]" type="checkbox" value="1"<?php checked( $language['enable'] ); ?> title="<?php esc_attr_e( 'Enable', 'wp-multilang' ); ?>"<?php if ( wpm_get_default_language() === $key ) { ?> disabled="disabled"<?php } ?>>
-										<?php if ( wpm_get_default_language() === $key ) { ?>
-											<input type="hidden" name="wpm_languages[<?php esc_attr_e( $i ) ; ?>][enable]" value="1">
+										<input type="hidden" name="wpm_languages[<?php echo esc_attr( $i ) ; ?>][enable]" value="0">
+										<input name="wpm_languages[<?php echo esc_attr( $i ); ?>][enable]" type="checkbox" value="1"<?php checked( $language['enable'] ); ?> title="<?php esc_attr_e( 'Enable', 'wp-multilang' ); ?>"<?php if ( wpm_get_default_language() === $code ) { ?> disabled="disabled"<?php } ?>>
+										<?php if ( wpm_get_default_language() === $code ) { ?>
+											<input type="hidden" name="wpm_languages[<?php echo esc_attr( $i ) ; ?>][enable]" value="1">
 										<?php } ?>
 									</td>
 								</tr>
 								<tr>
-									<td class="row-title"><?php esc_attr_e( 'Slug *', 'wp-multilang' ); ?></td>
+									<td class="row-title"><?php esc_attr_e( 'Language Code *', 'wp-multilang' ); ?></td>
 									<td>
-										<input type="text" name="wpm_languages[<?php echo $i; ?>][slug]" value="<?php esc_attr_e( $key ); ?>" title="<?php esc_attr_e( 'Slug *', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Slug *', 'wp-multilang' ); ?>" required>
+										<input type="text" name="wpm_languages[<?php echo esc_attr( $i ); ?>][code]" value="<?php echo esc_attr( $code ); ?>" title="<?php esc_attr_e( 'Language Code *', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Language Code *', 'wp-multilang' ); ?>" required>
 									</td>
 								</tr>
 								<tr>
 									<td class="row-title"><?php esc_attr_e( 'Locale *', 'wp-multilang' ); ?></td>
 									<td>
-										<input type="text" name="wpm_languages[<?php echo $i; ?>][locale]" value="<?php esc_attr_e( $language['locale'] ); ?>" title="<?php esc_attr_e( 'Locale *', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Locale *', 'wp-multilang' ); ?>" required>
+										<input type="text" name="wpm_languages[<?php echo esc_attr( $i ); ?>][locale]" value="<?php esc_attr_e( $language['locale'] ); ?>" title="<?php esc_attr_e( 'Locale *', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Locale *', 'wp-multilang' ); ?>" required>
 									</td>
 								</tr>
 								<tr>
@@ -78,19 +78,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 								<tr>
 									<td class="row-title"><?php esc_attr_e( 'Date Format' ); ?></td>
 									<td>
-										<input type="text" name="wpm_languages[<?php echo $i; ?>][date]" value="<?php esc_attr_e( $language['date'] ); ?>" title="<?php esc_attr_e( 'Date Format' ); ?>" placeholder="<?php esc_attr_e( get_option( 'date_format' ) ); ?>">
+										<input type="text" name="wpm_languages[<?php echo esc_attr( $i ); ?>][date]" value="<?php esc_attr_e( $language['date'] ); ?>" title="<?php esc_attr_e( 'Date Format' ); ?>" placeholder="<?php esc_attr_e( get_option( 'date_format' ) ); ?>">
 									</td>
 								</tr>
 								<tr>
 									<td class="row-title"><?php esc_attr_e( 'Time Format' ); ?></td>
 									<td>
-										<input type="text" name="wpm_languages[<?php echo $i; ?>][time]" value="<?php esc_attr_e( $language['time'] ); ?>" title="<?php esc_attr_e( 'Time Format' ); ?>" placeholder="<?php esc_attr_e( get_option( 'time_format' ) ); ?>">
+										<input type="text" name="wpm_languages[<?php echo esc_attr( $i ); ?>][time]" value="<?php esc_attr_e( $language['time'] ); ?>" title="<?php esc_attr_e( 'Time Format' ); ?>" placeholder="<?php esc_attr_e( get_option( 'time_format' ) ); ?>">
 									</td>
 								</tr>
 								<tr>
 									<td class="row-title"><?php esc_attr_e( 'Flag', 'wp-multilang' ); ?></td>
 									<td>
-										<select class="wpm-flags" name="wpm_languages[<?php echo $i; ?>][flag]" title="<?php esc_attr_e( 'Flag', 'wp-multilang' ); ?>">
+										<select class="wpm-flags" name="wpm_languages[<?php echo esc_attr( $i ); ?>][flag]" title="<?php esc_attr_e( 'Flag', 'wp-multilang' ); ?>">
 											<option value=""><?php esc_attr_e( '&mdash; Select &mdash;' ); ?></option>
 											<?php foreach ( $flags as $flag ) { ?>
 												<option value="<?php esc_attr_e( $flag ); ?>" data-flag="<?php echo esc_url( wpm_get_flag_url( $flag ) ); ?>" <?php selected( $language['flag'], $flag ); ?>><?php esc_attr_e( pathinfo( $flag, PATHINFO_FILENAME ) ); ?></option>
@@ -98,12 +98,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 										</select>
 									</td>
 								</tr>
-								<?php do_action( 'wpm_language_settings', $key, $i ); ?>
-								<?php if ( ( wpm_get_user_language() !== $key ) && ( wpm_get_default_language() !== $key ) ) { ?>
+								<?php do_action( 'wpm_language_settings', $code, $i ); ?>
+								<?php if ( ( wpm_get_user_language() !== $code ) && ( wpm_get_default_language() !== $code ) ) { ?>
 									<tr>
 										<td class="row-title"></td>
 										<td>
-											<button type="button" class="button button-link delete-language" data-language="<?php echo $key; ?>"><?php esc_attr_e( 'Delete' ); ?></button>
+											<button type="button" class="button button-link delete-language" data-language="<?php echo esc_attr( $code ); ?>"><?php esc_attr_e( 'Delete' ); ?></button>
 									</tr>
 								<?php } ?>
 							</table>
@@ -114,7 +114,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</div>
 		</div>
 		<script>
-			var wpm_lang_count = <?php echo $i; ?>;
+			var wpm_lang_count = <?php echo esc_attr( $i ); ?>;
 		</script>
 		<script id="tmpl-wpm-add-lang" type="text/template">
 			<div class="postbox">
@@ -141,9 +141,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 							</td>
 						</tr>
 						<tr>
-							<td class="row-title"><?php esc_attr_e( 'Slug *', 'wp-multilang' ); ?></td>
+							<td class="row-title"><?php esc_attr_e( 'Language Code *', 'wp-multilang' ); ?></td>
 							<td>
-								<input type="text" name="wpm_languages[{{ data.count }}][slug]" value="" title="<?php esc_attr_e( 'Slug *', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Slug *', 'wp-multilang' ); ?>" required>
+								<input type="text" name="wpm_languages[{{ data.count }}][code]" value="" title="<?php esc_attr_e( 'Language Code *', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Language Code *', 'wp-multilang' ); ?>" required>
 							</td>
 						</tr>
 						<tr>

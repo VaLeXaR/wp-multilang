@@ -72,8 +72,8 @@ class WPM_VC {
 		$inline_url      = vc_frontend_editor()->getInlineUrl();
 		$active_language = wpm_get_language();
 		$languages       = wpm_get_languages();
-		foreach ( $languages as $lang => $language ) {
-			$output .= '<option value="' . add_query_arg( 'edit_lang', $lang, $inline_url ) . '" ' . selected( $lang, $active_language, false ) . ' >' . $language['name'] . '</option >';
+		foreach ( $languages as $code => $language ) {
+			$output .= '<option value="' . add_query_arg( 'edit_lang', $code, $inline_url ) . '" ' . selected( $code, $active_language, false ) . ' >' . $language['name'] . '</option >';
 		}
 		$output .= '</select >';
 

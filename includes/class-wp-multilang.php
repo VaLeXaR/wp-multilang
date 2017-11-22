@@ -3,12 +3,16 @@
 /**
  * Main WP_Multilang.
  *
- * @class   WPM
+ * @class   WP_Multilang
  * @version 1.1.1
  * @author   Valentyn Riaboshtan
  */
 
 namespace WPM\Includes;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 final class WP_Multilang {
 
@@ -17,7 +21,7 @@ final class WP_Multilang {
 	 *
 	 * @var string
 	 */
-	public $version = '2.1.1';
+	public $version = '2.1.2';
 
 	/**
 	 * The single instance of the class.

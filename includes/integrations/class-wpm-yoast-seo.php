@@ -48,12 +48,11 @@ class WPM_Yoast_Seo {
 	 */
 	public function set_posts_config( $option_config ) {
 
-		$config     = wpm_get_config();
-		$post_types = $config['post_types'];
+		$post_types = get_post_types( array(), 'names' );
 
-		foreach ( $post_types as $post_type => $post_config ) {
+		foreach ( $post_types as $post_type ) {
 
-			if ( is_null( $post_config ) ) {
+			if ( is_null( wpm_get_post_config( $post_type ) ) ) {
 				continue;
 			}
 
@@ -65,14 +64,14 @@ class WPM_Yoast_Seo {
 				"metadesc-ptarchive-{$post_type}" => array(),
 			);
 
-			$option_config = wpm_array_merge_recursive( $option_post_config, $post_config );
+			$option_config = wpm_array_merge_recursive( $option_post_config, $option_config );
 		}
 
-		$taxonomies = $config['taxonomies'];
+		$taxonomies = get_taxonomies();
 
-		foreach ( $taxonomies as $taxonomy => $taxonomy_config ) {
+		foreach ( $taxonomies as $taxonomy ) {
 
-			if ( is_null( $taxonomy_config ) ) {
+			if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
 				continue;
 			}
 
@@ -171,14 +170,14 @@ class WPM_Yoast_Seo {
 		$loc        = $output;
 		$new_output = '';
 
-		foreach ( wpm_get_languages() as $lang => $language ) {
+		foreach ( wpm_get_languages() as $code => $language ) {
 
-			if ( isset( $url['languages'] ) && ! in_array( $lang, $url['languages'] ) ) {
+			if ( isset( $url['languages'] ) && ! in_array( $code, $url['languages'] ) ) {
 				continue;
 			}
 
 			$alternate = array();
-			$new_loc   = str_replace( $url['loc'], esc_url( wpm_translate_url( $url['loc'], $lang ) ), $loc );
+			$new_loc   = str_replace( $url['loc'], esc_url( wpm_translate_url( $url['loc'], $code ) ), $loc );
 
 			foreach ( wpm_get_languages() as $key => $lg ) {
 				if ( isset( $url['languages'] ) && ! in_array( $key, $url['languages'] ) ) {
@@ -188,7 +187,7 @@ class WPM_Yoast_Seo {
 				$alternate[ $key ] .= sprintf( "\t<xhtml:link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />\n\t", esc_attr( wpm_sanitize_lang_slug( $lg['locale'] ) ), esc_url( wpm_translate_url( $url['loc'], $key ) ) );
 			}
 
-			$alternate  = apply_filters( 'wpm_sitemap_alternate_links', $alternate, $url['loc'], $lang );
+			$alternate  = apply_filters( 'wpm_sitemap_alternate_links', $alternate, $url['loc'], $code );
 			$new_loc    = str_replace( '</url>', implode( '', $alternate ) . '</url>', $new_loc );
 			$new_output .= $new_loc;
 		}
@@ -215,7 +214,7 @@ class WPM_Yoast_Seo {
 		<tr>
 			<td class="row-title"><?php esc_attr_e( 'Yoast SEO Opengraph Locale', 'wp-multilang' ); ?></td>
 			<td>
-				<input type="text" name="wpm_languages[<?php esc_attr_e( $count ); ?>][wpseo_og_locale]" value="<?php esc_attr_e( $value ); ?>" title="<?php esc_attr_e( 'Yoast SEO Opengraph Locale', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Opengraph Locale', 'wp-multilang' ); ?>">
+				<input type="text" name="wpm_languages[<?php echo esc_attr( $count ); ?>][wpseo_og_locale]" value="<?php esc_attr_e( $value ); ?>" title="<?php esc_attr_e( 'Yoast SEO Opengraph Locale', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Opengraph Locale', 'wp-multilang' ); ?>">
 				<p><?php esc_html_e( 'Locale must be with country domain. Like en_US', 'wp-multilang' ); ?></p>
 			</td>
 		</tr>
@@ -249,8 +248,8 @@ class WPM_Yoast_Seo {
 	 */
 	public function save_languages( $languages, $request ) {
 		foreach ( $request as $value ) {
-			if ( isset( $languages[ $value['slug'] ] ) && isset( $value['wpseo_og_locale'] ) ) {
-				$languages[ $value['slug'] ]['wpseo_og_locale'] = $value['wpseo_og_locale'];
+			if ( isset( $languages[ $value['code'] ] ) && isset( $value['wpseo_og_locale'] ) ) {
+				$languages[ $value['code'] ]['wpseo_og_locale'] = $value['wpseo_og_locale'];
 			}
 		}
 

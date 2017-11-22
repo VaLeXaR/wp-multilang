@@ -26,7 +26,6 @@
           url: wpm_languages_params.ajax_url,
           type: 'post',
           data: data,
-          dataType: 'json',
           complete: function () {
             button.parent().parents('.postbox').fadeOut('slow', function () {
               $(this).remove();
