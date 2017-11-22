@@ -198,7 +198,6 @@ class WPM_Menus {
 				}
 
 				$languages   = wpm_get_languages();
-				$current_url = wpm_get_current_url();
 				$new_items   = array();
 				$show_type   = get_post_meta( $menu_id, '_menu_item_languages_show', true );
 
@@ -219,7 +218,7 @@ class WPM_Menus {
 						$language_string .= '<span>' . esc_attr( $language['name'] ) . '</span>';
 					}
 
-					$new_item = preg_replace( '/<a href="[^"]+">[^@]+<\/a>/', '<a href="' . esc_url( wpm_translate_url( $current_url, $code ) ) . '" ' . $current_class . ' data-lang="' . esc_attr( $code ) . '">' . $language_string . '</a>', $item );
+					$new_item = preg_replace( '/<a href="[^"]+">[^@]+<\/a>/', '<a href="' . esc_url( wpm_translate_current_url( $code ) ) . '" ' . $current_class . ' data-lang="' . esc_attr( $code ) . '">' . $language_string . '</a>', $item );
 					$new_items[] = str_replace( $menu_id, 'language-' . $code, $new_item );
 				}
 

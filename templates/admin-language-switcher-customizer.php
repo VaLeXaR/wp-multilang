@@ -14,7 +14,7 @@
 						continue;
 					} ?>
 					<li class="wpm-language-<?php echo esc_attr( $code ); ?>">
-						<a href="<?php echo esc_url( add_query_arg( 'edit_lang', $code, $current_url ) ); ?>" data-lang="<?php echo esc_attr( $code ); ?>">
+						<a href="<?php echo esc_url( add_query_arg( 'edit_lang', $code, wpm_get_current_url() ) ); ?>" data-lang="<?php echo esc_attr( $code ); ?>">
 							<?php if ( $language['flag'] ) { ?>
 								<img src="<?php echo esc_url( wpm_get_flag_url( $language['flag'] ) ); ?>"
 								     alt="<?php esc_attr_e( $language['name'] ); ?>">

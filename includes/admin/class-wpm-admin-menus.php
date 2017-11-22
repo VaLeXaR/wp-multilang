@@ -67,7 +67,6 @@ class WPM_Admin_Menus {
 		$user_language          = wpm_get_user_language();
 		$languages              = wpm_get_languages();
 		$available_translations = wpm_get_available_translations();
-		$current_url            = wpm_get_current_url();
 
 		$wp_admin_bar->add_menu( array(
 			'id'     => 'wpm-language-switcher',
@@ -104,7 +103,7 @@ class WPM_Admin_Menus {
 					            '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" />' .
 					            '</span>' .
 					            '<span class="ab-label">' . $available_translations[$locale]['native_name'] . '</span>',
-					'href'   => wpm_translate_url( $current_url, $code ),
+					'href'   => wpm_translate_current_url( $code ),
 				) );
 			}
 		}

@@ -592,7 +592,7 @@ class WPM_Setup {
 					$browser_language = $this->get_browser_language();
 
 					if ( $browser_language && ( $browser_language !== $user_language ) ) {
-						wp_redirect( wpm_translate_url( wpm_get_current_url(), $browser_language ) );
+						wp_redirect( wpm_translate_current_url( $browser_language ) );
 						exit;
 					}
 				}

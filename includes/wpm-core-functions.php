@@ -170,12 +170,34 @@ function wpm_setcookie( $name, $value, $expire = 0, $secure = false ) {
 /**
  * Get current url from $_SERVER
  *
+ * @param string $lang
+ *
  * @return string
  */
 function wpm_get_current_url() {
 	$url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
 
 	return $url;
+}
+
+
+/**
+ * Get current url from $_SERVER
+ *
+ * @param string $lang
+ *
+ * @return string
+ */
+function wpm_translate_current_url( $lang = '' ) {
+	$url = wpm_get_current_url();
+
+	if ( ! $lang ) {
+		$lang = wpm_get_language();
+	}
+
+	$url = wpm_translate_url( $url, $lang );
+
+	return apply_filters( 'wpm_get_current_url ', $url, $lang );
 }
 
 
