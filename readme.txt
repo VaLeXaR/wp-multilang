@@ -152,7 +152,7 @@ Not compatible with:
 - WP Maintenance
 
 == Known issues ==
-Function 'get_page_by_title' not working, because in title field are stored titles for all languages.
+Function 'get_page_by_title' not working, because in title field are stored titles for all languages. Added function 'wpm_get_page_by_title'.
 Function 'get_term_by' for search term by name works partly. The search is not in full coincidence but through 'LIKE'.
 
 == Installation ==
