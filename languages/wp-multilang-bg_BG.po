@@ -1,22 +1,22 @@
 msgid ""
 msgstr ""
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-11-20 18:06+0200\n"
-"PO-Revision-Date: 2017-11-20 18:19+0200\n"
+"POT-Creation-Date: 2017-11-22 17:07+0200\n"
+"PO-Revision-Date: 2017-11-22 17:07+0200\n"
+"Last-Translator: \n"
 "Language-Team: \n"
+"Language: bg_BG\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.4\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-WPHeader: wp-multilang.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
-"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
-"Last-Translator: \n"
-"Language: bg_BG\n"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 "X-Poedit-SearchPathExcluded-1: .idea\n"
@@ -24,12 +24,12 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-3: vendor\n"
 
 #: includes/admin/class-wpm-admin-edit-menus.php:38
-#: includes/admin/class-wpm-admin-menus.php:165
-#: includes/admin/class-wpm-admin-menus.php:180
-#: includes/admin/class-wpm-admin-menus.php:183
+#: includes/admin/class-wpm-admin-menus.php:164
+#: includes/admin/class-wpm-admin-menus.php:179
+#: includes/admin/class-wpm-admin-menus.php:182
 #: includes/admin/class-wpm-admin-meta-boxes.php:95
 #: includes/admin/class-wpm-admin-posts.php:76
-#: includes/admin/class-wpm-admin-taxonomies.php:68
+#: includes/admin/class-wpm-admin-taxonomies.php:66
 #: includes/admin/settings/class-wpm-settings-languages.php:27
 #: includes/admin/settings/class-wpm-settings-languages.php:43
 #: includes/widgets/class-wpm-widget-language-switcher.php:31
@@ -40,25 +40,26 @@ msgstr "Езици"
 msgid "Show item only in:"
 msgstr "Показвай елемента само в:"
 
-#: includes/admin/class-wpm-admin-menus.php:118
+#: includes/admin/class-wpm-admin-menus.php:117
 msgid "WP Multilang Settings"
 msgstr "Преглед на WP Multilang настройки"
 
 #. Plugin Name of the plugin/theme
-#: includes/admin/class-wpm-admin-menus.php:118
+#: includes/admin/class-wpm-admin-menus.php:117
+#: includes/admin/class-wpm-admin.php:90
 msgid "WP Multilang"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-menus.php:191
+#: includes/admin/class-wpm-admin-menus.php:190
 msgid "Add to menu"
 msgstr "Добавяне към менюто"
 
-#: includes/admin/class-wpm-admin-menus.php:219
+#: includes/admin/class-wpm-admin-menus.php:218
 #: includes/widgets/class-wpm-widget-language-switcher.php:38
 msgid "Both"
 msgstr "И двете"
 
-#: includes/admin/class-wpm-admin-menus.php:220
+#: includes/admin/class-wpm-admin-menus.php:219
 #: includes/admin/settings/views/html-languages.php:91
 #: includes/admin/settings/views/html-languages.php:93
 #: includes/admin/settings/views/html-languages.php:181
@@ -67,7 +68,7 @@ msgstr "И двете"
 msgid "Flag"
 msgstr "Знаме"
 
-#: includes/admin/class-wpm-admin-menus.php:221
+#: includes/admin/class-wpm-admin-menus.php:220
 #: includes/admin/settings/views/html-languages.php:37
 #: includes/admin/settings/views/html-languages.php:39
 #: includes/admin/settings/views/html-languages.php:131
@@ -76,7 +77,7 @@ msgstr "Знаме"
 msgid "Name"
 msgstr "Име"
 
-#: includes/admin/class-wpm-admin-menus.php:225
+#: includes/admin/class-wpm-admin-menus.php:224
 #: includes/widgets/class-wpm-widget-language-switcher.php:42
 msgid "Show"
 msgstr "Покажи"
@@ -87,7 +88,7 @@ msgid "Action failed. Please refresh the page and retry."
 msgstr "Действието е неуспешно. Моля, обновете страницата и опитайте отново."
 
 #: includes/admin/class-wpm-admin-notices.php:108
-#: includes/class-wp-multilang.php:50 includes/class-wp-multilang.php:57
+#: includes/class-wp-multilang.php:54 includes/class-wp-multilang.php:61
 msgid "Cheatin&#8217; huh?"
 msgstr "Cheatin&#8217; huh?"
 
@@ -110,14 +111,32 @@ msgstr ""
 "Промените, които сте направили, ще бъдат загубени, ако се придвижвате далеч "
 "от тази страница."
 
-#: includes/admin/class-wpm-admin-taxonomies.php:116
-#: includes/admin/class-wpm-admin-taxonomies.php:143
+#: includes/admin/class-wpm-admin-taxonomies.php:114
+#: includes/admin/class-wpm-admin-taxonomies.php:140
 msgid "Show term only in:"
 msgstr "Показвай  израза само в:"
 
-#: includes/admin/class-wpm-admin-widgets.php:69
+#: includes/admin/class-wpm-admin-widgets.php:75
 msgid "Show widget only in:"
 msgstr "Показвай widget само в:"
+
+#: includes/admin/class-wpm-admin-widgets.php:77
+msgid "-"
+msgstr ""
+
+#: includes/admin/class-wpm-admin.php:89
+#, php-format
+msgid ""
+"If you like %1$s please leave us a %2$s rating. A huge thanks in advance!"
+msgstr ""
+
+#: includes/admin/class-wpm-admin.php:91
+msgid "Thanks :)"
+msgstr ""
+
+#: includes/admin/class-wpm-admin.php:104
+msgid "Thank you for translating with WP Multilang."
+msgstr ""
 
 #: includes/admin/meta-boxes/class-wpm-meta-box-languages.php:36
 msgid "Show post only in:"
@@ -275,8 +294,8 @@ msgstr "Активиране"
 #: includes/admin/settings/views/html-languages.php:55
 #: includes/admin/settings/views/html-languages.php:144
 #: includes/admin/settings/views/html-languages.php:146
-msgid "Slug *"
-msgstr "Slug *"
+msgid "Language Code *"
+msgstr ""
 
 #: includes/admin/settings/views/html-languages.php:59
 #: includes/admin/settings/views/html-languages.php:61
@@ -330,8 +349,7 @@ msgstr "WP Multilang актуализиране на данните"
 
 #: includes/admin/views/html-notice-update.php:12
 msgid "We need to update your site database to the latest version."
-msgstr ""
-"Трябва да актуализираме базата данни на сайта Ви до последната версия."
+msgstr "Трябва да актуализираме базата данни на сайта Ви до последната версия."
 
 #: includes/admin/views/html-notice-update.php:13
 msgid "Run the updater"
@@ -361,23 +379,23 @@ msgstr "Вашата база данни се обновява във фонов
 msgid "Taking a while? Click here to run it now."
 msgstr "Отне известно време? Кликнете тук, за да го стартирате сега."
 
-#: includes/class-wpm-ajax.php:145
+#: includes/class-wpm-ajax.php:146
 msgid "No locale sending"
 msgstr "Няма изпращане на локал"
 
-#: includes/class-wpm-ajax.php:150
+#: includes/class-wpm-ajax.php:151
 msgid "Localisation using"
 msgstr "използвана локализация"
 
-#: includes/class-wpm-ajax.php:189
+#: includes/class-wpm-ajax.php:190
 msgid "Localization deleted"
 msgstr "Изтриване на локализация"
 
-#: includes/class-wpm-ajax.php:460
+#: includes/class-wpm-ajax.php:461
 msgid "Update finished"
 msgstr "Актуализацията завърши"
 
-#: includes/class-wpm-ajax.php:555
+#: includes/class-wpm-ajax.php:556
 #, php-format
 msgid "%d terms were imported successfully."
 msgstr "%d термините бяха импортирани успешно."
@@ -418,16 +436,16 @@ msgid "A term with the name provided for %s already exists in this taxonomy."
 msgstr ""
 "В тази класификация вече съществува термин с името, предоставено за %s."
 
-#: includes/integrations/class-wpm-yoast-seo.php:216
-#: includes/integrations/class-wpm-yoast-seo.php:218
+#: includes/integrations/class-wpm-yoast-seo.php:215
+#: includes/integrations/class-wpm-yoast-seo.php:217
 msgid "Yoast SEO Opengraph Locale"
 msgstr ""
 
-#: includes/integrations/class-wpm-yoast-seo.php:218
+#: includes/integrations/class-wpm-yoast-seo.php:217
 msgid "Opengraph Locale"
 msgstr "Opengraph Locale"
 
-#: includes/integrations/class-wpm-yoast-seo.php:219
+#: includes/integrations/class-wpm-yoast-seo.php:218
 msgid "Locale must be with country domain. Like en_US"
 msgstr ""
 
@@ -435,6 +453,10 @@ msgstr ""
 #, php-format
 msgid "Every %d minutes"
 msgstr "Всеки %d минути"
+
+#: includes/widgets/class-wpm-widget-language-switcher.php:25
+msgid "Display language switcher."
+msgstr ""
 
 #: includes/widgets/class-wpm-widget-language-switcher.php:27
 #: templates/language-switcher-select.php:1
@@ -461,7 +483,7 @@ msgstr "Избери"
 msgid "Switcher Type"
 msgstr "Превключвател на въвеждане"
 
-#: includes/wpm-core-functions.php:190
+#: includes/wpm-template-functions.php:459
 #, php-format
 msgid "For multilingual string, use syntax like %s."
 msgstr "За многоезичен низ използвайте синтаксиса като %s."
@@ -477,3 +499,6 @@ msgstr ""
 #. Author of the plugin/theme
 msgid "Valentyn Riaboshtan"
 msgstr ""
+
+#~ msgid "Slug *"
+#~ msgstr "Slug *"

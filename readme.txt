@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 Requires PHP: 5.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -182,7 +182,18 @@ If you have opened several browser tabs for editing this post in different langu
 == Changelog ==
 
 = 2.1.2 =
-* fix save settings for titles in Yoast SEO and AIOS
+* fix save settings for titles in Yoast SEO and AIOSP
+* add filter for getting original url
+* add filter for current url
+* fix acf notices
+* add Bulgarian localization
+* fix save language option in widgets for WP 5
+* fix translation settings in Better Search
+* add filter for untranslated text
+* fix error echo lang code for some languages in 'esc_attr_e()'
+* add function for getting page by title 'wpm_get_page_by_title($title)'
+* fix installing notices
+* fix updating notices
 
 = 2.1.1 =
 * change parameters for functions 'wpm_language_switcher', 'wpm_get_language_switcher'
