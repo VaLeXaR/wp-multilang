@@ -64,10 +64,10 @@
           success: function (json) {
             button.next().remove();
             if (json.success) {
-              button.after('<span class="success">' + json + '</span>');
+              button.after('<span class="success">' + json.data + '</span>');
               $('#wpm_installed_localizations option[value="' + locale + '"]').remove();
             } else {
-              button.after('<span class="error">' + json + '</span>');
+              button.after('<span class="error">' + json.data + '</span>');
             }
             $('#wpm_installed_localizations').trigger('init_localizations');
           },

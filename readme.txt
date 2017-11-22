@@ -194,6 +194,7 @@ If you have opened several browser tabs for editing this post in different langu
 * add function for getting page by title 'wpm_get_page_by_title($title)'
 * fix installing notices
 * fix updating notices
+* fix message when deleting localization
 
 = 2.1.1 =
 * change parameters for functions 'wpm_language_switcher', 'wpm_get_language_switcher'
