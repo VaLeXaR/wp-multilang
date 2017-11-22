@@ -197,7 +197,7 @@ function wpm_translate_current_url( $lang = '' ) {
 
 	$url = wpm_translate_url( $url, $lang );
 
-	return apply_filters( 'wpm_get_current_url ', $url, $lang );
+	return apply_filters( 'wpm_get_current_url', $url, $lang );
 }
 
 /**
