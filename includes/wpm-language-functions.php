@@ -110,7 +110,6 @@ function wpm_get_language() {
 	if ( is_admin() || ( defined( 'REST_REQUEST' ) && 'GET' !== $_SERVER['REQUEST_METHOD'] ) ) {
 
 		$languages = wpm_get_languages();
-		$edit_lang = get_user_meta( get_current_user_id(), 'edit_lang', true );
 		$query     = $_GET;
 
 		if ( wp_doing_ajax() && ( $referrer = wp_get_raw_referer() ) ) {
@@ -121,7 +120,16 @@ function wpm_get_language() {
 			}
 		}
 
-		$lang = ( isset( $query['edit_lang'] ) && isset( $languages [ wpm_clean( $query['edit_lang'] ) ] ) ) ? wpm_clean( $query['edit_lang'] ) : ( ( $edit_lang && isset( $languages[ $edit_lang ] ) ) ? $edit_lang : wpm_get_user_language() );
+		if ( isset( $query['edit_lang'] ) && isset( $languages [ wpm_clean( $query['edit_lang'] ) ] ) ) {
+			$lang = wpm_clean( $query['edit_lang'] );
+		} else {
+			$edit_lang = get_user_meta( get_current_user_id(), 'edit_lang', true );
+			if ( $edit_lang && isset( $languages[ $edit_lang ] ) ) {
+				$lang = $edit_lang;
+			} else {
+				$lang = wpm_get_user_language();
+			}
+		}
 	} else {
 		$lang = wpm_get_user_language();
 	}
