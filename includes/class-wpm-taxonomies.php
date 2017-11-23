@@ -151,15 +151,15 @@ class WPM_Taxonomies extends WPM_Object {
 			return $term;
 		}
 
-		$languages = wpm_get_languages();
-		$name      = wp_unslash( $term );
-		$like      = '%' . $wpdb->esc_like( esc_sql( $name ) ) . '%';
-		$results   = $wpdb->get_results( $wpdb->prepare( "SELECT t.term_id, t.name FROM {$wpdb->terms} AS t INNER JOIN {$wpdb->term_taxonomy} AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy = '%s' AND `name` LIKE '%s';", $taxonomy, $like ) );
+		$name    = wp_unslash( $term );
+		$slug    = sanitize_title( $name );
+		$like    = '%' . $wpdb->esc_like( esc_sql( $name ) ) . '%';
+		$results = $wpdb->get_results( $wpdb->prepare( "SELECT t.term_id, t.name, t.slug FROM {$wpdb->terms} AS t INNER JOIN {$wpdb->term_taxonomy} AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy = %s AND ( t.name LIKE %s OR t.slug = %s );", $taxonomy, $like, $slug ) );
 
 		foreach ( $results as $result ) {
 			$ml_term = wpm_translate_string( $result->name );
-			if ( $ml_term === $name && ! is_taxonomy_hierarchical( $taxonomy ) ) {
-				return new \WP_Error( 'term_exists', sprintf( __( 'A term with the name provided for %s already exists in this taxonomy.', 'wp-multilang' ), $languages[ wpm_get_language() ]['name'] ), $result->term_id );
+			if ( ( $ml_term === $name || $result->slug == $slug) && ! is_taxonomy_hierarchical( $taxonomy ) ) {
+				return new \WP_Error( 'term_exists', __( 'A term with the name provided already exists in this taxonomy.' ), $result->term_id );
 			}
 		}
 
