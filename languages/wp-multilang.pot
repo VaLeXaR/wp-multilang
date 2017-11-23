@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-11-23 00:54+0200\n"
+"POT-Creation-Date: 2017-11-23 08:43+0200\n"
 "PO-Revision-Date: 2017-05-22 12:43+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -115,11 +115,11 @@ msgstr ""
 msgid "Show term only in:"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-widgets.php:75
+#: includes/admin/class-wpm-admin-widgets.php:74
 msgid "Show widget only in:"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-widgets.php:77
+#: includes/admin/class-wpm-admin-widgets.php:76
 msgid "-"
 msgstr ""
 
@@ -419,8 +419,7 @@ msgid "Multilingual Settings"
 msgstr ""
 
 #: includes/class-wpm-taxonomies.php:162
-#, php-format
-msgid "A term with the name provided for %s already exists in this taxonomy."
+msgid "A term with the name provided already exists in this taxonomy."
 msgstr ""
 
 #: includes/integrations/class-wpm-yoast-seo.php:215
