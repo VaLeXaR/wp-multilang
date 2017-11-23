@@ -84,7 +84,6 @@ function wpm_get_widget_config( $widget ) {
 		$default_fields = array(
 			'title'   => array(),
 			'text'    => array(),
-			'content' => array(),
 		);
 
 		$widget_config = wpm_array_merge_recursive( $default_fields, $widget_config );

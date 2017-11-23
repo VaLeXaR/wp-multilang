@@ -46,6 +46,9 @@
       "caption": {},
       "alt": {},
       "image_title": {}
+    },
+    "custom_html": {
+      "content": {}
     }
   },
   "admin_html_tags": {}
