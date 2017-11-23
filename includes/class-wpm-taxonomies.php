@@ -40,6 +40,9 @@ class WPM_Taxonomies extends WPM_Object {
 	 * WPM_Taxonomies constructor.
 	 */
 	public function __construct() {
+		add_filter( 'term_name', 'wpm_translate_string', 5 );
+		add_filter( 'term_description', 'wpm_translate_value', 5 );
+		add_filter( 'get_term', 'wpm_translate_object', 5 );
 		add_filter( 'get_terms', array( $this, 'translate_terms' ), 5 );
 		add_filter( 'get_terms_args', array( $this, 'filter_terms_by_language' ), 10, 2 );
 		add_filter( "get_{$this->object_type}_metadata", array( $this, 'get_meta_field' ), 5, 3 );
