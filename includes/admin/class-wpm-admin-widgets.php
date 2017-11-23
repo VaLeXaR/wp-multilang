@@ -61,6 +61,11 @@ class WPM_Admin_Widgets {
 	 * @param object \WP_Widget $instance
 	 */
 	public function add_language_fields( $widget, $return, $instance ) {
+
+		if ( is_null( wpm_get_widget_config( $widget->id_base ) ) ) {
+			return;
+		}
+
 		$instance  = wp_parse_args( (array) $instance, array( 'languages' => array() ) );
 		$languages = wpm_get_languages();
 		$i         = 0;
