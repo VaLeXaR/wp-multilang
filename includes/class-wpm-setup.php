@@ -104,6 +104,8 @@ class WPM_Setup {
 	 */
 	public function __construct() {
 		add_filter( 'query_vars', array( $this, 'set_lang_var' ) );
+		add_action( 'parse_request', array( $this, 'setup_query_var' ), 0 );
+		add_filter( 'request', array( $this, 'set_home_page' ) );
 		add_filter( 'option_home', array( $this, 'set_home_url' ), 99 );
 		if ( defined( 'DOMAIN_MAPPING' ) ) {
 			add_filter( 'pre_option_home', array( $this, 'set_home_url' ), 99 );
@@ -112,10 +114,8 @@ class WPM_Setup {
 		add_action( 'activated_plugin', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
 		add_action( 'upgrader_process_complete', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
 		add_action( 'wpm_init', array( $this, 'load_integrations' ) );
-		add_action( 'parse_request', array( $this, 'setup_query_var' ), 0 );
 		add_action( 'template_redirect', array( $this, 'redirect_default_url' ) );
 		add_action( 'template_redirect', array( $this, 'redirect_to_user_language' ) );
-		add_filter( 'request', array( $this, 'set_home_page' ) );
 		add_filter( 'rest_url', array( $this, 'fix_rest_url' ) );
 		add_filter( 'option_date_format', array( $this, 'set_date_format' ) );
 		add_filter( 'option_time_format', array( $this, 'set_time_format' ) );
