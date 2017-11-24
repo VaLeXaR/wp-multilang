@@ -187,6 +187,12 @@ If you have opened several browser tabs for editing this post in different langu
 
 == Changelog ==
 
+= 2.1.4 =
+* fix support Gutenberg
+* fix translating post and term fields fields
+* fix translating html widget
+* fix add new taxonomy
+
 = 2.1.3 =
 * fix save widget translation
 * fix translate url filter name

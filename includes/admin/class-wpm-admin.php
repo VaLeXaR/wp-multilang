@@ -91,14 +91,10 @@ class WPM_Admin {
 					'<a href="https://wordpress.org/support/plugin/wp-multilang/reviews?rate=5#new-post" target="_blank" class="wpm-rating-link" data-rated="' . esc_attr__( 'Thanks :)', 'wp-multilang' ) . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
 				);
 				wpm_enqueue_js( "
-					(function( $ ) {
-					  $(function() {
-						$('a.wpm-rating-link').click( function() {
-							$.post('" . wpm()->ajax_url() . "', {action: 'wpm_rated'});
-							$(this).parent().text($(this).data('rated'));
-						});
-					  });
-					})( jQuery );
+					$('a.wpm-rating-link').click( function() {
+						$.post('" . wpm()->ajax_url() . "', {action: 'wpm_rated'});
+						$(this).parent().text($(this).data('rated'));
+					});
 				" );
 			} else {
 				$footer_text = __( 'Thank you for translating with WP Multilang.', 'wp-multilang' );

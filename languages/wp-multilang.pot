@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-11-23 08:43+0200\n"
+"POT-Creation-Date: 2017-11-24 10:29+0200\n"
 "PO-Revision-Date: 2017-05-22 12:43+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -119,10 +119,6 @@ msgstr ""
 msgid "Show widget only in:"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-widgets.php:76
-msgid "-"
-msgstr ""
-
 #: includes/admin/class-wpm-admin.php:89
 #, php-format
 msgid ""
@@ -133,7 +129,7 @@ msgstr ""
 msgid "Thanks :)"
 msgstr ""
 
-#: includes/admin/class-wpm-admin.php:104
+#: includes/admin/class-wpm-admin.php:100
 msgid "Thank you for translating with WP Multilang."
 msgstr ""
 
@@ -418,7 +414,7 @@ msgstr ""
 msgid "Multilingual Settings"
 msgstr ""
 
-#: includes/class-wpm-taxonomies.php:162
+#: includes/class-wpm-taxonomies.php:165
 msgid "A term with the name provided already exists in this taxonomy."
 msgstr ""
 
@@ -469,7 +465,7 @@ msgstr ""
 msgid "Switcher Type"
 msgstr ""
 
-#: includes/wpm-template-functions.php:459
+#: includes/wpm-template-functions.php:457
 #, php-format
 msgid "For multilingual string, use syntax like %s."
 msgstr ""

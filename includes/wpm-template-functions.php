@@ -368,12 +368,10 @@ function wpm_media_gallery( $html, $attr, $instance ) {
 	}
 
 	if ( ! $html5 && $columns > 0 && $i % $columns !== 0 ) {
-		$output .= "
-			<br style='clear: both' />";
+		$output .= '<br style="clear: both" />';
 	}
 
-	$output .= "
-		</div>\n";
+	$output .= "</div>\n";
 
 	return $output;
 }
@@ -403,8 +401,8 @@ add_filter( 'body_class', 'wpm_add_body_class' );
 function wpm_admin_language_switcher() {
 
 	$args = array(
-		'languages'   => wpm_get_languages(),
-		'lang'        => wpm_get_language(),
+		'languages' => wpm_get_languages(),
+		'lang'      => wpm_get_language(),
 	);
 
 	echo wpm_get_template( 'admin-language-switcher', '', '', $args );
@@ -417,8 +415,8 @@ function wpm_admin_language_switcher() {
 function wpm_admin_language_switcher_customizer() {
 
 	$args = array(
-		'languages'   => wpm_get_languages(),
-		'lang'        => wpm_get_language(),
+		'languages' => wpm_get_languages(),
+		'lang'      => wpm_get_language(),
 	);
 
 	echo wpm_get_template( 'admin-language-switcher', 'customizer', '', $args );

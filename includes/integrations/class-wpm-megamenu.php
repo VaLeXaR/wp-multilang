@@ -39,12 +39,10 @@ class WPM_Megamenu {
 		add_action( 'admin_print_footer_scripts', 'wpm_admin_language_switcher' );
 
 		wpm_enqueue_js( "
-			(function ( $ ) {
-			    if ($('#wpm-language-switcher').length === 0) {
-					var language_switcher = wp.template( 'wpm-ls' );
-					$('#wpbody-content .megamenu_outer_wrap').first().prepend(language_switcher);
-			    }
-			})( window.jQuery );
+		    if ($('#wpm-language-switcher').length === 0) {
+				var language_switcher = wp.template( 'wpm-ls' );
+				$('#wpbody-content .megamenu_outer_wrap').first().prepend(language_switcher);
+		    }
 		" );
 	}
 }

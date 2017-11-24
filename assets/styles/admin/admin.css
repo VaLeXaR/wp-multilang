@@ -143,8 +143,8 @@
       .editor-header-toolbar .lang-dropdown ul a:hover, .editor-header-toolbar .lang-dropdown ul a:focus {
         background-color: #ccc; }
 
-.gutenberg-meta-box-html .languagechecklist li {
-  line-height: 26px; }
+.gutenberg .languagechecklist {
+  list-style: none; }
 
 .js-wpm-action + .spinner {
   float: none; }

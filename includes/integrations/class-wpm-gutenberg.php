@@ -41,28 +41,32 @@ class WPM_Gutenberg {
 		}
 
 		add_action( 'admin_print_footer_scripts', 'wpm_admin_language_switcher_customizer' );
+		wp_enqueue_script( 'wpm_translator' );
 
-		wp_add_inline_script( 'wp-editor', "
-			(function( $ ) {
-			  'use strict';
-			  
-			  $(function() {
-				wp.api.init().done( function() {
+		wpm_enqueue_js( "
+			wp.api.init().done( function() {
 				if ($('#wpm-language-switcher').length === 0) {
-				      var language_switcher = wp.template( 'wpm-ls-customizer' );
-				      $('.editor-header-toolbar').prepend(language_switcher);
-				    }
-			    });
-			    
-			    $(document).on('click', '#wpm-language-switcher .lang-dropdown a', function(){
-			        var switch_lang_url = $(this).attr('href'),
-			            current_request = $(location)[0].href;
-			        if ( (switch_lang_url.search(/(post=)/i) == -1) && (current_request.search(/(post=)/i) !== -1)) {
-			            $(this).attr('href', current_request + '&edit_lang=' + $(this).data('lang'));
-			        }
-			    });
-			  });
-			})( jQuery, wp );
+			      var language_switcher = wp.template( 'wpm-ls-customizer' );
+			      $('.editor-header-toolbar').prepend(language_switcher);
+			      
+			      var languages = wpm_translator_params.languages;
+			          i = languages.indexOf(wpm_translator_params.language);
+			      if (i >= 0) {
+				      languages.splice( i, 1 );
+				  }
+				  
+				  var location = String(document.location);
+				  var query = location.split('?');
+				  var delimiter = '?';
+				  if (query[1]) {
+				    delimiter = '&';
+				  }
+			      
+			      $('#wpm-language-switcher .lang-dropdown a').each(function(i){
+			        $(this).attr('href', location + delimiter + 'edit_lang=' + languages[i]);
+			      });
+			    }
+		    });
 		");
 	}
 }
