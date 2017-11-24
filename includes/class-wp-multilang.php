@@ -31,7 +31,7 @@ final class WP_Multilang {
 	protected static $_instance = null;
 
 	/**
-	 * Query instance.
+	 * Setup instance.
 	 *
 	 * @var WPM_Setup
 	 */
