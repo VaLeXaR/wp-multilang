@@ -10,11 +10,11 @@
  * @author   Valentyn Riaboshtan
  */
 
+use WPM\Includes\WPM_Setup;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
-
-use WPM\Includes\WPM_Setup;
 
 /**
  * Get enabled languages
@@ -24,7 +24,7 @@ use WPM\Includes\WPM_Setup;
  * @return array
  */
 function wpm_get_languages() {
-	return WPM_Setup::instance()->get_languages();
+	return wpm()->setup->get_languages();
 }
 
 /**
@@ -35,7 +35,7 @@ function wpm_get_languages() {
  * @return string
  */
 function wpm_get_user_language() {
-	return WPM_Setup::instance()->get_user_language();
+	return wpm()->setup->get_user_language();
 }
 
 /**
@@ -46,7 +46,7 @@ function wpm_get_user_language() {
  * @return string
  */
 function wpm_get_default_locale() {
-	return WPM_Setup::instance()->get_default_locale();
+	return wpm()->setup->get_default_locale();
 }
 
 /**
@@ -59,7 +59,7 @@ function wpm_get_default_locale() {
  * @return string
  */
 function wpm_get_default_language() {
-	return WPM_Setup::instance()->get_default_language();
+	return wpm()->setup->get_default_language();
 }
 
 /**
@@ -85,7 +85,7 @@ function wpm_get_lang_option() {
  * @return array
  */
 function wpm_get_installed_languages() {
-	return WPM_Setup::instance()->get_installed_languages();
+	return wpm()->setup->get_installed_languages();
 }
 
 /**
@@ -96,7 +96,7 @@ function wpm_get_installed_languages() {
  * @return array
  */
 function wpm_get_available_translations() {
-	return WPM_Setup::instance()->get_translations();
+	return wpm()->setup->get_translations();
 }
 
 /**

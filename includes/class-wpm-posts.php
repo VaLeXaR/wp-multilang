@@ -38,6 +38,11 @@ class WPM_Posts extends WPM_Object {
 		add_filter( 'post_title', 'wpm_translate_string', 5 );
 		add_filter( 'post_excerpt', 'wpm_translate_value', 5 );
 		add_filter( 'post_content', 'wpm_translate_value', 5 );
+		add_filter( 'the_post', 'wpm_translate_post', 5 );
+		add_filter( 'the_title', 'wpm_translate_string', 5 );
+		add_filter( 'the_content', 'wpm_translate_string', 5 );
+		add_filter( 'the_excerpt', 'wpm_translate_string', 5 );
+		add_filter( 'the_editor_content', 'wpm_translate_string', 5 );
 		add_action( 'parse_query', array( $this, 'filter_posts_by_language' ) );
 		add_filter( "get_{$this->object_type}_metadata", array( $this, 'get_meta_field' ), 5, 3 );
 		add_filter( "update_{$this->object_type}_metadata", array( $this, 'update_meta_field' ), 99, 5 );
@@ -60,7 +65,7 @@ class WPM_Posts extends WPM_Object {
 	public function translate_posts( $posts ) {
 		foreach ( $posts as &$post ) {
 			if ( ! is_null( wpm_get_post_config( $post->post_type ) ) ) {
-				$post = wpm_translate_object( $post );
+				$post = wpm_translate_post( $post );
 			}
 		}
 
@@ -131,7 +136,7 @@ class WPM_Posts extends WPM_Object {
 		if ( is_singular() && ( null != $wp_query->queried_object ) ) {
 			$post = $wp_query->queried_object;
 			if ( ! is_null( wpm_get_post_config( $post->post_type ) ) ) {
-				$wp_query->queried_object = wpm_translate_object( $post );
+				$wp_query->queried_object = wpm_translate_post( $post );
 			}
 		}
 	}

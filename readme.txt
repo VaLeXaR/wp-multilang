@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 2.1.3
+Stable tag: 2.1.4
 Requires PHP: 5.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -137,7 +137,7 @@ Where:
 
 For set translation uses the syntax:
 
-`[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut`
+`[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut[:]`
 
 Supports translating from syntax qTranslate, qTranslate-X, WPGlobus etc.
 
@@ -154,8 +154,7 @@ Not compatible with:
 
 == Known issues ==
 
-Function 'get_page_by_title' not working, because in title field are stored titles for all languages. Added function 'wpm_get_page_by_title( $title )' as solution.
-Function 'get_term_by' for search term by name works partly. The search is not in full coincidence but through 'LIKE'.
+Function 'get_page_by_title' not working, because in title field are stored titles for all languages. Use function 'wpm_get_page_by_title( $title )' as solution.
 
 == Installation ==
 
@@ -188,6 +187,7 @@ If you have opened several browser tabs for editing this post in different langu
 == Changelog ==
 
 = 2.1.4 =
+* change syntax for more accurate search in database
 * fix support Gutenberg
 * fix translating post and term fields fields
 * fix translating html widget

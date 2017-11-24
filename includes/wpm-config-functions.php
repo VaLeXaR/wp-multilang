@@ -5,8 +5,6 @@
  * @author   Valentyn Riaboshtan
  */
 
-use WPM\Includes\WPM_Setup;
-
 /**
  * Get config
  *
@@ -15,7 +13,7 @@ use WPM\Includes\WPM_Setup;
  * @return array
  */
 function wpm_get_config() {
-	return WPM_Setup::instance()->get_config();
+	return wpm()->setup->get_config();
 }
 
 /**

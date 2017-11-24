@@ -42,6 +42,10 @@ class WPM_Install {
 			'wpm_update_211_change_options',
 			'wpm_update_211_db_version',
 		),
+		'2.1.4' => array(
+			'wpm_update_214_change_syntax',
+			'wpm_update_214_db_version',
+		),
 	);
 
 	/**

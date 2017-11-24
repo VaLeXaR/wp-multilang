@@ -100,27 +100,6 @@ class WPM_Setup {
 	private $config = array();
 
 	/**
-	 * The single instance of the class.
-	 *
-	 * @var WPM_Setup
-	 */
-	protected static $_instance = null;
-
-	/**
-	 * Main WPM_Setup Instance.
-	 *
-	 * @static
-	 * @return WPM_Setup - Main instance.
-	 */
-	public static function instance() {
-		if ( is_null( self::$_instance ) ) {
-			self::$_instance = new self();
-		}
-
-		return self::$_instance;
-	}
-
-	/**
 	 * WPM_Setup constructor.
 	 */
 	public function __construct() {

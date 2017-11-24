@@ -263,6 +263,10 @@ function wpm_ml_array_to_string( $strings ) {
 		}
 	}
 
+	if ( $string ) {
+		$string .= '[:]';
+	}
+
 	return $string;
 }
 
@@ -398,17 +402,17 @@ function wpm_translate_object( $object, $lang = '' ) {
  *
  * @param $post
  *
+ * @param string $lang
+ *
  * @return object WP_Post
  */
-function wpm_translate_post( $post ) {
-	$config      = wpm_get_config();
-	$post_config = $config['post_types'];
+function wpm_translate_post( $post, $lang = '' ) {
 
-	if ( ! is_object( $post ) || ! isset( $post_config[ $post->post_type ] ) || is_null( $post_config[ $post->post_type ] ) ) {
+	if ( ! is_object( $post ) || is_null( wpm_get_post_config( $post->post_type ) ) ) {
 		return $post;
 	}
 
-	return wpm_translate_object( $post );
+	return wpm_translate_object( $post, $lang );
 }
 
 
@@ -419,21 +423,21 @@ function wpm_translate_post( $post ) {
  *
  * @param $taxonomy
  *
+ * @param string $lang
+ *
  * @return object WP_Term
  */
-function wpm_translate_term( $term, $taxonomy ) {
-	$config      = wpm_get_config();
-	$term_config = $config['taxonomies'];
+function wpm_translate_term( $term, $taxonomy, $lang = '' ) {
 
-	if ( ! isset( $term_config[ $taxonomy ] ) || is_null( $term_config[ $taxonomy ] ) ) {
+	if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
 		return $term;
 	}
 
 	if ( is_object( $term ) ) {
-		return wpm_translate_object( $term );
+		return wpm_translate_object( $term, $lang );
 	}
 
-	return wpm_translate_value( $term );
+	return wpm_translate_value( $term, $lang );
 
 }
 

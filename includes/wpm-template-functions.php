@@ -247,7 +247,7 @@ function wpm_media_gallery( $html, $attr, $instance ) {
 
 		$attachments = array();
 		foreach ( $_attachments as $key => $val ) {
-			$attachments[$val->ID] = wpm_translate_object( $_attachments[$key] );
+			$attachments[$val->ID] = wpm_translate_post( $_attachments[$key] );
 		}
 	} elseif ( ! empty( $atts['exclude'] ) ) {
 		$attachments = get_children( array( 'post_parent' => $id, 'exclude' => $atts['exclude'], 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $atts['order'], 'orderby' => $atts['orderby'] ) );
@@ -454,7 +454,7 @@ function wpm_get_flags() {
  * @return string
  */
 function wpm_show_notice( $echo = true ) {
-	$notise = '<div class="notice notice-info inline"><p>' . sprintf( esc_attr__( 'For multilingual string, use syntax like %s.', 'wp-multilang' ), '<code>[:en]Text on english[:de]Text auf Deutsch</code>' ) . '</p></div>';
+	$notise = '<div class="notice notice-info inline"><p>' . sprintf( esc_attr__( 'For multilingual string, use syntax like %s.', 'wp-multilang' ), '<code>[:en]Text on english[:de]Text auf Deutsch[:]</code>' ) . '</p></div>';
 	if ( $echo ) {
 		echo $notise;
 	} else {
