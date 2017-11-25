@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-11-22 17:07+0200\n"
-"PO-Revision-Date: 2017-11-22 17:07+0200\n"
+"POT-Creation-Date: 2017-11-25 14:24+0200\n"
+"PO-Revision-Date: 2017-11-25 14:24+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: bg_BG\n"
@@ -88,7 +88,7 @@ msgid "Action failed. Please refresh the page and retry."
 msgstr "Действието е неуспешно. Моля, обновете страницата и опитайте отново."
 
 #: includes/admin/class-wpm-admin-notices.php:108
-#: includes/class-wp-multilang.php:54 includes/class-wp-multilang.php:61
+#: includes/class-wp-multilang.php:61 includes/class-wp-multilang.php:68
 msgid "Cheatin&#8217; huh?"
 msgstr "Cheatin&#8217; huh?"
 
@@ -116,13 +116,9 @@ msgstr ""
 msgid "Show term only in:"
 msgstr "Показвай  израза само в:"
 
-#: includes/admin/class-wpm-admin-widgets.php:75
+#: includes/admin/class-wpm-admin-widgets.php:74
 msgid "Show widget only in:"
 msgstr "Показвай widget само в:"
-
-#: includes/admin/class-wpm-admin-widgets.php:77
-msgid "-"
-msgstr ""
 
 #: includes/admin/class-wpm-admin.php:89
 #, php-format
@@ -134,7 +130,7 @@ msgstr ""
 msgid "Thanks :)"
 msgstr ""
 
-#: includes/admin/class-wpm-admin.php:104
+#: includes/admin/class-wpm-admin.php:100
 msgid "Thank you for translating with WP Multilang."
 msgstr ""
 
@@ -400,15 +396,15 @@ msgstr "Актуализацията завърши"
 msgid "%d terms were imported successfully."
 msgstr "%d термините бяха импортирани успешно."
 
-#: includes/class-wpm-install.php:322
+#: includes/class-wpm-install.php:326
 msgid "Translator"
 msgstr "Преводач"
 
-#: includes/class-wpm-install.php:415
+#: includes/class-wpm-install.php:419
 msgid "View WP Multilang settings"
 msgstr "Преглед на WP Multilang настройки"
 
-#: includes/class-wpm-install.php:415
+#: includes/class-wpm-install.php:419
 msgid "Settings"
 msgstr "Настройки"
 
@@ -430,11 +426,9 @@ msgstr "Потребителска връзка"
 msgid "Multilingual Settings"
 msgstr "Многоезични настройки"
 
-#: includes/class-wpm-taxonomies.php:162
-#, php-format
-msgid "A term with the name provided for %s already exists in this taxonomy."
+#: includes/class-wpm-taxonomies.php:165
+msgid "A term with the name provided already exists in this taxonomy."
 msgstr ""
-"В тази класификация вече съществува термин с името, предоставено за %s."
 
 #: includes/integrations/class-wpm-yoast-seo.php:215
 #: includes/integrations/class-wpm-yoast-seo.php:217
@@ -483,7 +477,7 @@ msgstr "Избери"
 msgid "Switcher Type"
 msgstr "Превключвател на въвеждане"
 
-#: includes/wpm-template-functions.php:459
+#: includes/wpm-template-functions.php:457
 #, php-format
 msgid "For multilingual string, use syntax like %s."
 msgstr "За многоезичен низ използвайте синтаксиса като %s."
@@ -499,6 +493,11 @@ msgstr ""
 #. Author of the plugin/theme
 msgid "Valentyn Riaboshtan"
 msgstr ""
+
+#~ msgid ""
+#~ "A term with the name provided for %s already exists in this taxonomy."
+#~ msgstr ""
+#~ "В тази класификация вече съществува термин с името, предоставено за %s."
 
 #~ msgid "Slug *"
 #~ msgstr "Slug *"
