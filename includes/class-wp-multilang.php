@@ -21,7 +21,7 @@ final class WP_Multilang {
 	 *
 	 * @var string
 	 */
-	public $version = '2.1.3';
+	public $version = '2.1.4';
 
 	/**
 	 * The single instance of the class.
@@ -29,6 +29,13 @@ final class WP_Multilang {
 	 * @var WP_Multilang
 	 */
 	protected static $_instance = null;
+
+	/**
+	 * Setup instance.
+	 *
+	 * @var WPM_Setup
+	 */
+	public $setup = null;
 
 	/**
 	 * Main WP_Multilang Instance.
@@ -135,7 +142,7 @@ final class WP_Multilang {
 		include_once( WPM_ABSPATH . 'includes/wpm-widget-functions.php' );
 
 		WPM_Install::init();
-		WPM_Setup::instance();
+		$this->setup = new WPM_Setup();
 
 		if ( $this->is_request( 'frontend' ) ) {
 			WPM_Frontend_Scripts::init(); // Frontend Scripts

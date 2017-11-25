@@ -40,7 +40,10 @@ class WPM_Taxonomies extends WPM_Object {
 	 * WPM_Taxonomies constructor.
 	 */
 	public function __construct() {
+		add_filter( 'get_term', 'wpm_translate_term', 5, 2 );
 		add_filter( 'get_terms', array( $this, 'translate_terms' ), 5 );
+		add_filter( 'term_name', 'wpm_translate_string', 5 );
+		add_filter( 'term_description', 'wpm_translate_value', 5 );
 		add_filter( 'get_terms_args', array( $this, 'filter_terms_by_language' ), 10, 2 );
 		add_filter( "get_{$this->object_type}_metadata", array( $this, 'get_meta_field' ), 5, 3 );
 		add_filter( "update_{$this->object_type}_metadata", array( $this, 'update_meta_field' ), 99, 5 );
@@ -68,7 +71,7 @@ class WPM_Taxonomies extends WPM_Object {
 			$_terms = array();
 			foreach ( $terms as $term ) {
 				if ( is_object( $term ) ) {
-					$_terms[] = wpm_translate_object( $term );
+					$_terms[] = wpm_translate_term( $term, $term->taxonomy );
 				} else {
 					$_terms[] = wpm_translate_value( $term );
 				}
@@ -151,15 +154,15 @@ class WPM_Taxonomies extends WPM_Object {
 			return $term;
 		}
 
-		$languages = wpm_get_languages();
-		$name      = wp_unslash( $term );
-		$like      = '%' . $wpdb->esc_like( esc_sql( $name ) ) . '%';
-		$results   = $wpdb->get_results( $wpdb->prepare( "SELECT t.term_id, t.name FROM {$wpdb->terms} AS t INNER JOIN {$wpdb->term_taxonomy} AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy = '%s' AND `name` LIKE '%s';", $taxonomy, $like ) );
+		$name    = wp_unslash( $term );
+		$slug    = sanitize_title( $name );
+		$like    = '%' . $wpdb->esc_like( esc_sql( '[:' . wpm_get_language() . ']' . $name . '[:' ) ) . '%';
+		$results = $wpdb->get_results( $wpdb->prepare( "SELECT t.term_id, t.name, t.slug FROM {$wpdb->terms} AS t INNER JOIN {$wpdb->term_taxonomy} AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy = %s AND ( t.name LIKE %s OR t.slug = %s );", $taxonomy, $like, $slug ) );
 
 		foreach ( $results as $result ) {
 			$ml_term = wpm_translate_string( $result->name );
-			if ( $ml_term === $name && ! is_taxonomy_hierarchical( $taxonomy ) ) {
-				return new \WP_Error( 'term_exists', sprintf( __( 'A term with the name provided for %s already exists in this taxonomy.', 'wp-multilang' ), $languages[ wpm_get_language() ]['name'] ), $result->term_id );
+			if ( ( $ml_term === $name || $result->slug == $slug) && ! is_taxonomy_hierarchical( $taxonomy ) ) {
+				return new \WP_Error( 'term_exists', __( 'A term with the name provided already exists in this taxonomy.' ), $result->term_id );
 			}
 		}
 
@@ -183,6 +186,7 @@ class WPM_Taxonomies extends WPM_Object {
 		if ( is_null( $taxonomy_config ) ) {
 			return $data;
 		}
+
 
 		if ( ! wpm_is_ml_value( $data['name'] ) ) {
 			$data['name'] = wpm_set_new_value( array(), $data['name'], $taxonomy_config['name'] );
@@ -298,10 +302,10 @@ class WPM_Taxonomies extends WPM_Object {
 	 */
 	public function get_term_by_name( $args, $taxonomies ) {
 
-		if ( ! empty( $args['name'] ) ) {
+		if ( ! empty( $args['name'] ) && empty( $args['name__like'] ) ) {
 			$taxonomy = current( $taxonomies );
 			if ( ! is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
-				$args['name__like'] = $args['name'];
+				$args['name__like'] = '[:' . wpm_get_language() . ']' . $args['name'] . '[:';
 				$args['name']       = '';
 			}
 		}

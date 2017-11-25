@@ -9,7 +9,6 @@
  */
 
 use WPM\Includes\WPM_Install;
-use WPM\Includes\WPM_Setup;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -128,4 +127,34 @@ function wpm_update_211_change_options() {
  */
 function wpm_update_211_db_version() {
 	WPM_Install::update_db_version( '2.1.1' );
+}
+
+/**
+ * Change syntax for term and post title.
+ */
+function wpm_update_214_change_syntax() {
+	global $wpdb;
+
+	$results = $wpdb->get_results( "SELECT ID, post_title FROM {$wpdb->posts} WHERE post_title LIKE '%![:__!]%' ESCAPE '!' OR post_title LIKE '%{:__}%' OR post_title LIKE '%<!--:__-->%';" );
+
+	foreach ( $results as $result ) {
+		$post_title = wpm_string_to_ml_array( $result->post_title );
+		$post_title = wpm_ml_array_to_string( $post_title );
+		$wpdb->update( $wpdb->posts, array( 'post_title' => $post_title ), array( 'ID' => $result->ID ) );
+	}
+
+	$results = $wpdb->get_results( "SELECT term_id, `name` FROM {$wpdb->terms} WHERE `name` LIKE '%![:__!]%' ESCAPE '!' OR `name` LIKE '%{:__}%' OR `name` LIKE '%<!--:__-->%';" );
+
+	foreach ( $results as $result ) {
+		$name = wpm_string_to_ml_array( $result->name );
+		$name = wpm_ml_array_to_string( $name );
+		$wpdb->update( $wpdb->terms, array( 'name' => $name ), array( 'term_id' => $result->term_id ) );
+	}
+}
+
+/**
+ * Update DB Version.
+ */
+function wpm_update_214_db_version() {
+	WPM_Install::update_db_version( '2.1.4' );
 }

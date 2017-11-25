@@ -10,11 +10,11 @@
  * @author   Valentyn Riaboshtan
  */
 
+use WPM\Includes\WPM_Setup;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
-
-use WPM\Includes\WPM_Setup;
 
 /**
  * Get enabled languages
@@ -24,7 +24,7 @@ use WPM\Includes\WPM_Setup;
  * @return array
  */
 function wpm_get_languages() {
-	return WPM_Setup::instance()->get_languages();
+	return wpm()->setup->get_languages();
 }
 
 /**
@@ -35,7 +35,7 @@ function wpm_get_languages() {
  * @return string
  */
 function wpm_get_user_language() {
-	return WPM_Setup::instance()->get_user_language();
+	return wpm()->setup->get_user_language();
 }
 
 /**
@@ -46,7 +46,7 @@ function wpm_get_user_language() {
  * @return string
  */
 function wpm_get_default_locale() {
-	return WPM_Setup::instance()->get_default_locale();
+	return wpm()->setup->get_default_locale();
 }
 
 /**
@@ -59,7 +59,7 @@ function wpm_get_default_locale() {
  * @return string
  */
 function wpm_get_default_language() {
-	return WPM_Setup::instance()->get_default_language();
+	return wpm()->setup->get_default_language();
 }
 
 /**
@@ -85,7 +85,7 @@ function wpm_get_lang_option() {
  * @return array
  */
 function wpm_get_installed_languages() {
-	return WPM_Setup::instance()->get_installed_languages();
+	return wpm()->setup->get_installed_languages();
 }
 
 /**
@@ -96,7 +96,7 @@ function wpm_get_installed_languages() {
  * @return array
  */
 function wpm_get_available_translations() {
-	return WPM_Setup::instance()->get_translations();
+	return wpm()->setup->get_translations();
 }
 
 /**
@@ -110,7 +110,6 @@ function wpm_get_language() {
 	if ( is_admin() || ( defined( 'REST_REQUEST' ) && 'GET' !== $_SERVER['REQUEST_METHOD'] ) ) {
 
 		$languages = wpm_get_languages();
-		$edit_lang = get_user_meta( get_current_user_id(), 'edit_lang', true );
 		$query     = $_GET;
 
 		if ( wp_doing_ajax() && ( $referrer = wp_get_raw_referer() ) ) {
@@ -121,7 +120,16 @@ function wpm_get_language() {
 			}
 		}
 
-		$lang = ( isset( $query['edit_lang'] ) && isset( $languages [ wpm_clean( $query['edit_lang'] ) ] ) ) ? wpm_clean( $query['edit_lang'] ) : ( ( $edit_lang && isset( $languages[ $edit_lang ] ) ) ? $edit_lang : wpm_get_user_language() );
+		if ( isset( $query['edit_lang'] ) && isset( $languages [ wpm_clean( $query['edit_lang'] ) ] ) ) {
+			$lang = wpm_clean( $query['edit_lang'] );
+		} else {
+			$edit_lang = get_user_meta( get_current_user_id(), 'edit_lang', true );
+			if ( $edit_lang && isset( $languages[ $edit_lang ] ) ) {
+				$lang = $edit_lang;
+			} else {
+				$lang = wpm_get_user_language();
+			}
+		}
 	} else {
 		$lang = wpm_get_user_language();
 	}

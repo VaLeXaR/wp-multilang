@@ -109,7 +109,7 @@ class WPM_Admin_Assets {
 
 			if ( isset( $admin_html_tags[ $screen_id ] ) && ! is_null( $admin_html_tags[ $screen_id ] ) ) {
 				wp_enqueue_script( 'wpm_translator' );
-				$js_code = '(function ( $ ) {';
+				$js_code = '';
 				foreach ( $admin_html_tags[ $screen_id ] as $attr => $selector ) {
 					$js_code .= '$( "' . implode( ', ', $selector ) . '" ).each( function () {';
 					if ( 'text' == $attr ) {
@@ -121,19 +121,12 @@ class WPM_Admin_Assets {
 					}
 					$js_code .= '} );';
 				}
-				$js_code .= '})( window.jQuery );';
 				wpm_enqueue_js( $js_code );
 			}
 		}
 
 		if ( 'options-general' == $screen_id ) {
-			wpm_enqueue_js( "
-			(function( $ ) {
-			  $(function() {
-                $('#WPLANG').parents('tr').hide();
-			  });
-			})( jQuery );
-			" );
+			wpm_enqueue_js( "$('#WPLANG').parents('tr').hide();" );
 		}
 	}
 

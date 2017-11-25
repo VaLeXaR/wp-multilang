@@ -17,6 +17,7 @@ class WPM_Widgets {
 	 * WPM_Widgets constructor.
 	 */
 	public function __construct() {
+		add_filter( 'widget_display_callback', 'wpm_translate_value', 5 );
 		add_filter( 'widget_display_callback', array( $this, 'widget_display' ) );
 	}
 

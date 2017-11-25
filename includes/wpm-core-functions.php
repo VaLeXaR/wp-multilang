@@ -9,8 +9,6 @@
  * @package       WPM/Functions
  */
 
-use WPM\Includes\WPM_Setup;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -212,7 +210,7 @@ function wpm_translate_current_url( $lang = '' ) {
  * @return string
  */
 function wpm_get_orig_home_url( $unslash = true ) {
-	$home_url = WPM_Setup::instance()->get_original_home_url( $unslash );
+	$home_url = wpm()->setup->get_original_home_url( $unslash );
 
 	return apply_filters( 'wpm_get_original_home_url', $home_url );
 }
@@ -227,7 +225,7 @@ function wpm_get_orig_home_url( $unslash = true ) {
  * @return string
  */
 function wpm_get_orig_request_uri() {
-	return WPM_Setup::instance()->get_original_request_uri();
+	return wpm()->setup->get_original_request_uri();
 }
 
 /**
@@ -240,23 +238,14 @@ function wpm_get_orig_request_uri() {
  * @return string
  */
 function wpm_get_site_request_uri() {
-	return WPM_Setup::instance()->get_site_request_uri();
+	return wpm()->setup->get_site_request_uri();
 }
 
-
-add_filter( 'the_post', 'wpm_translate_post', 5 );
-add_filter( 'the_title', 'wpm_translate_string', 5 );
-add_filter( 'the_content', 'wpm_translate_string', 5 );
-add_filter( 'the_excerpt', 'wpm_translate_string', 5 );
-add_filter( 'the_editor_content', 'wpm_translate_string', 5 );
 add_filter( 'attribute_escape', array( 'WPM\Includes\WPM_Posts', 'escaping_text' ), 5 );
 add_filter( 'esc_textarea', array( 'WPM\Includes\WPM_Posts', 'escaping_text' ), 5 );
 add_filter( 'esc_html', array( 'WPM\Includes\WPM_Posts', 'escaping_text' ), 5 );
-add_filter( 'get_term', 'wpm_translate_term', 5, 2 );
-add_filter( 'widget_display_callback', 'wpm_translate_value', 5 );
 add_filter( 'localization', 'wpm_translate_string', 5 );
 add_filter( 'gettext', 'wpm_translate_string', 5 );
-
 
 if ( ! function_exists( 'remove_class_filter' ) ) {
 	/**
@@ -343,7 +332,6 @@ if ( ! function_exists( 'remove_class_filter' ) ) {
 		return false;
 	}
 }
-
 
 if ( ! function_exists( 'remove_class_action' ) ) {
 	/**
@@ -470,7 +458,7 @@ function wpm_help_tip( $tip, $allow_html = false ) {
 function wpm_get_page_by_title( $page_title, $output = OBJECT, $post_type = 'page' ) {
 	global $wpdb;
 
-	$like = '%' . $wpdb->esc_like( esc_sql( $page_title ) ) . '%';
+	$like = '%' . $wpdb->esc_like( esc_sql( '[:' . wpm_get_language() . ']' . $page_title . '[:' ) ) . '%';
 
 	if ( is_array( $post_type ) ) {
 		$post_type = esc_sql( $post_type );
@@ -490,12 +478,9 @@ function wpm_get_page_by_title( $page_title, $output = OBJECT, $post_type = 'pag
 		", $like, $post_type );
 	}
 
-	$results = $wpdb->get_results( $sql );
+	$page = $wpdb->get_var( $sql );
 
-	foreach ( $results as $result ) {
-		$title = wpm_translate_string( $result->post_title );
-		if ( $title == $page_title ) {
-			return get_post( $result->ID, $output );
-		}
+	if ( $page ) {
+		return get_post( $page, $output );
 	}
 }

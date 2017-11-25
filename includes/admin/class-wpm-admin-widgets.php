@@ -41,12 +41,6 @@ class WPM_Admin_Widgets {
 	 */
 	public function pre_save_widget( $instance, $new_instance, $old_instance, $widget ) {
 
-		if ( isset( $new_instance['languages'] ) ) {
-			$instance['languages'] = $new_instance['languages'];
-		} else {
-			unset( $instance['languages'] );
-		}
-
 		$widget_config = wpm_get_widget_config( $widget->id_base );
 
 		if ( is_null( $widget_config ) ) {
@@ -67,6 +61,11 @@ class WPM_Admin_Widgets {
 	 * @param object \WP_Widget $instance
 	 */
 	public function add_language_fields( $widget, $return, $instance ) {
+
+		if ( is_null( wpm_get_widget_config( $widget->id_base ) ) ) {
+			return;
+		}
+
 		$instance  = wp_parse_args( (array) $instance, array( 'languages' => array() ) );
 		$languages = wpm_get_languages();
 		$i         = 0;
@@ -74,7 +73,7 @@ class WPM_Admin_Widgets {
 		<p>
 			<?php _e( 'Show widget only in:', 'wp-multilang' ); ?><br>
 			<?php foreach ( $languages as $code => $language ) { ?>
-				<label><input type="checkbox" name="<?php esc_attr_e( $widget->get_field_name('languages') ); ?>[<?php echo esc_attr( $i ) ; ?>]" id="<?php esc_attr_e( $widget->get_field_id('languages') . '-' . $code ); ?>" value="<?php echo esc_attr( $code ); ?>"<?php checked( in_array( $code, $instance['languages'] ) ); ?>><?php esc_html_e( $language['name'] ); ?></label><br>
+				<label><input type="checkbox" name="<?php echo esc_attr_e( $widget->get_field_name('languages') ); ?>[<?php echo esc_attr( $i ) ; ?>]" id="<?php echo esc_attr( $widget->get_field_id('languages') . '-' . $code ); ?>" value="<?php echo esc_attr( $code ); ?>"<?php checked( in_array( $code, $instance['languages'] ) ); ?>><?php esc_html_e( $language['name'] ); ?></label><br>
 			<?php $i++; } ?>
 		</p>
 		<?php
