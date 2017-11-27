@@ -116,6 +116,7 @@ class WPM_Setup {
 		add_action( 'wpm_init', array( $this, 'load_integrations' ) );
 		add_action( 'template_redirect', array( $this, 'redirect_default_url' ) );
 		add_action( 'template_redirect', array( $this, 'redirect_to_user_language' ) );
+		add_filter( 'redirect_canonical', array( $this, 'fix_canonical_redirect' ) );
 		add_filter( 'rest_url', array( $this, 'fix_rest_url' ) );
 		add_filter( 'option_date_format', array( $this, 'set_date_format' ) );
 		add_filter( 'option_time_format', array( $this, 'set_time_format' ) );
@@ -406,6 +407,23 @@ class WPM_Setup {
 			wp_redirect( $this->get_original_home_url() . $this->get_site_request_uri() );
 			exit;
 		}
+	}
+
+	/**
+	 * Fix redirect when using lang param in $_GET
+	 *
+	 * @since 2.1.5
+	 *
+	 * @param string $redirect_url
+	 *
+	 * @return string
+	 */
+	public function fix_canonical_redirect( $redirect_url ) {
+		if ( isset( $_GET['lang'] ) && ! empty( $_GET['lang'] ) ) {
+			$redirect_url = str_replace( home_url(), $this->get_original_home_url(), $redirect_url );
+		}
+
+		return $redirect_url;
 	}
 
 	/**
