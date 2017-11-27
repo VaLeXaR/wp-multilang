@@ -73,6 +73,7 @@ class WPM_Admin_Settings {
 
 		self::add_message( __( 'Your settings have been saved.', 'wp-multilang' ) );
 
+		wp_schedule_single_event( time(), 'wpm_flush_rewrite_rules' );
 		do_action( 'wpm_settings_saved' );
 	}
 
