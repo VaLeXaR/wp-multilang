@@ -1,7 +1,6 @@
 ( function( $ ) {
   "use strict";
 
-	// Edit prompt
 	$( function() {
 		var changed = false;
 

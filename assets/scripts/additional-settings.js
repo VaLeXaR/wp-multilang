@@ -1,7 +1,6 @@
 ( function( $ ) {
   "use strict";
 
-  // Edit prompt
   $( function() {
 
     $('#set_default_language').click(function(){
