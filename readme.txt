@@ -39,6 +39,7 @@ Translations of post types, taxonomies, meta fields, options, text fields in mil
 * ACF, ACF Pro
 * WooCommerce
 * WooCommerce Customizer
+* Gutenberg
 * Yoast Seo
 * Contact Form 7 (added mail tag [_language] for send user language in mail)
 * WPBakery Visual Composer
