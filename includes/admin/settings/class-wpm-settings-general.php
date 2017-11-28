@@ -27,6 +27,7 @@ class WPM_Settings_General extends WPM_Settings_Page {
 		$this->label = __( 'General', 'wp-multilang' );
 
 		parent::__construct();
+
 		add_filter( 'wpm_general_settings', array( $this, 'add_uninstall_setting' ) );
 		add_action( 'wpm_update_options_general', array( $this, 'update_wplang' ) );
 	}
