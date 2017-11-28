@@ -117,13 +117,17 @@ function wpm_translate_string( $string, $language = '' ) {
 	$language         = wpm_get_language();
 	$default_language = wpm_get_default_language();
 
-	if ( ( '' == $strings[ $language ] ) && get_option( 'wpm_show_untranslated_strings', 'yes' ) === 'yes' ) {
+	if ( isset( $strings[ $language ] ) && ( '' == $strings[ $language ] ) && get_option( 'wpm_show_untranslated_strings', 'yes' ) === 'yes' ) {
 		$default_text = apply_filters( 'wpm_untranslated_text', $strings[ $default_language ], $strings, $language );
 
 		return $default_text;
 	}
 
-	return $strings[ $language ];
+	if ( isset( $strings[ $language ] ) ) {
+		return $strings[ $language ];
+	}
+
+	return '';
 }
 
 /**

@@ -288,7 +288,11 @@ class WPM_Setup {
 			return $locale;
 		}
 
-		return $languages[ $this->get_user_language() ]['translation'];
+		if ( isset( $languages[ $this->get_user_language() ] ) ) {
+			return $languages[ $this->get_user_language() ]['translation'];
+		}
+
+		return $this->get_default_locale();
 	}
 
 	/**
@@ -789,8 +793,10 @@ class WPM_Setup {
 			$languages     = $this->get_languages();
 			$user_language = $this->get_user_language();
 
-			if ( $languages && $languages[ $user_language ]['locale'] ) {
+			if ( $languages && isset( $languages[ $user_language ] ) && $languages[ $user_language ]['locale'] ) {
 				$translation = $languages[ $user_language ]['locale'];
+			} else {
+				$translation = get_locale();
 			}
 		}
 
