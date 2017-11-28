@@ -142,6 +142,16 @@ class WPM_Setup {
 	}
 
 	/**
+	 * Set options
+	 *
+	 * @param string $key
+	 * @param $data
+	 */
+	static function set_option( $key, $data ) {
+		self::$options[ $key ] = $data;
+	}
+
+	/**
 	 * Get original home url
 	 *
 	 * @since 1.7.0

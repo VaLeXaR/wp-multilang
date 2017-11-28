@@ -9,6 +9,7 @@
  */
 
 use WPM\Includes\WPM_Install;
+use WPM\Includes\WPM_Setup;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -27,6 +28,7 @@ function wpm_update_178_datetime_format() {
 	}
 
 	update_option( 'wpm_languages', $updated_languages );
+	WPM_Setup::set_option( 'languages', $updated_languages );
 }
 
 /**
@@ -48,6 +50,7 @@ function wpm_update_180_flags() {
 	}
 
 	update_option( 'wpm_languages', $updated_languages );
+	WPM_Setup::set_option( 'languages', $updated_languages );
 }
 
 /**
@@ -81,6 +84,7 @@ function wpm_update_200_options() {
 
 	if ( $updated_languages ) {
 		update_option( 'wpm_languages', $updated_languages );
+		WPM_Setup::set_option( 'languages', $updated_languages );
 	}
 }
 
