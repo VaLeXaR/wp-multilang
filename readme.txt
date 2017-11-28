@@ -145,6 +145,18 @@ Compatible with REST-API.
 Supports transfer the required translation through option `lang` in the GET request to REST.
 Has the ability to keep recording the target language through the transmission parameter `lang` in the request.
 
+== Migration from qTranslate-X ==
+
+1. Before installing/uninstalling, make database backup.
+2. Install WP Multilang. Not activate.
+2. Deactivate qTranslate-X.
+3. Activate WP Multilang.
+4. Create in root of your theme file ‘wpm-config.json’.
+5. Add all needed post types, taxonomies, options, fields to ‘wpm-config.json’. Setting from qTranslate-X not importing.
+6. Import term names from qTranslate.
+7. Check that everything is okay.
+8. If everything is okay, remove qTranslate. If not, make screenshots of errors, restore database from backup and add support issue with your screenshots of errors.
+
 == Warning ==
 
 Do not support different slug for each language(Yet).
