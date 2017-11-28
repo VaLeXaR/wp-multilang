@@ -114,15 +114,15 @@ function wpm_update_210_db_version() {
  */
 function wpm_update_211_change_options() {
 	$options = array(
-		'wpm_show_untranslated_strings' => 'yes',
-		'wpm_use_redirect'              => 'no',
-		'wpm_use_prefix'                => 'no',
-		'wpm_uninstall_translations'    => 'no',
+		'wpm_show_untranslated_strings',
+		'wpm_use_redirect',
+		'wpm_use_prefix',
+		'wpm_uninstall_translations',
 	);
 
-	foreach ( $options as $option => $default ) {
-		$value = get_option( $option, $default );
-		update_option( $option, $value ? 'yes' : 'no' );
+	foreach ( $options as $option ) {
+		$value = get_option( $option );
+		update_option( $option, 1 == $value ? 'yes' : 'no' );
 	}
 }
 
