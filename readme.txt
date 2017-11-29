@@ -134,7 +134,7 @@ Add your tags in config:
 Where:
 `admin_screen_id` - admin screen id.
 `attribute` - attribute what need to translate. Available 'text' - for translate text node, 'value' - for translate form values. Or other tag attribute, like 'title', 'alt'.
-`selector` - javascript selector for search needed tag. Each selector is a new array item.
+`selector` - css selector for search needed tag. Each selector is a new array item.
 
 For set translation uses the syntax:
 
