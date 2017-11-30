@@ -29,7 +29,7 @@ class WPM_Settings_Additional extends WPM_Settings_Page {
 
 		add_action( 'wpm_admin_field_set_default_translation', array( $this, 'default_translation' ) );
 		add_action( 'wpm_admin_field_localizations', array( $this, 'localizations' ) );
-		add_action( 'wpm_admin_field_qts_import', array( $this, 'qts_import' ) );
+		add_action( 'wpm_admin_field_qtx_import', array( $this, 'qtx_import' ) );
 	}
 
 	/**
@@ -60,8 +60,8 @@ class WPM_Settings_Additional extends WPM_Settings_Page {
 
 			array(
 				'title' => __( 'qTranslate import', 'wp-multilang' ),
-				'id'    => 'wpm_qts_import',
-				'type'  => 'qts_import',
+				'id'    => 'wpm_qtx_import',
+				'type'  => 'qtx_import',
 			),
 
 			array( 'type' => 'sectionend', 'id' => 'additional_options' ),
@@ -81,7 +81,7 @@ class WPM_Settings_Additional extends WPM_Settings_Page {
 			'ajax_url'                   => admin_url( 'admin-ajax.php' ),
 			'set_default_language_nonce' => wp_create_nonce( 'set-default-language' ),
 			'delete_localization_nonce'  => wp_create_nonce( 'delete-localization' ),
-			'qts_import_nonce'           => wp_create_nonce( 'qts-import' ),
+			'qtx_import_nonce'           => wp_create_nonce( 'qtx-import' ),
 			'confirm_question'           => __( 'Are you sure you want to delete this localization?', 'wp-multilang' ),
 		);
 		wp_localize_script( 'wpm_additional_settings', 'wpm_additional_settings_params', $main_params );
@@ -162,7 +162,7 @@ class WPM_Settings_Additional extends WPM_Settings_Page {
 	 *
 	 * @param $value
 	 */
-	public function qts_import( $value ) {
+	public function qtx_import( $value ) {
 
 		$disabled = true;
 
@@ -176,7 +176,7 @@ class WPM_Settings_Additional extends WPM_Settings_Page {
 			</th>
 			<td class="forminp">
 				<p>
-					<button type="button" id="qts_import" class="button js-wpm-action" <?php disabled( $disabled ); ?>><?php esc_attr_e( 'Import', 'wp-multilang' ); ?></button>
+					<button type="button" id="qtx_import" class="button js-wpm-action" <?php disabled( $disabled ); ?>><?php esc_attr_e( 'Import', 'wp-multilang' ); ?></button>
 				</p>
 				<p class="description"><?php esc_html_e( 'Import names for terms from qTranslate.', 'wp-multilang' ); ?></p>
 			</td>

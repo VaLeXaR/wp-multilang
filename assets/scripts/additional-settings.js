@@ -68,6 +68,8 @@
             } else {
               button.after('<span class="error">' + json.data + '</span>');
             }
+          },
+          complete: function() {
             $('#wpm_installed_localizations').trigger('init_localizations');
           },
           error: function (xhr, ajaxOptions, thrownError) {
@@ -77,12 +79,12 @@
       }
     });
 
-    $('#qts_import').click(function(){
+    $('#qtx_import').click(function(){
       var button = $(this);
 
       var data = {
-        action: 'wpm_qts_import',
-        security: wpm_additional_settings_params.qts_import_nonce
+        action: 'wpm_qtx_import',
+        security: wpm_additional_settings_params.qtx_import_nonce
       };
 
       $.ajax({

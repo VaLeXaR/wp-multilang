@@ -156,14 +156,11 @@ class WPM_Setup {
 	 *
 	 * @since 1.7.0
 	 *
-	 * @param bool $unslash
-	 *
 	 * @return string
 	 */
-	public function get_original_home_url( $unslash = true ) {
+	public function get_original_home_url() {
 		if ( ! $this->original_home_url ) {
-			$home_url                = home_url();
-			$this->original_home_url = $unslash ? untrailingslashit( $home_url ) : $home_url;
+			$this->original_home_url = untrailingslashit( home_url() );
 		}
 
 		return $this->original_home_url;
