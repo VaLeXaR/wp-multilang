@@ -71,6 +71,7 @@ class WPM_Admin_Assets {
 		wp_localize_script( 'wpm_translator', 'wpm_translator_params', $translator_params );
 
 		wp_register_script( 'wpm_additional_settings', wpm_asset_path( 'scripts/additional-settings' . $suffix . '.js' ), array( 'jquery' ), WPM_VERSION );
+		wp_register_script( 'wpm_general_settings', wpm_asset_path( 'scripts/general-settings' . $suffix . '.js' ), array( 'jquery' ), WPM_VERSION );
 
 		if ( is_null( $screen ) ) {
 			return;
