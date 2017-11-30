@@ -21,5 +21,6 @@
 		$( '.submit input' ).click( function() {
 			window.onbeforeunload = '';
 		});
+
 	});
 })( jQuery );

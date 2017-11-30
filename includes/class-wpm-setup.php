@@ -411,7 +411,7 @@ class WPM_Setup {
 				}
 			} else {
 				if ( $url_lang && $user_language === $default_language ) {
-					wp_redirect( home_url( preg_replace( '!^/([a-z]{2})(-[a-z]{2})?(/|$)!i', '/', $this->get_original_request_uri() ) ) );
+					wp_redirect( home_url( preg_replace( '!^/([a-z]{2})(/|$)!i', '/', $this->get_original_request_uri() ) ) );
 					exit;
 				}
 			}
@@ -824,7 +824,7 @@ class WPM_Setup {
 		if ( ! $this->url_language ) {
 			$url_lang = '';
 
-			if ( preg_match( '!^/([a-z]{2})(-[a-z]{2})?(/|$)!i', $this->get_original_request_uri(), $match ) ) {
+			if ( preg_match( '!^/([a-z]{2})(/|$)!i', $this->get_original_request_uri(), $match ) ) {
 				$url_lang = $match[1];
 			}
 

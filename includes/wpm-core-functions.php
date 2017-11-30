@@ -205,12 +205,10 @@ function wpm_translate_current_url( $lang = '' ) {
  *
  * @since 1.7.0
  *
- * @param bool $unslash
- *
  * @return string
  */
-function wpm_get_orig_home_url( $unslash = true ) {
-	$home_url = wpm()->setup->get_original_home_url( $unslash );
+function wpm_get_orig_home_url() {
+	$home_url = wpm()->setup->get_original_home_url();
 
 	return apply_filters( 'wpm_get_original_home_url', $home_url );
 }
@@ -223,6 +221,8 @@ function wpm_get_orig_home_url( $unslash = true ) {
  * @since 1.7.0
  *
  * @return string
+ *
+ * @deprecated
  */
 function wpm_get_orig_request_uri() {
 	return wpm()->setup->get_original_request_uri();
@@ -236,6 +236,8 @@ function wpm_get_orig_request_uri() {
  * @since 2.0.1
  *
  * @return string
+ *
+ * @deprecated
  */
 function wpm_get_site_request_uri() {
 	return wpm()->setup->get_site_request_uri();

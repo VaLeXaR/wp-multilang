@@ -36,16 +36,18 @@ function wpm_translate_url( $url, $language = '' ) {
 		if ( ( ( $language === $user_language ) && ( ! is_admin() || wp_doing_ajax() ) && ! isset( $_GET['lang'] ) ) || ! isset( $options[ $language ] ) ) {
 			return $url;
 		}
+	} else {
+		$language = $user_language;
 	}
 
-	if ( preg_match( '/^.*\.php$/i', wp_parse_url( wpm_get_orig_request_uri(), PHP_URL_PATH ) ) || ( strpos( $url, 'wp-admin/' ) !== false ) ) {
+	if ( preg_match( '/^.*\.php$/i', wp_parse_url( $url, PHP_URL_PATH ) ) || ( strpos( $url, 'wp-admin/' ) !== false ) ) {
 		return add_query_arg( 'lang', $language, $url );
 	}
 
 	$url         = remove_query_arg( 'lang', $url );
 	$default_uri = str_replace( $host, '', $url );
 	$default_uri = $default_uri ? $default_uri : '/';
-	$pattern     = '!^/([a-z]{2})(-[a-z]{2})?(/|$)!i';
+	$pattern     = '!^/([a-z]{2})(/|$)!i';
 
 	if ( preg_match( $pattern, $default_uri ) ) {
 		$default_uri = preg_replace( $pattern, '/', $default_uri );
@@ -54,18 +56,10 @@ function wpm_translate_url( $url, $language = '' ) {
 	$default_language    = wpm_get_default_language();
 	$default_lang_prefix = get_option( 'wpm_use_prefix', 'no' ) === 'yes' ? $default_language : '';
 
-	if ( $language ) {
-		if ( $language === $default_language ) {
-			$new_uri = '/' . $default_lang_prefix . $default_uri;
-		} else {
-			$new_uri = '/' . $language . $default_uri;
-		}
+	if ( $language === $default_language ) {
+		$new_uri = '/' . $default_lang_prefix . $default_uri;
 	} else {
-		if ( ( $user_language === $default_language ) ) {
-			$new_uri = '/' . $default_lang_prefix . $default_uri;
-		} else {
-			$new_uri = '/' . $user_language . $default_uri;
-		}
+		$new_uri = '/' . $language . $default_uri;
 	}
 
 	$new_uri = preg_replace( '/(\/+)/', '/', $new_uri );
@@ -73,9 +67,8 @@ function wpm_translate_url( $url, $language = '' ) {
 	if ( '/' != $new_uri ) {
 		$new_url = $host . $new_uri;
 	} else {
-		$new_url = wpm_get_orig_home_url( false );
+		$new_url = $host;
 	}
-
 
 	return apply_filters( 'wpm_translate_url', $new_url, $language, $url );
 }
