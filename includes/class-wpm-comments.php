@@ -92,13 +92,21 @@ class WPM_Comments extends WPM_Object {
 			return $count;
 		}
 
-		global $wpdb;
-
 		$lang = get_query_var( 'lang' );
 
 		if ( ! $lang ) {
 			$lang = wpm_get_user_language();
 		}
+
+		$count_array = wp_cache_get( $post_id, 'wpm_comment_count' );
+
+		if ( isset( $count_array[ $lang ] ) ) {
+			return $count_array[ $lang ];
+		} else {
+			$count_array = array();
+		}
+
+		global $wpdb;
 
 		$meta_query = array(
 			array(
@@ -118,6 +126,9 @@ class WPM_Comments extends WPM_Object {
 		$meta_sql = get_meta_sql( $meta_query, 'comment', $wpdb->comments, 'comment_ID' );
 
 		$count = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->comments} {$meta_sql['join']} WHERE comment_post_ID = %d AND comment_approved = '1' {$meta_sql['where']};", $post_id ) );
+
+		$count_array[ $lang ] = $count;
+		wp_cache_add( $post_id, $count_array, 'wpm_comment_count' );
 
 		return $count;
 	}

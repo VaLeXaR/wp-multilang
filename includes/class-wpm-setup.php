@@ -465,9 +465,9 @@ class WPM_Setup {
 	public function get_config() {
 
 		if ( ! $this->config ) {
-			if ( ! $config = wp_cache_get( 'wpm_config' ) ) {
+			if ( ! $config = wp_cache_get( 'config', 'wpm' ) ) {
 				WPM_Config::load_config_run();
-				$config = wp_cache_get( 'wpm_config' );
+				$config = wp_cache_get( 'config', 'wpm' );
 			}
 
 			$this->config = $config;
@@ -548,7 +548,7 @@ class WPM_Setup {
 			'wordpress-seo'              => __NAMESPACE__ . '\Integrations\WPM_Yoast_Seo',
 		) );
 
-		foreach ( wp_cache_get( 'wpm_active_plugins' ) as $plugin ) {
+		foreach ( wp_cache_get( 'active_plugins', 'wpm' ) as $plugin ) {
 			if ( isset( $integrations[ $plugin ] ) && ! empty( $integrations[ $plugin ] ) ) {
 				new $integrations[ $plugin ]();
 			}

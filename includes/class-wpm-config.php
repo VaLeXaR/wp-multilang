@@ -29,8 +29,8 @@ class WPM_Config {
 		self::load_core_configs();
 		self::load_theme_config();
 		self::parse_config_files();
-		wp_cache_set( 'wpm_active_plugins', self::$active_plugins );
-		wp_cache_set( 'wpm_config', self::$config );
+		wp_cache_set( 'active_plugins', self::$active_plugins, 'wpm' );
+		wp_cache_set( 'config', self::$config, 'wpm' );
 	}
 
 	/**

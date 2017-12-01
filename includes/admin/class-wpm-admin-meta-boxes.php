@@ -44,7 +44,7 @@ class WPM_Admin_Meta_Boxes {
 		add_action( 'wpm_process_meta', __NAMESPACE__ . '\Meta_Boxes\WPM_Meta_Box_Languages::save' );
 
 		// Save Comment Meta Boxes.
-		add_action( 'edit_comment',  __NAMESPACE__ . '\Meta_Boxes\WPM_Meta_Box_Comment_Languages::save' );
+		add_filter( 'comment_edit_redirect', __NAMESPACE__ . '\Meta_Boxes\WPM_Meta_Box_Comment_Languages::save', 1, 2 );
 
 		// Error handling (for showing errors from meta boxes on next page load)
 		add_action( 'admin_notices', array( $this, 'output_errors' ) );

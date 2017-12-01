@@ -52,12 +52,15 @@ class WPM_Meta_Box_Comment_Languages {
 	/**
 	 * Save meta box data.
 	 *
+	 * @param $location
 	 * @param int $comment_id
+	 *
+	 * @return mixed
 	 */
-	public static function save( $comment_id ) {
+	public static function save( $location, $comment_id ) {
 
 		if ( ! wp_verify_nonce( $_POST['wpm_meta_nonce'], 'wpm_save_data' ) ) {
-			return;
+			return $location;
 		}
 
 		if ( $languages = wpm_get_post_data_by_key( 'wpm_languages' ) ) {
@@ -65,5 +68,11 @@ class WPM_Meta_Box_Comment_Languages {
 		} else {
 			delete_comment_meta( $comment_id, '_languages' );
 		}
+
+		$comment = get_comments( $comment_id );
+		wp_cache_delete( $comment->comment_post_ID, 'wpm_comment_count' );
+
+		// Return regular value after updating
+		return $location;
 	}
 }

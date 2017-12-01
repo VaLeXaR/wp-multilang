@@ -25,7 +25,7 @@ Translations of post types, taxonomies, meta fields, options, text fields in mil
 * Support configuration for translate multidimensional arrays in options, meta fields, post content.
 * Support multisite.
 * Support WordPress in sub-folder.
-* Separate menu items, posts, terms, widgets by language.
+* Separate menu items, posts, terms, widgets, comments per language.
 * Many filters for dynamic applying translation settings.
 * No duplicate posts, terms, menus widgets.
 * No sub-domain for each language version.
@@ -200,9 +200,10 @@ If you have opened several browser tabs for editing this post in different langu
 == Changelog ==
 
 = 2.1.5 =
+* add language tag indicator
+* add separating comments per language
 * fix many redirect on home page when using ssl and lang param in url
 * fix updating errors
-* add language tag indicator
 
 = 2.1.4 =
 * change syntax for more accurate search in database
@@ -254,7 +255,7 @@ If you have opened several browser tabs for editing this post in different langu
 * Other fixes and improvements
 
 = 2.0.2 =
-* fix separate posts by language
+* fix separate posts per language
 
 = 2.0.1 =
 * fix set 'lang' GET param for home page
@@ -276,7 +277,7 @@ If you have opened several browser tabs for editing this post in different langu
 + add config for new widgets in Page Builder by SiteOrigin
 + add filters for customizing language settings
 + add Background Updater
-* fix separate posts by languages
+* fix separate posts per languages
 * fix save title settings in Yoast SEO
 * fix switch user language in admin dashboard
 

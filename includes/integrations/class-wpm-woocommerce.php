@@ -246,13 +246,23 @@ class WPM_WooCommerce {
 			return $count;
 		}
 
-		global $wpdb;
-
 		$lang = get_query_var( 'lang' );
 
 		if ( ! $lang ) {
 			$lang = wpm_get_user_language();
 		}
+
+		$count_array = wp_cache_get( $product->get_id(), 'wpm_comment_count' );
+
+		if ( $count_array ) {
+			if ( isset( $count_array[ $lang ] ) ) {
+				return $count_array[ $lang ];
+			}
+		} else {
+			$count_array = array();
+		}
+
+		global $wpdb;
 
 		$meta_query = array(
 			array(
@@ -272,7 +282,7 @@ class WPM_WooCommerce {
 		$meta_sql = get_meta_sql( $meta_query, 'comment', $wpdb->comments, 'comment_ID' );
 
 		$count = $wpdb->get_var( $wpdb->prepare("
-			SELECT COUNT(*) FROM $wpdb->comments
+			SELECT COUNT( DISTINCT({$wpdb->comments}.comment_ID) ) FROM {$wpdb->comments}
 			{$meta_sql['join']}
 			WHERE comment_parent = 0
 			AND comment_post_ID = %d
@@ -280,15 +290,8 @@ class WPM_WooCommerce {
 			{$meta_sql['where']}
 		", $product->get_id() ) );
 
-		/*d( $wpdb->prepare("
-			SELECT COUNT(*) FROM $wpdb->comments
-			{$meta_sql['join']}
-			WHERE comment_parent = 0
-			AND comment_post_ID = %d
-			AND comment_approved = '1'
-			{$meta_sql['where']}
-		", $product->get_id() ));
-		die();*/
+		$count_array[ $lang ] = $count;
+		wp_cache_add( $product->get_id(), $count_array, 'wpm_comment_count' );
 
 		return $count;
 	}
