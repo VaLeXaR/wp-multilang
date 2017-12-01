@@ -1,6 +1,6 @@
 <?php
 /**
- * Languages
+ * Post Languages
  *
  * @author   Valentyn Riaboshtan
  * @category      Admin
@@ -14,9 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * WPM_Meta_Box_Languages Class.
+ * WPM_Meta_Box_Post_Languages Class.
  */
-class WPM_Meta_Box_Languages {
+class WPM_Meta_Box_Post_Languages {
 
 	/**
 	 * Output the metabox.

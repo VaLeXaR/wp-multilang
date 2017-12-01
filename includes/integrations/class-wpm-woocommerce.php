@@ -53,6 +53,7 @@ class WPM_WooCommerce {
 		add_filter( 'woocommerce_attribute_label', 'wpm_translate_string' );
 		add_filter( 'woocommerce_attribute_taxonomies', array( $this, 'translate_attribute_taxonomies' ) );
 		add_action( 'admin_head', array( $this, 'set_translation_for_attribute_taxonomies' ) );
+		add_filter( 'woocommerce_product_get_review_count', array( $this, 'fix_product_review_count' ), 10, 2 );
 	}
 
 
@@ -230,5 +231,65 @@ class WPM_WooCommerce {
 		}
 
 		$_POST['attribute_label'] = $label;
+	}
+
+	/**
+	 *
+	 * @param $count
+	 * @param $product \WC_Product
+	 *
+	 * @return null|string
+	 */
+	public function fix_product_review_count( $count, $product ) {
+
+		if ( ( is_admin() && ! wp_doing_ajax() ) || defined( 'DOING_CRON' ) ) {
+			return $count;
+		}
+
+		global $wpdb;
+
+		$lang = get_query_var( 'lang' );
+
+		if ( ! $lang ) {
+			$lang = wpm_get_user_language();
+		}
+
+		$meta_query = array(
+			array(
+				'relation' => 'OR',
+				array(
+					'key'     => '_languages',
+					'compare' => 'NOT EXISTS',
+				),
+				array(
+					'key'     => '_languages',
+					'value'   => serialize( $lang ),
+					'compare' => 'LIKE',
+				),
+			),
+		);
+
+		$meta_sql = get_meta_sql( $meta_query, 'comment', $wpdb->comments, 'comment_ID' );
+
+		$count = $wpdb->get_var( $wpdb->prepare("
+			SELECT COUNT(*) FROM $wpdb->comments
+			{$meta_sql['join']}
+			WHERE comment_parent = 0
+			AND comment_post_ID = %d
+			AND comment_approved = '1'
+			{$meta_sql['where']}
+		", $product->get_id() ) );
+
+		/*d( $wpdb->prepare("
+			SELECT COUNT(*) FROM $wpdb->comments
+			{$meta_sql['join']}
+			WHERE comment_parent = 0
+			AND comment_post_ID = %d
+			AND comment_approved = '1'
+			{$meta_sql['where']}
+		", $product->get_id() ));
+		die();*/
+
+		return $count;
 	}
 }

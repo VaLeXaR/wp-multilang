@@ -43,6 +43,9 @@ class WPM_Admin_Meta_Boxes {
 
 		add_action( 'wpm_process_meta', __NAMESPACE__ . '\Meta_Boxes\WPM_Meta_Box_Languages::save' );
 
+		// Save Comment Meta Boxes.
+		add_action( 'edit_comment',  __NAMESPACE__ . '\Meta_Boxes\WPM_Meta_Box_Comment_Languages::save' );
+
 		// Error handling (for showing errors from meta boxes on next page load)
 		add_action( 'admin_notices', array( $this, 'output_errors' ) );
 		add_action( 'shutdown', array( $this, 'save_errors' ) );
@@ -91,8 +94,16 @@ class WPM_Admin_Meta_Boxes {
 	 * @param string $post_type
 	 */
 	public function add_meta_boxes( $post_type ) {
+		$screen    = get_current_screen();
+		$screen_id = $screen ? $screen->id : '';
+
 		if ( ! is_null( wpm_get_post_config( $post_type ) ) && ( 'attachment' !== $post_type ) ) {
-			add_meta_box( "wpm-{$post_type}-languages", __( 'Languages', 'wp-multilang' ), __NAMESPACE__ . '\Meta_Boxes\WPM_Meta_Box_Languages::output', $post_type, 'side' );
+			add_meta_box( "wpm-{$post_type}-languages", __( 'Languages', 'wp-multilang' ), __NAMESPACE__ . '\Meta_Boxes\WPM_Meta_Box_Post_Languages::output', $post_type, 'side' );
+		}
+
+		// Comment languages.
+		if ( 'comment' === $screen_id && isset( $_GET['c'] ) ) {
+			add_meta_box( 'wpm-comment-languages', __( 'Languages', 'wp-multilang' ), __NAMESPACE__ . '\Meta_Boxes\WPM_Meta_Box_Comment_Languages::output', 'comment', 'normal' );
 		}
 	}
 
