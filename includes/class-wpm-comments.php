@@ -50,7 +50,7 @@ class WPM_Comments extends WPM_Object {
 	 */
 	public function filter_comments_by_language( $query ) {
 
-		if ( ( is_admin() && ! wp_doing_ajax() ) || defined( 'DOING_CRON' ) ) {
+		if ( ( is_admin() && ! is_front_ajax() ) || defined( 'DOING_CRON' ) ) {
 			return $query;
 		}
 
@@ -88,7 +88,7 @@ class WPM_Comments extends WPM_Object {
 
 	public function fix_comment_count( $count, $post_id ) {
 
-		if ( ( is_admin() && ! wp_doing_ajax() ) || defined( 'DOING_CRON' ) ) {
+		if ( ( is_admin() && ! is_front_ajax() ) || defined( 'DOING_CRON' ) ) {
 			return $count;
 		}
 

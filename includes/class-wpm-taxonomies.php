@@ -93,7 +93,7 @@ class WPM_Taxonomies extends WPM_Object {
 	 */
 	public function filter_terms_by_language( $args, $taxonomies ) {
 
-		if ( ( is_admin() && ! wp_doing_ajax() ) || defined( 'DOING_CRON' ) ) {
+		if ( ( is_admin() && ! is_front_ajax() ) || defined( 'DOING_CRON' ) ) {
 			return $args;
 		}
 

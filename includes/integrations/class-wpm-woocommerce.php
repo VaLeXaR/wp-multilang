@@ -27,7 +27,6 @@ class WPM_WooCommerce {
 		add_filter( 'woocommerce_product_get_description', 'wpm_translate_string' );
 		add_filter( 'woocommerce_product_get_short_description', 'wpm_translate_string' );
 		add_filter( 'woocommerce_shortcode_products_query', array( $this, 'remove_filter' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_js_frontend' ) );
 		add_filter( 'woocommerce_cart_shipping_method_full_label', 'wpm_translate_string' );
 		add_filter( 'woocommerce_shipping_instance_form_fields_flat_rate', 'wpm_translate_value' );
 		add_filter( 'woocommerce_shipping_instance_form_fields_free_shipping', 'wpm_translate_value' );
@@ -54,20 +53,6 @@ class WPM_WooCommerce {
 		add_filter( 'woocommerce_attribute_taxonomies', array( $this, 'translate_attribute_taxonomies' ) );
 		add_action( 'admin_head', array( $this, 'set_translation_for_attribute_taxonomies' ) );
 		add_filter( 'woocommerce_product_get_review_count', array( $this, 'fix_product_review_count' ), 10, 2 );
-	}
-
-
-	/**
-	 * Add script for reload cart after change language
-	 */
-	public function enqueue_js_frontend() {
-		if ( did_action( 'wpm_changed_language' ) ) {
-			wp_add_inline_script( 'wc-cart-fragments', "
-				jQuery( function ( $ ) {
-					$( document.body ).trigger( 'wc_fragment_refresh' );
-				});
-			");
-		}
 	}
 
 	/**
@@ -242,7 +227,7 @@ class WPM_WooCommerce {
 	 */
 	public function fix_product_review_count( $count, $product ) {
 
-		if ( ( is_admin() && ! wp_doing_ajax() ) || defined( 'DOING_CRON' ) ) {
+		if ( ( is_admin() && ! is_front_ajax() ) || defined( 'DOING_CRON' ) ) {
 			return $count;
 		}
 

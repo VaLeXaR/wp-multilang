@@ -81,7 +81,7 @@ class WPM_Posts extends WPM_Object {
 	 */
 	public function filter_posts_by_language( $query ) {
 
-		if ( ( is_admin() && ! wp_doing_ajax() ) || defined( 'DOING_CRON' ) ) {
+		if ( ( is_admin() && ! is_front_ajax() ) || defined( 'DOING_CRON' ) ) {
 			return $query;
 		}
 

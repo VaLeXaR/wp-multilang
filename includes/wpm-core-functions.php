@@ -456,3 +456,20 @@ function wpm_get_page_by_title( $page_title, $output = OBJECT, $post_type = 'pag
 		return get_post( $page, $output );
 	}
 }
+
+if ( ! function_exists( 'is_front_ajax' ) ) {
+	/**
+	 * Check if it is ajax from front
+	 *
+	 * @return bool
+	 */
+	function is_front_ajax() {
+		if ( wp_doing_ajax() && ( $referrer = wp_get_raw_referer() ) ) {
+			if ( strpos( $referrer, 'wp-admin/' ) === false ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+}

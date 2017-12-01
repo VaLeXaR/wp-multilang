@@ -331,15 +331,9 @@ class WPM_Setup {
 			$url = wpm_get_current_url();
 		}
 
-		if ( wp_doing_ajax() ) {
-			if ( $referrer = wp_get_raw_referer() ) {
-				if ( strpos( $referrer, 'wp-admin/' ) === false ) {
-					$url = $referrer;
-					add_filter( 'get_user_metadata', array( $this, 'set_user_locale' ), 10, 4 );
-				}
-			} else {
-				add_filter( 'get_user_metadata', array( $this, 'set_user_locale' ), 10, 4 );
-			}
+		if ( is_front_ajax() ) {
+			$url = wp_get_raw_referer();
+			add_filter( 'get_user_metadata', array( $this, 'set_user_locale' ), 10, 4 );
 		}
 
 		if ( $url ) {
@@ -359,7 +353,7 @@ class WPM_Setup {
 			if ( isset( $languages[ $lang ] ) ) {
 				$user_language = $lang;
 
-				if ( is_admin() && ! wp_doing_ajax() ) {
+				if ( is_admin() && ! is_front_ajax() ) {
 					update_user_meta( get_current_user_id(), 'user_lang', $lang );
 					update_user_meta( get_current_user_id(), 'locale', $languages[ $lang ]['translation'] );
 				}
@@ -369,7 +363,7 @@ class WPM_Setup {
 				}
 			}
 		} else {
-			if ( is_admin() && ! wp_doing_ajax() ) {
+			if ( is_admin() && ! is_front_ajax() ) {
 				if ( $user_meta_language = get_user_meta( get_current_user_id(), 'user_lang', true ) ) {
 					if ( isset( $languages[ $user_meta_language ] ) ) {
 						$user_language = $user_meta_language;
@@ -494,7 +488,7 @@ class WPM_Setup {
 	 */
 	public function set_home_url( $value ) {
 
-		if ( ( is_admin() && ! wp_doing_ajax() ) || ! did_action( 'wpm_init' ) || ! $value || ! $this->user_language ) {
+		if ( ( is_admin() && ! is_front_ajax() ) || ! did_action( 'wpm_init' ) || ! $value || ! $this->user_language ) {
 			return $value;
 		}
 
@@ -729,7 +723,7 @@ class WPM_Setup {
 
 		require_once( ABSPATH . 'wp-admin/includes/screen.php' );
 
-		if ( is_admin() && ! wp_doing_ajax() ) {
+		if ( is_admin() && ! is_front_ajax() ) {
 			$screen = get_current_screen();
 			if ( $screen && 'options-general' == $screen->id ) {
 				return $value;
@@ -763,7 +757,7 @@ class WPM_Setup {
 
 		require_once( ABSPATH . 'wp-admin/includes/screen.php' );
 
-		if ( is_admin() && ! wp_doing_ajax() ) {
+		if ( is_admin() && ! is_front_ajax() ) {
 			$screen = get_current_screen();
 			if ( $screen && 'options-general' == $screen->id ) {
 				return $value;
