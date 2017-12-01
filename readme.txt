@@ -13,12 +13,13 @@ Multilingual plugin for WordPress.
 
 == Description ==
 
-WP Multilang is the multilingual plugin for WordPress.
+WP Multilang is a multilingual plugin for WordPress.
 
 Translations of post types, taxonomies, meta fields, options, text fields in miltimedia files, menus, titles and text fields in widgets.
 
 == Features of the plugin WP Multilang ==
 
+* 100% free.
 * Translation at PHP.
 * Compatible with REST.
 * Support configuration for translate multidimensional arrays in options, meta fields, post content.
