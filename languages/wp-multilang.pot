@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-11-25 14:24+0200\n"
+"POT-Creation-Date: 2017-12-01 13:20+0200\n"
 "PO-Revision-Date: 2017-05-22 12:43+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -24,9 +24,9 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-3: vendor\n"
 
 #: includes/admin/class-wpm-admin-edit-menus.php:38
-#: includes/admin/class-wpm-admin-menus.php:164
-#: includes/admin/class-wpm-admin-menus.php:179
-#: includes/admin/class-wpm-admin-menus.php:182
+#: includes/admin/class-wpm-admin-menus.php:160
+#: includes/admin/class-wpm-admin-menus.php:175
+#: includes/admin/class-wpm-admin-menus.php:178
 #: includes/admin/class-wpm-admin-meta-boxes.php:95
 #: includes/admin/class-wpm-admin-posts.php:76
 #: includes/admin/class-wpm-admin-taxonomies.php:66
@@ -40,44 +40,44 @@ msgstr ""
 msgid "Show item only in:"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-menus.php:117
+#: includes/admin/class-wpm-admin-menus.php:113
 msgid "WP Multilang Settings"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
-#: includes/admin/class-wpm-admin-menus.php:117
+#: includes/admin/class-wpm-admin-menus.php:113
 #: includes/admin/class-wpm-admin.php:90
 msgid "WP Multilang"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-menus.php:190
+#: includes/admin/class-wpm-admin-menus.php:186
 msgid "Add to menu"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-menus.php:218
+#: includes/admin/class-wpm-admin-menus.php:214
 #: includes/widgets/class-wpm-widget-language-switcher.php:38
 msgid "Both"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-menus.php:219
-#: includes/admin/settings/views/html-languages.php:91
-#: includes/admin/settings/views/html-languages.php:93
-#: includes/admin/settings/views/html-languages.php:181
-#: includes/admin/settings/views/html-languages.php:183
+#: includes/admin/class-wpm-admin-menus.php:215
+#: includes/admin/settings/views/html-languages.php:92
+#: includes/admin/settings/views/html-languages.php:94
+#: includes/admin/settings/views/html-languages.php:182
+#: includes/admin/settings/views/html-languages.php:184
 #: includes/widgets/class-wpm-widget-language-switcher.php:39
 msgid "Flag"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-menus.php:220
-#: includes/admin/settings/views/html-languages.php:37
-#: includes/admin/settings/views/html-languages.php:39
-#: includes/admin/settings/views/html-languages.php:131
-#: includes/admin/settings/views/html-languages.php:133
+#: includes/admin/class-wpm-admin-menus.php:216
+#: includes/admin/settings/views/html-languages.php:38
+#: includes/admin/settings/views/html-languages.php:40
+#: includes/admin/settings/views/html-languages.php:132
+#: includes/admin/settings/views/html-languages.php:134
 #: includes/widgets/class-wpm-widget-language-switcher.php:40
 msgid "Name"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-menus.php:224
+#: includes/admin/class-wpm-admin-menus.php:220
 #: includes/widgets/class-wpm-widget-language-switcher.php:42
 msgid "Show"
 msgstr ""
@@ -105,7 +105,7 @@ msgstr ""
 msgid "Your settings have been saved."
 msgstr ""
 
-#: includes/admin/class-wpm-admin-settings.php:125
+#: includes/admin/class-wpm-admin-settings.php:126
 msgid ""
 "The changes you made will be lost if you navigate away from this page."
 msgstr ""
@@ -195,57 +195,57 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-general.php:51
+#: includes/admin/settings/class-wpm-settings-general.php:52
 msgid "General options"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-general.php:53
+#: includes/admin/settings/class-wpm-settings-general.php:54
 #, php-format
 msgid "Read <a href=\"%s\" target=\"_blank\">Google guidelines</a> before."
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-general.php:58
+#: includes/admin/settings/class-wpm-settings-general.php:59
 #: includes/class-wpm-rest-settings.php:34
 msgid "Site Language"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-general.php:59
+#: includes/admin/settings/class-wpm-settings-general.php:60
 msgid "Set default site language."
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-general.php:69
+#: includes/admin/settings/class-wpm-settings-general.php:70
 msgid "Show untranslated"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-general.php:70
+#: includes/admin/settings/class-wpm-settings-general.php:71
 msgid "Show untranslated strings on language by default."
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-general.php:77
+#: includes/admin/settings/class-wpm-settings-general.php:78
 msgid "Browser redirect"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-general.php:78
+#: includes/admin/settings/class-wpm-settings-general.php:79
 msgid "Use redirect to user browser language in first time."
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-general.php:85
+#: includes/admin/settings/class-wpm-settings-general.php:86
 msgid "Use prefix"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-general.php:86
+#: includes/admin/settings/class-wpm-settings-general.php:87
 msgid "Use prefix for language by default."
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-general.php:110
+#: includes/admin/settings/class-wpm-settings-general.php:111
 msgid "Uninstalling"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-general.php:117
+#: includes/admin/settings/class-wpm-settings-general.php:118
 msgid "Delete translations"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-general.php:118
+#: includes/admin/settings/class-wpm-settings-general.php:119
 msgid ""
 "Delete translations when uninstalling plugin (some translations may not be "
 "deleted and you must delete them manually)."
@@ -271,57 +271,57 @@ msgstr ""
 msgid "Default"
 msgstr ""
 
-#: includes/admin/settings/views/html-languages.php:43
-#: includes/admin/settings/views/html-languages.php:46
-#: includes/admin/settings/views/html-languages.php:137
-#: includes/admin/settings/views/html-languages.php:140
+#: includes/admin/settings/views/html-languages.php:44
+#: includes/admin/settings/views/html-languages.php:47
+#: includes/admin/settings/views/html-languages.php:138
+#: includes/admin/settings/views/html-languages.php:141
 msgid "Enable"
 msgstr ""
 
-#: includes/admin/settings/views/html-languages.php:53
-#: includes/admin/settings/views/html-languages.php:55
-#: includes/admin/settings/views/html-languages.php:144
-#: includes/admin/settings/views/html-languages.php:146
+#: includes/admin/settings/views/html-languages.php:54
+#: includes/admin/settings/views/html-languages.php:56
+#: includes/admin/settings/views/html-languages.php:145
+#: includes/admin/settings/views/html-languages.php:147
 msgid "Language Code *"
 msgstr ""
 
-#: includes/admin/settings/views/html-languages.php:59
-#: includes/admin/settings/views/html-languages.php:61
-#: includes/admin/settings/views/html-languages.php:150
-#: includes/admin/settings/views/html-languages.php:152
+#: includes/admin/settings/views/html-languages.php:60
+#: includes/admin/settings/views/html-languages.php:62
+#: includes/admin/settings/views/html-languages.php:151
+#: includes/admin/settings/views/html-languages.php:153
 msgid "Locale *"
 msgstr ""
 
-#: includes/admin/settings/views/html-languages.php:65
-#: includes/admin/settings/views/html-languages.php:156
+#: includes/admin/settings/views/html-languages.php:66
+#: includes/admin/settings/views/html-languages.php:157
 msgid "Translation"
 msgstr ""
 
-#: includes/admin/settings/views/html-languages.php:79
-#: includes/admin/settings/views/html-languages.php:81
-#: includes/admin/settings/views/html-languages.php:169
-#: includes/admin/settings/views/html-languages.php:171
+#: includes/admin/settings/views/html-languages.php:80
+#: includes/admin/settings/views/html-languages.php:82
+#: includes/admin/settings/views/html-languages.php:170
+#: includes/admin/settings/views/html-languages.php:172
 msgid "Date Format"
 msgstr ""
 
-#: includes/admin/settings/views/html-languages.php:85
-#: includes/admin/settings/views/html-languages.php:87
-#: includes/admin/settings/views/html-languages.php:175
-#: includes/admin/settings/views/html-languages.php:177
+#: includes/admin/settings/views/html-languages.php:86
+#: includes/admin/settings/views/html-languages.php:88
+#: includes/admin/settings/views/html-languages.php:176
+#: includes/admin/settings/views/html-languages.php:178
 msgid "Time Format"
 msgstr ""
 
-#: includes/admin/settings/views/html-languages.php:94
-#: includes/admin/settings/views/html-languages.php:184
+#: includes/admin/settings/views/html-languages.php:95
+#: includes/admin/settings/views/html-languages.php:185
 msgid "&mdash; Select &mdash;"
 msgstr ""
 
-#: includes/admin/settings/views/html-languages.php:106
-#: includes/admin/settings/views/html-languages.php:195
+#: includes/admin/settings/views/html-languages.php:107
+#: includes/admin/settings/views/html-languages.php:196
 msgid "Delete"
 msgstr ""
 
-#: includes/admin/settings/views/html-languages.php:203
+#: includes/admin/settings/views/html-languages.php:204
 msgid "Add language"
 msgstr ""
 
@@ -384,15 +384,15 @@ msgstr ""
 msgid "%d terms were imported successfully."
 msgstr ""
 
-#: includes/class-wpm-install.php:326
+#: includes/class-wpm-install.php:327
 msgid "Translator"
 msgstr ""
 
-#: includes/class-wpm-install.php:419
+#: includes/class-wpm-install.php:420
 msgid "View WP Multilang settings"
 msgstr ""
 
-#: includes/class-wpm-install.php:419
+#: includes/class-wpm-install.php:420
 msgid "Settings"
 msgstr ""
 

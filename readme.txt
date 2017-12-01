@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 2.1.4
+Stable tag: 2.1.5
 Requires PHP: 5.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -13,25 +13,25 @@ Multilingual plugin for WordPress.
 
 == Description ==
 
-WP Multilang is a multilingual plugin for WordPress.
+WP Multilang is the multilingual plugin for WordPress.
 
 Translations of post types, taxonomies, meta fields, options, text fields in miltimedia files, menus, titles and text fields in widgets.
 
 == Features of the plugin WP Multilang ==
 
-* 100% free.
 * Translation at PHP.
 * Compatible with REST.
 * Support configuration for translate multidimensional arrays in options, meta fields, post content.
-* Support multisite
-* Support WordPress in subfolder
-* Separate menu items, posts, terms, widgets by language
-* Many filters for dynamic applying translation settings
-* No duplicate posts
-* No subdomain for each language version
+* Support multisite.
+* Support WordPress in sub-folder.
+* Separate menu items, posts, terms, widgets by language.
+* Many filters for dynamic applying translation settings.
+* No duplicate posts, terms, menus widgets.
+* No sub-domain for each language version.
+* No additional tables in database.
 * Possibility set many languages with one localization. For example, for localization in the region.
 * Possibility to set custom locale for html(If installed locale is en_US, you can set locale like: en, en-UK, en-AU etc. Without installation another localization)
-* Possibility for add new languages for any user with capability `manage_options`
+* Possibility for add new languages for any user with capability `manage_options`.
 * Exist the role "Translator" for editing posts, terms. It can not publish or delete.
 
 == WP Multilang compatible with plugins ==
@@ -149,14 +149,13 @@ Has the ability to keep recording the target language through the transmission p
 == Migration from qTranslate-X ==
 
 1. Before installing/uninstalling, make database backup.
-2. Install WP Multilang. Not activate.
 2. Deactivate qTranslate-X.
-3. Activate WP Multilang.
+3. Install and activate WP Multilang.
 4. Create in root of your theme file ‘wpm-config.json’.
 5. Add all needed post types, taxonomies, options, fields to ‘wpm-config.json’. Setting from qTranslate-X not importing.
 6. Import term names from qTranslate.
 7. Check that everything is okay.
-8. If everything is okay, remove qTranslate. If not, make screenshots of errors, restore database from backup and add support issue with your screenshots of errors.
+8. If everything is okay, remove qTranslate-X. If not, make screenshots of errors, restore database from backup and add support issue with your screenshots and description of errors.
 
 == Warning ==
 
@@ -177,7 +176,7 @@ Function 'get_page_by_title' not working, because in title field are stored titl
 
 == Upgrade Notice ==
 
-Before installing or uninstalling make the site database backup before. After updating, check the plugin settings.
+Before installing or uninstalling make the site database backup before.
 
 == Frequently Asked Questions ==
 
@@ -198,6 +197,11 @@ If you have opened several browser tabs for editing this post in different langu
 5. Post edit page
 
 == Changelog ==
+
+= 2.1.5 =
+* fix many redirect on home page when using ssl and lang param in url
+* fix updating errors
+* add language tag indicator
 
 = 2.1.4 =
 * change syntax for more accurate search in database

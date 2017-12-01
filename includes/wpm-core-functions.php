@@ -213,36 +213,6 @@ function wpm_get_orig_home_url() {
 	return apply_filters( 'wpm_get_original_home_url', $home_url );
 }
 
-/**
- * Get original request uri
- *
- * @see WPM_Setup::get_original_request_uri()
- *
- * @since 1.7.0
- *
- * @return string
- *
- * @deprecated
- */
-function wpm_get_orig_request_uri() {
-	return wpm()->setup->get_original_request_uri();
-}
-
-/**
- * Get site request uri
- *
- * @see WPM_Setup::get_site_request_uri()
- *
- * @since 2.0.1
- *
- * @return string
- *
- * @deprecated
- */
-function wpm_get_site_request_uri() {
-	return wpm()->setup->get_site_request_uri();
-}
-
 add_filter( 'attribute_escape', array( 'WPM\Includes\WPM_Posts', 'escaping_text' ), 5 );
 add_filter( 'esc_textarea', array( 'WPM\Includes\WPM_Posts', 'escaping_text' ), 5 );
 add_filter( 'esc_html', array( 'WPM\Includes\WPM_Posts', 'escaping_text' ), 5 );

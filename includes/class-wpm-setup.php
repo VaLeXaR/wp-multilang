@@ -173,7 +173,7 @@ class WPM_Setup {
 	 *
 	 * @return string
 	 */
-	public function get_original_request_uri() {
+	private function get_original_request_uri() {
 		return $this->original_request_uri ? $this->original_request_uri : '/';
 	}
 
@@ -184,7 +184,7 @@ class WPM_Setup {
 	 *
 	 * @return string
 	 */
-	public function get_site_request_uri() {
+	private function get_site_request_uri() {
 		if ( ! $this->site_request_uri ) {
 			$original_uri = $this->get_original_request_uri();
 
@@ -558,7 +558,7 @@ class WPM_Setup {
 	/**
 	 * Set 404 headers for not available language
 	 */
-	public function set_not_found() {
+	private function set_not_found() {
 		global $wp_query;
 		$wp_query->set_404();
 		status_header( 404 );
