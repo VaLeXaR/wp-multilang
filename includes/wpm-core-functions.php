@@ -205,40 +205,12 @@ function wpm_translate_current_url( $lang = '' ) {
  *
  * @since 1.7.0
  *
- * @param bool $unslash
- *
  * @return string
  */
-function wpm_get_orig_home_url( $unslash = true ) {
-	$home_url = wpm()->setup->get_original_home_url( $unslash );
+function wpm_get_orig_home_url() {
+	$home_url = wpm()->setup->get_original_home_url();
 
 	return apply_filters( 'wpm_get_original_home_url', $home_url );
-}
-
-/**
- * Get original request uri
- *
- * @see WPM_Setup::get_original_request_uri()
- *
- * @since 1.7.0
- *
- * @return string
- */
-function wpm_get_orig_request_uri() {
-	return wpm()->setup->get_original_request_uri();
-}
-
-/**
- * Get site request uri
- *
- * @see WPM_Setup::get_site_request_uri()
- *
- * @since 2.0.1
- *
- * @return string
- */
-function wpm_get_site_request_uri() {
-	return wpm()->setup->get_site_request_uri();
 }
 
 add_filter( 'attribute_escape', array( 'WPM\Includes\WPM_Posts', 'escaping_text' ), 5 );
@@ -482,5 +454,22 @@ function wpm_get_page_by_title( $page_title, $output = OBJECT, $post_type = 'pag
 
 	if ( $page ) {
 		return get_post( $page, $output );
+	}
+}
+
+if ( ! function_exists( 'is_front_ajax' ) ) {
+	/**
+	 * Check if it is ajax from front
+	 *
+	 * @return bool
+	 */
+	function is_front_ajax() {
+		if ( wp_doing_ajax() && ( $referrer = wp_get_raw_referer() ) ) {
+			if ( strpos( $referrer, 'wp-admin/' ) === false ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

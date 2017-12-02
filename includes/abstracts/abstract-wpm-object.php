@@ -52,7 +52,7 @@ abstract class WPM_Object {
 
 			case 'term':
 				$term = get_term( $object_id );
-				if ( is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
+				if ( ! $term || is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
 					return $value;
 				}
 		}
@@ -142,7 +142,7 @@ abstract class WPM_Object {
 
 			case 'term':
 				$term = get_term( $object_id );
-				if ( is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
+				if ( ! $term || is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
 					return $check;
 				}
 		}
@@ -303,7 +303,7 @@ abstract class WPM_Object {
 
 			case 'term':
 				$term = get_term( $object_id );
-				if ( is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
+				if ( ! $term || is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
 					return $check;
 				}
 		}
@@ -404,7 +404,7 @@ abstract class WPM_Object {
 
 			case 'term':
 				$term = get_term( $object_id );
-				if ( is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
+				if ( ! $term || is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
 					return;
 				}
 		}

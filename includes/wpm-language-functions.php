@@ -112,8 +112,8 @@ function wpm_get_language() {
 		$languages = wpm_get_languages();
 		$query     = $_GET;
 
-		if ( wp_doing_ajax() && ( $referrer = wp_get_raw_referer() ) ) {
-			if ( strpos( $referrer, 'wp-admin/' ) !== false ) {
+		if ( wp_doing_ajax() ) {
+			if ( ! is_front_ajax() && ( $referrer = wp_get_raw_referer() ) ) {
 				$query = wp_parse_url( $referrer, PHP_URL_QUERY );
 			} else {
 				return wpm_get_user_language();

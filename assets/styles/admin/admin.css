@@ -76,6 +76,10 @@
   margin-right: 10px;
   text-align: center; }
 
+.wpm-languages .prefix {
+  font-weight: 400;
+  margin-left: 5px; }
+
 .wp-core-ui .button-link.delete-language {
   color: #dc3232; }
 
@@ -168,6 +172,9 @@
 #delete_localization + .spinner,
 #qts_import + .spinner {
   vertical-align: top; }
+
+.wrap.wpm .hidden_option {
+  display: none; }
 
 .column-languages {
   width: 100px; }

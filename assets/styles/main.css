@@ -15,7 +15,8 @@
 .switcher-dropdown {
   list-style: none;
   margin-bottom: 0;
-  padding-left: 0; }
+  padding-left: 0;
+  position: relative; }
   .switcher-dropdown span img {
     display: inline-block;
     margin-right: 3px; }

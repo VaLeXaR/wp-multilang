@@ -136,6 +136,7 @@ if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 				break;
 
 			case 'comment_fields':
+				$wpdb->delete( $wpdb->commentmeta, array( 'meta_key' => '_languages' ) );
 
 				$results = $wpdb->get_results( "SELECT meta_id, meta_value FROM {$wpdb->commentmeta} WHERE meta_value LIKE '%s' OR meta_value LIKE '%![:__!]%' ESCAPE '!' OR meta_value LIKE '%{:__}%' OR meta_value LIKE '%<!--:__-->%';" );
 

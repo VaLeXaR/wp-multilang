@@ -72,7 +72,6 @@ class WPM_Posts extends WPM_Object {
 		return $posts;
 	}
 
-
 	/**
 	 * Separate posts py languages
 	 *
@@ -82,46 +81,47 @@ class WPM_Posts extends WPM_Object {
 	 */
 	public function filter_posts_by_language( $query ) {
 
-		if ( ( ! is_admin() || wp_doing_ajax() ) && ! defined( 'DOING_CRON' ) ) {
+		if ( ( is_admin() && ! is_front_ajax() ) || defined( 'DOING_CRON' ) ) {
+			return $query;
+		}
 
-			if ( isset( $query->query_vars['post_type'] ) && ! empty( $query->query_vars['post_type'] ) ) {
-				$post_type = $query->query_vars['post_type'];
-				if ( is_string( $post_type ) ) {
-					if ( is_null( wpm_get_post_config( $post_type ) ) ) {
-						return $query;
-					}
+		if ( isset( $query->query_vars['post_type'] ) && ! empty( $query->query_vars['post_type'] ) ) {
+			$post_type = $query->query_vars['post_type'];
+			if ( is_string( $post_type ) ) {
+				if ( is_null( wpm_get_post_config( $post_type ) ) ) {
+					return $query;
 				}
 			}
+		}
 
-			$lang = get_query_var( 'lang' );
+		$lang = get_query_var( 'lang' );
 
-			if ( ! $lang ) {
-				$lang = wpm_get_user_language();
-			}
+		if ( ! $lang ) {
+			$lang = wpm_get_user_language();
+		}
 
-			if ( 'all' !== $lang ) {
-				$lang_meta_query = array(
+		if ( 'all' !== $lang ) {
+			$lang_meta_query = array(
+				array(
+					'relation' => 'OR',
 					array(
-						'relation' => 'OR',
-						array(
-							'key'     => '_languages',
-							'compare' => 'NOT EXISTS',
-						),
-						array(
-							'key'     => '_languages',
-							'value'   => serialize( $lang ),
-							'compare' => 'LIKE',
-						),
+						'key'     => '_languages',
+						'compare' => 'NOT EXISTS',
 					),
-				);
+					array(
+						'key'     => '_languages',
+						'value'   => serialize( $lang ),
+						'compare' => 'LIKE',
+					),
+				),
+			);
 
-				if ( isset( $query->query_vars['meta_query'] ) ) {
-					$lang_meta_query = wp_parse_args( $query->query_vars['meta_query'], $lang_meta_query );
-				}
-
-				$query->set( 'meta_query', $lang_meta_query );
+			if ( isset( $query->query_vars['meta_query'] ) ) {
+				$lang_meta_query = wp_parse_args( $query->query_vars['meta_query'], $lang_meta_query );
 			}
-		} // End if().
+
+			$query->set( 'meta_query', $lang_meta_query );
+		}
 
 		return $query;
 	}

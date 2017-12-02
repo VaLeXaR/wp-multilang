@@ -128,6 +128,7 @@ class WPM_Install {
 		delete_transient( 'wpm_installing' );
 
 		// Trigger action
+		do_action( 'wpm_flush_rewrite_rules' );
 		do_action( 'wpm_installed' );
 	}
 

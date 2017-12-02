@@ -9,6 +9,7 @@
  */
 
 use WPM\Includes\WPM_Install;
+use WPM\Includes\WPM_Setup;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -27,6 +28,7 @@ function wpm_update_178_datetime_format() {
 	}
 
 	update_option( 'wpm_languages', $updated_languages );
+	WPM_Setup::set_option( 'languages', $updated_languages );
 }
 
 /**
@@ -48,6 +50,7 @@ function wpm_update_180_flags() {
 	}
 
 	update_option( 'wpm_languages', $updated_languages );
+	WPM_Setup::set_option( 'languages', $updated_languages );
 }
 
 /**
@@ -81,6 +84,7 @@ function wpm_update_200_options() {
 
 	if ( $updated_languages ) {
 		update_option( 'wpm_languages', $updated_languages );
+		WPM_Setup::set_option( 'languages', $updated_languages );
 	}
 }
 
@@ -110,15 +114,15 @@ function wpm_update_210_db_version() {
  */
 function wpm_update_211_change_options() {
 	$options = array(
-		'wpm_show_untranslated_strings' => 'yes',
-		'wpm_use_redirect'              => 'no',
-		'wpm_use_prefix'                => 'no',
-		'wpm_uninstall_translations'    => 'no',
+		'wpm_show_untranslated_strings',
+		'wpm_use_redirect',
+		'wpm_use_prefix',
+		'wpm_uninstall_translations',
 	);
 
-	foreach ( $options as $option => $default ) {
-		$value = get_option( $option, $default );
-		update_option( $option, $value ? 'yes' : 'no' );
+	foreach ( $options as $option ) {
+		$value = get_option( $option );
+		update_option( $option, 1 == $value ? 'yes' : 'no' );
 	}
 }
 

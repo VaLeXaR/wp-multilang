@@ -94,7 +94,7 @@ class WPM_AJAX {
 			'delete_lang'          => false,
 			'delete_localization'  => false,
 			'set_default_language' => false,
-			'qts_import'           => false,
+			'qtx_import'           => false,
 			'rated'                => false,
 		);
 
@@ -515,9 +515,9 @@ class WPM_AJAX {
 	 *
 	 * @author   Soft79
 	 */
-	public static function qts_import() {
+	public static function qtx_import() {
 
-		check_ajax_referer( 'qts-import', 'security' );
+		check_ajax_referer( 'qtx-import', 'security' );
 
 		$term_count = 0;
 

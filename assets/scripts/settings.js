@@ -1,7 +1,6 @@
 ( function( $ ) {
   "use strict";
 
-	// Edit prompt
 	$( function() {
 		var changed = false;
 
@@ -22,5 +21,6 @@
 		$( '.submit input' ).click( function() {
 			window.onbeforeunload = '';
 		});
+
 	});
 })( jQuery );

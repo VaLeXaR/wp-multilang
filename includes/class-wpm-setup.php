@@ -116,6 +116,7 @@ class WPM_Setup {
 		add_action( 'wpm_init', array( $this, 'load_integrations' ) );
 		add_action( 'template_redirect', array( $this, 'redirect_default_url' ) );
 		add_action( 'template_redirect', array( $this, 'redirect_to_user_language' ) );
+		add_filter( 'redirect_canonical', array( $this, 'fix_canonical_redirect' ) );
 		add_filter( 'rest_url', array( $this, 'fix_rest_url' ) );
 		add_filter( 'option_date_format', array( $this, 'set_date_format' ) );
 		add_filter( 'option_time_format', array( $this, 'set_time_format' ) );
@@ -141,18 +142,25 @@ class WPM_Setup {
 	}
 
 	/**
+	 * Set options
+	 *
+	 * @param string $key
+	 * @param $data
+	 */
+	static function set_option( $key, $data ) {
+		self::$options[ $key ] = $data;
+	}
+
+	/**
 	 * Get original home url
 	 *
 	 * @since 1.7.0
 	 *
-	 * @param bool $unslash
-	 *
 	 * @return string
 	 */
-	public function get_original_home_url( $unslash = true ) {
+	public function get_original_home_url() {
 		if ( ! $this->original_home_url ) {
-			$home_url                = home_url();
-			$this->original_home_url = $unslash ? untrailingslashit( $home_url ) : $home_url;
+			$this->original_home_url = untrailingslashit( home_url() );
 		}
 
 		return $this->original_home_url;
@@ -165,7 +173,7 @@ class WPM_Setup {
 	 *
 	 * @return string
 	 */
-	public function get_original_request_uri() {
+	private function get_original_request_uri() {
 		return $this->original_request_uri ? $this->original_request_uri : '/';
 	}
 
@@ -176,7 +184,7 @@ class WPM_Setup {
 	 *
 	 * @return string
 	 */
-	public function get_site_request_uri() {
+	private function get_site_request_uri() {
 		if ( ! $this->site_request_uri ) {
 			$original_uri = $this->get_original_request_uri();
 
@@ -287,7 +295,11 @@ class WPM_Setup {
 			return $locale;
 		}
 
-		return $languages[ $this->get_user_language() ]['translation'];
+		if ( isset( $languages[ $this->get_user_language() ] ) ) {
+			return $languages[ $this->get_user_language() ]['translation'];
+		}
+
+		return $this->get_default_locale();
 	}
 
 	/**
@@ -319,15 +331,9 @@ class WPM_Setup {
 			$url = wpm_get_current_url();
 		}
 
-		if ( wp_doing_ajax() ) {
-			if ( $referrer = wp_get_raw_referer() ) {
-				if ( strpos( $referrer, 'wp-admin/' ) === false ) {
-					$url = $referrer;
-					add_filter( 'get_user_metadata', array( $this, 'set_user_locale' ), 10, 4 );
-				}
-			} else {
-				add_filter( 'get_user_metadata', array( $this, 'set_user_locale' ), 10, 4 );
-			}
+		if ( is_front_ajax() ) {
+			$url = wp_get_raw_referer();
+			add_filter( 'get_user_metadata', array( $this, 'set_user_locale' ), 10, 4 );
 		}
 
 		if ( $url ) {
@@ -347,7 +353,7 @@ class WPM_Setup {
 			if ( isset( $languages[ $lang ] ) ) {
 				$user_language = $lang;
 
-				if ( is_admin() && ! wp_doing_ajax() ) {
+				if ( is_admin() && ! is_front_ajax() ) {
 					update_user_meta( get_current_user_id(), 'user_lang', $lang );
 					update_user_meta( get_current_user_id(), 'locale', $languages[ $lang ]['translation'] );
 				}
@@ -357,7 +363,7 @@ class WPM_Setup {
 				}
 			}
 		} else {
-			if ( is_admin() && ! wp_doing_ajax() ) {
+			if ( is_admin() && ! is_front_ajax() ) {
 				if ( $user_meta_language = get_user_meta( get_current_user_id(), 'user_lang', true ) ) {
 					if ( isset( $languages[ $user_meta_language ] ) ) {
 						$user_language = $user_meta_language;
@@ -396,7 +402,7 @@ class WPM_Setup {
 				}
 			} else {
 				if ( $url_lang && $user_language === $default_language ) {
-					wp_redirect( home_url( preg_replace( '!^/([a-z]{2})(-[a-z]{2})?(/|$)!i', '/', $this->get_original_request_uri() ) ) );
+					wp_redirect( home_url( preg_replace( '!^/([a-z]{2})(/|$)!i', '/', $this->get_original_request_uri() ) ) );
 					exit;
 				}
 			}
@@ -406,6 +412,23 @@ class WPM_Setup {
 			wp_redirect( $this->get_original_home_url() . $this->get_site_request_uri() );
 			exit;
 		}
+	}
+
+	/**
+	 * Fix redirect when using lang param in $_GET
+	 *
+	 * @since 2.1.5
+	 *
+	 * @param string $redirect_url
+	 *
+	 * @return string
+	 */
+	public function fix_canonical_redirect( $redirect_url ) {
+		if ( isset( $_GET['lang'] ) && ! empty( $_GET['lang'] ) ) {
+			$redirect_url = str_replace( home_url(), $this->get_original_home_url(), $redirect_url );
+		}
+
+		return $redirect_url;
 	}
 
 	/**
@@ -436,9 +459,9 @@ class WPM_Setup {
 	public function get_config() {
 
 		if ( ! $this->config ) {
-			if ( ! $config = wp_cache_get( 'wpm_config' ) ) {
+			if ( ! $config = wp_cache_get( 'config', 'wpm' ) ) {
 				WPM_Config::load_config_run();
-				$config = wp_cache_get( 'wpm_config' );
+				$config = wp_cache_get( 'config', 'wpm' );
 			}
 
 			$this->config = $config;
@@ -465,7 +488,7 @@ class WPM_Setup {
 	 */
 	public function set_home_url( $value ) {
 
-		if ( ( is_admin() && ! wp_doing_ajax() ) || ! did_action( 'wpm_init' ) || ! $value || ! $this->user_language ) {
+		if ( ( is_admin() && ! is_front_ajax() ) || ! did_action( 'wpm_init' ) || ! $value || ! $this->user_language ) {
 			return $value;
 		}
 
@@ -519,7 +542,7 @@ class WPM_Setup {
 			'wordpress-seo'              => __NAMESPACE__ . '\Integrations\WPM_Yoast_Seo',
 		) );
 
-		foreach ( wp_cache_get( 'wpm_active_plugins' ) as $plugin ) {
+		foreach ( wp_cache_get( 'active_plugins', 'wpm' ) as $plugin ) {
 			if ( isset( $integrations[ $plugin ] ) && ! empty( $integrations[ $plugin ] ) ) {
 				new $integrations[ $plugin ]();
 			}
@@ -529,7 +552,7 @@ class WPM_Setup {
 	/**
 	 * Set 404 headers for not available language
 	 */
-	public function set_not_found() {
+	private function set_not_found() {
 		global $wp_query;
 		$wp_query->set_404();
 		status_header( 404 );
@@ -700,7 +723,7 @@ class WPM_Setup {
 
 		require_once( ABSPATH . 'wp-admin/includes/screen.php' );
 
-		if ( is_admin() && ! wp_doing_ajax() ) {
+		if ( is_admin() && ! is_front_ajax() ) {
 			$screen = get_current_screen();
 			if ( $screen && 'options-general' == $screen->id ) {
 				return $value;
@@ -734,7 +757,7 @@ class WPM_Setup {
 
 		require_once( ABSPATH . 'wp-admin/includes/screen.php' );
 
-		if ( is_admin() && ! wp_doing_ajax() ) {
+		if ( is_admin() && ! is_front_ajax() ) {
 			$screen = get_current_screen();
 			if ( $screen && 'options-general' == $screen->id ) {
 				return $value;
@@ -771,8 +794,10 @@ class WPM_Setup {
 			$languages     = $this->get_languages();
 			$user_language = $this->get_user_language();
 
-			if ( $languages && $languages[ $user_language ]['locale'] ) {
+			if ( $languages && isset( $languages[ $user_language ] ) && $languages[ $user_language ]['locale'] ) {
 				$translation = $languages[ $user_language ]['locale'];
+			} else {
+				$translation = get_locale();
 			}
 		}
 
@@ -790,7 +815,7 @@ class WPM_Setup {
 		if ( ! $this->url_language ) {
 			$url_lang = '';
 
-			if ( preg_match( '!^/([a-z]{2})(-[a-z]{2})?(/|$)!i', $this->get_original_request_uri(), $match ) ) {
+			if ( preg_match( '!^/([a-z]{2})(/|$)!i', $this->get_original_request_uri(), $match ) ) {
 				$url_lang = $match[1];
 			}
 

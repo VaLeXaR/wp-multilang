@@ -68,15 +68,14 @@ class WPM_Admin_Menus {
 		$languages              = wpm_get_languages();
 		$available_translations = wpm_get_available_translations();
 
-		$wp_admin_bar->add_menu( array(
-			'id'     => 'wpm-language-switcher',
-			'parent' => 'top-secondary',
-			'title'  => '<span class="ab-icon">' .
-			            ( $languages ? '<img src="' . esc_url( wpm_get_flag_url( $languages[ $user_language ]['flag'] ) ) . '"/>' : '' ) .
-			            '</span><span class="ab-label">' .
-			            $available_translations[ get_locale() ]['native_name'] .
-			            '</span>',
-		) );
+		if ( isset( $languages[ $user_language ] ) ) {
+			$wp_admin_bar->add_menu( array(
+				'id'     => 'wpm-language-switcher',
+				'parent' => 'top-secondary',
+				'title'  => '<span class="ab-icon">' .
+				            ( $languages ? '<img src="' . esc_url( wpm_get_flag_url( $languages[ $user_language ]['flag'] ) ) . '"/>' : '' ) . '</span><span class="ab-label">' . $available_translations[ get_locale() ]['native_name'] . '</span>',
+			) );
+		}
 
 		foreach ( $installed_translations as $locale ) {
 
@@ -89,7 +88,7 @@ class WPM_Admin_Menus {
 			$add = false;
 
 			foreach ( $languages as $code => $language ) {
-				if ( $language['translation'] == $locale ) {
+				if ( isset( $language['translation'] ) && ( $language['translation'] == $locale ) ) {
 					$add = true;
 					break;
 				}
@@ -99,10 +98,7 @@ class WPM_Admin_Menus {
 				$wp_admin_bar->add_menu( array(
 					'parent' => 'wpm-language-switcher',
 					'id'     => 'wpm-language-' . $code,
-					'title'  => '<span class="ab-icon">' .
-					            '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" />' .
-					            '</span>' .
-					            '<span class="ab-label">' . $available_translations[$locale]['native_name'] . '</span>',
+					'title'  => '<span class="ab-icon">' . '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" />' . '</span>' . '<span class="ab-label">' . $available_translations[$locale]['native_name'] . '</span>',
 					'href'   => wpm_translate_current_url( $code ),
 				) );
 			}

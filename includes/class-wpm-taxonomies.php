@@ -93,47 +93,48 @@ class WPM_Taxonomies extends WPM_Object {
 	 */
 	public function filter_terms_by_language( $args, $taxonomies ) {
 
-		if ( ( ! is_admin() || wp_doing_ajax() ) && ! defined( 'DOING_CRON' ) ) {
+		if ( ( is_admin() && ! is_front_ajax() ) || defined( 'DOING_CRON' ) ) {
+			return $args;
+		}
 
-			if ( ! empty( $taxonomies ) ) {
+		if ( ! empty( $taxonomies ) ) {
 
-				if ( count( $taxonomies ) === 1 ) {
-					$taxonomy = current( $taxonomies );
-					if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
-						return $args;
-					}
+			if ( count( $taxonomies ) === 1 ) {
+				$taxonomy = current( $taxonomies );
+				if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
+					return $args;
 				}
 			}
+		}
 
-			if ( isset( $args['lang'] ) && ! empty( $args['lang'] ) ) {
-				$lang = $args['lang'];
-			} else {
-				$lang = wpm_get_language();
-			}
+		if ( isset( $args['lang'] ) && ! empty( $args['lang'] ) ) {
+			$lang = $args['lang'];
+		} else {
+			$lang = wpm_get_language();
+		}
 
-			if ( 'all' != $lang ) {
-				$lang_meta_query = array(
+		if ( 'all' != $lang ) {
+			$lang_meta_query = array(
+				array(
+					'relation' => 'OR',
 					array(
-						'relation' => 'OR',
-						array(
-							'key'     => '_languages',
-							'compare' => 'NOT EXISTS',
-						),
-						array(
-							'key'     => '_languages',
-							'value'   => serialize( $lang ),
-							'compare' => 'LIKE',
-						),
+						'key'     => '_languages',
+						'compare' => 'NOT EXISTS',
 					),
-				);
+					array(
+						'key'     => '_languages',
+						'value'   => serialize( $lang ),
+						'compare' => 'LIKE',
+					),
+				),
+			);
 
-				if ( isset( $args['meta_query'] ) ) {
-					$args['meta_query'] = wp_parse_args( $args['meta_query'], $lang_meta_query );
-				} else {
-					$args['meta_query'] = $lang_meta_query;
-				}
+			if ( isset( $args['meta_query'] ) ) {
+				$args['meta_query'] = wp_parse_args( $args['meta_query'], $lang_meta_query );
+			} else {
+				$args['meta_query'] = $lang_meta_query;
 			}
-		} // End if().
+		}
 
 		return $args;
 	}
