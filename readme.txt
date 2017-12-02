@@ -27,7 +27,7 @@ Translations of post types, taxonomies, meta fields, options, text fields in mil
 * Support WordPress in sub-folder.
 * Separate menu items, posts, terms, widgets, comments per language.
 * Many filters for dynamic applying translation settings.
-* No duplicate posts, terms, menus widgets.
+* No duplicate posts, terms, menus, widgets.
 * No sub-domain for each language version.
 * No additional tables in database.
 * Possibility set many languages with one localization. For example, for localization in the region.
