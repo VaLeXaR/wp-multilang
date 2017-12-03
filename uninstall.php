@@ -75,6 +75,9 @@ if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 		}
 	}
 
+	$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_%';" );
+	$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_site_transient_%';" );
+
 	foreach ( $config as $key => $item_config ) {
 
 		switch ( $key ) {
@@ -87,7 +90,7 @@ if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 					$meta_value = $result->meta_value;
 
 					if ( is_serialized_string( $meta_value ) ) {
-						$meta_value = maybe_serialize( wpm_translate_value( maybe_unserialize( $meta_value ), $default_language ) );
+						$meta_value = serialize( wpm_translate_value( unserialize( $meta_value ), $default_language ) );
 					}
 
 					if ( json_decode( $meta_value ) ) {
@@ -112,7 +115,7 @@ if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 					$meta_value = $result->meta_value;
 
 					if ( is_serialized_string( $meta_value ) ) {
-						$meta_value = maybe_serialize( wpm_translate_value( maybe_unserialize( $meta_value ), $default_language ) );
+						$meta_value = serialize( wpm_translate_value( unserialize( $meta_value ), $default_language ) );
 					}
 
 					if ( json_decode( $meta_value ) ) {
@@ -137,7 +140,7 @@ if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 					$meta_value = $result->meta_value;
 
 					if ( is_serialized_string( $meta_value ) ) {
-						$meta_value = maybe_serialize( wpm_translate_value( maybe_unserialize( $meta_value ), $default_language ) );
+						$meta_value = serialize( wpm_translate_value( unserialize( $meta_value ), $default_language ) );
 					}
 
 					if ( json_decode( $meta_value ) ) {
@@ -161,7 +164,7 @@ if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 					$meta_value = $result->meta_value;
 
 					if ( is_serialized_string( $meta_value ) ) {
-						$meta_value = maybe_serialize( wpm_translate_value( maybe_unserialize( $meta_value ), $default_language ) );
+						$meta_value = serialize( wpm_translate_value( unserialize( $meta_value ), $default_language ) );
 					}
 
 					if ( json_decode( $meta_value ) ) {
@@ -185,7 +188,7 @@ if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 					$option_value = $result->option_value;
 
 					if ( is_serialized_string( $option_value ) ) {
-						$option_value = maybe_serialize( wpm_translate_value( maybe_unserialize( $option_value ), $default_language ) );
+						$option_value = serialize( wpm_translate_value( unserialize( $option_value ), $default_language ) );
 					}
 
 					if ( json_decode( $option_value ) ) {
@@ -209,7 +212,7 @@ if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 					$meta_value = $result->meta_value;
 
 					if ( is_serialized_string( $meta_value ) ) {
-						$meta_value = maybe_serialize( wpm_translate_value( maybe_unserialize( $meta_value ), $default_language ) );
+						$meta_value = serialize( wpm_translate_value( unserialize( $meta_value ), $default_language ) );
 					}
 
 					if ( json_decode( $meta_value ) ) {
@@ -231,4 +234,4 @@ if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 	wp_cache_flush();
 } // End if().
 
-$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE 'wpm\_%';" );
+$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE 'wpm_%';" );
