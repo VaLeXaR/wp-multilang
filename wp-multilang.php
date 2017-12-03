@@ -9,7 +9,7 @@
  * Text Domain:     wp-multilang
  * Domain Path:     /languages
  * Version:         2.1.6
- * Copyright:       © 2017 Valentyn Riaboshtan.
+ * Copyright:       © 2017 Valentyn Riaboshtan
  *
  * @package  WPM
  * @category Core
