@@ -51,9 +51,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 									</td>
 								</tr>
 								<tr>
-									<td class="row-title"><?php esc_attr_e( 'Language Code *', 'wp-multilang' ); ?></td>
+									<td class="row-title"><?php esc_attr_e( 'Language Code (ISO 639-1)*', 'wp-multilang' ); ?></td>
 									<td>
-										<input type="text" name="wpm_languages[<?php echo esc_attr( $i ); ?>][code]" value="<?php echo esc_attr( $code ); ?>" title="<?php esc_attr_e( 'Language Code *', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Language Code *', 'wp-multilang' ); ?>" required>
+										<input type="text" name="wpm_languages[<?php echo esc_attr( $i ); ?>][code]" value="<?php echo esc_attr( $code ); ?>" title="<?php esc_attr_e( 'Language Code (ISO 639-1)*', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Language Code (ISO 639-1)*', 'wp-multilang' ); ?>" required>
 									</td>
 								</tr>
 								<tr>
@@ -142,9 +142,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 							</td>
 						</tr>
 						<tr>
-							<td class="row-title"><?php esc_attr_e( 'Language Code *', 'wp-multilang' ); ?></td>
+							<td class="row-title"><?php esc_attr_e( 'Language Code (ISO 639-1)*', 'wp-multilang' ); ?></td>
 							<td>
-								<input type="text" name="wpm_languages[{{ data.count }}][code]" value="" title="<?php esc_attr_e( 'Language Code *', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Language Code *', 'wp-multilang' ); ?>" required>
+								<input type="text" name="wpm_languages[{{ data.count }}][code]" value="" title="<?php esc_attr_e( 'Language Code (ISO 639-1)*', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Language Code (ISO 639-1)*', 'wp-multilang' ); ?>" required>
 							</td>
 						</tr>
 						<tr>
