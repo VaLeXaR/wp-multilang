@@ -15,19 +15,12 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 
 global $wpdb;
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/wp-multilang.php';
 
 if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 
-	if ( ! defined( 'WPM_PLUGIN_FILE' ) ) {
-		define( 'WPM_PLUGIN_FILE', __DIR__ . '/wp-multilang.php' );
-	}
-
 	// Roles + caps.
 	WPM\Includes\WPM_Install::remove_roles();
-
-	require_once 'includes/wpm-core-functions.php';
-
 	$config           = wpm_get_config();
 	$default_language = wpm_get_default_language();
 
