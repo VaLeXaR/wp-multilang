@@ -8,7 +8,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:     wp-multilang
  * Domain Path:     /languages
- * Version:         2.1.5
+ * Version:         2.1.6
  * Copyright: Valentyn Riaboshtan © 2017
  *
  * @package  WPM
