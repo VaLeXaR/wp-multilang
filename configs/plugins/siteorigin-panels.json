@@ -3,9 +3,11 @@
     "panels_data": {
       "widgets": {
         "wpm_each": {
+          "title": {},
           "widget_title": {},
           "sub_title": {},
           "alt": {},
+          "text": {},
           "label": {},
           "markers": {
             "marker_positions": {
@@ -110,5 +112,28 @@
         }
       }
     }
+  },
+  "widgets": {
+    "sow-accordion": null,
+    "sow-button": null,
+    "sow-contact-form": null,
+    "sow-cta": null,
+    "sow-editor": null,
+    "sow-features": null,
+    "sow-google-map": null,
+    "sow-headline": null,
+    "sow-hero": null,
+    "sow-icon": null,
+    "sow-image": null,
+    "sow-image-grid": null,
+    "sow-layout-slider": null,
+    "sow-post-carousel": null,
+    "sow-price-table": null,
+    "sow-simple-masonry": null,
+    "sow-slider": null,
+    "sow-social-media-buttons": null,
+    "sow-tabs": null,
+    "sow-taxonomy": null,
+    "sow-testimonials": null
   }
 }

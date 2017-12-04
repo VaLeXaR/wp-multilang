@@ -75,7 +75,7 @@ function wpm_get_taxonomy_config( $taxonomy ) {
 function wpm_get_widget_config( $widget ) {
 	$config         = wpm_get_config();
 	$widgets_config = apply_filters( 'wpm_widgets_config', $config['widgets'] );
-	$widget_config  = apply_filters( "wpm_widget_{$widget}_config", isset( $widgets_config[ $widget ] ) ? $widgets_config[ $widget ] : array() );
+	$widget_config  = apply_filters( "wpm_widget_{$widget}_config", array_key_exists( $widget, $widgets_config ) ? $widgets_config[ $widget ] : array() );
 
 	if ( ! is_null( $widget_config ) ) {
 

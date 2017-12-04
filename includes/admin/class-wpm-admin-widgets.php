@@ -46,13 +46,8 @@ class WPM_Admin_Widgets {
 		if ( is_null( $widget_config ) ) {
 			return $instance;
 		}
-//		header('X-XSS-Protection:0');
-//		d($old_instance, $new_instance, $widget);
 
 		$instance = wpm_set_new_value( $old_instance, $new_instance, $widget_config );
-
-//		d($instance);
-//		die();
 
 		return $instance;
 	}
