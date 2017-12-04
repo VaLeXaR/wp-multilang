@@ -160,6 +160,7 @@ abstract class WPM_Object {
 		if ( is_null( $meta_config ) ) {
 			return $check;
 		}
+
 		$table     = $wpdb->{$this->object_table};
 		$column    = sanitize_key( $this->object_type . '_id' );
 		$id_column = 'user' === $this->object_type ? 'umeta_id' : 'meta_id';

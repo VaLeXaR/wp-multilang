@@ -3,11 +3,9 @@
     "panels_data": {
       "widgets": {
         "wpm_each": {
-          "title": {},
           "widget_title": {},
           "sub_title": {},
           "alt": {},
-          "text": {},
           "label": {},
           "markers": {
             "marker_positions": {
