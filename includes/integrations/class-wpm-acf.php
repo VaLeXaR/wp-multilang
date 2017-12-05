@@ -45,7 +45,7 @@ class WPM_Acf {
 			add_filter( 'wpm_post_acf_config', array( $this, 'add_config' ) );
 			add_filter( 'acf/field_group/get_fields', 'wpm_translate_value', 5 );
 			remove_class_action( 'acf/update_field', 'acf_field_functions', 'update_field', 5 );
-			add_filter( 'acf/update_field', array( $this, 'update_field' ), 5, 2 );
+			add_action( 'acf/update_field', array( $this, 'update_field' ), 5, 2 );
 			remove_class_action( 'acf/update_value', 'acf_field_functions', 'update_value', 5 );
 			add_action( 'acf/update_value', array( $this, 'update_value' ), 5, 3 );
 			add_filter( 'attribute_escape', array( $this, 'translate_value' ) );
