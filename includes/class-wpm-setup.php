@@ -495,8 +495,10 @@ class WPM_Setup {
 		$user_language    = wpm_get_user_language();
 		$default_language = wpm_get_default_language();
 
-		if ( $user_language !== $default_language || self::get_option( 'use_prefix', 'no' ) === 'yes' ) {
-			$value .= '/' . $user_language;
+		if ( ( $user_language !== $default_language ) || ( self::get_option( 'use_prefix', 'no' ) === 'yes' ) ) {
+			if ( get_option( 'permalink_structure' ) ) {
+				$value .= '/' . $user_language;
+			}
 		}
 
 		return $value;
