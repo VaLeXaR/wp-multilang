@@ -21,6 +21,7 @@ class WPM_PBSO {
 	 * WPM_PBSO constructor.
 	 */
 	public function __construct() {
+		add_filter( 'wpm_update_panels_data_meta_value', 'wpm_translate_value' );
 		add_filter( 'wpm_filter_old_panels_data_meta_value', array( $this, 'filter_old_value' ), 10, 2 );
 		add_filter( 'wpm_panels_data_meta_config', array( $this, 'add_recursive_config' ), 10, 2 );
 		add_filter( 'siteorigin_widgets_search_posts_results', 'wpm_translate_value' );

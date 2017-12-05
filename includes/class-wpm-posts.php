@@ -187,7 +187,9 @@ class WPM_Posts extends WPM_Object {
 					$old_value = '';
 				}
 
-				$data[ $key ] = wpm_set_new_value( $old_value, $data[ $key ], $post_field_config );
+				if ( ! wpm_is_ml_value( $data[ $key ] ) ) {
+					$data[ $key ] = wpm_set_new_value( $old_value, $data[ $key ], $post_field_config );
+				}
 			}
 		}
 
