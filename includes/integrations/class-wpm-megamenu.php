@@ -21,7 +21,7 @@ class WPM_Megamenu {
 	 * WPM_Megamenu constructor.
 	 */
 	public function __construct() {
-		add_action( 'admin_enqueue_scripts', array( $this, 'add_language_switcher' ), 11 );
+		add_action( 'admin_print_scripts-mega-menu_page_maxmegamenu_theme_editor', array( $this, 'add_language_switcher' ), 11 );
 	}
 
 
@@ -30,9 +30,9 @@ class WPM_Megamenu {
 	 *
 	 * @param $hook
 	 */
-	public function add_language_switcher( $hook ) {
+	public function add_language_switcher() {
 
-		if ( count( wpm_get_languages() ) <= 1 || ( 'mega-menu_page_maxmegamenu_theme_editor' !== $hook ) ) {
+		if ( count( wpm_get_languages() ) <= 1 ) {
 			return;
 		}
 
