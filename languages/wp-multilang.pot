@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-12-03 16:50+0200\n"
+"POT-Creation-Date: 2017-12-09 11:31+0200\n"
 "PO-Revision-Date: 2017-05-22 12:43+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -287,7 +287,7 @@ msgstr ""
 #: includes/admin/settings/views/html-languages.php:56
 #: includes/admin/settings/views/html-languages.php:145
 #: includes/admin/settings/views/html-languages.php:147
-msgid "Language Code *"
+msgid "Language Code (ISO 639-1)*"
 msgstr ""
 
 #: includes/admin/settings/views/html-languages.php:60
