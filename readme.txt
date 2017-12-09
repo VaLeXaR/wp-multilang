@@ -4,8 +4,8 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 2.1.6
-Requires PHP: 5.6
+Stable tag: 2.1.7
+Requires PHP: 5.6+
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -34,6 +34,7 @@ Translations of post types, taxonomies, meta fields, options, text fields in mil
 * Possibility to set custom locale for html(If installed locale is en_US, you can set locale like: en, en-UK, en-AU etc. Without installation another localization)
 * Possibility for add new languages for any user with capability `manage_options`.
 * Exist the role "Translator" for editing posts, terms. It can not publish or delete.
+* No limits by languages or by possibilities.
 
 == WP Multilang compatible with plugins ==
 
@@ -198,6 +199,10 @@ If you have opened several browser tabs for editing this post in different langu
 5. Post edit page
 
 == Changelog ==
+
+= 2.1.7 =
+* fix Siteorigin integration
+* add filters in add, update and get functions for meta fields
 
 = 2.1.6 =
 * fix deleting

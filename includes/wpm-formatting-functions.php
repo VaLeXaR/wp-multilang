@@ -168,3 +168,16 @@ function wpm_filter_post_config_fields( $fields ) {
 
 	return array_intersect( $default_fields, $fields );
 }
+
+/**
+ * Strip protocol from url
+ *
+ * @param $url
+ *
+ * @return string
+ */
+function wpm_strip_protocol( $url ) {
+
+	// strip the protical
+	return preg_replace( '#^https?://#i', '', $url );
+}

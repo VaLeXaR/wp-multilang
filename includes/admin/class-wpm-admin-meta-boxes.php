@@ -41,7 +41,7 @@ class WPM_Admin_Meta_Boxes {
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 30 );
 		add_action( 'save_post', array( $this, 'save_meta_boxes' ), 1, 2 );
 
-		add_action( 'wpm_process_meta', __NAMESPACE__ . '\Meta_Boxes\WPM_Meta_Box_Languages::save' );
+		add_action( 'wpm_process_meta', __NAMESPACE__ . '\Meta_Boxes\WPM_Meta_Box_Post_Languages::save' );
 
 		// Save Comment Meta Boxes.
 		add_filter( 'comment_edit_redirect', __NAMESPACE__ . '\Meta_Boxes\WPM_Meta_Box_Comment_Languages::save', 1, 2 );

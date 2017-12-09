@@ -105,6 +105,11 @@ abstract class WPM_Object {
 				} else {
 					$value = $meta_field['meta_value'];
 				}
+
+				$value = apply_filters( 'wpm_get_meta_value', $value, $meta_key );
+				$value = apply_filters( "wpm_get_{$meta_key}_meta_value", $value );
+				$value = apply_filters( "wpm_get_{$this->object_type}_meta_{$meta_key}_value", $value );
+
 				$values[] = $value;
 			}
 		}
@@ -160,9 +165,14 @@ abstract class WPM_Object {
 		if ( is_null( $meta_config ) ) {
 			return $check;
 		}
-		$table     = $wpdb->{$this->object_table};
-		$column    = sanitize_key( $this->object_type . '_id' );
-		$id_column = 'user' === $this->object_type ? 'umeta_id' : 'meta_id';
+
+		$table      = $wpdb->{$this->object_table};
+		$column     = sanitize_key( $this->object_type . '_id' );
+		$id_column  = 'user' === $this->object_type ? 'umeta_id' : 'meta_id';
+
+		$meta_value = apply_filters( 'wpm_update_meta_value', $meta_value, $meta_key );
+		$meta_value = apply_filters( "wpm_update_{$meta_key}_meta_value", $meta_value );
+		$meta_value = apply_filters( "wpm_update_{$this->object_type}_meta_{$meta_key}_value", $meta_value );
 
 		if ( empty( $prev_value ) ) {
 
@@ -324,6 +334,10 @@ abstract class WPM_Object {
 
 		$table  = $wpdb->{$this->object_table};
 		$column = sanitize_key( $this->object_type . '_id' );
+
+		$meta_value = apply_filters( 'wpm_add_meta_value', $meta_value, $meta_key );
+		$meta_value = apply_filters( "wpm_add_{$meta_key}_meta_value", $meta_value );
+		$meta_value = apply_filters( "wpm_add_{$this->object_type}_meta_{$meta_key}_value", $meta_value );
 
 		if ( ! wpm_is_ml_value( $meta_value ) ) {
 			$meta_value = wpm_set_new_value( array(), $meta_value, $meta_config );
