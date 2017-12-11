@@ -148,7 +148,7 @@ class WPM_AJAX {
 
 		foreach ( $options as $language ) {
 			if ( $language['translation'] == $locale ) {
-				wp_send_json_error( __( 'Localisation using', 'wp-multilang' ) );
+				wp_send_json_error( __( 'Localization using', 'wp-multilang' ) );
 			}
 		}
 
