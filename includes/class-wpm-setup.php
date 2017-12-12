@@ -542,6 +542,7 @@ class WPM_Setup {
 			'tablepress'                 => __NAMESPACE__ . '\Integrations\WPM_Tablepress',
 			'woocommerce'                => __NAMESPACE__ . '\Integrations\WPM_WooCommerce',
 			'wordpress-seo'              => __NAMESPACE__ . '\Integrations\WPM_Yoast_Seo',
+			'elementor'                  => __NAMESPACE__ . '\Integrations\WPM_Elementor',
 		) );
 
 		foreach ( wp_cache_get( 'active_plugins', 'wpm' ) as $plugin ) {
