@@ -1,5 +1,11 @@
 {
   "post_fields": {
-    "_elementor_data": {}
+    "_elementor_data": {
+      "settings": {
+        "title": {},
+        "editor": {},
+        "caption": {}
+      }
+    }
   }
 }
