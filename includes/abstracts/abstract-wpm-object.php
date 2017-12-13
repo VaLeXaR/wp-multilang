@@ -203,7 +203,7 @@ abstract class WPM_Object {
 		if ( ! wpm_is_ml_value( $meta_value ) ) {
 			$old_value  = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->{$this->object_table}} WHERE meta_key = %s AND {$column} = %d LIMIT 1;", $meta_key, $object_id ) );
 			$old_value  = maybe_unserialize( $old_value );
-			$old_value  = apply_filters( "wpm_filter_old_{$meta_key}_meta_value", $old_value, $meta_value );
+			$old_value  = apply_filters( "wpm_filter_old_{$meta_key}_meta_value", $old_value, $meta_value, $meta_config );
 			$meta_value = wpm_set_new_value( $old_value, $meta_value, $meta_config );
 		}
 

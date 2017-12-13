@@ -548,6 +548,11 @@ function wpm_is_ml_value( $value ) {
  * @return array|bool|string
  */
 function wpm_set_new_value( $old_value, $new_value, $config = array(), $lang = '' ) {
+
+	if ( is_bool( $old_value ) || is_serialized_string( $old_value ) || json_decode( $old_value ) ) {
+		return $old_value;
+	}
+
 	$old_value = wpm_value_to_ml_array( $old_value );
 	$value     = wpm_set_language_value( $old_value, $new_value, $config, $lang );
 	$value     = wpm_ml_value_to_string( $value );
