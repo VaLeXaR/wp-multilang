@@ -26,7 +26,7 @@ class WPM_Menus {
 		add_filter( 'wp_setup_nav_menu_item', array( $this, 'translate_menu_url' ) );
 		add_filter( 'customize_nav_menu_available_items', array( $this, 'filter_menus' ), 5 );
 		add_filter( 'customize_nav_menu_searched_items', array( $this, 'filter_menus' ), 5 );
-		add_filter( 'wp_nav_menu_items', array( $this, 'add_languages_to_menu' ), 5 );
+		add_filter( 'wp_nav_menu_objects', array( $this, 'add_languages_to_menu' ), 5 );
 	}
 
 	/**
@@ -184,31 +184,23 @@ class WPM_Menus {
 	 */
 	public function add_languages_to_menu( $items ) {
 
-		$menu_items = explode( "\n", $items );
+		foreach ( $items as $key => $item ) {
 
-		foreach ( $menu_items as $key => $item ) {
-
-			if ( preg_match( '/^.*href="#wpm-languages".*$/u', $item ) ) {
-
-				if ( preg_match( '/.+?menu-item-(\d+)/u', $item, $matches ) ) {
-					$menu_id = $matches[1];
-				} else {
-					unset( $menu_items[ $key ] );
-					continue;
-				}
+			if ( '#wpm-languages' == $item->url ) {
 
 				$languages   = wpm_get_languages();
 				$new_items   = array();
-				$show_type   = get_post_meta( $menu_id, '_menu_item_languages_show', true );
+				$show_type   = get_post_meta( $item->ID, '_menu_item_languages_show', true );
 
 				foreach ( $languages as $code => $language ) {
 
-					$language_string = '';
-					$current_class = '';
+					$new_item = clone $item;
 
 					if ( wpm_get_language() == $code ) {
-						$current_class = 'class="active-language"';
+						$new_item->classes[] = 'active-language';
 					}
+
+					$language_string = '';
 
 					if ( ( ( 'flag' === $show_type ) || ( 'both' === $show_type ) ) && ( $language['flag'] ) ) {
 						$language_string = '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" alt="' . esc_attr( $language['name'] ) . '">';
@@ -218,16 +210,24 @@ class WPM_Menus {
 						$language_string .= '<span>' . esc_attr( $language['name'] ) . '</span>';
 					}
 
-					$new_item = preg_replace( '/<a href="[^"]+">[^@]+<\/a>/', '<a href="' . esc_url( wpm_translate_current_url( $code ) ) . '" ' . $current_class . ' data-lang="' . esc_attr( $code ) . '">' . $language_string . '</a>', $item );
-					$new_items[] = str_replace( $menu_id, 'language-' . $code, $new_item );
+					$new_item->title = $language_string;
+					$new_item->url   = esc_url( wpm_translate_current_url( $code ) );
+					$new_item->ID    = 'language-' . $code;
+					$new_items[]     = $new_item;
 				}
 
-				$menu_items = wpm_array_insert_after( $menu_items, $key, $new_items );
-				unset( $menu_items[ $key ] );
+				$items        = wpm_array_insert_after( $items, $key, $new_items );
+				$sorted_array = array();
+
+				foreach ( $items as $k => $v ) {
+					$sorted_array[ $k + 1 ] = $v;
+				}
+
+				$items = $sorted_array;
+				unset( $items[ $key ] );
+				break;
 			}// End if().
 		}// End foreach().
-
-		$items = implode( "\n", $menu_items );
 
 		return $items;
 	}
