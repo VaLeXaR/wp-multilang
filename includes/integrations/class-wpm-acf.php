@@ -215,10 +215,6 @@ class WPM_Acf {
 	 */
 	public function update_value( $value, $post_id, $field ) {
 
-		if ( wpm_is_ml_value( $value ) ) {
-			return;
-		}
-
 		if ( is_numeric( $post_id ) ) {
 			$field_type = 'post';
 		} elseif ( strpos( $post_id, 'user_' ) !== false ) {
@@ -266,7 +262,9 @@ class WPM_Acf {
 			$old_value = get_field( $field['name'], $post_id, false );
 			add_filter( 'acf/load_value', 'wpm_translate_value', 5 );
 
-			$value = wpm_set_new_value( $old_value, $value, $acf_field_config );
+			if ( ! wpm_is_ml_value( $value ) ) {
+				$value = wpm_set_new_value( $old_value, $value, $acf_field_config );
+			}
 		}
 
 
