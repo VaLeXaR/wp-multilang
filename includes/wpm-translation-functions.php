@@ -447,11 +447,9 @@ function wpm_translate_term( $term, $taxonomy, $lang = '' ) {
  * @return mixed
  */
 function wpm_untranslate_post( $post ) {
-
 	if ( $post instanceof WP_Post ) {
-
-		$orig_post = get_post( $post->ID );
-
+		global $wpdb;
+		$orig_post = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->posts} WHERE ID = %d;", $post->ID ) );
 		foreach ( get_object_vars( $post ) as $key => $content ) {
 			switch ( $key ) {
 				case 'post_title':
