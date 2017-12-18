@@ -142,6 +142,17 @@ class WPM_Admin_Assets {
 
 		wp_enqueue_script( 'wpm_language_switcher' );
 
+		add_action( 'admin_head', function () {
+			?>
+			<style>
+				#wpbody-content .wrap {
+					padding-top: 37px;
+					position: relative;
+				}
+			</style>
+			<?php
+		} );
+
 		add_action( 'admin_print_footer_scripts', 'wpm_admin_language_switcher' );
 	}
 }
