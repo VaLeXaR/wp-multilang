@@ -213,9 +213,25 @@ function wpm_get_orig_home_url() {
 	return apply_filters( 'wpm_get_original_home_url', $home_url );
 }
 
-add_filter( 'attribute_escape', array( 'WPM\Includes\WPM_Posts', 'escaping_text' ), 5 );
-add_filter( 'esc_textarea', array( 'WPM\Includes\WPM_Posts', 'escaping_text' ), 5 );
-add_filter( 'esc_html', array( 'WPM\Includes\WPM_Posts', 'escaping_text' ), 5 );
+
+/**
+ * Translate escaping text
+ *
+ * @param string $string
+ *
+ * @return string
+ */
+function wpm_escaping_text( $string ) {
+	if ( 'GET' == $_SERVER['REQUEST_METHOD'] ) {
+		$string = wpm_translate_string( $string );
+	}
+
+	return $string;
+}
+
+add_filter( 'attribute_escape', 'wpm_escaping_text', 5 );
+add_filter( 'esc_textarea', 'wpm_escaping_text', 5 );
+add_filter( 'esc_html', 'wpm_escaping_text', 5 );
 add_filter( 'localization', 'wpm_translate_string', 5 );
 add_filter( 'gettext', 'wpm_translate_string', 5 );
 
