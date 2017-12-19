@@ -145,7 +145,7 @@ class WPM_Admin_Assets {
 		add_action( 'admin_head', function () {
 			?>
 			<style>
-				#wpbody-content .wrap {
+				#wpbody-content > .wrap {
 					padding-top: 37px;
 					position: relative;
 				}

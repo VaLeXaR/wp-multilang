@@ -225,20 +225,4 @@ class WPM_Posts extends WPM_Object {
 
 		return str_replace( $text, $translated_text, $link );
 	}
-
-
-	/**
-	 * Translate escaping text
-	 *
-	 * @param string $string
-	 *
-	 * @return string
-	 */
-	public static function escaping_text( $string ) {
-		if ( 'GET' == $_SERVER['REQUEST_METHOD'] ) {
-			$string = wpm_translate_string( $string );
-		}
-
-		return $string;
-	}
 }

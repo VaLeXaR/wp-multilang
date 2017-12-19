@@ -447,11 +447,9 @@ function wpm_translate_term( $term, $taxonomy, $lang = '' ) {
  * @return mixed
  */
 function wpm_untranslate_post( $post ) {
-
 	if ( $post instanceof WP_Post ) {
-
-		$orig_post = get_post( $post->ID );
-
+		global $wpdb;
+		$orig_post = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->posts} WHERE ID = %d;", $post->ID ) );
 		foreach ( get_object_vars( $post ) as $key => $content ) {
 			switch ( $key ) {
 				case 'post_title':
@@ -548,6 +546,11 @@ function wpm_is_ml_value( $value ) {
  * @return array|bool|string
  */
 function wpm_set_new_value( $old_value, $new_value, $config = array(), $lang = '' ) {
+
+	if ( is_bool( $old_value ) || is_serialized_string( $old_value ) || json_decode( $old_value ) ) {
+		return $old_value;
+	}
+
 	$old_value = wpm_value_to_ml_array( $old_value );
 	$value     = wpm_set_language_value( $old_value, $new_value, $config, $lang );
 	$value     = wpm_ml_value_to_string( $value );

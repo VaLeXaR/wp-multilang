@@ -47,9 +47,9 @@ class WPM_Newsletter {
 		$screen_id = $screen ? $screen->id : '';
 
 		if ( 'admin_page_newsletter_emails_edit' === $screen_id ) {
-			remove_filter( 'attribute_escape', array( 'WPM\Includes\WPM_Posts', 'escaping_text' ), 5 );
-			remove_filter( 'esc_textarea', array( 'WPM\Includes\WPM_Posts', 'escaping_text' ), 5 );
-			remove_filter( 'esc_html', array( 'WPM\Includes\WPM_Posts', 'escaping_text' ), 5 );
+			remove_filter( 'attribute_escape', 'wpm_escaping_text', 5 );
+			remove_filter( 'esc_textarea', 'wpm_escaping_text', 5 );
+			remove_filter( 'esc_html', 'wpm_escaping_text', 5 );
 			wpm_show_notice();
 		}
 	}

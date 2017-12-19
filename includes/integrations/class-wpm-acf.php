@@ -38,7 +38,8 @@ class WPM_Acf {
 	public function init_filters() {
 		if ( version_compare( acf()->settings['version'], 5, 'ge' ) ) {
 			add_filter( 'wpm_post_acf-field-group_config', array( $this, 'add_config' ) );
-			add_filter( 'acf/translate_field_group', 'wpm_translate_value', 5 );
+			add_filter( 'acf/get_field_group', 'wpm_translate_value', 5 );
+			add_filter( 'acf/get_field_label', 'wpm_translate_string', 5 );
 			add_filter( 'acf/update_field', array( $this, 'update_field_pro' ), 99 );
 			add_filter( 'acf/update_value', array( $this, 'update_value_pro' ), 99, 3 );
 		} else {
@@ -48,8 +49,8 @@ class WPM_Acf {
 			add_action( 'acf/update_field', array( $this, 'update_field' ), 5, 2 );
 			remove_class_action( 'acf/update_value', 'acf_field_functions', 'update_value', 5 );
 			add_action( 'acf/update_value', array( $this, 'update_value' ), 5, 3 );
-			add_filter( 'attribute_escape', array( $this, 'translate_value' ) );
-			add_filter( 'esc_textarea', array( $this, 'translate_value' ) );
+			add_filter( 'attribute_escape', array( $this, 'translate_value' ), 5 );
+			add_filter( 'esc_textarea', array( $this, 'translate_value' ), 5 );
 			add_filter( 'acf_the_editor_content', 'wpm_translate_value', 5 );
 		}
 	}
@@ -199,9 +200,7 @@ class WPM_Acf {
 		$old_value = get_field( $field['name'], $post_id, false );
 		add_filter( 'acf/load_value', 'wpm_translate_value', 5 );
 
-		if ( ! wpm_is_ml_value( $value ) ) {
-			$value = wpm_set_new_value( $old_value, $value, $acf_field_config );
-		}
+		$value = wpm_set_new_value( $old_value, $value, $acf_field_config );
 
 		return $value;
 	}

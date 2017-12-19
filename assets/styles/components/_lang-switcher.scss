@@ -3,23 +3,28 @@
 	margin-bottom: 0;
 	padding-left: 0;
 
-	a {
-		color: lighten($black, 20%);
+	li {
 
-		&:hover {
-			color: $black;
+		a,
+		> span {
+			color: lighten($black, 20%);
+
+			&:hover {
+				color: $black;
+			}
+
+			img {
+				display: inline-block;
+				margin-right: 3px;
+			}
 		}
 
-		img {
-			display: inline-block;
-			margin-right: 3px;
-		}
-	}
+		&.active {
 
-	.active {
-
-		a {
-			color: $black;
+			a,
+			> span {
+				color: $black;
+			}
 		}
 	}
 }
@@ -30,6 +35,7 @@
 	padding-left: 0;
 	position: relative;
 
+	a,
 	span {
 
 		img {
@@ -43,11 +49,6 @@
 
 		&:hover {
 			color: $black;
-		}
-
-		img {
-			display: inline-block;
-			margin-right: 3px;
 		}
 	}
 

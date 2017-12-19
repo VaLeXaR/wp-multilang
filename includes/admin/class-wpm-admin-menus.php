@@ -191,7 +191,6 @@ class WPM_Admin_Menus {
 		<?php
 	}
 
-
 	/**
 	 * Add custom fields to menu item.
 	 *
@@ -204,29 +203,51 @@ class WPM_Admin_Menus {
 			return;
 		}
 
-		$_key  = 'language_show';
+		$_key  = 'languages_type';
+		$key   = sprintf( 'menu-item-%s', $_key );
+		$id    = sprintf( 'edit-%s-%s', $key, $item_id );
+		$name  = sprintf( '%s[%s]', $_key, $item_id );
+		$value = get_post_meta( $item_id, '_menu_item_languages_type', true );
+		$class = sprintf( 'field-%s', $_key );
+
+		$type_options = array(
+			'inline'   => __( 'Inline', 'wp-multilang' ),
+			'single'   => __( 'Single', 'wp-multilang' ),
+			'dropdown' => __( 'Dropdown', 'wp-multilang' ),
+		);
+		?>
+		<p class="description description-wide <?php echo esc_attr( $class ); ?>">
+			<label for="<?php esc_attr_e( $id ); ?>"><?php esc_html_e( 'Languages menu item type', 'wp-multilang' ); ?></label>
+			<select class="widefat" id="<?php esc_attr_e( $id ); ?>" name="<?php esc_attr_e( $name ); ?>">
+				<?php foreach ( $type_options as $val => $name ) { ?>
+					<option value="<?php esc_attr_e( $val ); ?>"<?php selected( $val, $value ) ?>><?php esc_html_e( $name ); ?></option>
+				<?php } ?>
+			</select>
+		</p>
+		<?php
+		$_key  = 'languages_show';
 		$key   = sprintf( 'menu-item-%s', $_key );
 		$id    = sprintf( 'edit-%s-%s', $key, $item_id );
 		$name  = sprintf( '%s[%s]', $_key, $item_id );
 		$value = get_post_meta( $item_id, '_menu_item_languages_show', true );
 		$class = sprintf( 'field-%s', $_key );
-		$options = array(
+
+		$show_options = array(
 			'both' => __( 'Both', 'wp-multilang' ),
 			'flag' => __( 'Flag', 'wp-multilang' ),
 			'name' => __( 'Name', 'wp-multilang' ),
-		)
+		);
 		?>
 		<p class="description description-wide <?php echo esc_attr( $class ); ?>">
 			<label for="<?php esc_attr_e( $id ); ?>"><?php esc_html_e( 'Show', 'wp-multilang' ); ?></label>
 			<select class="widefat" id="<?php esc_attr_e( $id ); ?>" name="<?php esc_attr_e( $name ); ?>">
-				<?php foreach ( $options as $val => $name ) { ?>
+				<?php foreach ( $show_options as $val => $name ) { ?>
 					<option value="<?php esc_attr_e( $val ); ?>"<?php selected( $val, $value ) ?>><?php esc_html_e( $name ); ?></option>
 				<?php } ?>
 			</select>
 		</p>
 		<?php
 	}
-
 
 	/**
 	 * Add language settings params
@@ -246,6 +267,7 @@ class WPM_Admin_Menus {
 			return;
 		}
 
-		update_post_meta( $menu_item_db_id, '_menu_item_languages_show', $_POST['language_show'][ $menu_item_db_id ] );
+		update_post_meta( $menu_item_db_id, '_menu_item_languages_type', $_POST['languages_type'][ $menu_item_db_id ] );
+		update_post_meta( $menu_item_db_id, '_menu_item_languages_show', $_POST['languages_show'][ $menu_item_db_id ] );
 	}
 }

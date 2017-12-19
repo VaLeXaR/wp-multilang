@@ -41,18 +41,12 @@ class WPM_PBSO {
 		$new_old_value['widgets'] = array();
 
 		foreach ( $meta_value['widgets'] as $key => $widget ) {
-
 			foreach ( $old_value['widgets'] as $_widget ) {
-
 				if ( $widget['panels_info']['widget_id'] === $_widget['panels_info']['widget_id'] ) {
 					$new_old_value['widgets'][ $key ] = $_widget;
-
 					if ( isset( $widget['frames'] ) ) {
-
 						foreach ( $widget['frames'] as $_key => $frame ) {
-
 							if ( isset( $frame['content'] ) && is_array( $frame['content'] ) && isset( $frame['content']['widgets'] ) ) {
-
 								foreach ( $_widget['frames'] as $_frame ) {
 									$new_old_value['widgets'][ $key ]['frames'][ $_key ]['content'] = $this->filter_old_value( $_frame['content'], $frame['content'] );
 								}
@@ -78,13 +72,9 @@ class WPM_PBSO {
 	public function add_recursive_config( $config, $meta_value ) {
 
 		if ( is_array( $meta_value ) && isset( $meta_value['widgets'] ) ) {
-
 			foreach ( $meta_value['widgets'] as $widget ) {
-
 				if ( isset( $widget['frames'] ) ) {
-
 					foreach ( $widget['frames'] as $frame ) {
-
 						if ( isset( $frame['content'] ) && is_array( $frame['content'] ) && isset( $frame['content']['widgets'] ) ) {
 							$config['widgets']['wpm_each']['frames']['wpm_each']['content'] = $this->add_recursive_config( $config, $frame['content'] );
 						}

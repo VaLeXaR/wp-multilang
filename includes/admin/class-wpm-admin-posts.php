@@ -73,6 +73,10 @@ class WPM_Admin_Posts {
 			$columns = array();
 		}
 
+		if ( isset( $columns['languages'] ) ) {
+			return $columns;
+		}
+
 		$language = array( 'languages' => __( 'Languages', 'wp-multilang' ) );
 
 		if ( isset( $columns['title'] ) ) {
