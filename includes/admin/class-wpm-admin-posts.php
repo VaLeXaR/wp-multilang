@@ -55,7 +55,7 @@ class WPM_Admin_Posts {
 				continue;
 			}
 
-			add_filter( "manage_edit-{$post_type}_columns", array( $this, 'language_columns' ) );
+			add_filter( "manage_{$post_type}_posts_columns", array( $this, 'language_columns' ) );
 			add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'render_language_column' ) );
 		}
 	}
