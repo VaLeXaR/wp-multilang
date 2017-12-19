@@ -96,6 +96,12 @@
       "title" : {},
       "description" : {},
       "instructions" : {}
+    },
+    "woocommerce_bacs_accounts": {
+      "wpm_each": {
+        "account_name": {},
+        "bank_name": {}
+      }
     }
   },
   "admin_html_tags": {
