@@ -2,14 +2,18 @@
   list-style: none;
   margin-bottom: 0;
   padding-left: 0; }
-  .switcher-list a {
+  .switcher-list li a,
+  .switcher-list li > span {
     color: #333333; }
-    .switcher-list a:hover {
+    .switcher-list li a:hover,
+    .switcher-list li > span:hover {
       color: #000; }
-    .switcher-list a img {
+    .switcher-list li a img,
+    .switcher-list li > span img {
       display: inline-block;
       margin-right: 3px; }
-  .switcher-list .active a {
+  .switcher-list li.active a,
+  .switcher-list li.active > span {
     color: #000; }
 
 .switcher-dropdown {
@@ -17,6 +21,7 @@
   margin-bottom: 0;
   padding-left: 0;
   position: relative; }
+  .switcher-dropdown a img,
   .switcher-dropdown span img {
     display: inline-block;
     margin-right: 3px; }
@@ -24,9 +29,6 @@
     color: #333333; }
     .switcher-dropdown a:hover {
       color: #000; }
-    .switcher-dropdown a img {
-      display: inline-block;
-      margin-right: 3px; }
   .switcher-dropdown .language-dropdown {
     display: none;
     left: 0;

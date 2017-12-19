@@ -188,33 +188,71 @@ class WPM_Menus {
 
 			if ( '#wpm-languages' == $item->url ) {
 
-				$languages   = wpm_get_languages();
-				$new_items   = array();
-				$show_type   = get_post_meta( $item->ID, '_menu_item_languages_show', true );
+				$languages       = wpm_get_languages();
+				$count_languages = count( $languages );
+				$lang            = wpm_get_language();
+				$new_items       = array();
+				$show_type       = get_post_meta( $item->ID, '_menu_item_languages_show', true );
+				$item_type       = get_post_meta( $item->ID, '_menu_item_languages_type', true );
+				$i               = 1;
+				$was_current     = false;
+				$first_lang      = null;
 
 				foreach ( $languages as $code => $language ) {
+					$new_item            = clone $item;
+					$new_item->ID        = 'language-' . $code;
+					$new_item->db_id     = 'language-' . $code;
+					$new_item->object    = 'language';
+					$new_item->object_id = $code;
+					$language_title      = '';
 
-					$new_item = clone $item;
-
-					if ( wpm_get_language() == $code ) {
+					if ( $lang == $code ) {
+						$was_current = true;
 						$new_item->classes[] = 'active-language';
+						$new_item->url       = '#';
+					} else {
+						$new_item->url = esc_url( wpm_translate_current_url( $code ) );
 					}
 
-					$language_string = '';
-
 					if ( ( ( 'flag' === $show_type ) || ( 'both' === $show_type ) ) && ( $language['flag'] ) ) {
-						$language_string = '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" alt="' . esc_attr( $language['name'] ) . '">';
+						$language_title = '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" alt="' . esc_attr( $language['name'] ) . '">';
 					}
 
 					if ( ( 'name' === $show_type ) || ( 'both' === $show_type ) ) {
-						$language_string .= '<span>' . esc_attr( $language['name'] ) . '</span>';
+						$language_title .= '<span>' . esc_attr( $language['name'] ) . '</span>';
 					}
 
-					$new_item->title = $language_string;
-					$new_item->url   = esc_url( wpm_translate_current_url( $code ) );
-					$new_item->ID    = 'language-' . $code;
-					$new_items[]     = $new_item;
-				}
+					$new_item->title = $language_title;
+
+					if ( 'dropdown' == $item_type ) {
+						if ( $lang == $code ) {
+							$new_item->classes[] = 'menu-item-has-children';
+						} else {
+							$new_item->menu_item_parent = 'language-' . $lang;
+						}
+					}
+
+					if ( 'single' == $item_type ) {
+						if ( 1 == $i ) {
+							$first_lang = $new_item;
+						}
+
+						if ( ( $i == $count_languages ) && ( $lang == $code ) && $first_lang ) {
+							$new_items[] = $first_lang;
+							break;
+						}
+
+						if ( $lang !== $code && $was_current ) {
+							$new_items[] = $new_item;
+							break;
+						}
+
+						$i++;
+						continue;
+					}
+
+					$new_items[] = $new_item;
+				}// End foreach().
 
 				$items        = wpm_array_insert_after( $items, $key, $new_items );
 				$sorted_array = array();
@@ -228,6 +266,7 @@ class WPM_Menus {
 				break;
 			}// End if().
 		}// End foreach().
+
 
 		return $items;
 	}

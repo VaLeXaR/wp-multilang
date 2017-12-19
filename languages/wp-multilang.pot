@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-12-09 11:31+0200\n"
+"POT-Creation-Date: 2017-12-19 11:15+0200\n"
 "PO-Revision-Date: 2017-05-22 12:43+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -29,7 +29,7 @@ msgstr ""
 #: includes/admin/class-wpm-admin-menus.php:178
 #: includes/admin/class-wpm-admin-meta-boxes.php:101
 #: includes/admin/class-wpm-admin-meta-boxes.php:106
-#: includes/admin/class-wpm-admin-posts.php:76
+#: includes/admin/class-wpm-admin-posts.php:80
 #: includes/admin/class-wpm-admin-taxonomies.php:66
 #: includes/admin/settings/class-wpm-settings-languages.php:27
 #: includes/admin/settings/class-wpm-settings-languages.php:43
@@ -83,6 +83,23 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
+#: includes/admin/class-wpm-admin-menus.php:236
+msgid "Inline"
+msgstr ""
+
+#: includes/admin/class-wpm-admin-menus.php:237
+msgid "Single"
+msgstr ""
+
+#: includes/admin/class-wpm-admin-menus.php:238
+#: includes/widgets/class-wpm-widget-language-switcher.php:49
+msgid "Dropdown"
+msgstr ""
+
+#: includes/admin/class-wpm-admin-menus.php:242
+msgid "Languages menu item type"
+msgstr ""
+
 #: includes/admin/class-wpm-admin-notices.php:104
 #: includes/admin/class-wpm-admin-settings.php:66
 msgid "Action failed. Please refresh the page and retry."
@@ -93,7 +110,7 @@ msgstr ""
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: includes/admin/class-wpm-admin-posts.php:134
+#: includes/admin/class-wpm-admin-posts.php:138
 msgid "Current edit language:"
 msgstr ""
 
@@ -373,7 +390,7 @@ msgid "No locale sending"
 msgstr ""
 
 #: includes/class-wpm-ajax.php:151
-msgid "Localisation using"
+msgid "Localization using"
 msgstr ""
 
 #: includes/class-wpm-ajax.php:190
@@ -456,10 +473,6 @@ msgstr ""
 
 #: includes/widgets/class-wpm-widget-language-switcher.php:48
 msgid "List"
-msgstr ""
-
-#: includes/widgets/class-wpm-widget-language-switcher.php:49
-msgid "Dropdown"
 msgstr ""
 
 #: includes/widgets/class-wpm-widget-language-switcher.php:50
