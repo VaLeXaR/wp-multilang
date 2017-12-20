@@ -489,13 +489,13 @@ class WPM_AJAX {
 				case 'description':
 				case 'post_content':
 					if ( is_serialized_string( $content ) ) {
-						$content    = unserialize( $content );
+						$content      = unserialize( $content );
 						$object->$key = serialize( wpm_set_new_value( $content, wpm_translate_value( $content, $lang ), $object_config[ $key ], $lang ) );
 						break;
 					}
 
 					if ( json_decode( $content ) ) {
-						$content    = json_decode( $content, true );
+						$content      = json_decode( $content, true );
 						$object->$key = wp_json_encode( wpm_set_new_value( $content, wpm_translate_value( $content, $lang ), $object_config[ $key ], $lang ) );
 						break;
 					}
