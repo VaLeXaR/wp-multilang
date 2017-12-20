@@ -39,7 +39,9 @@ class WPM_Acf {
 		if ( version_compare( acf()->settings['version'], 5, 'ge' ) ) {
 			add_filter( 'wpm_post_acf-field-group_config', array( $this, 'add_config' ) );
 			add_filter( 'acf/get_field_group', 'wpm_translate_value', 5 );
+			add_filter( 'acf/translate_field_group', 'wpm_translate_value', 5 );
 			add_filter( 'acf/get_field_label', 'wpm_translate_string', 5 );
+			add_filter( 'acf/translate_field', 'wpm_translate_value', 5 );
 			add_filter( 'acf/update_field', array( $this, 'update_field_pro' ), 99 );
 			add_filter( 'acf/update_value', array( $this, 'update_value_pro' ), 99, 3 );
 		} else {
