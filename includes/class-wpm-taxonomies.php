@@ -66,17 +66,12 @@ class WPM_Taxonomies extends WPM_Object {
 	 * @return array
 	 */
 	public function translate_terms( $terms ) {
-
-		if ( is_array( $terms ) ) {
-			$_terms = array();
-			foreach ( $terms as $term ) {
-				if ( is_object( $term ) ) {
-					$_terms[] = wpm_translate_term( $term, $term->taxonomy );
-				} else {
-					$_terms[] = wpm_translate_value( $term );
-				}
+		foreach ( $terms as &$term ) {
+			if ( is_object( $term ) ) {
+				$term = wpm_translate_term( $term, $term->taxonomy );
+			} else {
+				$term = wpm_translate_value( $term );
 			}
-			$terms = $_terms;
 		}
 
 		return $terms;
