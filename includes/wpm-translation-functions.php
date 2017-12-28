@@ -434,8 +434,11 @@ function wpm_translate_term( $term, $taxonomy, $lang = '' ) {
 		return wpm_translate_object( $term, $lang );
 	}
 
-	return wpm_translate_value( $term, $lang );
+	if ( is_array( $term ) ) {
+		return wpm_translate_value( $term, $lang );
+	}
 
+	return $term;
 }
 
 
