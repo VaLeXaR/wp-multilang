@@ -47,10 +47,12 @@ function wpm_translate_url( $url, $language = '' ) {
 	$url         = remove_query_arg( 'lang', $url );
 	$default_uri = str_replace( $host, '', $url );
 	$default_uri = $default_uri ? $default_uri : '/';
-	$pattern     = '!^/([a-z]{2})(/|$)!i';
+	$languages   = wpm_get_languages();
+	$parts       = explode( '/', ltrim( trailingslashit( $default_uri ), '/' ) );
+	$url_lang    = $parts[0];
 
-	if ( preg_match( $pattern, $default_uri ) ) {
-		$default_uri = preg_replace( $pattern, '/', $default_uri );
+	if ( isset( $languages[ $url_lang ] ) ) {
+		$default_uri = preg_replace( '!^/' . $url_lang . '(/|$)!i', '/', $default_uri );
 	}
 
 	$default_language    = wpm_get_default_language();
@@ -160,7 +162,7 @@ function wpm_string_to_ml_array( $string ) {
 	}
 
 	$string = htmlspecialchars_decode( $string );
-	$blocks = preg_split( '#(<!--:[a-z]{2}-->|<!--:-->|\[:[a-z]{2}\]|\[:\]|\{:[a-z]{2}\}|\{:\})#ism', $string, - 1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
+	$blocks = preg_split( '#(<!--:[a-z-]+-->|<!--:-->|\[:[a-z-]+\]|\[:\]|\{:[a-z-]+\}|\{:\})#ism', $string, - 1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
 
 	if ( empty( $blocks ) || count( $blocks ) === 1 ) {
 		return $string;
@@ -177,15 +179,15 @@ function wpm_string_to_ml_array( $string ) {
 	$language = '';
 	foreach ( $blocks as $block ) {
 
-		if ( preg_match( '#^<!--:([a-z]{2})-->$#ism', $block, $matches ) ) {
+		if ( preg_match( '#^<!--:([a-z-]+)-->$#ism', $block, $matches ) ) {
 			$language = $matches[1];
 			continue;
 
-		} elseif ( preg_match( '#^\[:([a-z]{2})\]$#ism', $block, $matches ) ) {
+		} elseif ( preg_match( '#^\[:([a-z-]+)\]$#ism', $block, $matches ) ) {
 			$language = $matches[1];
 			continue;
 
-		} elseif ( preg_match( '#^\{:([a-z]{2})\}$#ism', $block, $matches ) ) {
+		} elseif ( preg_match( '#^\{:([a-z-]+)\}$#ism', $block, $matches ) ) {
 			$language = $matches[1];
 			continue;
 		}

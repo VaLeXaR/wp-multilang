@@ -342,10 +342,6 @@ class WPM_Setup {
 			if ( $url_lang = $this->get_lang_from_url() ) {
 				$user_language = $url_lang;
 			}
-
-			if ( $user_language && ! is_admin() && ! isset( $languages[ $user_language ] ) ) {
-				add_action( 'template_redirect', array( $this, 'set_not_found' ) );
-			}
 		}
 
 		if ( isset( $_REQUEST['lang'] ) ) {
@@ -402,7 +398,7 @@ class WPM_Setup {
 				}
 			} else {
 				if ( $url_lang && $user_language === $default_language ) {
-					wp_redirect( home_url( preg_replace( '!^/([a-z]{2})(/|$)!i', '/', $this->get_original_request_uri() ) ) );
+					wp_redirect( home_url( preg_replace( '!^/' . $url_lang . '(/|$)!i', '/', $this->get_original_request_uri() ) ) );
 					exit;
 				}
 			}
@@ -554,7 +550,7 @@ class WPM_Setup {
 	/**
 	 * Set 404 headers for not available language
 	 */
-	private function set_not_found() {
+	public function set_not_found() {
 		global $wp_query;
 		$wp_query->set_404();
 		status_header( 404 );
@@ -816,9 +812,11 @@ class WPM_Setup {
 	private function get_lang_from_url() {
 		if ( ! $this->url_language ) {
 			$url_lang = '';
+			$parts    = explode( '/', ltrim( trailingslashit( $this->get_original_request_uri() ), '/' ) );
+			$lang     = $parts[0];
 
-			if ( preg_match( '!^/([a-z]{2})(/|$)!i', $this->get_original_request_uri(), $match ) ) {
-				$url_lang = $match[1];
+			if ( isset( $this->languages[ $lang ] ) ) {
+				$url_lang = $lang;
 			}
 
 			$this->url_language = $url_lang;
