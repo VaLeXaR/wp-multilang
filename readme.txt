@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 2.1.8
+Stable tag: 2.1.9
 Requires PHP: 5.6+
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -199,6 +199,17 @@ If you have opened several browser tabs for editing this post in different langu
 5. Post edit page
 
 == Changelog ==
+
+= 2.1.9 =
+* added WC setting 'woocommerce_bacs_accounts' in translate config
+* added support region languages
+* fixed set new translate notice
+* fixed translate ACF groups
+* fixed MegaMenu compatibility
+* fixed product duplication in WC
+* fixed get_term for taxonomy hierarchy query
+* fixed check for translate posts
+* fixed Gutenberg compatibility
 
 = 2.1.8 =
 * added types for language switcher in menu
