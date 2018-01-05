@@ -47,10 +47,12 @@ function wpm_translate_url( $url, $language = '' ) {
 	$url         = remove_query_arg( 'lang', $url );
 	$default_uri = str_replace( $host, '', $url );
 	$default_uri = $default_uri ? $default_uri : '/';
-	$pattern     = '!^/([a-z]{2})(/|$)!i';
+	$languages   = wpm_get_languages();
+	$parts       = explode( '/', ltrim( trailingslashit( $default_uri ), '/' ) );
+	$url_lang    = $parts[0];
 
-	if ( preg_match( $pattern, $default_uri ) ) {
-		$default_uri = preg_replace( $pattern, '/', $default_uri );
+	if ( isset( $languages[ $url_lang ] ) ) {
+		$default_uri = preg_replace( '!^/' . $url_lang . '(/|$)!i', '/', $default_uri );
 	}
 
 	$default_language    = wpm_get_default_language();
@@ -83,7 +85,7 @@ function wpm_translate_url( $url, $language = '' ) {
  */
 function wpm_translate_string( $string, $language = '' ) {
 
-	if ( is_serialized_string( $string ) || json_decode( $string ) ) {
+	if ( ! is_string( $string ) || is_serialized_string( $string ) || json_decode( $string ) ) {
 		return $string;
 	}
 
@@ -160,7 +162,7 @@ function wpm_string_to_ml_array( $string ) {
 	}
 
 	$string = htmlspecialchars_decode( $string );
-	$blocks = preg_split( '#(<!--:[a-z]{2}-->|<!--:-->|\[:[a-z]{2}\]|\[:\]|\{:[a-z]{2}\}|\{:\})#ism', $string, - 1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
+	$blocks = preg_split( '#(<!--:[a-z-]+-->|<!--:-->|\[:[a-z-]+\]|\[:\]|\{:[a-z-]+\}|\{:\})#ism', $string, - 1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
 
 	if ( empty( $blocks ) || count( $blocks ) === 1 ) {
 		return $string;
@@ -177,15 +179,15 @@ function wpm_string_to_ml_array( $string ) {
 	$language = '';
 	foreach ( $blocks as $block ) {
 
-		if ( preg_match( '#^<!--:([a-z]{2})-->$#ism', $block, $matches ) ) {
+		if ( preg_match( '#^<!--:([a-z-]+)-->$#ism', $block, $matches ) ) {
 			$language = $matches[1];
 			continue;
 
-		} elseif ( preg_match( '#^\[:([a-z]{2})\]$#ism', $block, $matches ) ) {
+		} elseif ( preg_match( '#^\[:([a-z-]+)\]$#ism', $block, $matches ) ) {
 			$language = $matches[1];
 			continue;
 
-		} elseif ( preg_match( '#^\{:([a-z]{2})\}$#ism', $block, $matches ) ) {
+		} elseif ( preg_match( '#^\{:([a-z-]+)\}$#ism', $block, $matches ) ) {
 			$language = $matches[1];
 			continue;
 		}
@@ -434,8 +436,11 @@ function wpm_translate_term( $term, $taxonomy, $lang = '' ) {
 		return wpm_translate_object( $term, $lang );
 	}
 
-	return wpm_translate_value( $term, $lang );
+	if ( is_array( $term ) ) {
+		return wpm_translate_value( $term, $lang );
+	}
 
+	return $term;
 }
 
 
@@ -497,7 +502,7 @@ function wpm_is_ml_array( $array ) {
  */
 function wpm_is_ml_string( $string ) {
 
-	if ( is_array( $string ) || is_bool( $string ) || is_serialized_string( $string ) || json_decode( $string ) ) {
+	if ( ! is_string( $string ) || is_serialized_string( $string ) || json_decode( $string ) ) {
 		return false;
 	}
 
@@ -547,7 +552,7 @@ function wpm_is_ml_value( $value ) {
  */
 function wpm_set_new_value( $old_value, $new_value, $config = array(), $lang = '' ) {
 
-	if ( is_bool( $old_value ) || is_serialized_string( $old_value ) || json_decode( $old_value ) ) {
+	if ( is_bool( $old_value ) || is_serialized_string( $old_value ) || ( is_string( $old_value ) && json_decode( $old_value ) ) ) {
 		return $old_value;
 	}
 

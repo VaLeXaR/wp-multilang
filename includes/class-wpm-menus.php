@@ -199,12 +199,14 @@ class WPM_Menus {
 				$first_lang      = null;
 
 				foreach ( $languages as $code => $language ) {
-					$new_item            = clone $item;
-					$new_item->ID        = 'language-' . $code;
-					$new_item->db_id     = 'language-' . $code;
-					$new_item->object    = 'language';
-					$new_item->object_id = $code;
-					$language_title      = '';
+					$new_item                      = new \stdClass();
+					$new_item->ID                  = 'language-' . $code;
+					$new_item->db_id               = 'language-' . $code;
+					$new_item->classes             = $item->classes;
+					$new_item->type                = 'language';
+					$new_item->menu_item_parent    = $item->menu_item_parent;
+					$new_item->parent_submenu_type = $item->parent_submenu_type;
+					$language_title                = '';
 
 					if ( $lang == $code ) {
 						$was_current = true;
@@ -258,7 +260,9 @@ class WPM_Menus {
 				$sorted_array = array();
 
 				foreach ( $items as $k => $v ) {
-					$sorted_array[ $k + 1 ] = $v;
+					$order                  = $k + 1;
+					$v->menu_order          = $order;
+					$sorted_array[ $order ] = $v;
 				}
 
 				$items = $sorted_array;
@@ -266,7 +270,6 @@ class WPM_Menus {
 				break;
 			}// End if().
 		}// End foreach().
-
 
 		return $items;
 	}

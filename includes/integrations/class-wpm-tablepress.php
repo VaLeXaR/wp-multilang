@@ -63,8 +63,8 @@ class WPM_Tablepress {
 			),
 		);
 
-		$old_table            = json_decode( get_post_field( 'post_content', wpm_clean( $postarr['ID'] ), 'edit' ) );
-		$new_table            = json_decode( stripslashes_from_strings_only( $data['post_content'] ) );
+		$old_table            = json_decode( get_post_field( 'post_content', wpm_clean( $postarr['ID'] ), 'edit' ), true );
+		$new_table            = json_decode( stripslashes_from_strings_only( $data['post_content'] ), true );
 		$value                = wpm_set_new_value( $old_table, $new_table, $options );
 		$data['post_content'] = addslashes_gpc( wp_json_encode( $value ) );
 

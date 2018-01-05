@@ -26,6 +26,7 @@ class WPM_WooCommerce {
 		add_filter( 'woocommerce_product_get_name', 'wpm_translate_string' );
 		add_filter( 'woocommerce_product_get_description', 'wpm_translate_string' );
 		add_filter( 'woocommerce_product_get_short_description', 'wpm_translate_string' );
+		add_filter( 'woocommerce_product_title', 'wpm_translate_string' );
 		add_filter( 'woocommerce_shortcode_products_query', array( $this, 'remove_filter' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_js_frontend' ) );
 		add_filter( 'woocommerce_cart_shipping_method_full_label', 'wpm_translate_string' );
@@ -54,6 +55,7 @@ class WPM_WooCommerce {
 		add_filter( 'woocommerce_attribute_taxonomies', array( $this, 'translate_attribute_taxonomies' ) );
 		add_action( 'admin_head', array( $this, 'set_translation_for_attribute_taxonomies' ) );
 		add_filter( 'woocommerce_product_get_review_count', array( $this, 'fix_product_review_count' ), 10, 2 );
+		add_action( 'admin_action_duplicate_product', array( $this, 'remove_filters' ), 9 );
 	}
 
 
@@ -294,5 +296,15 @@ class WPM_WooCommerce {
 		wp_cache_add( $product->get_id(), $count_array, 'wpm_comment_count' );
 
 		return $count;
+	}
+
+	/**
+	 * Remove filters when product is duplication
+	 */
+	public function remove_filters() {
+		remove_filter( 'woocommerce_product_get_name', 'wpm_translate_string' );
+		remove_filter( 'woocommerce_product_get_description', 'wpm_translate_string' );
+		remove_filter( 'woocommerce_product_get_short_description', 'wpm_translate_string' );
+		remove_filter( 'woocommerce_product_title', 'wpm_translate_string' );
 	}
 }

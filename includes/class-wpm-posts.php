@@ -64,9 +64,7 @@ class WPM_Posts extends WPM_Object {
 	 */
 	public function translate_posts( $posts ) {
 		foreach ( $posts as &$post ) {
-			if ( ! is_null( wpm_get_post_config( $post->post_type ) ) ) {
-				$post = wpm_translate_post( $post );
-			}
+			$post = wpm_translate_post( $post );
 		}
 
 		return $posts;
