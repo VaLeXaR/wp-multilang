@@ -200,6 +200,9 @@ If you have opened several browser tabs for editing this post in different langu
 
 == Changelog ==
 
+= 2.1.10 =
+* fixed filters priority on removing in ACF integration
+
 = 2.1.9 =
 * added WC setting 'woocommerce_bacs_accounts' in translate config
 * added support region languages
