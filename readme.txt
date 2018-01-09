@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 2.1.10
+Stable tag: 2.1.11
 Requires PHP: 5.6+
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -200,7 +200,7 @@ If you have opened several browser tabs for editing this post in different langu
 
 == Changelog ==
 
-= 2.1.10 =
+= 2.1.11 =
 * fixed filters priority on removing in ACF integration
 
 = 2.1.9 =
