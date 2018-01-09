@@ -196,9 +196,9 @@ class WPM_Acf {
 			return $value;
 		}
 
-		remove_filter( 'acf/load_value', 'wpm_translate_value', 5 );
+		remove_filter( 'acf/load_value', 'wpm_translate_value', 6 );
 		$old_value = get_field( $field['name'], $post_id, false );
-		add_filter( 'acf/load_value', 'wpm_translate_value', 5 );
+		add_filter( 'acf/load_value', 'wpm_translate_value', 6 );
 
 		$value = wpm_set_new_value( $old_value, $value, $acf_field_config );
 
@@ -258,9 +258,9 @@ class WPM_Acf {
 		}
 
 		if ( $translate ) {
-			remove_filter( 'acf/load_value', 'wpm_translate_value', 5 );
+			remove_filter( 'acf/load_value', 'wpm_translate_value', 6 );
 			$old_value = get_field( $field['name'], $post_id, false );
-			add_filter( 'acf/load_value', 'wpm_translate_value', 5 );
+			add_filter( 'acf/load_value', 'wpm_translate_value', 6 );
 
 			if ( ! wpm_is_ml_value( $value ) ) {
 				$value = wpm_set_new_value( $old_value, $value, $acf_field_config );
