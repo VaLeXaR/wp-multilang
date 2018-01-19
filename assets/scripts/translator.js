@@ -30,7 +30,7 @@ var wpm_translator = {
       return text;
     }
 
-    var split_regex = /(<!--:[a-z]{2}-->|<!--:-->|\[:[a-z]{2}\]|\[:\]|\{:[a-z]{2}\}|\{:\})/gi;
+    var split_regex = /(<!--:[a-z-]+-->|<!--:-->|\[:[a-z-]+\]|\[:\]|\{:[a-z-]+\}|\{:\})/gi;
     var blocks = text.xsplit(split_regex);
 
     if (typeof blocks !== 'object' || !Object.keys(blocks).length)
@@ -48,9 +48,9 @@ var wpm_translator = {
       results[item] = '';
     });
 
-    var clang_regex = /<!--:([a-z]{2})-->/gi;
-    var blang_regex = /\[:([a-z]{2})\]/gi;
-    var slang_regex = /\{:([a-z]{2})\}/gi; // @since 3.3.6 swirly brackets
+    var clang_regex = /<!--:([a-z-]+)-->/gi;
+    var blang_regex = /\[:([a-z-]+)\]/gi;
+    var slang_regex = /\{:([a-z-]+)\}/gi;
     var lang = false;
     var matches;
     for (var i = 0; i < blocks.length; ++i) {
