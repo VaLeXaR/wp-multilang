@@ -150,7 +150,7 @@ class WPM_Posts extends WPM_Object {
 	 */
 	public function save_post( $data, $postarr ) {
 
-		if ( 'auto-draft' == $data['post_status'] ) {
+		if ( 'auto-draft' === $data['post_status'] ) {
 			return $data;
 		}
 
@@ -162,11 +162,11 @@ class WPM_Posts extends WPM_Object {
 
 		if ( 'attachment' !== $data['post_type'] ) {
 
-			if ( 'trash' == $postarr['post_status'] ) {
+			if ( 'trash' === $postarr['post_status'] ) {
 				return $data;
 			}
 
-			if ( isset( $_GET['action'] ) && 'untrash' == $_GET['action'] ) {
+			if ( isset( $_GET['action'] ) && 'untrash' === $_GET['action'] ) {
 				return $data;
 			}
 		}
@@ -194,7 +194,7 @@ class WPM_Posts extends WPM_Object {
 		if ( 'nav_menu_item' === $data['post_type'] ) {
 			$screen = get_current_screen();
 
-			if ( 'POST' === $_SERVER['REQUEST_METHOD'] && 'update' === $_POST['action'] && 'nav-menus' === $screen->id ) {
+			if ( 'POST' === $_SERVER['REQUEST_METHOD'] && 'update' === $_POST['action'] && ( $screen && 'nav-menus' === $screen->id ) ) {
 				// hack to get wp to create a post object when too many properties are empty
 				if ( '' === $data['post_title'] && '' === $data['post_content'] ) {
 					$data['post_content'] = ' ';
