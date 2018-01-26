@@ -120,7 +120,7 @@ function wpm_get_language() {
 			}
 		}
 
-		if ( isset( $query['edit_lang'] ) && isset( $languages [ wpm_clean( $query['edit_lang'] ) ] ) ) {
+		if ( isset( $query['edit_lang'], $languages [ wpm_clean( $query['edit_lang'] ) ] ) ) {
 			$lang = wpm_clean( $query['edit_lang'] );
 		} else {
 			$edit_lang = get_user_meta( get_current_user_id(), 'edit_lang', true );
