@@ -56,6 +56,8 @@ class WPM_WooCommerce {
 		add_action( 'admin_head', array( $this, 'set_translation_for_attribute_taxonomies' ) );
 		add_filter( 'woocommerce_product_get_review_count', array( $this, 'fix_product_review_count' ), 10, 2 );
 		add_action( 'admin_action_duplicate_product', array( $this, 'remove_filters' ), 9 );
+		add_filter( 'woocommerce_rest_prepare_product_object', array( $this, 'translate_rest_object' ), 10, 3 );
+		add_filter( 'woocommerce_rest_prepare_product_variation_object', array( $this, 'translate_rest_object' ), 10, 3 );
 	}
 
 
@@ -306,5 +308,38 @@ class WPM_WooCommerce {
 		remove_filter( 'woocommerce_product_get_description', 'wpm_translate_string' );
 		remove_filter( 'woocommerce_product_get_short_description', 'wpm_translate_string' );
 		remove_filter( 'woocommerce_product_title', 'wpm_translate_string' );
+	}
+
+	/**
+	 * Translate response data for REST Requests
+	 *
+	 * @param $response
+	 * @param $object
+	 * @param $request
+	 *
+	 * @return object
+	 */
+	public function translate_rest_object( $response, $object, $request ) {
+
+		if ( 'view' !== $request['context'] ) {
+			$response->data = wpm_translate_value( $response->data );
+		}
+
+		if ( isset( $response->data['meta_data'] ) ) {
+
+			foreach ( $response->data['meta_data'] as $meta_data ) {
+
+				if ( is_string( $meta_data->value ) ) {
+					$meta_value = wpm_translate_string( trim( $meta_data->value, '"' ) );
+				} else {
+					$meta_value = wpm_translate_value( $meta_data->value );
+				}
+
+				$meta_data->value = $meta_value;
+				$meta_data->apply_changes();
+			}
+		}
+
+		return $response;
 	}
 }
