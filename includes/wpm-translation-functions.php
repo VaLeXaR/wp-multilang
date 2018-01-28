@@ -66,7 +66,7 @@ function wpm_translate_url( $url, $language = '' ) {
 
 	$new_uri = preg_replace( '/(\/+)/', '/', $new_uri );
 
-	if ( '/' != $new_uri ) {
+	if ( '/' !== $new_uri ) {
 		$new_url = $host . $new_uri;
 	} else {
 		$new_url = $host;
@@ -104,9 +104,9 @@ function wpm_translate_string( $string, $language = '' ) {
 	if ( $language ) {
 		if ( isset( $languages[ $language ] ) ) {
 			return $strings[ $language ];
-		} else {
-			return '';
 		}
+
+		return '';
 	}
 
 	$language         = wpm_get_language();
@@ -141,11 +141,9 @@ function wpm_translate_value( $value, $language = '' ) {
 		}
 
 		return $result;
-	} elseif ( is_string( $value ) ) {
-		return wpm_translate_string( $value, $language );
-	} else {
-		return $value;
 	}
+
+	return wpm_translate_string( $value, $language );
 }
 
 /**
@@ -230,11 +228,9 @@ function wpm_value_to_ml_array( $value ) {
 		}
 
 		return $result;
-	} elseif ( is_string( $value ) ) {
-		return wpm_string_to_ml_array( $value );
-	} else {
-		return $value;
 	}
+
+	return wpm_string_to_ml_array( $value );
 }
 
 /**
@@ -282,17 +278,17 @@ function wpm_ml_value_to_string( $value ) {
 
 		if ( wpm_is_ml_array( $value ) ) {
 			return wpm_ml_array_to_string( $value );
-		} else {
-			$result = array();
-			foreach ( $value as $key => $item ) {
-				$result[ $key ] = wpm_ml_value_to_string( $item );
-			}
-
-			return $result;
 		}
-	} else {
-		return $value;
+
+		$result = array();
+		foreach ( $value as $key => $item ) {
+			$result[ $key ] = wpm_ml_value_to_string( $item );
+		}
+
+		return $result;
 	}
+
+	return $value;
 }
 
 /**
@@ -313,7 +309,7 @@ function wpm_set_language_value( $localize_array, $value, $config = array(), $la
 		$lang = wpm_get_language();
 	}
 
-	if ( is_array( $value ) && ! is_null( $config ) ) {
+	if ( is_array( $value ) && null !== $config ) {
 		foreach ( $value as $key => $item ) {
 			if ( isset( $config['wpm_each'] ) ) {
 				$config_key = $config['wpm_each'];
@@ -328,7 +324,7 @@ function wpm_set_language_value( $localize_array, $value, $config = array(), $la
 			$new_value[ $key ] = wpm_set_language_value( $localize_array[ $key ], $value[ $key ], $config_key, $lang );
 		}
 	} else {
-		if ( ! is_null( $config ) && ! is_bool( $value ) ) {
+		if ( null !== $config && ! is_bool( $value ) ) {
 
 			if ( wpm_is_ml_string( $value ) ) {
 				$value = wpm_translate_string( $value );
@@ -338,12 +334,16 @@ function wpm_set_language_value( $localize_array, $value, $config = array(), $la
 				$new_value = $localize_array;
 				$new_value[ $lang ] = $value;
 			} else {
-				$result = array();
-				foreach ( $languages as $lg => $language ) {
-					$result[ $lg ] = '';
+				if ( json_decode( $value ) || is_serialized_string( $value ) ) {
+					$new_value  = $value;
+				} else {
+					$result = array();
+					foreach ( $languages as $lg => $language ) {
+						$result[ $lg ] = '';
+					}
+					$result[ $lang ] = $value;
+					$new_value  = $result;
 				}
-				$result[ $lang ] = $value;
-				$new_value  = $result;
 			}
 		} else {
 			$new_value = $value;
@@ -407,7 +407,7 @@ function wpm_translate_object( $object, $lang = '' ) {
  */
 function wpm_translate_post( $post, $lang = '' ) {
 
-	if ( ! is_object( $post ) || is_null( wpm_get_post_config( $post->post_type ) ) ) {
+	if ( ! is_object( $post ) || null === wpm_get_post_config( $post->post_type ) ) {
 		return $post;
 	}
 
@@ -428,7 +428,7 @@ function wpm_translate_post( $post, $lang = '' ) {
  */
 function wpm_translate_term( $term, $taxonomy, $lang = '' ) {
 
-	if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
+	if ( null === wpm_get_taxonomy_config( $taxonomy ) ) {
 		return $term;
 	}
 
@@ -535,9 +535,9 @@ function wpm_is_ml_value( $value ) {
 		}
 
 		return false;
-	} else {
-		return wpm_is_ml_string( $value );
 	}
+
+	return wpm_is_ml_string( $value );
 }
 
 /**
@@ -559,6 +559,7 @@ function wpm_set_new_value( $old_value, $new_value, $config = array(), $lang = '
 	if ( is_serialized_string( $old_value ) || ( is_string( $old_value ) && json_decode( $old_value ) ) ) {
 		return $old_value;
 	}
+
 
 	$old_value = wpm_value_to_ml_array( $old_value );
 	$value     = wpm_set_language_value( $old_value, $new_value, $config, $lang );
