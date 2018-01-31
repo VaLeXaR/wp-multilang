@@ -131,9 +131,8 @@ class WPM_Posts extends WPM_Object {
 	public function translate_queried_object() {
 		global $wp_query;
 
-		if ( is_singular() && ( null != $wp_query->queried_object ) ) {
-			$post = $wp_query->queried_object;
-			if ( ! is_null( wpm_get_post_config( $post->post_type ) ) ) {
+		if ( ( is_singular() || is_home() ) && ( $post = $wp_query->queried_object ) ) {
+			if (  null !== wpm_get_post_config( $post->post_type ) ) {
 				$wp_query->queried_object = wpm_translate_post( $post );
 			}
 		}
