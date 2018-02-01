@@ -325,7 +325,7 @@ class WPM_WooCommerce {
 			$response->data = wpm_translate_value( $response->data );
 		}
 
-		if ( isset( $response->data['meta_data'] ) ) {
+		if ( isset( $response->data['meta_data'] ) && is_array( $response->data['meta_data'] ) ) {
 
 			foreach ( $response->data['meta_data'] as $meta_data ) {
 

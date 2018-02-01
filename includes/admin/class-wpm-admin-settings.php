@@ -97,11 +97,11 @@ class WPM_Admin_Settings {
 	 * Output messages + errors.
 	 */
 	public static function show_messages() {
-		if ( sizeof( self::$errors ) > 0 ) {
+		if ( count( self::$errors ) > 0 ) {
 			foreach ( self::$errors as $error ) {
 				echo '<div class="notice notice-error inline"><p><strong>' . esc_html( $error ) . '</strong></p></div>';
 			}
-		} elseif ( sizeof( self::$messages ) > 0 ) {
+		} elseif ( count( self::$messages ) > 0 ) {
 			foreach ( self::$messages as $message ) {
 				echo '<div class="notice notice-success inline"><p><strong>' . esc_html( $message ) . '</strong></p></div>';
 			}
@@ -129,7 +129,7 @@ class WPM_Admin_Settings {
 		// Get tabs for the settings page
 		$tabs = apply_filters( 'wpm_settings_tabs_array', array() );
 
-		include( dirname( __FILE__ ) . '/views/html-admin-settings.php' );
+		include __DIR__ . '/views/html-admin-settings.php';
 	}
 
 	/**
@@ -503,9 +503,10 @@ class WPM_Admin_Settings {
 	 * @return bool
 	 */
 	public static function save_fields( $options, $data = null ) {
-		if ( is_null( $data ) ) {
+		if ( null === $data ) {
 			$data = $_POST;
 		}
+
 		if ( empty( $data ) ) {
 			return false;
 		}
@@ -515,7 +516,7 @@ class WPM_Admin_Settings {
 
 		// Loop options and get values to save.
 		foreach ( $options as $option ) {
-			if ( ! isset( $option['id'] ) || ! isset( $option['type'] ) ) {
+			if ( ! isset( $option['id'], $option['type'] ) ) {
 				continue;
 			}
 
@@ -566,7 +567,7 @@ class WPM_Admin_Settings {
 			 */
 			$value = apply_filters( "wpm_admin_settings_sanitize_option_$option_name", $value, $option, $raw_value );
 
-			if ( is_null( $value ) ) {
+			if ( null === $value ) {
 				continue;
 			}
 

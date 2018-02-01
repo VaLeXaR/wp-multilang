@@ -129,7 +129,7 @@ function wpm_set_alternate_links() {
 			continue;
 		}
 
-		if ( wpm_get_default_language() == $code ) {
+		if ( wpm_get_default_language() === $code ) {
 			$hreflangs['x-default'] = sprintf( "<link rel=\"alternate\" hreflang=\"x-default\" href=\"%s\"/>\n", esc_url( wpm_translate_current_url( $code ) ) );
 		}
 
@@ -240,7 +240,7 @@ function wpm_media_gallery( $html, $attr, $instance ) {
 		'link'       => ''
 	), $attr, 'gallery' );
 
-	$id = intval( $atts['id'] );
+	$id = (int)$atts['id'];
 
 	if ( ! empty( $atts['include'] ) ) {
 		$_attachments = get_posts( array( 'include' => $atts['include'], 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $atts['order'], 'orderby' => $atts['orderby'] ) );
@@ -281,7 +281,7 @@ function wpm_media_gallery( $html, $attr, $instance ) {
 		$icontag = 'dt';
 	}
 
-	$columns = intval( $atts['columns'] );
+	$columns = (int)$atts['columns'];
 	$itemwidth = $columns > 0 ? floor(100/$columns) : 100;
 	$float = is_rtl() ? 'right' : 'left';
 

@@ -222,7 +222,7 @@ function wpm_get_orig_home_url() {
  * @return string
  */
 function wpm_escaping_text( $string ) {
-	if ( 'GET' == $_SERVER['REQUEST_METHOD'] ) {
+	if ( 'GET' === $_SERVER['REQUEST_METHOD'] ) {
 		$string = wpm_translate_string( $string );
 	}
 

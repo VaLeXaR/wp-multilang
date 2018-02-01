@@ -77,7 +77,7 @@ class WPM_Settings_Languages extends WPM_Settings_Page {
 		$languages = get_option( 'wpm_languages', array() );
 		$flags     = wpm_get_flags();
 
-		include_once( dirname( __FILE__ ) . '/views/html-languages.php' );
+		include_once __DIR__ . '/views/html-languages.php';
 	}
 
 	/**
@@ -117,7 +117,7 @@ class WPM_Settings_Languages extends WPM_Settings_Page {
 					'enable'      => $item['enable'] ? 1 : 0,
 					'locale'      => $item['locale'],
 					'name'        => $item['name'],
-					'translation' => $item['translation'] ? $item['translation'] : 'en_US',
+					'translation' => $item['translation'] ?: 'en_US',
 					'date'        => $item['date'],
 					'time'        => $item['time'],
 					'flag'        => $item['flag'],

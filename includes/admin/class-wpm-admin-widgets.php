@@ -43,7 +43,7 @@ class WPM_Admin_Widgets {
 
 		$widget_config = wpm_get_widget_config( $widget->id_base );
 
-		if ( is_null( $widget_config ) ) {
+		if ( null === $widget_config ) {
 			return $instance;
 		}
 
@@ -62,7 +62,7 @@ class WPM_Admin_Widgets {
 	 */
 	public function add_language_fields( $widget, $return, $instance ) {
 
-		if ( is_null( wpm_get_widget_config( $widget->id_base ) ) ) {
+		if ( null === wpm_get_widget_config( $widget->id_base ) ) {
 			return;
 		}
 

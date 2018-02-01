@@ -95,7 +95,7 @@ class WPM_REST_Settings {
 	 */
 	public function get_languages_setting( $value, $name, $args ) {
 
-		if ( 'multilingual_settings' != $name ) {
+		if ( 'multilingual_settings' !== $name ) {
 			return $value;
 		}
 
@@ -122,7 +122,7 @@ class WPM_REST_Settings {
 	 */
 	public function update_languages_setting( $updated, $name, $request ) {
 
-		if ( 'multilingual_settings' != $name || ! current_user_can( 'manage_options' ) ) {
+		if ( 'multilingual_settings' !== $name || ! current_user_can( 'manage_options' ) ) {
 			return $updated;
 		}
 
@@ -157,7 +157,7 @@ class WPM_REST_Settings {
 					'enable'      => $item['enable'] ? 1 : 0,
 					'locale'      => $item['locale'],
 					'name'        => $item['name'],
-					'translation' => $item['translation'] ? $item['translation'] : 'en_US',
+					'translation' => $item['translation'] ?: 'en_US',
 					'date'        => $item['date'],
 					'time'        => $item['time'],
 					'flag'        => $item['flag'],
@@ -194,7 +194,7 @@ class WPM_REST_Settings {
 	 */
 	public function update_site_language_setting( $updated, $name, $request ) {
 
-		if ( 'site_language' != $name || ! current_user_can( 'manage_options' ) ) {
+		if ( 'site_language' !== $name || ! current_user_can( 'manage_options' ) ) {
 			return $updated;
 		}
 

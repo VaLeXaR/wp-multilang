@@ -26,7 +26,7 @@ class WPM_CF7 {
 	}
 
 	public function add_language_tag( $output, $name ) {
-		if ( '_language' == $name ) {
+		if ( '_language' === $name ) {
 			$options = wpm_get_lang_option();
 
 			return $options[ wpm_get_language() ]['name'];

@@ -28,7 +28,7 @@ function wpm_get_post_config( $post_type ) {
 	$posts_config = apply_filters( 'wpm_posts_config', $config['post_types'] );
 	$post_config  = apply_filters( "wpm_post_{$post_type}_config", isset( $posts_config[ $post_type ] ) ? $posts_config[ $post_type ] : null );
 
-	if ( ! is_null( $post_config ) ) {
+	if ( null !== $post_config ) {
 		$default_fields = array(
 			'post_title'   => array(),
 			'post_excerpt' => array(),
@@ -53,7 +53,7 @@ function wpm_get_taxonomy_config( $taxonomy ) {
 	$taxonomies_config = apply_filters( 'wpm_taxonomies_config', $config['taxonomies'] );
 	$taxonomy_config   = apply_filters( "wpm_taxonomy_{$taxonomy}_config", isset( $taxonomies_config[ $taxonomy ] ) ? $taxonomies_config[ $taxonomy ] : null );
 
-	if ( ! is_null( $taxonomy_config ) ) {
+	if ( null !== $taxonomy_config ) {
 		$default_fields = array(
 			'name'        => array(),
 			'description' => array(),
@@ -77,7 +77,7 @@ function wpm_get_widget_config( $widget ) {
 	$widgets_config = apply_filters( 'wpm_widgets_config', $config['widgets'] );
 	$widget_config  = apply_filters( "wpm_widget_{$widget}_config", array_key_exists( $widget, $widgets_config ) ? $widgets_config[ $widget ] : array() );
 
-	if ( ! is_null( $widget_config ) ) {
+	if ( null !== $widget_config ) {
 
 		$default_fields = array(
 			'title' => array(),

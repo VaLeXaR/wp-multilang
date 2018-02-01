@@ -68,7 +68,7 @@ class WPM_Admin_Edit_Menus {
 		}
 
 		// Update
-		if ( ! is_null( $value ) ) {
+		if ( null !==  $value ) {
 			update_post_meta( $menu_item_db_id, '_' . $key, $value );
 		} else {
 			delete_post_meta( $menu_item_db_id, '_' . $key );

@@ -32,7 +32,7 @@ class WPM_Gutenberg {
 		$screen       = get_current_screen();
 		$screen_id    = $screen ? $screen->id : '';
 
-		if ( is_null( $screen ) || ! $screen->post_type || is_null( wpm_get_post_config( $screen->post_type ) ) || ( $screen_id !== $screen->post_type ) || ! gutenberg_can_edit_post_type( $screen->post_type ) ) {
+		if ( null === $screen || ! $screen->post_type || ( $screen_id !== $screen->post_type ) || null === wpm_get_post_config( $screen->post_type ) || ! gutenberg_can_edit_post_type( $screen->post_type ) ) {
 			return;
 		}
 

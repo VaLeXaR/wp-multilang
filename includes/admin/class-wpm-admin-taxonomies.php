@@ -26,6 +26,8 @@ class WPM_Admin_Taxonomies {
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'init' ) );
 		add_action( 'term_link', array( $this, 'translate_term_link' ) );
+		add_action( 'created_term', array( $this, 'save_taxonomy_fields' ), 10, 3 );
+		add_action( 'edit_term', array( $this, 'save_taxonomy_fields' ), 10, 3 );
 	}
 
 	/**
@@ -37,7 +39,7 @@ class WPM_Admin_Taxonomies {
 
 		foreach ( $taxonomies as $taxonomy ) {
 
-			if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
+			if ( null === wpm_get_taxonomy_config( $taxonomy ) ) {
 				continue;
 			}
 
@@ -45,8 +47,6 @@ class WPM_Admin_Taxonomies {
 			add_filter( "manage_{$taxonomy}_custom_column", array( $this, 'render_language_column' ), 10, 3 );
 			add_action( "{$taxonomy}_add_form_fields", array( $this, 'add_taxonomy_fields' ) );
 			add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_taxonomy_fields' ), 10 );
-			add_action( 'created_term', array( $this, 'save_taxonomy_fields' ), 10, 3 );
-			add_action( 'edit_term', array( $this, 'save_taxonomy_fields' ), 10, 3 );
 		}
 	}
 
@@ -164,7 +164,7 @@ class WPM_Admin_Taxonomies {
 	 */
 	public function save_taxonomy_fields( $term_id, $tt_id = '', $taxonomy = '' ) {
 
-		if ( empty( $taxonomy ) ) {
+		if ( empty( $taxonomy ) || null === wpm_get_taxonomy_config( $taxonomy ) ) {
 			return;
 		}
 
@@ -183,7 +183,6 @@ class WPM_Admin_Taxonomies {
 	 * @return string
 	 */
 	public function translate_term_link( $termlink ) {
-
 		return wpm_translate_url( $termlink, wpm_get_language() );
 	}
 }

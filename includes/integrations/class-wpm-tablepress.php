@@ -35,7 +35,7 @@ class WPM_Tablepress {
 	 * @return mixed
 	 */
 	public function translate_edit_table( $data, $action ) {
-		if ( 'edit' == $action ) {
+		if ( 'edit' === $action ) {
 			$data['table'] = wpm_translate_value( $data['table'] );
 		}
 
@@ -53,7 +53,7 @@ class WPM_Tablepress {
 	 */
 	public function save_table( $data, $postarr ) {
 
-		if ( ! $postarr['ID'] || ( 'tablepress_table' != $postarr['post_type'] ) ) {
+		if ( ! $postarr['ID'] || ( 'tablepress_table' !== $postarr['post_type'] ) ) {
 			return $data;
 		}
 

@@ -65,7 +65,7 @@ class WPM_Site_Options {
 
 		$this->site_options_config[ $option ] = apply_filters( "wpm_site_option_{$option}_config", isset( $this->site_options_config[ $option ] ) ? $this->site_options_config[ $option ] : null );
 
-		if ( is_null( $this->site_options_config[ $option ] ) ) {
+		if ( null === $this->site_options_config[ $option ] ) {
 			return $value;
 		}
 
@@ -94,7 +94,7 @@ class WPM_Site_Options {
 
 		$this->site_options_config[ $option ] = apply_filters( "wpm_site_option_{$option}_config", isset( $this->site_options_config[ $option ] ) ? $this->site_options_config[ $option ] : null );
 
-		if ( is_null( $this->site_options_config[ $option ] ) ) {
+		if ( null === $this->site_options_config[ $option ] ) {
 			return $value;
 		}
 

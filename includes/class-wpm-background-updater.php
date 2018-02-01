@@ -79,7 +79,7 @@ class WPM_Background_Updater extends WP_Background_Process {
 	protected function task( $callback ) {
 		wpm_maybe_define_constant( 'WPM_UPDATING', true );
 
-		include_once( dirname( __FILE__ ) . '/wpm-update-functions.php' );
+		include_once __DIR__ . '/wpm-update-functions.php';
 
 		if ( is_callable( $callback ) ) {
 			call_user_func( $callback );

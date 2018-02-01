@@ -199,7 +199,7 @@ class WPM_Admin_Menus {
 	 */
 	public function menu_item_languages_setting( $item_id, $item ) {
 
-		if ( '#wpm-languages' != $item->url ) {
+		if ( '#wpm-languages' !== $item->url ) {
 			return;
 		}
 
@@ -263,7 +263,7 @@ class WPM_Admin_Menus {
 
 		check_admin_referer( 'update-nav_menu', 'update-nav-menu-nonce' );
 
-		if ( empty( $_POST['menu-item-url'][ $menu_item_db_id ] ) || '#wpm-languages' != $_POST['menu-item-url'][ $menu_item_db_id ] ) {
+		if ( empty( $_POST['menu-item-url'][ $menu_item_db_id ] ) || '#wpm-languages' !== $_POST['menu-item-url'][ $menu_item_db_id ] ) {
 			return;
 		}
 

@@ -153,7 +153,7 @@ class WPM_Install {
 		$current_db_version = get_option( 'wpm_db_version', null );
 		$updates            = self::get_db_update_callbacks();
 
-		return ( ! is_null( $current_db_version ) ) && version_compare( $current_db_version, max( array_keys( $updates ) ), '<' );
+		return ( null !== $current_db_version ) && version_compare( $current_db_version, max( array_keys( $updates ) ), '<' );
 	}
 
 	/**
@@ -233,7 +233,7 @@ class WPM_Install {
 	 */
 	public static function update_db_version( $version = null ) {
 		delete_option( 'wpm_db_version' );
-		add_option( 'wpm_db_version', is_null( $version ) ? wpm()->version : $version );
+		add_option( 'wpm_db_version', null === $version ? wpm()->version : $version );
 	}
 
 	/**
@@ -253,7 +253,7 @@ class WPM_Install {
 
 			foreach ( $subsections as $subsection ) {
 				foreach ( $section->get_settings( $subsection ) as $value ) {
-					if ( isset( $value['default'] ) && isset( $value['id'] ) ) {
+					if ( isset( $value['default'], $value['id'] ) ) {
 						$autoload = isset( $value['autoload'] ) ? (bool) $value['autoload'] : true;
 						add_option( $value['id'], $value['default'], '', ( $autoload ? 'yes' : 'no' ) );
 					}
@@ -326,7 +326,7 @@ class WPM_Install {
 		// Translator role
 		$result = add_role( 'translator', __( 'Translator', 'wp-multilang' ), $capabilities );
 
-		if ( is_null( $result ) ) {
+		if ( null === $result ) {
 			$translator = get_role( 'translator' );
 
 			foreach ( $capabilities as $cap => $value ) {

@@ -107,7 +107,7 @@ function wpm_get_available_translations() {
  * @return string
  */
 function wpm_get_language() {
-	if ( is_admin() || ( defined( 'REST_REQUEST' ) && 'GET' !== $_SERVER['REQUEST_METHOD'] ) ) {
+	if ( ( defined( 'REST_REQUEST' ) && 'GET' !== $_SERVER['REQUEST_METHOD'] ) || is_admin() ) {
 
 		$languages = wpm_get_languages();
 		$query     = $_GET;
