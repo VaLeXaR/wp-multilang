@@ -46,7 +46,7 @@ class WPM_PBSO {
 					if ( isset( $frame['content'] ) && is_string( $frame['content'] ) && json_decode( $frame['content'] ) ) {
 						$frame['content'] = json_decode( $frame['content'], true );
 						if ( is_array( $frame['content'] ) && isset( $frame['content']['widgets'] ) ) {
-							$meta_value['widgets'][ $key ]['frames'][ $_key ]['content'] = wp_json_encode( $this->translate_value( $frame['content'] ) );
+							$meta_value['widgets'][ $key ]['frames'][ $_key ]['content'] = $this->translate_value( $frame['content'] );
 						}
 					}
 				}

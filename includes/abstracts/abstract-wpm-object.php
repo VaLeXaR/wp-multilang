@@ -293,7 +293,17 @@ abstract class WPM_Object {
 		return true;
 	}
 
-
+	/**
+	 * Add new meta for translation
+	 *
+	 * @param $check null|mixed
+	 * @param $object_id int
+	 * @param $meta_key
+	 * @param $meta_value mixed
+	 * @param $unique bool
+	 *
+	 * @return mixed
+	 */
 	public function add_meta_field( $check, $object_id, $meta_key, $meta_value, $unique ) {
 		global $wpdb;
 
