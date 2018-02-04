@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 2.1.11
+Stable tag: 2.1.12
 Requires PHP: 5.6+
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -200,6 +200,13 @@ If you have opened several browser tabs for editing this post in different langu
 
 == Changelog ==
 
+= 2.1.12 =
+* add translation object data for REST request in WC
+* fix compatibility with SiteOrigin
+* fix translate queried object
+* fix set language value
+* fix JS translator
+
 = 2.1.11 =
 * fixed filters priority on removing in ACF integration
 
@@ -240,74 +247,5 @@ If you have opened several browser tabs for editing this post in different langu
 * fix translating post and term fields fields
 * fix translating html widget
 * fix add new taxonomy
-
-= 2.1.3 =
-* fix save widget translation
-* fix translate url filter name
-* fix check insert new term
-
-= 2.1.2 =
-* fix save settings for titles in Yoast SEO and AIOSP
-* add filter for getting original url
-* add filter for current url
-* fix acf notices
-* add Bulgarian localization
-* fix save language option in widgets for WP 5
-* fix translation settings in Better Search
-* add filter for untranslated text
-* fix error echo lang code for some languages in 'esc_attr_e()'
-* add function for getting page by title 'wpm_get_page_by_title($title)'
-* fix installing notices
-* fix updating notices
-* fix message when deleting localization
-
-= 2.1.1 =
-* change parameters for functions 'wpm_language_switcher', 'wpm_get_language_switcher'
-* add settings api
-* add possibility for set default language for all
-* add error for adding taxonomy in exist name for current language
-* disable integration with Gutenberg. Gutenberg very unstable.
-* fix uninstalling
-* fix translate url for site in subfolder(thanks for mwillberg)
-* fix integration with SiteOrigin (thanks for soft79)
-* fix cache for language switcher widget(thanks for soft79)
-* fix adding languages to menu
-
-= 2.1.0 =
-+ add flag selector autocomplete
-+ add setting for set Yoast SEO Opengraph locale
-+ add support WooCommerce attributes
-+ add compatibility with WooCommerce Customizer
-+ add compatibility with Better Search
-+ add import taxonomies from qTranslate(Thanks for Soft79)
-* fix add $_GET 'lang' param
-* Other fixes and improvements
-
-= 2.0.2 =
-* fix separate posts per language
-
-= 2.0.1 =
-* fix set 'lang' GET param for home page
-* fix redirect when exist GET 'lang' param
-* translate url
-
-= 2.0.0 =
-+ remake logic for set language and translation
-+ add possibility fo set custom locale
-+ add possibility for set many languages for one localization
-+ set new design for language settings
-+ add option for redirect to browser language in first time
-+ add option for use prefix for default language
-+ add option for deleting unused language packs
-+ admin localization use only installed languages
-+ add user role `Translator`
-+ Move WP Multilang settings to separate page
-+ add config for Download Monitor
-+ add config for new widgets in Page Builder by SiteOrigin
-+ add filters for customizing language settings
-+ add Background Updater
-* fix separate posts per languages
-* fix save title settings in Yoast SEO
-* fix switch user language in admin dashboard
 
 All changelog available on [GitHub](https://github.com/VaLeXaR/wp-multilang/releases).

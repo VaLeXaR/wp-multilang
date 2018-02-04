@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2017-12-19 20:29+0200\n"
+"POT-Creation-Date: 2018-02-04 12:13+0200\n"
 "PO-Revision-Date: 2017-05-22 12:43+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -397,11 +397,11 @@ msgstr ""
 msgid "Localization deleted"
 msgstr ""
 
-#: includes/class-wpm-ajax.php:461
+#: includes/class-wpm-ajax.php:460
 msgid "Update finished"
 msgstr ""
 
-#: includes/class-wpm-ajax.php:556
+#: includes/class-wpm-ajax.php:555
 #, php-format
 msgid "%d terms were imported successfully."
 msgstr ""
@@ -436,20 +436,20 @@ msgstr ""
 msgid "Multilingual Settings"
 msgstr ""
 
-#: includes/class-wpm-taxonomies.php:166
+#: includes/class-wpm-taxonomies.php:161
 msgid "A term with the name provided already exists in this taxonomy."
 msgstr ""
 
-#: includes/integrations/class-wpm-yoast-seo.php:215
-#: includes/integrations/class-wpm-yoast-seo.php:217
+#: includes/integrations/class-wpm-yoast-seo.php:223
+#: includes/integrations/class-wpm-yoast-seo.php:225
 msgid "Yoast SEO Opengraph Locale"
 msgstr ""
 
-#: includes/integrations/class-wpm-yoast-seo.php:217
+#: includes/integrations/class-wpm-yoast-seo.php:225
 msgid "Opengraph Locale"
 msgstr ""
 
-#: includes/integrations/class-wpm-yoast-seo.php:218
+#: includes/integrations/class-wpm-yoast-seo.php:226
 msgid "Locale must be with country domain. Like en_US"
 msgstr ""
 
