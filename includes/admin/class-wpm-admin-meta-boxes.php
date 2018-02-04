@@ -97,7 +97,7 @@ class WPM_Admin_Meta_Boxes {
 		$screen    = get_current_screen();
 		$screen_id = $screen ? $screen->id : '';
 
-		if ( ! is_null( wpm_get_post_config( $post_type ) ) && ( 'attachment' !== $post_type ) ) {
+		if ( ( 'attachment' !== $post_type ) && null !== wpm_get_post_config( $post_type ) ) {
 			add_meta_box( "wpm-{$post_type}-languages", __( 'Languages', 'wp-multilang' ), __NAMESPACE__ . '\Meta_Boxes\WPM_Meta_Box_Post_Languages::output', $post_type, 'side' );
 		}
 
@@ -115,7 +115,7 @@ class WPM_Admin_Meta_Boxes {
 	 */
 	public function save_meta_boxes( $post_id, $post ) {
 		// $post_id and $post are required
-		if ( empty( $post_id ) || empty( $post ) || self::$saved_meta_boxes ) {
+		if ( empty( $post_id ) || null === $post || self::$saved_meta_boxes ) {
 			return;
 		}
 
@@ -130,7 +130,7 @@ class WPM_Admin_Meta_Boxes {
 		}
 
 		// Check the post being saved == the $post_id to prevent triggering this call for other save_post events
-		if ( empty( $_POST['post_ID'] ) || $_POST['post_ID'] != $post_id ) {
+		if ( empty( $_POST['post_ID'] ) || $_POST['post_ID'] !== $post_id ) {
 			return;
 		}
 

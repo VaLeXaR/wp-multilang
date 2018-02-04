@@ -88,7 +88,7 @@ class WPM_Taxonomies extends WPM_Object {
 	 */
 	public function filter_terms_by_language( $args, $taxonomies ) {
 
-		if ( ( is_admin() && ! is_front_ajax() ) || defined( 'DOING_CRON' ) ) {
+		if ( defined( 'DOING_CRON' ) || ( is_admin() && ! is_front_ajax() ) ) {
 			return $args;
 		}
 
@@ -96,7 +96,7 @@ class WPM_Taxonomies extends WPM_Object {
 
 			if ( count( $taxonomies ) === 1 ) {
 				$taxonomy = current( $taxonomies );
-				if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
+				if ( null === wpm_get_taxonomy_config( $taxonomy ) ) {
 					return $args;
 				}
 			}
@@ -108,7 +108,7 @@ class WPM_Taxonomies extends WPM_Object {
 			$lang = wpm_get_language();
 		}
 
-		if ( 'all' != $lang ) {
+		if ( 'all' !== $lang ) {
 			$lang_meta_query = array(
 				array(
 					'relation' => 'OR',
@@ -146,7 +146,7 @@ class WPM_Taxonomies extends WPM_Object {
 	public function pre_insert_term( $term, $taxonomy ) {
 		global $wpdb;
 
-		if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
+		if ( null === wpm_get_taxonomy_config( $taxonomy ) ) {
 			return $term;
 		}
 
@@ -179,7 +179,7 @@ class WPM_Taxonomies extends WPM_Object {
 
 		$taxonomy_config = wpm_get_taxonomy_config( $taxonomy );
 
-		if ( is_null( $taxonomy_config ) ) {
+		if ( null === $taxonomy_config ) {
 			return $data;
 		}
 
@@ -207,7 +207,7 @@ class WPM_Taxonomies extends WPM_Object {
 
 		$taxonomy_config = wpm_get_taxonomy_config( $taxonomy );
 
-		if ( is_null( $taxonomy_config ) || ! $this->description ) {
+		if ( null === $taxonomy_config || ! $this->description ) {
 			return;
 		}
 
@@ -238,7 +238,7 @@ class WPM_Taxonomies extends WPM_Object {
 
 		$taxonomy_config = wpm_get_taxonomy_config( $taxonomy );
 
-		if ( is_null( $taxonomy_config ) ) {
+		if ( null === $taxonomy_config ) {
 			return $data;
 		}
 
@@ -270,7 +270,7 @@ class WPM_Taxonomies extends WPM_Object {
 
 		$taxonomy_config = wpm_get_taxonomy_config( $taxonomy );
 
-		if ( is_null( $taxonomy_config ) || ! $this->description ) {
+		if ( null === $taxonomy_config || ! $this->description ) {
 			return;
 		}
 
@@ -300,7 +300,7 @@ class WPM_Taxonomies extends WPM_Object {
 
 		if ( ! empty( $args['name'] ) && empty( $args['name__like'] ) ) {
 			$taxonomy = current( $taxonomies );
-			if ( ! is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
+			if ( null !== wpm_get_taxonomy_config( $taxonomy ) ) {
 				$args['name__like'] = '[:' . wpm_get_language() . ']' . $args['name'] . '[:';
 				$args['name']       = '';
 			}

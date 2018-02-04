@@ -192,7 +192,7 @@ class WPM_Acf {
 		$acf_field_config = apply_filters( "wpm_acf_{$info['type']}_config", null, $value, $post_id, $field );
 		$acf_field_config = apply_filters( "wpm_acf_{$field['type']}_config", $acf_field_config, $value, $post_id, $field );
 
-		if ( is_null( $acf_field_config ) ) {
+		if ( null === $acf_field_config ) {
 			return $value;
 		}
 
@@ -229,7 +229,7 @@ class WPM_Acf {
 
 			case 'post':
 				$post_type = get_post_type( $post_id );
-				if ( ! $post_type || is_null( wpm_get_post_config( $post_type ) ) ) {
+				if ( ! $post_type || null === wpm_get_post_config( $post_type ) ) {
 					$translate = false;
 				}
 
@@ -239,7 +239,7 @@ class WPM_Acf {
 				$term_id = substr( $post_id, strripos( $post_id, '_' ) + 1 );
 				$term    = get_term( $term_id );
 
-				if ( ! $term || is_wp_error( $term ) || is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
+				if ( ! $term || is_wp_error( $term ) || null === wpm_get_taxonomy_config( $term->taxonomy ) ) {
 					$translate = false;
 				}
 		}
@@ -247,7 +247,7 @@ class WPM_Acf {
 		$acf_field_config = apply_filters( "wpm_acf_{$field_type}_config", null, $value, $post_id, $field );
 		$acf_field_config = apply_filters( "wpm_acf_{$field['type']}_config", $acf_field_config, $value, $post_id, $field );
 
-		if ( is_null( $acf_field_config ) ) {
+		if ( null === $acf_field_config ) {
 			$translate = false;
 		}
 
@@ -268,10 +268,10 @@ class WPM_Acf {
 		}
 
 
-		if ( 'post' == $field_type ) {
+		if ( 'post' === $field_type ) {
 			update_metadata( 'post', $post_id, $field['name'], $value );
 			update_metadata( 'post', $post_id, '_' . $field['name'], $field['key'] );
-		} elseif ( 'user' == $field_type ) {
+		} elseif ( 'user' === $field_type ) {
 			$user_id = str_replace( 'user_', '', $post_id );
 			update_metadata( 'user', $user_id, $field['name'], $value );
 			update_metadata( 'user', $user_id, '_' . $field['name'], $field['key'] );
@@ -286,7 +286,7 @@ class WPM_Acf {
 
 
 	public function translate_value( $string ) {
-		if ( 'POST' == $_SERVER['REQUEST_METHOD'] && wpm_get_post_data_by_key( 'action' ) == 'acf/everything_fields' ) {
+		if ( 'POST' === $_SERVER['REQUEST_METHOD'] && wpm_get_post_data_by_key( 'action' ) === 'acf/everything_fields' ) {
 			$string = wpm_translate_string( $string );
 		}
 

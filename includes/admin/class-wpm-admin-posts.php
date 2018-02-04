@@ -41,11 +41,11 @@ class WPM_Admin_Posts {
 	 */
 	public function init() {
 
-		$post_types = get_post_types( array(), 'names' );
+		$post_types = get_post_types();
 
 		foreach ( $post_types as $post_type ) {
 
-			if ( is_null( wpm_get_post_config( $post_type ) ) ) {
+			if ( null === wpm_get_post_config( $post_type ) ) {
 				continue;
 			}
 
@@ -128,7 +128,7 @@ class WPM_Admin_Posts {
 	 */
 	public function add_lang_indicator( $post ) {
 
-		if ( is_null( wpm_get_post_config( $post->post_type ) ) && ( wpm_is_ml_string( $post->post_title ) || wpm_is_ml_value( $post->post_content ) ) ) {
+		if ( null === wpm_get_post_config( $post->post_type ) && ( wpm_is_ml_string( $post->post_title ) || wpm_is_ml_value( $post->post_content ) ) ) {
 
 			$languages = wpm_get_languages();
 			$language  = wpm_get_language();

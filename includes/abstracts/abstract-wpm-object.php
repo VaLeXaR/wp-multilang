@@ -44,7 +44,7 @@ abstract class WPM_Object {
 		switch ( $this->object_type ) {
 
 			case 'post':
-				if ( is_null( wpm_get_post_config( get_post_type( $object_id ) ) ) ) {
+				if ( null === wpm_get_post_config( get_post_type( $object_id ) ) ) {
 					return $value;
 				}
 
@@ -52,7 +52,7 @@ abstract class WPM_Object {
 
 			case 'term':
 				$term = get_term( $object_id );
-				if ( ! $term || is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
+				if ( ! $term || null === wpm_get_taxonomy_config( $term->taxonomy ) ) {
 					return $value;
 				}
 		}
@@ -76,16 +76,15 @@ abstract class WPM_Object {
 			return $value;
 		}
 
-		$meta_config = apply_filters( "wpm_{$meta_key}_meta_config", $object_fields_config[ $meta_key ], $object_id );
+		$meta_config = apply_filters( "wpm_{$meta_key}_meta_config", $object_fields_config[ $meta_key ], false, $object_id );
 		$meta_config = apply_filters( "wpm_{$this->object_type}_meta_{$meta_key}_config", $meta_config, $object_id );
 
-		if ( is_null( $meta_config ) ) {
+		if ( null === $meta_config ) {
 			return $value;
 		}
 
-		$column    = sanitize_key( $this->object_type . '_id' );
-		$id_column = 'user' === $this->object_type ? 'umeta_id' : 'meta_id';
-
+		$column      = sanitize_key( $this->object_type . '_id' );
+		$id_column   = 'user' === $this->object_type ? 'umeta_id' : 'meta_id';
 		$meta_values = wp_cache_get( $object_id, $this->object_type . '_' . $meta_key . '_wpm_meta' );
 		$values      = array();
 
@@ -119,7 +118,6 @@ abstract class WPM_Object {
 		}
 
 		return null;
-
 	}
 
 	/**
@@ -139,7 +137,7 @@ abstract class WPM_Object {
 		switch ( $this->object_type ) {
 
 			case 'post':
-				if ( is_null( wpm_get_post_config( get_post_type( $object_id ) ) ) ) {
+				if ( null === wpm_get_post_config( get_post_type( $object_id ) ) ) {
 					return $check;
 				}
 
@@ -147,7 +145,7 @@ abstract class WPM_Object {
 
 			case 'term':
 				$term = get_term( $object_id );
-				if ( ! $term || is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
+				if ( ! $term || null === wpm_get_taxonomy_config( $term->taxonomy ) ) {
 					return $check;
 				}
 		}
@@ -162,14 +160,13 @@ abstract class WPM_Object {
 		$meta_config = apply_filters( "wpm_{$meta_key}_meta_config", $object_fields_config[ $meta_key ], $meta_value, $object_id );
 		$meta_config = apply_filters( "wpm_{$this->object_type}_meta_{$meta_key}_config", $meta_config, $meta_value, $object_id );
 
-		if ( is_null( $meta_config ) ) {
+		if ( null === $meta_config ) {
 			return $check;
 		}
 
 		$table      = $wpdb->{$this->object_table};
 		$column     = sanitize_key( $this->object_type . '_id' );
 		$id_column  = 'user' === $this->object_type ? 'umeta_id' : 'meta_id';
-
 		$meta_value = apply_filters( 'wpm_update_meta_value', $meta_value, $meta_key );
 		$meta_value = apply_filters( "wpm_update_{$meta_key}_meta_value", $meta_value );
 		$meta_value = apply_filters( "wpm_update_{$this->object_type}_meta_{$meta_key}_value", $meta_value );
@@ -205,6 +202,7 @@ abstract class WPM_Object {
 			$old_value  = maybe_unserialize( $old_value );
 			$old_value  = apply_filters( "wpm_filter_old_{$meta_key}_meta_value", $old_value, $meta_value, $meta_config );
 			$meta_value = wpm_set_new_value( $old_value, $meta_value, $meta_config );
+			$meta_value = apply_filters( "wpm_filter_new_{$meta_key}_meta_value", $meta_value, $old_value, $meta_config );
 		}
 
 		$meta_value = maybe_serialize( $meta_value );
@@ -215,7 +213,7 @@ abstract class WPM_Object {
 
 			if ( ! wpm_is_ml_value( $prev_value ) ) {
 				$like       = '%' . $wpdb->esc_like( esc_sql( $prev_value ) ) . '%';
-				$prev_value = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->{$this->object_table}} WHERE meta_key = %s AND {$column} = %d AND meta_value LIKE '%s' LIMIT 1", $meta_key, $object_id, $like ) );
+				$prev_value = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->{$this->object_table}} WHERE meta_key = %s AND {$column} = %d AND meta_value LIKE %s LIMIT 1", $meta_key, $object_id, $like ) );
 			}
 
 			$prev_value          = maybe_serialize( $prev_value );
@@ -295,7 +293,17 @@ abstract class WPM_Object {
 		return true;
 	}
 
-
+	/**
+	 * Add new meta for translation
+	 *
+	 * @param $check null|mixed
+	 * @param $object_id int
+	 * @param $meta_key
+	 * @param $meta_value mixed
+	 * @param $unique bool
+	 *
+	 * @return mixed
+	 */
 	public function add_meta_field( $check, $object_id, $meta_key, $meta_value, $unique ) {
 		global $wpdb;
 
@@ -306,14 +314,14 @@ abstract class WPM_Object {
 		switch ( $this->object_type ) {
 
 			case 'post':
-				if ( is_null( wpm_get_post_config( get_post_type( $object_id ) ) ) ) {
+				if ( null === wpm_get_post_config( get_post_type( $object_id ) ) ) {
 					return $check;
 				}
 				break;
 
 			case 'term':
 				$term = get_term( $object_id );
-				if ( ! $term || is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
+				if ( ! $term || null === wpm_get_taxonomy_config( $term->taxonomy ) ) {
 					return $check;
 				}
 		}
@@ -328,13 +336,12 @@ abstract class WPM_Object {
 		$meta_config = apply_filters( "wpm_{$meta_key}_meta_config", $object_fields_config[ $meta_key ], $meta_value, $object_id );
 		$meta_config = apply_filters( "wpm_{$this->object_type}_meta_{$meta_key}_config", $meta_config, $meta_value, $object_id );
 
-		if ( is_null( $meta_config ) ) {
+		if ( null === $meta_config ) {
 			return $check;
 		}
 
-		$table  = $wpdb->{$this->object_table};
-		$column = sanitize_key( $this->object_type . '_id' );
-
+		$table      = $wpdb->{$this->object_table};
+		$column     = sanitize_key( $this->object_type . '_id' );
 		$meta_value = apply_filters( 'wpm_add_meta_value', $meta_value, $meta_key );
 		$meta_value = apply_filters( "wpm_add_{$meta_key}_meta_value", $meta_value );
 		$meta_value = apply_filters( "wpm_add_{$this->object_type}_meta_{$meta_key}_value", $meta_value );
@@ -343,15 +350,13 @@ abstract class WPM_Object {
 			$meta_value = wpm_set_new_value( array(), $meta_value, $meta_config );
 		}
 
-
 		if ( $unique && $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $table WHERE meta_key = %s AND $column = %d", $meta_key, $object_id ) )
 		) {
 			return false;
 		}
 
 		$_meta_value = $meta_value;
-
-		$meta_value = maybe_serialize( $meta_value );
+		$meta_value  = maybe_serialize( $meta_value );
 
 		/**
 		 * Fires immediately before meta of a specific type is added.
@@ -411,14 +416,14 @@ abstract class WPM_Object {
 		switch ( $this->object_type ) {
 
 			case 'post':
-				if ( is_null( wpm_get_post_config( get_post_type( $object_id ) ) ) ) {
+				if ( null === wpm_get_post_config( get_post_type( $object_id ) ) ) {
 					return;
 				}
 				break;
 
 			case 'term':
 				$term = get_term( $object_id );
-				if ( ! $term || is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
+				if ( ! $term || null === wpm_get_taxonomy_config( $term->taxonomy ) ) {
 					return;
 				}
 		}
@@ -426,7 +431,7 @@ abstract class WPM_Object {
 		$config               = wpm_get_config();
 		$object_fields_config = apply_filters( "wpm_{$this->object_type}_fields_config", $config[ "{$this->object_type}_fields" ] );
 
-		if ( ! isset( $object_fields_config[ $meta_key ] ) || is_null( $object_fields_config[ $meta_key ] ) ) {
+		if ( ! isset( $object_fields_config[ $meta_key ] ) || null === $object_fields_config[ $meta_key ] ) {
 			return;
 		}
 

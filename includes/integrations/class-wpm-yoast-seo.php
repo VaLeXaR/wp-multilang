@@ -52,7 +52,7 @@ class WPM_Yoast_Seo {
 
 		foreach ( $post_types as $post_type ) {
 
-			if ( is_null( wpm_get_post_config( $post_type ) ) ) {
+			if ( null === wpm_get_post_config( $post_type ) ) {
 				continue;
 			}
 
@@ -71,7 +71,7 @@ class WPM_Yoast_Seo {
 
 		foreach ( $taxonomies as $taxonomy ) {
 
-			if ( is_null( wpm_get_taxonomy_config( $taxonomy ) ) ) {
+			if ( null === wpm_get_taxonomy_config( $taxonomy ) ) {
 				continue;
 			}
 
@@ -123,8 +123,16 @@ class WPM_Yoast_Seo {
 	 * @return mixed
 	 */
 	public function add_namespace_to_xml( $urlset ) {
-		$urlset = str_replace( 'http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd', 'http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd http://www.w3.org/1999/xhtml http://www.w3.org/2002/08/xhtml/xhtml1-strict.xsd', $urlset );
-		$urlset = str_replace( 'xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"', 'xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml"', $urlset );
+		$urlset = str_replace(
+			array(
+				'http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd',
+				'xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"'
+			),
+			array(
+				'http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd http://www.w3.org/1999/xhtml http://www.w3.org/2002/08/xhtml/xhtml1-strict.xsd',
+				'xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml"'
+			),
+			$urlset );
 
 		return $urlset;
 	}
@@ -248,7 +256,7 @@ class WPM_Yoast_Seo {
 	 */
 	public function save_languages( $languages, $request ) {
 		foreach ( $request as $value ) {
-			if ( isset( $languages[ $value['code'] ] ) && isset( $value['wpseo_og_locale'] ) ) {
+			if ( isset( $languages[ $value['code'] ], $value['wpseo_og_locale'] ) ) {
 				$languages[ $value['code'] ]['wpseo_og_locale'] = $value['wpseo_og_locale'];
 			}
 		}
@@ -269,7 +277,7 @@ class WPM_Yoast_Seo {
 		$languages     = wpm_get_languages();
 		$user_language = wpm_get_language();
 
-		if ( isset( $languages[ $user_language ]['wpseo_og_locale'] ) && $languages[ $user_language ]['wpseo_og_locale'] ) {
+		if ( ! empty( $languages[ $user_language ]['wpseo_og_locale'] ) ) {
 			$locale = $languages[ $user_language ]['wpseo_og_locale'];
 		}
 

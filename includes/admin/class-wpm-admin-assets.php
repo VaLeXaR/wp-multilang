@@ -72,7 +72,7 @@ class WPM_Admin_Assets {
 
 		wp_register_script( 'wpm_additional_settings', wpm_asset_path( 'scripts/additional-settings' . $suffix . '.js' ), array( 'jquery' ), WPM_VERSION );
 
-		if ( is_null( $screen ) ) {
+		if ( null === $screen ) {
 			return;
 		}
 
@@ -87,11 +87,11 @@ class WPM_Admin_Assets {
 
 		$show_switcher = false;
 
-		if ( $screen->post_type && ! is_null( wpm_get_post_config( $screen->post_type ) ) && ( ( $screen_id == $screen->post_type ) || ( 'edit-' . $screen->post_type == $screen_id ) ) ) {
+		if ( ( ( $screen_id === $screen->post_type ) || ( 'edit-' . $screen->post_type === $screen_id ) ) && $screen->post_type && null !== wpm_get_post_config( $screen->post_type ) ) {
 			$show_switcher = true;
 		}
 
-		if ( $screen->taxonomy && ! is_null( wpm_get_taxonomy_config( $screen->taxonomy ) ) && ( 'edit-' . $screen->taxonomy == $screen_id ) ) {
+		if ( ( 'edit-' . $screen->taxonomy === $screen_id ) && $screen->taxonomy && null !== wpm_get_taxonomy_config( $screen->taxonomy ) ) {
 			$show_switcher = true;
 		}
 
@@ -107,14 +107,14 @@ class WPM_Admin_Assets {
 
 			$admin_html_tags = apply_filters( 'wpm_admin_html_tags', $config['admin_html_tags'] );
 
-			if ( isset( $admin_html_tags[ $screen_id ] ) && ! is_null( $admin_html_tags[ $screen_id ] ) ) {
+			if ( isset( $admin_html_tags[ $screen_id ] ) && null !== $admin_html_tags[ $screen_id ] ) {
 				wp_enqueue_script( 'wpm_translator' );
 				$js_code = '';
 				foreach ( $admin_html_tags[ $screen_id ] as $attr => $selector ) {
 					$js_code .= '$( "' . implode( ', ', $selector ) . '" ).each( function () {';
-					if ( 'text' == $attr ) {
+					if ( 'text' === $attr ) {
 						$js_code .= '$(this).text(wpm_translator.translate_string($(this).text()));';
-					} elseif ( 'value' == $attr ) {
+					} elseif ( 'value' === $attr ) {
 						$js_code .= '$(this).val(wpm_translator.translate_string($(this).val()));';
 					} else {
 						$js_code .= '$(this).attr("' . $attr . '", wpm_translator.translate_string($(this).attr("' . $attr . '")));';
@@ -125,7 +125,7 @@ class WPM_Admin_Assets {
 			}
 		}
 
-		if ( 'options-general' == $screen_id ) {
+		if ( 'options-general' === $screen_id ) {
 			wpm_enqueue_js( "$('#WPLANG').parents('tr').hide();" );
 		}
 	}

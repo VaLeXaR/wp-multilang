@@ -48,7 +48,7 @@ class WPM_AIOSP {
 
 		foreach ( $post_types as $post_type ) {
 
-			if ( is_null( wpm_get_post_config( $post_type ) ) ) {
+			if ( null === wpm_get_post_config( $post_type ) ) {
 				continue;
 			}
 
@@ -75,7 +75,7 @@ class WPM_AIOSP {
 			return $check;
 		}
 
-		if ( is_null( wpm_get_post_config( get_post_type( $object_id ) ) ) ) {
+		if ( null === wpm_get_post_config( get_post_type( $object_id ) ) ) {
 			return $check;
 		}
 
@@ -105,11 +105,11 @@ class WPM_AIOSP {
 	public function update_old_fields( $check, $object_id, $meta_key, $meta_value ) {
 		global $wpdb;
 
-		if ( is_null( wpm_get_post_config( get_post_type( $object_id ) ) ) ) {
+		if ( null === wpm_get_post_config( get_post_type( $object_id ) ) ) {
 			return $check;
 		}
 
-		if ( isset( $this->meta_fields[ $meta_key ] ) && $this->meta_fields[ $meta_key ] ) {
+		if ( ! empty( $this->meta_fields[ $meta_key ] ) ) {
 
 			$meta_value = wpm_set_new_value( $this->meta_fields[ $meta_key ], $meta_value );
 			$meta_value = maybe_serialize( $meta_value );

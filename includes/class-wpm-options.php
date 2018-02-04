@@ -54,7 +54,7 @@ class WPM_Options {
 
 		$this->options_config[ $option ] = apply_filters( "wpm_option_{$option}_config", isset( $this->options_config[ $option ] ) ? $this->options_config[ $option ] : null );
 
-		if ( is_null( $this->options_config[ $option ] ) ) {
+		if ( null === $this->options_config[ $option ] ) {
 			return $value;
 		}
 

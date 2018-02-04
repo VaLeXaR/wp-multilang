@@ -79,14 +79,14 @@ class WPM_Posts extends WPM_Object {
 	 */
 	public function filter_posts_by_language( $query ) {
 
-		if ( ( is_admin() && ! is_front_ajax() ) || defined( 'DOING_CRON' ) ) {
+		if ( defined( 'DOING_CRON' ) || ( is_admin() && ! is_front_ajax() ) ) {
 			return $query;
 		}
 
 		if ( isset( $query->query_vars['post_type'] ) && ! empty( $query->query_vars['post_type'] ) ) {
 			$post_type = $query->query_vars['post_type'];
 			if ( is_string( $post_type ) ) {
-				if ( is_null( wpm_get_post_config( $post_type ) ) ) {
+				if ( null === wpm_get_post_config( $post_type ) ) {
 					return $query;
 				}
 			}
@@ -131,9 +131,8 @@ class WPM_Posts extends WPM_Object {
 	public function translate_queried_object() {
 		global $wp_query;
 
-		if ( is_singular() && ( null != $wp_query->queried_object ) ) {
-			$post = $wp_query->queried_object;
-			if ( ! is_null( wpm_get_post_config( $post->post_type ) ) ) {
+		if ( ( $post = $wp_query->queried_object ) && ( is_singular() || is_home() ) ) {
+			if (  null !== wpm_get_post_config( $post->post_type ) ) {
 				$wp_query->queried_object = wpm_translate_post( $post );
 			}
 		}
@@ -150,23 +149,23 @@ class WPM_Posts extends WPM_Object {
 	 */
 	public function save_post( $data, $postarr ) {
 
-		if ( 'auto-draft' == $data['post_status'] ) {
+		if ( 'auto-draft' === $data['post_status'] ) {
 			return $data;
 		}
 
 		$post_config = wpm_get_post_config( $data['post_type'] );
 
-		if ( is_null( $post_config ) ) {
+		if ( null === $post_config ) {
 			return $data;
 		}
 
 		if ( 'attachment' !== $data['post_type'] ) {
 
-			if ( 'trash' == $postarr['post_status'] ) {
+			if ( 'trash' === $postarr['post_status'] ) {
 				return $data;
 			}
 
-			if ( isset( $_GET['action'] ) && 'untrash' == $_GET['action'] ) {
+			if ( isset( $_GET['action'] ) && 'untrash' === $_GET['action'] ) {
 				return $data;
 			}
 		}
@@ -194,7 +193,7 @@ class WPM_Posts extends WPM_Object {
 		if ( 'nav_menu_item' === $data['post_type'] ) {
 			$screen = get_current_screen();
 
-			if ( 'POST' === $_SERVER['REQUEST_METHOD'] && 'update' === $_POST['action'] && 'nav-menus' === $screen->id ) {
+			if ( 'POST' === $_SERVER['REQUEST_METHOD'] && 'update' === $_POST['action'] && ( $screen && 'nav-menus' === $screen->id ) ) {
 				// hack to get wp to create a post object when too many properties are empty
 				if ( '' === $data['post_title'] && '' === $data['post_content'] ) {
 					$data['post_content'] = ' ';

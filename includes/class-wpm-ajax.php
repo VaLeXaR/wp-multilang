@@ -206,7 +206,7 @@ class WPM_AJAX {
 
 			$post_config = wpm_get_post_config( $post_type );
 
-			if ( is_null( $post_config ) ) {
+			if ( null === $post_config ) {
 				continue;
 			}
 
@@ -217,7 +217,7 @@ class WPM_AJAX {
 				$args       = array();
 				$new_result = self::set_default_language_for_object( $result, $post_config );
 				foreach ( get_object_vars( $new_result ) as $key => $content ) {
-					if ( 'ID' == $key ) {
+					if ( 'ID' === $key ) {
 						continue;
 					}
 
@@ -234,7 +234,7 @@ class WPM_AJAX {
 
 			$taxonomy_config = wpm_get_taxonomy_config( $taxonomy );
 
-			if ( is_null( $taxonomy_config ) ) {
+			if ( null === $taxonomy_config ) {
 				continue;
 			}
 
@@ -255,7 +255,7 @@ class WPM_AJAX {
 
 		foreach ( $config['post_fields'] as $field => $config ) {
 
-			if ( is_null( $config ) ) {
+			if ( null === $config ) {
 				continue;
 			}
 
@@ -288,7 +288,7 @@ class WPM_AJAX {
 
 		foreach ( $config['term_fields'] as $field => $config ) {
 
-			if ( is_null( $config ) ) {
+			if ( null === $config ) {
 				continue;
 			}
 
@@ -321,7 +321,7 @@ class WPM_AJAX {
 
 		foreach ( $config['comment_fields'] as $field => $config ) {
 
-			if ( is_null( $config ) ) {
+			if ( null === $config ) {
 				continue;
 			}
 
@@ -354,7 +354,7 @@ class WPM_AJAX {
 
 		foreach ( $config['user_fields'] as $field => $config ) {
 
-			if ( is_null( $config ) ) {
+			if ( null === $config ) {
 				continue;
 			}
 
@@ -387,10 +387,9 @@ class WPM_AJAX {
 
 		foreach ( $config['options'] as $option => $config ) {
 
-			if ( is_null( $config ) ) {
+			if ( null === $config ) {
 				continue;
 			}
-
 
 			$results = $wpdb->get_results( $wpdb->prepare( "SELECT option_id, option_value FROM {$wpdb->options} WHERE option_name = '%s';", $option ) );
 
@@ -424,7 +423,7 @@ class WPM_AJAX {
 
 			foreach ( $config['site_options'] as $option => $config ) {
 
-				if ( is_null( $config ) ) {
+				if ( null === $config ) {
 					continue;
 				}
 
@@ -474,7 +473,7 @@ class WPM_AJAX {
 		$lang = wpm_get_default_language();
 
 		foreach ( get_object_vars( $object ) as $key => $content ) {
-			if ( ! isset( $object_config[ $key ] ) || is_null( $object_config[ $key ] ) ) {
+			if ( ! isset( $object_config[ $key ] ) ) {
 				continue;
 			}
 

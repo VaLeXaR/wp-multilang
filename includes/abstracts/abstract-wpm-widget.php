@@ -115,8 +115,6 @@ abstract class WPM_Widget extends \WP_Widget {
 	 *
 	 * @param  array $args
 	 * @param $instance
-	 *
-	 * @return string
 	 */
 	public function widget_start( $args, $instance ) {
 		echo $args['before_widget'];
@@ -130,7 +128,6 @@ abstract class WPM_Widget extends \WP_Widget {
 	 * Output the html at the end of a widget.
 	 *
 	 * @param  array $args
-	 * @return string
 	 */
 	public function widget_end( $args ) {
 		echo $args['after_widget'];

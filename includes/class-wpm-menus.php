@@ -186,7 +186,7 @@ class WPM_Menus {
 
 		foreach ( $items as $key => $item ) {
 
-			if ( '#wpm-languages' == $item->url ) {
+			if ( '#wpm-languages' === $item->url ) {
 
 				$languages       = wpm_get_languages();
 				$count_languages = count( $languages );
@@ -226,7 +226,7 @@ class WPM_Menus {
 
 					$new_item->title = $language_title;
 
-					if ( 'dropdown' == $item_type ) {
+					if ( 'dropdown' === $item_type ) {
 						if ( $lang == $code ) {
 							$new_item->classes[] = 'menu-item-has-children';
 						} else {
@@ -234,7 +234,7 @@ class WPM_Menus {
 						}
 					}
 
-					if ( 'single' == $item_type ) {
+					if ( 'single' === $item_type ) {
 						if ( 1 == $i ) {
 							$first_lang = $new_item;
 						}

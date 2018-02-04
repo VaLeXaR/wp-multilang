@@ -24,7 +24,7 @@ class WPM_Config {
 	/**
 	 * Run parsing configs
 	 */
-	static public function load_config_run() {
+	public static function load_config_run() {
 		self::load_plugins_config();
 		self::load_core_configs();
 		self::load_theme_config();
@@ -36,10 +36,10 @@ class WPM_Config {
 	/**
 	 * Load configs from plugins
 	 */
-	static public function load_plugins_config() {
+	public static function load_plugins_config() {
 		self::$config_files[] = WPM_ABSPATH . 'core-config.json';
 
-		require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
 
 		foreach ( get_plugins() as $pf => $pd ) {
 			if ( is_plugin_active( $pf ) ) {
@@ -67,11 +67,11 @@ class WPM_Config {
 	/**
 	 * Load configs from WPM
 	 */
-	static public function load_core_configs() {
+	public static function load_core_configs() {
 		$plugins_config_path = WPM_ABSPATH . 'configs/plugins/';
 		foreach ( glob( $plugins_config_path . '*.json' ) as $config_file ) {
 			$config_name = pathinfo( $config_file, PATHINFO_FILENAME );
-			if ( in_array( $config_name, self::$active_plugins, true ) && ! isset( $config_files[ $config_name ] ) ) {
+			if ( ! isset( $config_files[ $config_name ] ) && in_array( $config_name, self::$active_plugins, true ) ) {
 				self::$config_files[ $config_name ] = $config_file;
 			}
 		}
@@ -86,7 +86,7 @@ class WPM_Config {
 	/**
 	 * Load configs from current theme
 	 */
-	static public function load_theme_config() {
+	public static function load_theme_config() {
 
 		$config_file = get_template_directory() . '/wpm-config.json';
 		if ( file_exists( $config_file ) ) {
@@ -104,7 +104,7 @@ class WPM_Config {
 	/**
 	 * Parsing config files to config array
 	 */
-	static public function parse_config_files() {
+	public static function parse_config_files() {
 
 		foreach ( self::$config_files as $file ) {
 			if ( $file && is_readable( $file ) ) {

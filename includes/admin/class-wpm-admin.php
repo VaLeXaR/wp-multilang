@@ -40,7 +40,7 @@ class WPM_Admin {
 	 * Include any classes we need within admin.
 	 */
 	public function includes() {
-		include_once( dirname( __FILE__ ) . '/wpm-admin-functions.php' );
+		include_once __DIR__ . '/wpm-admin-functions.php';
 
 		new WPM_Admin_Menus();
 		new WPM_Admin_Edit_Menus();
@@ -81,7 +81,7 @@ class WPM_Admin {
 		$current_screen = get_current_screen();
 
 		// Check to make sure we're on a WP Multilang settings page.
-		if ( isset( $current_screen->id ) && ( 'settings_page_wpm-settings' == $current_screen->id ) ) {
+		if ( ! empty( $current_screen ) && ( 'settings_page_wpm-settings' === $current_screen->id ) ) {
 			// Change the footer text
 			if ( ! get_option( 'wpm_admin_footer_text_rated' ) ) {
 				$footer_text = sprintf(

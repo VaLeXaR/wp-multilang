@@ -107,7 +107,7 @@ function wpm_get_available_translations() {
  * @return string
  */
 function wpm_get_language() {
-	if ( is_admin() || ( defined( 'REST_REQUEST' ) && 'GET' !== $_SERVER['REQUEST_METHOD'] ) ) {
+	if ( ( defined( 'REST_REQUEST' ) && 'GET' !== $_SERVER['REQUEST_METHOD'] ) || is_admin() ) {
 
 		$languages = wpm_get_languages();
 		$query     = $_GET;
@@ -120,7 +120,7 @@ function wpm_get_language() {
 			}
 		}
 
-		if ( isset( $query['edit_lang'] ) && isset( $languages [ wpm_clean( $query['edit_lang'] ) ] ) ) {
+		if ( isset( $query['edit_lang'], $languages [ wpm_clean( $query['edit_lang'] ) ] ) ) {
 			$lang = wpm_clean( $query['edit_lang'] );
 		} else {
 			$edit_lang = get_user_meta( get_current_user_id(), 'edit_lang', true );
