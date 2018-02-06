@@ -321,6 +321,10 @@ class WPM_Setup {
 	 */
 	private function set_user_language() {
 
+		if ( defined( 'WP_CLI' ) ) {
+			return $this->get_default_language();
+		}
+
 		$languages     = $this->get_languages();
 		$url           = '';
 		$user_language = '';
