@@ -27,7 +27,6 @@ class WPM_Settings_Additional extends WPM_Settings_Page {
 
 		parent::__construct();
 
-		add_action( 'wpm_admin_field_set_default_translation', array( $this, 'default_translation' ) );
 		add_action( 'wpm_admin_field_localizations', array( $this, 'localizations' ) );
 		add_action( 'wpm_admin_field_qtx_import', array( $this, 'qtx_import' ) );
 	}
@@ -45,12 +44,6 @@ class WPM_Settings_Additional extends WPM_Settings_Page {
 		$settings = apply_filters( 'wpm_' . $this->id . '_settings', array(
 
 			array( 'title' => __( 'Actions', 'wp-multilang' ), 'type' => 'title', 'desc' => '', 'id' => 'additional_options' ),
-
-			array(
-				'title' => __( 'Set default translation', 'wp-multilang' ),
-				'id'    => 'wpm_set_default_translation',
-				'type'  => 'set_default_translation',
-			),
 
 			array(
 				'title' => __( 'Installed localizations', 'wp-multilang' ),
@@ -79,7 +72,6 @@ class WPM_Settings_Additional extends WPM_Settings_Page {
 		$main_params = array(
 			'plugin_url'                 => wpm()->plugin_url(),
 			'ajax_url'                   => admin_url( 'admin-ajax.php' ),
-			'set_default_language_nonce' => wp_create_nonce( 'set-default-language' ),
 			'delete_localization_nonce'  => wp_create_nonce( 'delete-localization' ),
 			'qtx_import_nonce'           => wp_create_nonce( 'qtx-import' ),
 			'confirm_question'           => __( 'Are you sure you want to delete this localization?', 'wp-multilang' ),
@@ -88,28 +80,6 @@ class WPM_Settings_Additional extends WPM_Settings_Page {
 		wp_enqueue_script( 'wpm_additional_settings' );
 
 		parent::output();
-	}
-
-	/**
-	 * Set default translation field
-	 *
-	 * @param $value
-	 */
-	public function default_translation( $value ) {
-
-		$languages        = wpm_get_languages();
-		$default_language = wpm_get_default_language();
-		?>
-		<tr valign="top">
-			<th scope="row" class="titledesc">
-				<h4><?php echo esc_html( $value['title'] ); ?></h4>
-			</th>
-			<td class="forminp">
-				<button type="button" id="set_default_language" class="button js-wpm-action"><?php printf( __( 'Set <strong>%s</strong> by default', 'wp-multilang' ), $languages[ $default_language ]['name'] ); ?></button>
-				<p class="description"><?php _e( 'Set default translation for all posts, taxonomies, fields and options that available in config and not be translated before.<br><strong>WARNING:</strong> Changes are not reversible. Make a backup of the site database before starting.', 'wp-multilang' ) ?></p>
-			</td>
-		</tr>
-		<?php
 	}
 
 	/**
