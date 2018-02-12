@@ -229,7 +229,31 @@ function wpm_escaping_text( $string ) {
 	return $string;
 }
 
-add_filter( 'attribute_escape', 'wpm_escaping_text', 5 );
+/**
+ * Translate attributes if it is json string
+ *
+ * @param $string
+ *
+ * @return string
+ */
+function wpm_attribute_escape( $string ) {
+	if ( 'GET' === $_SERVER['REQUEST_METHOD'] ) {
+		$string = wp_specialchars_decode( $string, ENT_QUOTES );
+
+		if ( $array = json_decode( $string, true ) ) {
+			$array  = wpm_translate_value( $array );
+			$string = wp_json_encode( $array );
+		} else {
+			$string = wpm_translate_string( $string );
+		}
+
+		$string = _wp_specialchars( $string, ENT_QUOTES );
+	}
+
+	return $string;
+}
+
+add_filter( 'attribute_escape', 'wpm_attribute_escape', 5 );
 add_filter( 'esc_textarea', 'wpm_escaping_text', 5 );
 add_filter( 'esc_html', 'wpm_escaping_text', 5 );
 add_filter( 'localization', 'wpm_translate_string', 5 );

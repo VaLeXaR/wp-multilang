@@ -186,7 +186,7 @@ class WPM_Acf {
 
 			case 'post':
 				$post_type = get_post_type( $info['id'] );
-				if ( ! $post_type || is_null( wpm_get_post_config( $post_type ) ) ) {
+				if ( ! $post_type || null === wpm_get_post_config( $post_type ) ) {
 					return $value;
 				}
 
@@ -194,7 +194,7 @@ class WPM_Acf {
 
 			case 'term':
 				$term = get_term( $info['id'] );
-				if ( ! $term || is_wp_error( $term ) || is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
+				if ( ! $term || is_wp_error( $term ) || null === wpm_get_taxonomy_config( $term->taxonomy ) ) {
 					return $value;
 				}
 		}
@@ -315,6 +315,8 @@ class WPM_Acf {
 	 *
 	 * @param     $class
 	 * @param int $menu_id
+	 *
+	 * @return mixed
 	 */
 	public function wp_edit_nav_menu_walker( $class, $menu_id = 0 ) {
 
