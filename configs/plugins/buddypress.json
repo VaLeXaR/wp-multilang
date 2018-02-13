@@ -13,7 +13,11 @@
   "admin_html_tags": {
     "users_page_bp-profile-setup": {
       "text": [
-        ".field-wrapper .description"
+        ".field-wrapper .description",
+        "#description"
+      ],
+      "value": [
+        "#title"
       ]
     }
   }

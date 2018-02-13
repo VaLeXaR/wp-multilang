@@ -203,7 +203,7 @@ class WPM_BuddyPress {
 	 * @return array
 	 */
 	public function remove_filter( $children ) {
-		remove_filter( 'attribute_escape', 'wpm_escaping_text', 5 );
+		remove_filter( 'attribute_escape', 'wpm_attribute_escape', 5 );
 
 		return $children;
 	}
