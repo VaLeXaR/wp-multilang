@@ -1,15 +1,16 @@
 <?php
 /**
- * Plugin Name:     WP Multilang
- * Plugin URI:      https://github.com/VaLeXaR/wp-multilang
- * Description:     Multilingual plugin for WordPress
- * Author:          Valentyn Riaboshtan
- * License:         GPL2
- * License URI:     https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:     wp-multilang
- * Domain Path:     /languages
- * Version:         2.1.12
- * Copyright:       © 2017-2018 Valentyn Riaboshtan
+ * Plugin Name:       WP Multilang
+ * Plugin URI:        https://github.com/VaLeXaR/wp-multilang
+ * GitHub Plugin URI: https://github.com/VaLeXaR/wp-multilang
+ * Description:       Multilingual plugin for WordPress
+ * Author:            Valentyn Riaboshtan
+ * License:           GPL2
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:       wp-multilang
+ * Domain Path:       /languages
+ * Version:           2.1.12
+ * Copyright:         © 2017-2018 Valentyn Riaboshtan
  *
  * @package  WPM
  * @category Core
