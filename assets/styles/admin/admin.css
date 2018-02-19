@@ -125,29 +125,29 @@
     outline: none;
     box-shadow: none; }
 
-.editor-header-toolbar .wpm-language-switcher {
+.edit-post-header-toolbar .wpm-language-switcher {
   position: relative;
   left: 0 !important; }
-  .editor-header-toolbar .wpm-language-switcher .lang-main {
+  .edit-post-header-toolbar .wpm-language-switcher .lang-main {
     padding-left: 10px;
     padding-right: 10px;
     line-height: 36px; }
-    .editor-header-toolbar .wpm-language-switcher .lang-main img {
+    .edit-post-header-toolbar .wpm-language-switcher .lang-main img {
       top: 2px; }
 
-.editor-header-toolbar .lang-dropdown {
+.edit-post-header-toolbar .lang-dropdown {
   position: absolute;
   top: 100%;
   left: 0;
   background-color: #fff;
   border: 1px solid #ccc;
   z-index: 1; }
-  .editor-header-toolbar .lang-dropdown ul {
+  .edit-post-header-toolbar .lang-dropdown ul {
     list-style: none; }
-    .editor-header-toolbar .lang-dropdown ul a {
+    .edit-post-header-toolbar .lang-dropdown ul a {
       padding: 10px;
       display: block; }
-      .editor-header-toolbar .lang-dropdown ul a:hover, .editor-header-toolbar .lang-dropdown ul a:focus {
+      .edit-post-header-toolbar .lang-dropdown ul a:hover, .edit-post-header-toolbar .lang-dropdown ul a:focus {
         background-color: #ccc; }
 
 .gutenberg .languagechecklist {
