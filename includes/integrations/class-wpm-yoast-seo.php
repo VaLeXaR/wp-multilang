@@ -36,6 +36,7 @@ class WPM_Yoast_Seo {
 			add_filter( 'wpm_rest_schema_languages', array( $this, 'add_schema_to_rest' ) );
 			add_filter( 'wpm_save_languages', array( $this, 'save_languages' ), 10, 2 );
 			add_filter( 'wpseo_locale', array( $this, 'add_opengraph_locale' ) );
+			add_action( 'wpseo_opengraph', array( $this, 'add_alternate_opengraph_locale' ), 40 );
 		}
 	}
 
@@ -282,5 +283,37 @@ class WPM_Yoast_Seo {
 		}
 
 		return $locale;
+	}
+
+	/**
+	 * Set alternate locale for opengraph
+	 *
+	 * @since 2.2.0
+	 */
+	public function add_alternate_opengraph_locale() {
+		global $wpseo_og;
+
+		$languages        = wpm_get_languages();
+		$object_languages = array();
+
+		if ( is_singular() ) {
+			$object_languages = get_post_meta( get_the_ID(), '_languages', true );
+		} elseif ( is_category() || is_tax() || is_tag() ) {
+			$object_languages = get_term_meta( get_queried_object_id(), '_languages', true );
+		}
+
+		if ( empty( $object_languages ) ) {
+			foreach ( $languages as $code => $language ) {
+				if ( ! empty( $language['wpseo_og_locale'] ) && $code !== wpm_get_language() ) {
+					$wpseo_og->og_tag( 'og:locale:alternate', $language['wpseo_og_locale'] );
+				}
+			}
+		} else {
+			foreach ( $object_languages as $lang ) {
+				if ( ! empty( $languages[ $lang ]['wpseo_og_locale'] ) && $lang !== wpm_get_language() ) {
+					$wpseo_og->og_tag( 'og:locale:alternate', $languages[ $lang ]['wpseo_og_locale'] );
+				}
+			}
+		}
 	}
 }
