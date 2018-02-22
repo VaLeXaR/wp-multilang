@@ -293,26 +293,22 @@ class WPM_Yoast_Seo {
 	public function add_alternate_opengraph_locale() {
 		global $wpseo_og;
 
-		$languages        = wpm_get_languages();
-		$object_languages = array();
+		$languages = array();
 
 		if ( is_singular() ) {
-			$object_languages = get_post_meta( get_the_ID(), '_languages', true );
+			$languages = get_post_meta( get_the_ID(), '_languages', true );
 		} elseif ( is_category() || is_tax() || is_tag() ) {
-			$object_languages = get_term_meta( get_queried_object_id(), '_languages', true );
+			$languages = get_term_meta( get_queried_object_id(), '_languages', true );
 		}
 
-		if ( empty( $object_languages ) ) {
-			foreach ( $languages as $code => $language ) {
-				if ( ! empty( $language['wpseo_og_locale'] ) && $code !== wpm_get_language() ) {
-					$wpseo_og->og_tag( 'og:locale:alternate', $language['wpseo_og_locale'] );
-				}
+		foreach ( wpm_get_languages() as $code => $language ) {
+
+			if ( $languages && ! isset( $languages[ $code ] ) && $code !== wpm_get_language() ) {
+				continue;
 			}
-		} else {
-			foreach ( $object_languages as $lang ) {
-				if ( ! empty( $languages[ $lang ]['wpseo_og_locale'] ) && $lang !== wpm_get_language() ) {
-					$wpseo_og->og_tag( 'og:locale:alternate', $languages[ $lang ]['wpseo_og_locale'] );
-				}
+
+			if ( ! empty( $language['wpseo_og_locale'] ) ) {
+				$wpseo_og->og_tag( 'og:locale:alternate', $language['wpseo_og_locale'] );
 			}
 		}
 	}
