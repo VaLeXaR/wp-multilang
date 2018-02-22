@@ -303,7 +303,7 @@ class WPM_Yoast_Seo {
 
 		foreach ( wpm_get_languages() as $code => $language ) {
 
-			if ( $languages && ! isset( $languages[ $code ] ) && $code !== wpm_get_language() ) {
+			if ( ( $languages && ! isset( $languages[ $code ] ) ) || $code === wpm_get_language() ) {
 				continue;
 			}
 
