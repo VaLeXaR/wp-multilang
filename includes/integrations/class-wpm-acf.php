@@ -32,7 +32,7 @@ class WPM_Acf {
 		add_filter( 'wpm_acf_wysiwyg_config', '__return_empty_array' );
 		add_action( 'admin_init', array( $this, 'admin_init' ) );
 		remove_class_filter( 'wp_edit_nav_menu_walker', 'acf_form_nav_menu', 'wp_edit_nav_menu_walker' );
-		add_filter( 'wp_edit_nav_menu_walker',	array($this, 'wp_edit_nav_menu_walker'), 10, 2 );
+		add_filter( 'wp_edit_nav_menu_walker', array($this, 'wp_edit_nav_menu_walker'), 10, 2 );
 	}
 
 	/**
