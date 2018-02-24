@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Multilang\n"
-"POT-Creation-Date: 2018-02-04 12:13+0200\n"
+"POT-Creation-Date: 2018-02-24 16:33+0200\n"
 "PO-Revision-Date: 2017-05-22 12:43+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -163,53 +163,36 @@ msgstr ""
 msgid "Additional"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-additional.php:47
+#: includes/admin/settings/class-wpm-settings-additional.php:46
 msgid "Actions"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-additional.php:50
-msgid "Set default translation"
-msgstr ""
-
-#: includes/admin/settings/class-wpm-settings-additional.php:56
-#: includes/admin/settings/class-wpm-settings-additional.php:133
+#: includes/admin/settings/class-wpm-settings-additional.php:49
+#: includes/admin/settings/class-wpm-settings-additional.php:103
 msgid "Installed localizations"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-additional.php:62
+#: includes/admin/settings/class-wpm-settings-additional.php:55
 msgid "qTranslate import"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-additional.php:85
+#: includes/admin/settings/class-wpm-settings-additional.php:77
 msgid "Are you sure you want to delete this localization?"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-additional.php:108
-#, php-format
-msgid "Set <strong>%s</strong> by default"
-msgstr ""
-
-#: includes/admin/settings/class-wpm-settings-additional.php:109
-msgid ""
-"Set default translation for all posts, taxonomies, fields and options that "
-"available in config and not be translated before.<br><strong>WARNING:</"
-"strong> Changes are not reversible. Make a backup of the site database "
-"before starting."
-msgstr ""
-
-#: includes/admin/settings/class-wpm-settings-additional.php:151
+#: includes/admin/settings/class-wpm-settings-additional.php:121
 msgid "Delete localization"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-additional.php:153
+#: includes/admin/settings/class-wpm-settings-additional.php:123
 msgid "Delete unused not built-in language pack"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-additional.php:179
+#: includes/admin/settings/class-wpm-settings-additional.php:149
 msgid "Import"
 msgstr ""
 
-#: includes/admin/settings/class-wpm-settings-additional.php:181
+#: includes/admin/settings/class-wpm-settings-additional.php:151
 msgid "Import names for terms from qTranslate."
 msgstr ""
 
@@ -385,23 +368,19 @@ msgstr ""
 msgid "Taking a while? Click here to run it now."
 msgstr ""
 
-#: includes/class-wpm-ajax.php:146
+#: includes/class-wpm-ajax.php:145
 msgid "No locale sending"
 msgstr ""
 
-#: includes/class-wpm-ajax.php:151
+#: includes/class-wpm-ajax.php:150
 msgid "Localization using"
 msgstr ""
 
-#: includes/class-wpm-ajax.php:190
+#: includes/class-wpm-ajax.php:189
 msgid "Localization deleted"
 msgstr ""
 
-#: includes/class-wpm-ajax.php:460
-msgid "Update finished"
-msgstr ""
-
-#: includes/class-wpm-ajax.php:555
+#: includes/class-wpm-ajax.php:284
 #, php-format
 msgid "%d terms were imported successfully."
 msgstr ""
@@ -440,16 +419,16 @@ msgstr ""
 msgid "A term with the name provided already exists in this taxonomy."
 msgstr ""
 
-#: includes/integrations/class-wpm-yoast-seo.php:223
-#: includes/integrations/class-wpm-yoast-seo.php:225
+#: includes/integrations/class-wpm-yoast-seo.php:224
+#: includes/integrations/class-wpm-yoast-seo.php:226
 msgid "Yoast SEO Opengraph Locale"
 msgstr ""
 
-#: includes/integrations/class-wpm-yoast-seo.php:225
+#: includes/integrations/class-wpm-yoast-seo.php:226
 msgid "Opengraph Locale"
 msgstr ""
 
-#: includes/integrations/class-wpm-yoast-seo.php:226
+#: includes/integrations/class-wpm-yoast-seo.php:227
 msgid "Locale must be with country domain. Like en_US"
 msgstr ""
 

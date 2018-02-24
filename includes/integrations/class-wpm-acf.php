@@ -30,6 +30,9 @@ class WPM_Acf {
 		add_filter( 'wpm_acf_text_config', '__return_empty_array' );
 		add_filter( 'wpm_acf_textarea_config', '__return_empty_array' );
 		add_filter( 'wpm_acf_wysiwyg_config', '__return_empty_array' );
+		add_action( 'admin_init', array( $this, 'admin_init' ) );
+		remove_class_filter( 'wp_edit_nav_menu_walker', 'acf_form_nav_menu', 'wp_edit_nav_menu_walker' );
+		add_filter( 'wp_edit_nav_menu_walker', array($this, 'wp_edit_nav_menu_walker'), 10, 2 );
 	}
 
 	/**
@@ -53,6 +56,13 @@ class WPM_Acf {
 			add_filter( 'esc_textarea', array( $this, 'translate_value' ), 5 );
 			add_filter( 'acf_the_editor_content', 'wpm_translate_value', 5 );
 		}
+	}
+
+	/**
+	 * Init admin
+	 */
+	public function admin_init() {
+		add_action( 'wp_nav_menu_item_custom_fields', array( $this, 'add_fields_to_menu' ), 10, 2 );
 	}
 
 
@@ -176,7 +186,7 @@ class WPM_Acf {
 
 			case 'post':
 				$post_type = get_post_type( $info['id'] );
-				if ( ! $post_type || is_null( wpm_get_post_config( $post_type ) ) ) {
+				if ( ! $post_type || null === wpm_get_post_config( $post_type ) ) {
 					return $value;
 				}
 
@@ -184,7 +194,7 @@ class WPM_Acf {
 
 			case 'term':
 				$term = get_term( $info['id'] );
-				if ( ! $term || is_wp_error( $term ) || is_null( wpm_get_taxonomy_config( $term->taxonomy ) ) ) {
+				if ( ! $term || is_wp_error( $term ) || null === wpm_get_taxonomy_config( $term->taxonomy ) ) {
 					return $value;
 				}
 		}
@@ -285,11 +295,88 @@ class WPM_Acf {
 	}
 
 
+	/**
+	 * Translate field value only for POST request
+	 *
+	 * @param $string
+	 *
+	 * @return array|mixed|string
+	 */
 	public function translate_value( $string ) {
 		if ( 'POST' === $_SERVER['REQUEST_METHOD'] && wpm_get_post_data_by_key( 'action' ) === 'acf/everything_fields' ) {
 			$string = wpm_translate_string( $string );
 		}
 
 		return $string;
+	}
+
+	/**
+	 * Reset ACF variables
+	 *
+	 * @param     $class
+	 * @param int $menu_id
+	 *
+	 * @return mixed
+	 */
+	public function wp_edit_nav_menu_walker( $class, $menu_id = 0 ) {
+
+		// global
+		global $acf_menu;
+
+		// set var
+		$acf_menu = (int) $menu_id;
+
+		return $class;
+	}
+
+	/**
+	 * Add ACF fields using WPM Menu Custom Walker
+	 *
+	 * @param $item_id
+	 * @param $item
+	 */
+	public function add_fields_to_menu( $item_id, $item ) {
+
+		// vars
+		$prefix = 'menu-item-acf['.$item_id.']';
+		$post_id = $item_id;
+
+		// get field groups
+		$field_groups = acf_get_field_groups(array(
+			'nav_menu_item' => $item->type
+		));
+
+		// render
+		if( !empty($field_groups) ) {
+
+			echo '<div class="acf-menu-item-fields acf-fields -clear">';
+
+			// loop
+			foreach( $field_groups as $field_group ) {
+
+				// load fields
+				$fields = acf_get_fields( $field_group );
+
+				// bail if not fields
+				if( empty($fields) ) continue;
+
+				// change prefix
+				acf_prefix_fields( $fields, $prefix );
+
+				// render
+				acf_render_fields( $post_id, $fields, 'div', $field_group['instruction_placement'] );
+			}
+
+			echo '</div>';
+
+			// Trigger append for newly created menu item (via AJAX)
+			if( acf_is_ajax('add-menu-item') ): ?>
+				<script type="text/javascript">
+					(function($) {
+						acf.do_action('append', jQuery('#menu-item-settings-<?php echo $post_id; ?>') );
+					})(jQuery);
+				</script>
+			<?php endif;
+		}
 	}
 }

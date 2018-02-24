@@ -36,6 +36,7 @@ class WPM_Yoast_Seo {
 			add_filter( 'wpm_rest_schema_languages', array( $this, 'add_schema_to_rest' ) );
 			add_filter( 'wpm_save_languages', array( $this, 'save_languages' ), 10, 2 );
 			add_filter( 'wpseo_locale', array( $this, 'add_opengraph_locale' ) );
+			add_action( 'wpseo_opengraph', array( $this, 'add_alternate_opengraph_locale' ), 40 );
 		}
 	}
 
@@ -192,7 +193,7 @@ class WPM_Yoast_Seo {
 					continue;
 				}
 
-				$alternate[ $key ] .= sprintf( "\t<xhtml:link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />\n\t", esc_attr( wpm_sanitize_lang_slug( $lg['locale'] ) ), esc_url( wpm_translate_url( $url['loc'], $key ) ) );
+				$alternate[ $key ] = sprintf( "\t<xhtml:link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />\n\t", esc_attr( wpm_sanitize_lang_slug( $lg['locale'] ) ), esc_url( wpm_translate_url( $url['loc'], $key ) ) );
 			}
 
 			$alternate  = apply_filters( 'wpm_sitemap_alternate_links', $alternate, $url['loc'], $code );
@@ -282,5 +283,33 @@ class WPM_Yoast_Seo {
 		}
 
 		return $locale;
+	}
+
+	/**
+	 * Set alternate locale for opengraph
+	 *
+	 * @since 2.2.0
+	 */
+	public function add_alternate_opengraph_locale() {
+		global $wpseo_og;
+
+		$languages = array();
+
+		if ( is_singular() ) {
+			$languages = get_post_meta( get_the_ID(), '_languages', true );
+		} elseif ( is_category() || is_tax() || is_tag() ) {
+			$languages = get_term_meta( get_queried_object_id(), '_languages', true );
+		}
+
+		foreach ( wpm_get_languages() as $code => $language ) {
+
+			if ( ( $languages && ! isset( $languages[ $code ] ) ) || $code === wpm_get_language() ) {
+				continue;
+			}
+
+			if ( ! empty( $language['wpseo_og_locale'] ) ) {
+				$wpseo_og->og_tag( 'og:locale:alternate', $language['wpseo_og_locale'] );
+			}
+		}
 	}
 }

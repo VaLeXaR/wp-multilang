@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 2.1.12
+Stable tag: 2.2.0
 Requires PHP: 5.6+
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -182,10 +182,6 @@ Before installing or uninstalling make the site database backup before.
 
 == Frequently Asked Questions ==
 
-= I saved post and translation for language by default is disappeared. =
-
-For saving post which do not translated never before, you need save post on default language. And only then on different language.
-
 = I add new translation, but it rewrite another translation on different language. =
 
 If you have opened several browser tabs for editing this post in different languages, translation will be saved for the language that you opened last.
@@ -200,52 +196,13 @@ If you have opened several browser tabs for editing this post in different langu
 
 == Changelog ==
 
-= 2.1.12 =
-* add translation object data for REST request in WC
-* fix compatibility with SiteOrigin
-* fix translate queried object
-* fix set language value
-* fix JS translator
-
-= 2.1.11 =
-* fixed filters priority on removing in ACF integration
-
-= 2.1.9 =
-* added WC setting 'woocommerce_bacs_accounts' in translate config
-* added support region languages
-* fixed set new translate notice
-* fixed translate ACF groups
-* fixed MegaMenu compatibility
-* fixed product duplication in WC
-* fixed get_term for taxonomy hierarchy query
-* fixed check for translate posts
-* fixed Gutenberg compatibility
-
-= 2.1.8 =
-* added types for language switcher in menu
-* removed current language link from language switcher(for SEO)
-* fixed ACF integration
-* added check for merge new value in translating value
-* fix css rules for .wrap (tnx @Soft79)
-
-= 2.1.7 =
-* fix Siteorigin integration
-* add filters in add, update and get functions for meta fields
-
-= 2.1.6 =
-* fix deleting
-
-= 2.1.5 =
-* add language tag indicator
-* add separating comments per language
-* fix many redirect on home page when using ssl and lang param in url
-* fix updating errors
-
-= 2.1.4 =
-* change syntax for more accurate search in database
-* fix support Gutenberg
-* fix translating post and term fields fields
-* fix translating html widget
-* fix add new taxonomy
+= 2.2.0 =
+- added alternate locale for opengraph in YOAST SEO
+- added setting default translation
+- fixed PHP notice in YOAST sitemap
+- fixed compatibility with Gutenberg
+- fixed compatibility with Buddypress
+- fixed translate 'attr_escape'
+- fixed adding custom fields to menu items
 
 All changelog available on [GitHub](https://github.com/VaLeXaR/wp-multilang/releases).
