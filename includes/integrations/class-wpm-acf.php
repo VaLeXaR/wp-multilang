@@ -30,9 +30,6 @@ class WPM_Acf {
 		add_filter( 'wpm_acf_text_config', '__return_empty_array' );
 		add_filter( 'wpm_acf_textarea_config', '__return_empty_array' );
 		add_filter( 'wpm_acf_wysiwyg_config', '__return_empty_array' );
-		add_action( 'admin_init', array( $this, 'admin_init' ) );
-		remove_class_filter( 'wp_edit_nav_menu_walker', 'acf_form_nav_menu', 'wp_edit_nav_menu_walker' );
-		add_filter( 'wp_edit_nav_menu_walker', array($this, 'wp_edit_nav_menu_walker'), 10, 2 );
 	}
 
 	/**
@@ -45,6 +42,9 @@ class WPM_Acf {
 			add_filter( 'acf/get_field_label', 'wpm_translate_string', 6 );
 			add_filter( 'acf/update_field', array( $this, 'update_field_pro' ), 99 );
 			add_filter( 'acf/update_value', array( $this, 'update_value_pro' ), 99, 3 );
+			add_action( 'admin_init', array( $this, 'admin_init' ) );
+			remove_class_filter( 'wp_edit_nav_menu_walker', 'acf_form_nav_menu', 'wp_edit_nav_menu_walker' );
+			add_filter( 'wp_edit_nav_menu_walker', array( $this, 'wp_edit_nav_menu_walker' ), 10, 2 );
 		} else {
 			add_filter( 'wpm_post_acf_config', array( $this, 'add_config' ) );
 			add_filter( 'acf/field_group/get_fields', 'wpm_translate_value', 6 );

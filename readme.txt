@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 2.2.0
+Stable tag: 2.2.1
 Requires PHP: 5.6+
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -170,6 +170,10 @@ Not compatible with:
 
 Function 'get_page_by_title' not working, because in title field are stored titles for all languages. Use function 'wpm_get_page_by_title( $title )' as solution.
 
+NOTE: Because plugins have different ways of storing data, WP Multilang is not compatible with every single plugin out-of-the-box (mostly page builders). This may result in texts not being translatable or translations not being saved. Most of these issues can be resolved using the integration options (wpm-config.json or filters) of WP Multilang.
+
+Please try WP Multilang in a test-environment before activating it on an existing production site and always make a backup before activating!
+
 == Installation ==
 
 1. Upload the plugin files to the `/wp-content/plugins/wp-multilang` directory, or install the plugin through the WordPress plugins screen directly.
@@ -195,6 +199,10 @@ If you have opened several browser tabs for editing this post in different langu
 5. Post edit page
 
 == Changelog ==
+
+= 2.2.1 =
+- fixed escaping text. Have error on some sites.
+- fixed ACF PRO menu integration. Have error on ACFv4.
 
 = 2.2.0 =
 - added alternate locale for opengraph in YOAST SEO

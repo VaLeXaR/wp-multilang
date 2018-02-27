@@ -85,7 +85,7 @@ function wpm_translate_url( $url, $language = '' ) {
  */
 function wpm_translate_string( $string, $language = '' ) {
 
-	if ( ! is_string( $string ) || is_serialized_string( $string ) || json_decode( $string ) ) {
+	if ( ! wpm_is_ml_string( $string ) ) {
 		return $string;
 	}
 
@@ -509,13 +509,7 @@ function wpm_is_ml_string( $string ) {
 		return false;
 	}
 
-	$blocks = preg_split( '#(<!--:[a-z-]+-->|<!--:-->|\[:[a-z-]+\]|\[:\]|\{:[a-z-]+\}|\{:\})#ism', $string, - 1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
-
-	if ( is_array( $blocks ) && ! empty( $blocks ) && count( $blocks ) > 1 ) {
-		return true;
-	}
-
-	return false;
+	return preg_match( '#^(<!--:[a-z-]+-->|\[:[a-z-]+\]|\{:[a-z-]+\}).+#ism', $string );
 }
 
 /**
