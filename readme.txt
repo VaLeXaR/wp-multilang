@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 2.2.0
+Stable tag: 2.2.1
 Requires PHP: 5.6+
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -199,6 +199,10 @@ If you have opened several browser tabs for editing this post in different langu
 5. Post edit page
 
 == Changelog ==
+
+= 2.2.1 =
+- fixed escaping text. Have error on some sites.
+- fixed ACF PRO menu integration. Have error on ACFv4.
 
 = 2.2.0 =
 - added alternate locale for opengraph in YOAST SEO
