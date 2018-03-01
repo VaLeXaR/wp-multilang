@@ -155,7 +155,7 @@ function wpm_translate_value( $value, $language = '' ) {
  */
 function wpm_string_to_ml_array( $string ) {
 
-	if ( ! is_string( $string ) || is_serialized_string( $string ) || json_decode( $string ) ) {
+	if ( ! is_string( $string ) || is_serialized_string( $string ) || isJSON( $string ) ) {
 		return $string;
 	}
 
@@ -337,7 +337,7 @@ function wpm_set_language_value( $localize_array, $value, $config = array(), $la
 				$new_value = $localize_array;
 				$new_value[ $lang ] = $value;
 			} else {
-				if ( json_decode( $value ) || is_serialized_string( $value ) ) {
+				if ( isJSON( $value ) || is_serialized_string( $value ) ) {
 					$new_value  = $value;
 				} else {
 					$result = array();
@@ -383,7 +383,7 @@ function wpm_translate_object( $object, $lang = '' ) {
 					break;
 				}
 
-				if ( json_decode( $content ) ) {
+				if ( isJSON( $content ) ) {
 					$object->$key = wp_json_encode( wpm_translate_value( json_decode( $content, true ), $lang ) );
 					break;
 				}
@@ -505,7 +505,7 @@ function wpm_is_ml_array( $array ) {
  */
 function wpm_is_ml_string( $string ) {
 
-	if ( ! is_string( $string ) || is_serialized_string( $string ) || json_decode( $string ) ) {
+	if ( ! is_string( $string ) || is_serialized_string( $string ) || isJSON( $string ) ) {
 		return false;
 	}
 
@@ -553,7 +553,7 @@ function wpm_set_new_value( $old_value, $new_value, $config = array(), $lang = '
 		return $new_value;
 	}
 
-	if ( is_serialized_string( $old_value ) || ( is_string( $old_value ) && json_decode( $old_value ) ) ) {
+	if ( is_serialized_string( $old_value ) || isJSON( $old_value ) ) {
 		return $old_value;
 	}
 

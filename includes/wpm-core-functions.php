@@ -240,7 +240,8 @@ function wpm_attribute_escape( $string ) {
 	if ( 'GET' === $_SERVER['REQUEST_METHOD'] ) {
 		$string = wp_specialchars_decode( $string, ENT_QUOTES );
 
-		if ( $array = json_decode( $string, true ) ) {
+		if ( isJSON( $string ) ) {
+			$array = json_decode( $string, true );
 			$array  = wpm_translate_value( $array );
 			$string = wp_json_encode( $array );
 		} else {

@@ -222,7 +222,7 @@ class WPM_AJAX {
 						break;
 					}
 
-					if ( json_decode( $content ) ) {
+					if ( isJSON( $content ) ) {
 						$content      = json_decode( $content, true );
 						$object->$key = wp_json_encode( wpm_set_new_value( $content, wpm_translate_value( $content, $lang ), $object_config[ $key ], $lang ) );
 						break;

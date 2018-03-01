@@ -43,7 +43,7 @@ class WPM_PBSO {
 		foreach ( $meta_value['widgets'] as $key => $widget ) {
 			if ( isset( $widget['frames'] ) ) {
 				foreach ( $widget['frames'] as $_key => $frame ) {
-					if ( isset( $frame['content'] ) && is_string( $frame['content'] ) && json_decode( $frame['content'] ) ) {
+					if ( ! empty( $frame['content'] ) && isJSON( $frame['content'] ) ) {
 						$frame['content'] = json_decode( $frame['content'], true );
 						if ( is_array( $frame['content'] ) && isset( $frame['content']['widgets'] ) ) {
 							$meta_value['widgets'][ $key ]['frames'][ $_key ]['content'] = $this->translate_value( $frame['content'] );
@@ -68,7 +68,7 @@ class WPM_PBSO {
 		foreach ( $meta_value['widgets'] as $key => $widget ) {
 			if ( isset( $widget['frames'] ) ) {
 				foreach ( $widget['frames'] as $_key => $frame ) {
-					if ( isset( $frame['content'] ) && json_decode( $frame['content'] ) ) {
+					if ( ! empty( $frame['content'] ) && isJSON( $frame['content'] ) ) {
 						$frame['content'] = json_decode( $frame['content'], true );
 						if ( is_array( $frame['content'] ) && isset( $frame['content']['widgets'] ) ) {
 							$meta_value['widgets'][ $key ]['frames'][ $_key ]['content'] = $this->transform_value( $frame['content'] );
@@ -98,9 +98,9 @@ class WPM_PBSO {
 			foreach ( $old_value['widgets'] as $_widget ) {
 				if ( $widget['panels_info']['widget_id'] === $_widget['panels_info']['widget_id'] ) {
 					$new_old_value['widgets'][ $key ] = $_widget;
-					if ( isset( $widget['frames'] ) ) {
+					if ( ! empty( $widget['frames'] ) ) {
 						foreach ( $widget['frames'] as $_key => $frame ) {
-							if ( is_array( $frame['content'] ) && isset( $frame['content'], $frame['content']['widgets'] ) ) {
+							if ( is_array( $frame['content'] ) && isset( $frame['content']['widgets'] ) ) {
 								foreach ( $_widget['frames'] as $_frame ) {
 									$_frame['content'] = json_decode( $_frame['content'], true );
 									$new_old_value['widgets'][ $key ]['frames'][ $_key ]['content'] = $this->filter_old_value( $_frame['content'], $frame['content'] );
@@ -151,7 +151,7 @@ class WPM_PBSO {
 			foreach ( $meta_value['widgets'] as $widget ) {
 				if ( isset( $widget['frames'] ) ) {
 					foreach ( $widget['frames'] as $frame ) {
-						if ( isset( $frame['content'] ) && is_string( $frame['content'] ) && json_decode( $frame['content'] ) ) {
+						if ( ! empty( $frame['content'] ) && isJSON( $frame['content'] ) ) {
 							$frame['content'] = json_decode( $frame['content'], true );
 							if ( isset( $frame['content']['widgets'] ) ) {
 								$config['widgets']['wpm_each']['frames']['wpm_each']['content'] = $this->add_recursive_config( $config, $frame['content'] );
