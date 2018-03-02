@@ -42,6 +42,10 @@ class WPM_Gutenberg {
 
 		add_action( 'admin_print_footer_scripts', 'wpm_admin_language_switcher_customizer' );
 		wpm_enqueue_js( "
+			if (wp.api === undefined) {
+				return;
+			}
+			
 			wp.api.init().then( function() {
 				if ($('#wpm-language-switcher').length === 0) {
 					var language_switcher = wp.template( 'wpm-ls-customizer' );
