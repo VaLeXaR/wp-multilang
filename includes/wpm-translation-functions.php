@@ -509,7 +509,7 @@ function wpm_is_ml_string( $string ) {
 		return false;
 	}
 
-	return preg_match( '#(<!--:[a-z-]+-->|\[:[a-z-]+\]|\{:[a-z-]+\})?#im', $string );
+	return preg_match( '#(<!--:[a-z-]+-->|\[:[a-z-]+\]|\{:[a-z-]+\}).?#ism', $string );
 }
 
 /**
