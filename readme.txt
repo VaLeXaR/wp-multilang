@@ -110,6 +110,8 @@ Function accepts two parameters:
 $type - 'list', 'dropdown', 'select'. Default - 'list'.
 $show - 'flag', 'name', 'both'. Default - 'both'.
 
+Or using the shortcode `wpm_lang_switcher`. It accept two not necessary parameters 'type' and 'show'.
+
 Available features for translation:
 
 `wpm_translate_url ($url, $language = '');` - translate url
