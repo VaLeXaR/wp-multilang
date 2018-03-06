@@ -106,7 +106,12 @@ class WPM_Config {
 	 */
 	public static function parse_config_files() {
 
-		foreach ( self::$config_files as $file ) {
+		$config_files = apply_filters( 'wpm_json_files', self::$config_files );
+
+		foreach ( $config_files as $name => $file ) {
+
+			$file = apply_filters( "wpm_{$name}_json_file", $file );
+
 			if ( $file && is_readable( $file ) ) {
 				$config = json_decode( file_get_contents( $file ), true );
 

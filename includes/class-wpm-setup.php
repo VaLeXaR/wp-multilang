@@ -546,10 +546,11 @@ class WPM_Setup {
 
 		$active_plugins = wp_cache_get( 'active_plugins', 'wpm' );
 
-		if ( is_array( $active_plugins) ) {
+		if ( is_array( $active_plugins ) ) {
 			foreach ( $active_plugins as $plugin ) {
-				if ( isset( $integrations[ $plugin ] ) && ! empty( $integrations[ $plugin ] ) ) {
-					new $integrations[ $plugin ]();
+				if ( ! empty( $integrations[ $plugin ] ) ) {
+					$integration = apply_filters( "wpm_{$plugin}_integration", $integrations[ $plugin ] );
+					new $integration();
 				}
 			}
 		}
