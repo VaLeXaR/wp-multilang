@@ -107,10 +107,10 @@ class WPM_Admin_Assets {
 
 			$admin_html_tags = apply_filters( 'wpm_admin_html_tags', $config['admin_html_tags'] );
 
-			if ( isset( $admin_html_tags[ $screen_id ] ) && null !== $admin_html_tags[ $screen_id ] ) {
+			if ( ! empty( $admin_html_tags[ $screen_id ] ) ) {
 				wp_enqueue_script( 'wpm_translator' );
 				$js_code = '';
-				foreach ( $admin_html_tags[ $screen_id ] as $attr => $selector ) {
+				foreach ( ( array ) $admin_html_tags[ $screen_id ] as $attr => $selector ) {
 					$js_code .= '$( "' . implode( ', ', $selector ) . '" ).each( function () {';
 					if ( 'text' === $attr ) {
 						$js_code .= '$(this).text(wpm_translator.translate_string($(this).text()));';

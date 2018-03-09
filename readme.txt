@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 2.2.1
+Stable tag: 2.2.2
 Requires PHP: 5.6+
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -110,6 +110,8 @@ Function accepts two parameters:
 $type - 'list', 'dropdown', 'select'. Default - 'list'.
 $show - 'flag', 'name', 'both'. Default - 'both'.
 
+Or using the shortcode `wpm_lang_switcher`. It accept two not necessary parameters 'type' and 'show'.
+
 Available features for translation:
 
 `wpm_translate_url ($url, $language = '');` - translate url
@@ -199,6 +201,14 @@ If you have opened several browser tabs for editing this post in different langu
 5. Post edit page
 
 == Changelog ==
+
+= 2.2.2 =
+- added shortcode for display language switcher
+- add filters for set json config files for integration
+- fixed checking for ml strings
+- fixed compatibility with Gutenberg
+- fixed checking for JSON strings
+- fixed regex for ml strings
 
 = 2.2.1 =
 - fixed escaping text. Have error on some sites.

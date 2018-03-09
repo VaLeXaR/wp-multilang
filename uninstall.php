@@ -93,7 +93,7 @@ if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 						$meta_value = serialize( wpm_translate_value( unserialize( $meta_value ), $default_language ) );
 					}
 
-					if ( json_decode( $meta_value ) ) {
+					if ( isJSON( $meta_value ) ) {
 						$meta_value = wp_json_encode( wpm_translate_value( json_decode( $meta_value, true ), $default_language ) );
 					}
 
@@ -118,7 +118,7 @@ if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 						$meta_value = serialize( wpm_translate_value( unserialize( $meta_value ), $default_language ) );
 					}
 
-					if ( json_decode( $meta_value ) ) {
+					if ( isJSON( $meta_value ) ) {
 						$meta_value = wp_json_encode( wpm_translate_value( json_decode( $meta_value, true ), $default_language ) );
 					}
 
@@ -143,7 +143,7 @@ if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 						$meta_value = serialize( wpm_translate_value( unserialize( $meta_value ), $default_language ) );
 					}
 
-					if ( json_decode( $meta_value ) ) {
+					if ( isJSON( $meta_value ) ) {
 						$meta_value = wp_json_encode( wpm_translate_value( json_decode( $meta_value, true ), $default_language ) );
 					}
 
@@ -167,7 +167,7 @@ if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 						$meta_value = serialize( wpm_translate_value( unserialize( $meta_value ), $default_language ) );
 					}
 
-					if ( json_decode( $meta_value ) ) {
+					if ( isJSON( $meta_value ) ) {
 						$meta_value = wp_json_encode( wpm_translate_value( json_decode( $meta_value, true ), $default_language ) );
 					}
 
@@ -191,7 +191,7 @@ if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 						$option_value = serialize( wpm_translate_value( unserialize( $option_value ), $default_language ) );
 					}
 
-					if ( json_decode( $option_value ) ) {
+					if ( isJSON( $option_value ) ) {
 						$option_value = wp_json_encode( wpm_translate_value( json_decode( $option_value, true ), $default_language ) );
 					}
 
@@ -215,7 +215,7 @@ if ( get_option( 'wpm_uninstall_translations', 'no' ) === 'yes' ) {
 						$meta_value = serialize( wpm_translate_value( unserialize( $meta_value ), $default_language ) );
 					}
 
-					if ( json_decode( $meta_value ) ) {
+					if ( isJSON( $meta_value ) ) {
 						$meta_value = wp_json_encode( wpm_translate_value( json_decode( $meta_value, true ), $default_language ) );
 					}
 

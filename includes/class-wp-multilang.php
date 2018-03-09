@@ -21,7 +21,7 @@ final class WP_Multilang {
 	 *
 	 * @var string
 	 */
-	public $version = '2.2.1';
+	public $version = '2.2.2';
 
 	/**
 	 * The single instance of the class.
@@ -178,6 +178,7 @@ final class WP_Multilang {
 		new WPM_Widgets();
 		new WPM_Users();
 		new WPM_Comments();
+		new WPM_Shortcodes();
 
 		if ( $this->is_request( 'admin' ) ) {
 			new Admin\WPM_Admin();
