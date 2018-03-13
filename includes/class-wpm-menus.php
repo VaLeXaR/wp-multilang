@@ -37,7 +37,7 @@ class WPM_Menus {
 	 * @return mixed
 	 */
 	public function filter_menus( $items ) {
-		foreach ( $items as &$item ) {
+		foreach ( (array) $items as &$item ) {
 			$item['title'] = wpm_translate_string( $item['title'] );
 		}
 
@@ -166,10 +166,8 @@ class WPM_Menus {
 	 */
 	public function translate_menu_url( $menu_item ) {
 
-		if ( ! is_admin() ) {
-			if ( 'custom' === $menu_item->object && ! is_admin() ) {
-				$menu_item->url = wpm_translate_url( $menu_item->url );
-			}
+		if ( 'custom' === $menu_item->object && ! is_admin() ) {
+			$menu_item->url = wpm_translate_url( $menu_item->url );
 		}
 
 		return $menu_item;
