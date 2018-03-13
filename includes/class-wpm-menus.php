@@ -53,7 +53,7 @@ class WPM_Menus {
 	 * @return mixed
 	 */
 	public function translate_menu_item( $menu_item ) {
-		$menu_item = wpm_translate_object( $menu_item );
+		$menu_item = wpm_translate_object( $menu_item, wpm_get_language() );
 
 		if ( isset( $menu_item->post_type ) ) {
 			if ( 'nav_menu_item' === $menu_item->post_type ) {
