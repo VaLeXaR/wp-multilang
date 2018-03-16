@@ -488,33 +488,18 @@ class WPM_Setup {
 	 */
 	public function set_home_url( $value ) {
 
-		if ( ( is_admin() && ! is_front_ajax() ) || ! did_action( 'wpm_init' ) || ! $value || ! $this->user_language ) {
+		if ( ! $value || ! $this->user_language || ! did_action( 'wpm_init' ) || ! did_action( 'parse_request' ) || ( is_admin() && ! is_front_ajax() ) ) {
 			return $value;
 		}
 
 		$user_language    = wpm_get_user_language();
 		$default_language = wpm_get_default_language();
 
-		if ( ( $user_language !== $default_language ) || ( self::get_option( 'use_prefix', 'no' ) === 'yes' ) ) {
-			if ( get_option( 'permalink_structure' ) ) {
-				$value .= '/' . $user_language;
-			}
+		if ( ( ( $user_language !== $default_language ) || ( self::get_option( 'use_prefix', 'no' ) === 'yes' ) ) && get_option( 'permalink_structure' ) ) {
+			$value .= '/' . $user_language;
 		}
 
 		return $value;
-	}
-
-	/**
-	 * Add 'lang' param to allow params
-	 *
-	 * @param $public_query_vars
-	 *
-	 * @return array
-	 */
-	public function set_lang_var( $public_query_vars ) {
-		$public_query_vars[] = 'lang';
-
-		return $public_query_vars;
 	}
 
 	/**
@@ -567,6 +552,19 @@ class WPM_Setup {
 	}
 
 	/**
+	 * Add 'lang' param to allow params
+	 *
+	 * @param $public_query_vars
+	 *
+	 * @return array
+	 */
+	public function set_lang_var( $public_query_vars ) {
+		$public_query_vars[] = 'lang';
+
+		return $public_query_vars;
+	}
+
+	/**
 	 * Add query var 'lang' in global request
 	 *
 	 * @param $request
@@ -581,6 +579,21 @@ class WPM_Setup {
 		$request->query_vars['lang'] = $this->get_user_language();
 
 		return $request;
+	}
+
+	/**
+	 * Fix home page if isset 'lang' GET parameter
+	 *
+	 * @param $query_vars
+	 *
+	 * @return array
+	 */
+	public function set_home_page( $query_vars ) {
+		if ( isset( $_GET['lang'] ) && ( ( '/' === wp_parse_url( $this->get_site_request_uri(), PHP_URL_PATH ) ) || ( count( $query_vars ) === 2 && isset( $query_vars['paged'] ) ) ) ) {
+			unset( $query_vars['lang'] );
+		}
+
+		return $query_vars;
 	}
 
 	/**
@@ -663,21 +676,6 @@ class WPM_Setup {
 		}
 
 		return $detect;
-	}
-
-	/**
-	 * Fix home page if isset 'lang' GET parameter
-	 *
-	 * @param $query_vars
-	 *
-	 * @return array
-	 */
-	public function set_home_page( $query_vars ) {
-		if ( isset( $_GET['lang'] ) && ( ( '/' === wp_parse_url( $this->get_site_request_uri(), PHP_URL_PATH ) ) || ( count( $query_vars ) === 2 && isset( $query_vars['paged'] ) ) ) ) {
-			unset( $query_vars['lang'] );
-		}
-
-		return $query_vars;
 	}
 
 	/**
