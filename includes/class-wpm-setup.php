@@ -488,7 +488,7 @@ class WPM_Setup {
 	 */
 	public function set_home_url( $value ) {
 
-		if ( ! $value || ! $this->user_language || ! did_action( 'wpm_init' ) || ! did_action( 'parse_request' ) || ( is_admin() && ! is_front_ajax() ) ) {
+		if ( ! $value || ! $this->user_language || ! did_action( 'wpm_init' ) || ( ! empty( $_GET['lang'] ) && ! did_action( 'parse_request' ) ) || ( is_admin() && ! is_front_ajax() ) ) {
 			return $value;
 		}
 
