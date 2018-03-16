@@ -160,7 +160,7 @@ function wpm_string_to_ml_array( $string ) {
 	}
 
 	$string = htmlspecialchars_decode( $string );
-	$blocks = preg_split( '#(<!--:[a-z-]+-->|<!--:-->|\[:[a-z-]+\]|\[:\]|\{:[a-z-]+\}|\{:\})#ism', $string, - 1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
+	$blocks = preg_split( '#(<!--:[a-z-]+-->|<!--:-->|\[:[a-z-]+\]|\[:\]|\{:[a-z-]+\}|\{:\})#im', $string, - 1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
 
 	if ( empty( $blocks ) ) {
 		return $string;
@@ -509,7 +509,11 @@ function wpm_is_ml_string( $string ) {
 		return false;
 	}
 
-	return preg_match( '#(<!--:[a-z-]+-->|\[:[a-z-]+\]|\{:[a-z-]+\}).?#ism', $string );
+	if ( preg_match( '#(<!--:[a-z-]+-->|\[:[a-z-]+\]|\{:[a-z-]+\})#im', $string ) ) {
+		return true;
+	}
+
+	return false;
 }
 
 /**
