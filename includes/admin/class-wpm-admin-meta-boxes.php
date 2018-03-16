@@ -130,7 +130,7 @@ class WPM_Admin_Meta_Boxes {
 		}
 
 		// Check the post being saved == the $post_id to prevent triggering this call for other save_post events
-		if ( empty( $_POST['post_ID'] ) || $_POST['post_ID'] !== $post_id ) {
+		if ( empty( $_POST['post_ID'] ) || (int) $_POST['post_ID'] !== $post_id ) {
 			return;
 		}
 
