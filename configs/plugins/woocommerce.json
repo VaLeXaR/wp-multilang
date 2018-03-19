@@ -1,7 +1,11 @@
 {
   "post_types": {
     "product": {},
-    "product_variation": {}
+    "product_variation": {},
+    "shop_coupon": {
+      "post_name": null,
+      "post_content": null
+    }
   },
   "post_fields": {
     "_button_text": {},
