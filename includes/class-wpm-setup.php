@@ -354,6 +354,7 @@ class WPM_Setup {
 				$user_language = $lang;
 
 				if ( is_admin() && ! is_front_ajax() ) {
+					nocache_headers();
 					update_user_meta( get_current_user_id(), 'user_lang', $lang );
 					update_user_meta( get_current_user_id(), 'locale', $languages[ $lang ]['translation'] );
 				}
