@@ -43,8 +43,8 @@ class WPM_PBSO {
 		foreach ( $meta_value['widgets'] as $key => $widget ) {
 			if ( isset( $widget['frames'] ) ) {
 				foreach ( $widget['frames'] as $_key => $frame ) {
-					if ( ! empty( $frame['content'] ) && isJSON( $frame['content'] ) ) {
-						$frame['content'] = json_decode( $frame['content'], true );
+					if ( ! empty( $frame['content'] ) && is_serialized_string( $frame['content'] ) ) {
+						$frame['content'] = unserialize( $frame['content'], true );
 						if ( is_array( $frame['content'] ) && isset( $frame['content']['widgets'] ) ) {
 							$meta_value['widgets'][ $key ]['frames'][ $_key ]['content'] = $this->translate_value( $frame['content'] );
 						}
@@ -68,8 +68,8 @@ class WPM_PBSO {
 		foreach ( $meta_value['widgets'] as $key => $widget ) {
 			if ( isset( $widget['frames'] ) ) {
 				foreach ( $widget['frames'] as $_key => $frame ) {
-					if ( ! empty( $frame['content'] ) && isJSON( $frame['content'] ) ) {
-						$frame['content'] = json_decode( $frame['content'], true );
+					if ( ! empty( $frame['content'] ) && is_serialized_string( $frame['content'] ) ) {
+						$frame['content'] = unserialize( $frame['content'], true );
 						if ( is_array( $frame['content'] ) && isset( $frame['content']['widgets'] ) ) {
 							$meta_value['widgets'][ $key ]['frames'][ $_key ]['content'] = $this->transform_value( $frame['content'] );
 						}
@@ -102,7 +102,7 @@ class WPM_PBSO {
 						foreach ( $widget['frames'] as $_key => $frame ) {
 							if ( is_array( $frame['content'] ) && isset( $frame['content']['widgets'] ) ) {
 								foreach ( $_widget['frames'] as $_frame ) {
-									$_frame['content'] = json_decode( $_frame['content'], true );
+									$_frame['content'] = unserialize( $_frame['content'], true );
 									$new_old_value['widgets'][ $key ]['frames'][ $_key ]['content'] = $this->filter_old_value( $_frame['content'], $frame['content'] );
 								}
 							}
@@ -128,7 +128,7 @@ class WPM_PBSO {
 			if ( isset( $widget['frames'] ) ) {
 				foreach ( $widget['frames'] as $_key => $frame ) {
 					if ( is_array( $frame['content'] ) ) {
-						$meta_value['widgets'][ $key ]['frames'][ $_key ]['content'] = wp_json_encode( $this->filter_new_value( $frame['content'] ) );
+						$meta_value['widgets'][ $key ]['frames'][ $_key ]['content'] = serialize( $this->filter_new_value( $frame['content'] ) );
 					}
 				}
 			}
@@ -151,8 +151,8 @@ class WPM_PBSO {
 			foreach ( $meta_value['widgets'] as $widget ) {
 				if ( isset( $widget['frames'] ) ) {
 					foreach ( $widget['frames'] as $frame ) {
-						if ( ! empty( $frame['content'] ) && isJSON( $frame['content'] ) ) {
-							$frame['content'] = json_decode( $frame['content'], true );
+						if ( ! empty( $frame['content'] ) && is_serialized_string( $frame['content'] ) ) {
+							$frame['content'] = unserialize( $frame['content'], true );
 							if ( isset( $frame['content']['widgets'] ) ) {
 								$config['widgets']['wpm_each']['frames']['wpm_each']['content'] = $this->add_recursive_config( $config, $frame['content'] );
 							}
