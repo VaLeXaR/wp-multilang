@@ -341,7 +341,7 @@ class WPM_Setup {
 		}
 
 		if ( $url ) {
-			$this->original_request_uri = str_replace( $this->get_original_home_url(), '', $url );
+			$this->original_request_uri = str_replace( set_url_scheme( $this->get_original_home_url() ), '', $url );
 
 			if ( $url_lang = $this->get_lang_from_url() ) {
 				$user_language = $url_lang;
@@ -354,6 +354,7 @@ class WPM_Setup {
 				$user_language = $lang;
 
 				if ( is_admin() && ! is_front_ajax() ) {
+					nocache_headers();
 					update_user_meta( get_current_user_id(), 'user_lang', $lang );
 					update_user_meta( get_current_user_id(), 'locale', $languages[ $lang ]['translation'] );
 				}
