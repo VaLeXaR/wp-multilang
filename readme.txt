@@ -82,7 +82,6 @@ There are two ways:
        }
      }`
 
-
 2. Through the filter.
     Add in functions.php
     `add_filter( 'wpm_post_post_config', '__return_null' );`
