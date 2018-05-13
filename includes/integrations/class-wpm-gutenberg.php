@@ -21,7 +21,7 @@ class WPM_Gutenberg {
 	 * WPM_Gutenberg constructor.
 	 */
 	public function __construct() {
-		add_action( 'admin_enqueue_scripts', array( $this, 'add_language_switcher' ), 11 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'add_language_switcher' ) );
 	}
 
 
@@ -41,34 +41,36 @@ class WPM_Gutenberg {
 		}
 
 		add_action( 'admin_print_footer_scripts', 'wpm_admin_language_switcher_customizer' );
-		wpm_enqueue_js( "
-			if (wp.api === undefined) {
-				return;
-			}
-			
-			wp.api.init().then( function() {
-				if ($('#wpm-language-switcher').length === 0) {
-					var language_switcher = wp.template( 'wpm-ls-customizer' );
-					$('.edit-post-header-toolbar').prepend(language_switcher);
-			    }
-		    });
+		wp_add_inline_script( 'wp-api', "
+(function( $ ) {
+  $(function() {
+	$(window).on('pageshow',function(){
+		wp.api.init().then( function() {
+			if ($('#wpm-language-switcher').length === 0) {
+				var language_switcher = wp.template( 'wpm-ls-customizer' );
+				$('.edit-post-header-toolbar').prepend(language_switcher);
+		    }
+	    });
+	});
 	
-		    $(document).on('click', '#wpm-language-switcher .lang-dropdown a', function(){
-				var location = String(document.location);
-				var lang = $(this).data('lang');
-				var href = '';
-				var query = location.split('?');
-				var delimiter = '?';
-				if (query[1]) {
-					delimiter = '&';
-				}
-				if (query[1] && (query[1].search(/edit_lang=/i) !== -1)) {
-					href = location.replace(/edit_lang=[a-z]{2,4}/i, 'edit_lang=' + lang);
-				} else {
-					href = location + delimiter + 'edit_lang=' + lang;
-				}
-				$(this).attr('href', href);
-		    });
-		");
+	$(document).on('click', '#wpm-language-switcher .lang-dropdown a', function(){
+		var location = String(document.location);
+		var lang = $(this).data('lang');
+		var href = '';
+		var query = location.split('?');
+		var delimiter = '?';
+		if (query[1]) {
+			delimiter = '&';
+		}
+		if (query[1] && (query[1].search(/edit_lang=/i) !== -1)) {
+			href = location.replace(/edit_lang=[a-z]{2,4}/i, 'edit_lang=' + lang);
+		} else {
+			href = location + delimiter + 'edit_lang=' + lang;
+		}
+		$(this).attr('href', href);
+	});
+  });
+})( jQuery );
+");
 	}
 }

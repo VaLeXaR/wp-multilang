@@ -157,7 +157,7 @@ class WPM_Taxonomies extends WPM_Object {
 
 		foreach ( $results as $result ) {
 			$ml_term = wpm_translate_string( $result->name );
-			if ( ( $ml_term === $name || $result->slug == $slug) && ! is_taxonomy_hierarchical( $taxonomy ) ) {
+			if ( ( $ml_term === $name || $result->slug === $slug ) && ! is_taxonomy_hierarchical( $taxonomy ) ) {
 				return new \WP_Error( 'term_exists', __( 'A term with the name provided already exists in this taxonomy.' ), $result->term_id );
 			}
 		}
@@ -182,7 +182,6 @@ class WPM_Taxonomies extends WPM_Object {
 		if ( null === $taxonomy_config ) {
 			return $data;
 		}
-
 
 		if ( ! wpm_is_ml_value( $data['name'] ) ) {
 			$data['name'] = wpm_set_new_value( array(), $data['name'], $taxonomy_config['name'] );

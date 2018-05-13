@@ -4,7 +4,7 @@ Contributors: valexar
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 2.2.4
+Stable tag: 2.2.5
 Requires PHP: 5.6+
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -76,36 +76,28 @@ There are two ways:
 
 1. In json.
     Create in root of a theme or a plugin file `wpm-config.json` with:
-
     `{
        "post_types": {
          "post": null
        }
      }`
 
-
 2. Through the filter.
     Add in functions.php
-
-    `add_filter ( 'wpm_post_post_config', '__return_null');`
+    `add_filter( 'wpm_post_post_config', '__return_null' );`
 
 To enable translation pass an empty array in php `array()` or empty object in json `{}`.
+
 Supports translation multidimensional array of options, meta fields and post_content.
-
 Supports the removal of established localizations.
-
 Supports translation via GET parameter. Add in the GET parameter `lang` code desired language.
-
 Supports clean database of translations when removing the plugin. Translations are only removed from the built-in tables.
-
 Supports import term translations from qTranslate(by Soft79).
+Supports automatically redirect to the user's browser language, if he visits for the first time.
 
 Ideal for developers.
 
-For display language switcher in any place add the code to your template
-
-`if ( function_exists ( 'wpm_language_switcher' ) ) wpm_language_switcher ();`
-
+For display language switcher in any place add the code to your template `if ( function_exists ( 'wpm_language_switcher' ) ) wpm_language_switcher ();`
 Function accepts two parameters:
 $type - 'list', 'dropdown', 'select'. Default - 'list'.
 $show - 'flag', 'name', 'both'. Default - 'both'.
@@ -113,12 +105,9 @@ $show - 'flag', 'name', 'both'. Default - 'both'.
 Or using the shortcode `wpm_lang_switcher`. It accept two not necessary parameters 'type' and 'show'.
 
 Available features for translation:
-
-`wpm_translate_url ($url, $language = '');` - translate url
-`wpm_translate_string ($string, $language = '');` - translate multilingual string
-`wpm_translate_value ($value, $language = '');` - translate multidimensional array with multilingual strings
-
-Supports automatically redirect to the user's browser language, if he visits for the first time.
+`wpm_translate_url( $url, $language = '' );` - translate url
+`wpm_translate_string( $string, $language = '' );` - translate multilingual string
+`wpm_translate_value( $value, $language = '' );` - translate multidimensional array with multilingual strings
 
 Update translation occurs at PHP. Therefore plugin has high adaptability, compatibility and easily integrates with other plugins. This is what distinguishes it among similar.
 
@@ -140,8 +129,19 @@ Where:
 `attribute` - attribute what need to translate. Available 'text' - for translate text node, 'value' - for translate form values. Or other tag attribute, like 'title', 'alt'.
 `selector` - css selector for search needed tag. Each selector is a new array item.
 
-For set translation uses the syntax:
+If You need to add translation for multidimentional array for repeated elements You can use custom tag 'wpm_each' for set config to each element in array.
+Example, add config for each item 'title' in custom post field array:
+`
+"post_fields": {
+    "custom_field": {
+      "wpm_each": {
+        "title": {}
+      }
+    }
+}
+`
 
+For set translation uses the syntax:
 `[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut[:]`
 
 Supports translating from syntax qTranslate, qTranslate-X, WPGlobus etc.
@@ -201,6 +201,10 @@ If you have opened several browser tabs for editing this post in different langu
 5. Post edit page
 
 == Changelog ==
+
+= 2.2.5 =
+- fixed Gutenberg compatibility
+- fixed translation WC coupons
 
 = 2.2.4 =
 - added "no-cache" header in admin on language change
