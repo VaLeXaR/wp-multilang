@@ -498,6 +498,19 @@ function wpm_get_page_by_title( $page_title, $output = OBJECT, $post_type = 'pag
 	}
 }
 
+if ( ! function_exists( 'is_admin_url' ) ) {
+	/**
+	 * Check if is admin url
+	 *
+	 * @param $url
+	 *
+	 * @return bool
+	 */
+	function is_admin_url( $url ) {
+		return ! strpos( $url, 'wp-admin/' ) === false;
+	}
+}
+
 if ( ! function_exists( 'is_front_ajax' ) ) {
 	/**
 	 * Check if it is ajax from front
@@ -505,12 +518,6 @@ if ( ! function_exists( 'is_front_ajax' ) ) {
 	 * @return bool
 	 */
 	function is_front_ajax() {
-		if ( wp_doing_ajax() && ( $referrer = wp_get_raw_referer() ) ) {
-			if ( strpos( $referrer, 'wp-admin/' ) === false ) {
-				return true;
-			}
-		}
-
-		return false;
+		return wp_doing_ajax() && ( $referrer = wp_get_raw_referer() ) && ! is_admin_url( $referrer ) ;
 	}
 }
