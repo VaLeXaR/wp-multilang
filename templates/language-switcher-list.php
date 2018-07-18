@@ -10,7 +10,7 @@
 					<img src="<?php echo esc_url( wpm_get_flag_url( $language['flag'] ) ); ?>" alt="<?php echo esc_attr( $language['name'] ); ?>">
 				<?php } ?>
 				<?php if ( ( 'name' === $show ) || ( 'both' === $show ) ) { ?>
-					<span><?php esc_html_e( $language['name'] ); ?></span>
+					<span><?php echo esc_attr( $language['name'] ); ?></span>
 				<?php } ?>
 			<?php if ( wpm_get_language() == $code ) { ?>
 				</span>
