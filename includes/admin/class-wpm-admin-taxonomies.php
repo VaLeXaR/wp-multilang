@@ -89,7 +89,7 @@ class WPM_Admin_Taxonomies {
 
 			foreach ( $languages as $code => $language ) {
 				if ( isset( $strings[ $code ] ) && ! empty( $strings[ $code ] ) ) {
-					$output[] = '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" alt="' . $language['name'] . '" title="' . $language['name'] . '">';
+					$output[] = '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" alt="' . esc_attr( $language['name'] ) . '" title="' . $language['name'] . '">';
 				}
 			}
 
