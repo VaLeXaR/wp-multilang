@@ -113,7 +113,7 @@ class WPM_Admin_Taxonomies {
 		<div class="form-field term-languages">
 			<p><?php _e( 'Show term only in:', 'wp-multilang' ); ?></p>
 			<?php foreach ( $languages as $code => $language ) { ?>
-				<label><input type="checkbox" name="wpm_languages[<?php echo esc_attr( $i ); ?>]" id="wpm-languages-<?php echo esc_attr( $code ); ?>" value="<?php echo esc_attr( $code ); ?>"><?php esc_html_e( $language['name'] ); ?></label>
+				<label><input type="checkbox" name="wpm_languages[<?php echo esc_attr( $i ); ?>]" id="wpm-languages-<?php echo esc_attr( $code ); ?>" value="<?php echo esc_attr( $code ); ?>"><?php echo esc_attr( $language['name'] ); ?></label>
 				<?php $i ++;
 			} ?>
 		</div>
@@ -144,7 +144,7 @@ class WPM_Admin_Taxonomies {
 						<li>
 							<label>
 								<input type="checkbox" name="wpm_languages[<?php echo esc_attr( $i ); ?>]" id="wpm-languages-<?php echo esc_attr( $code ); ?>" value="<?php echo esc_attr( $code ); ?>"<?php checked( in_array( $code, $term_languages ) ); ?>>
-								<?php esc_html_e( $language['name'] ); ?>
+								<?php echo esc_attr( $language['name'] ); ?>
 							</label>
 						</li>
 						<?php $i ++;
