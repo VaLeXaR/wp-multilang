@@ -2,8 +2,11 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+/**
+ * @var $value array
+ * @var $flags array
+ */
 ?>
-
 <tr valign="top">
 	<th scope="row" class="titledesc">
 		<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
@@ -29,7 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						</div>
 						<h2 class="hndle ui-sortable-handle">
 							<span class="language-order"><?php echo esc_attr( $i ); ?></span>
-							<span><?php echo esc_attr( $language['name'] ); ?></span>
+							<span><?php echo esc_html( $language['name'] ); ?></span>
 							<span class="prefix">[:<?php echo esc_attr( $code ); ?>]</span>
 						</h2>
 						<div class="inside">

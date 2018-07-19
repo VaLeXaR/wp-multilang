@@ -219,7 +219,7 @@ class WPM_Menus {
 					}
 
 					if ( ( 'name' === $show_type ) || ( 'both' === $show_type ) ) {
-						$language_title .= '<span>' . esc_attr( $language['name'] ) . '</span>';
+						$language_title .= '<span>' . esc_html( $language['name'] ) . '</span>';
 					}
 
 					$new_item->title = $language_title;

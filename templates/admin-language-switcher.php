@@ -5,7 +5,7 @@
 				<?php if ( $language['flag'] ) { ?>
 				<img src="<?php echo esc_url( wpm_get_flag_url( $language['flag'] ) ); ?>" alt="<?php echo esc_attr( $language['name'] ) ; ?>">
 				<?php } ?>
-				<span><?php echo esc_attr( $language['name'] ); ?></span>
+				<span><?php echo esc_html( $language['name'] ); ?></span>
 			</a>
 		<?php } ?>
 		</h3>

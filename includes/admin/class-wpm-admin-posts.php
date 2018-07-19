@@ -137,9 +137,9 @@ class WPM_Admin_Posts {
 			<div class="misc-pub-section language">
 				<?php esc_html_e( 'Current edit language:', 'wp-multilang' ); ?>
 				<?php if ( $languages[ $language ]['flag'] ) { ?>
-					<img src="<?php echo esc_url( wpm_get_flag_url( $languages[ $language ]['flag'] ) ); ?>" alt="<?php esc_attr_e( $languages[ $language ]['name'] ) ; ?>">
+					<img src="<?php echo esc_url( wpm_get_flag_url( $languages[ $language ]['flag'] ) ); ?>" alt="<?php echo esc_attr( $languages[ $language ]['name'] ) ; ?>">
 				<?php } else { ?>
-					<b><?php esc_html_e( $languages[ $language ]['name'] ) ; ?></b>
+					<b><?php echo esc_html( $languages[ $language ]['name'] ) ; ?></b>
 				<?php } ?>
 			</div>
 			<?php
