@@ -111,7 +111,8 @@ class WPM_Setup {
 			add_filter( 'pre_option_home', array( $this, 'set_home_url' ), 99 );
 		}
 		add_action( 'after_switch_theme', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
-		add_action( 'activated_plugin', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
+		add_action( 'update_option_active_plugins', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
+		add_action( 'update_site_option_active_sitewide_plugins', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
 		add_action( 'upgrader_process_complete', array( __NAMESPACE__ . '\WPM_Config', 'load_config_run' ) );
 		add_action( 'wpm_init', array( $this, 'load_integrations' ) );
 		add_action( 'template_redirect', array( $this, 'redirect_default_url' ) );
