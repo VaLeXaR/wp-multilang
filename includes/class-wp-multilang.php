@@ -21,7 +21,7 @@ final class WP_Multilang {
 	 *
 	 * @var string
 	 */
-	public $version = '2.2.5';
+	public $version = '2.2.6';
 
 	/**
 	 * The single instance of the class.
@@ -138,8 +138,8 @@ final class WP_Multilang {
 		/**
 		 * Core classes.
 		 */
-		include_once( WPM_ABSPATH . 'includes/wpm-core-functions.php' );
-		include_once( WPM_ABSPATH . 'includes/wpm-widget-functions.php' );
+		include_once WPM_ABSPATH . 'includes/wpm-core-functions.php';
+		include_once WPM_ABSPATH . 'includes/wpm-widget-functions.php';
 
 		WPM_Install::init();
 		$this->setup = new WPM_Setup();
