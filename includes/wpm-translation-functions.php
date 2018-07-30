@@ -40,7 +40,7 @@ function wpm_translate_url( $url, $language = '' ) {
 		$language = $user_language;
 	}
 
-	if ( ( strpos( $url, 'wp-admin/' ) !== false ) || preg_match( '/^.*\.php$/i', wp_parse_url( $url, PHP_URL_PATH ) ) ) {
+	if ( is_admin_url( $url ) || preg_match( '/^.*\.php$/i', wp_parse_url( $url, PHP_URL_PATH ) ) ) {
 		return add_query_arg( 'lang', $language, $url );
 	}
 

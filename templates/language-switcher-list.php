@@ -1,3 +1,4 @@
+<?php /** @var $show string */ ?>
 <ul class="wpm-language-switcher switcher-<?php esc_attr_e( $type ); ?>">
 	<?php foreach ( $languages as $code => $language ) { ?>
 		<li class="item-language-<?php echo esc_attr( $code ); ?><?php if ( $code === $lang ) { ?> active<?php } ?>">
@@ -10,7 +11,7 @@
 					<img src="<?php echo esc_url( wpm_get_flag_url( $language['flag'] ) ); ?>" alt="<?php echo esc_attr( $language['name'] ); ?>">
 				<?php } ?>
 				<?php if ( ( 'name' === $show ) || ( 'both' === $show ) ) { ?>
-					<span><?php esc_html_e( $language['name'] ); ?></span>
+					<span><?php echo esc_html( $language['name'] ); ?></span>
 				<?php } ?>
 			<?php if ( wpm_get_language() == $code ) { ?>
 				</span>

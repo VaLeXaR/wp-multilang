@@ -2,8 +2,11 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+/**
+ * @var $value array
+ * @var $flags array
+ */
 ?>
-
 <tr valign="top">
 	<th scope="row" class="titledesc">
 		<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
@@ -29,7 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						</div>
 						<h2 class="hndle ui-sortable-handle">
 							<span class="language-order"><?php echo esc_attr( $i ); ?></span>
-							<span><?php esc_attr_e( $language['name'] ); ?></span>
+							<span><?php echo esc_html( $language['name'] ); ?></span>
 							<span class="prefix">[:<?php echo esc_attr( $code ); ?>]</span>
 						</h2>
 						<div class="inside">
@@ -37,7 +40,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 								<tr>
 									<td class="row-title"><?php esc_attr_e( 'Name', 'wp-multilang' ); ?></td>
 									<td>
-										<input type="text" name="wpm_languages[<?php echo esc_attr( $i ); ?>][name]" value="<?php esc_attr_e( $language['name'] ); ?>" title="<?php esc_attr_e( 'Name', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Name', 'wp-multilang' ); ?>">
+										<input type="text" name="wpm_languages[<?php echo esc_attr( $i ); ?>][name]" value="<?php echo esc_attr( $language['name'] ); ?>" title="<?php esc_attr_e( 'Name', 'wp-multilang' ); ?>" placeholder="<?php esc_attr_e( 'Name', 'wp-multilang' ); ?>">
 									</td>
 								</tr>
 								<tr>

@@ -89,7 +89,7 @@ class WPM_Admin_Taxonomies {
 
 			foreach ( $languages as $code => $language ) {
 				if ( isset( $strings[ $code ] ) && ! empty( $strings[ $code ] ) ) {
-					$output[] = '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" alt="' . $language['name'] . '" title="' . $language['name'] . '">';
+					$output[] = '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" alt="' . esc_attr( $language['name'] ) . '" title="' . $language['name'] . '">';
 				}
 			}
 
@@ -113,7 +113,7 @@ class WPM_Admin_Taxonomies {
 		<div class="form-field term-languages">
 			<p><?php _e( 'Show term only in:', 'wp-multilang' ); ?></p>
 			<?php foreach ( $languages as $code => $language ) { ?>
-				<label><input type="checkbox" name="wpm_languages[<?php echo esc_attr( $i ); ?>]" id="wpm-languages-<?php echo esc_attr( $code ); ?>" value="<?php echo esc_attr( $code ); ?>"><?php esc_html_e( $language['name'] ); ?></label>
+				<label><input type="checkbox" name="wpm_languages[<?php echo esc_attr( $i ); ?>]" id="wpm-languages-<?php echo esc_attr( $code ); ?>" value="<?php echo esc_attr( $code ); ?>"><?php echo esc_html( $language['name'] ); ?></label>
 				<?php $i ++;
 			} ?>
 		</div>
@@ -144,7 +144,7 @@ class WPM_Admin_Taxonomies {
 						<li>
 							<label>
 								<input type="checkbox" name="wpm_languages[<?php echo esc_attr( $i ); ?>]" id="wpm-languages-<?php echo esc_attr( $code ); ?>" value="<?php echo esc_attr( $code ); ?>"<?php checked( in_array( $code, $term_languages ) ); ?>>
-								<?php esc_html_e( $language['name'] ); ?>
+								<?php echo esc_html( $language['name'] ); ?>
 							</label>
 						</li>
 						<?php $i ++;
@@ -162,7 +162,7 @@ class WPM_Admin_Taxonomies {
 	 * @param mixed  $tt_id
 	 * @param string $taxonomy
 	 */
-	public function save_taxonomy_fields( $term_id, $tt_id = '', $taxonomy = '' ) {
+	public function save_taxonomy_fields( $term_id, $tt_id, $taxonomy ) {
 
 		if ( empty( $taxonomy ) || null === wpm_get_taxonomy_config( $taxonomy ) ) {
 			return;

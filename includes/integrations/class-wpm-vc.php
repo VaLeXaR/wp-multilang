@@ -70,7 +70,7 @@ class WPM_VC {
 		$active_language = wpm_get_language();
 		$languages       = wpm_get_languages();
 		foreach ( $languages as $code => $language ) {
-			$output .= '<option value="' . add_query_arg( 'edit_lang', $code, $inline_url ) . '" ' . selected( $code, $active_language, false ) . ' >' . $language['name'] . '</option >';
+			$output .= '<option value="' . add_query_arg( 'edit_lang', $code, $inline_url ) . '" ' . selected( $code, $active_language, false ) . ' >' . esc_attr( $language['name'] ) . '</option >';
 		}
 		$output .= '</select >';
 

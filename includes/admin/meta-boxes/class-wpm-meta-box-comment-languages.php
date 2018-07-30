@@ -40,7 +40,7 @@ class WPM_Meta_Box_Comment_Languages {
 				<li>
 					<label>
 						<input type="checkbox" name="wpm_languages[<?php echo esc_attr( $i ); ?>]" id="wpm-languages-<?php echo esc_attr( $code ); ?>" value="<?php echo esc_attr( $code ); ?>"<?php checked( in_array( $code, $comment_languages ) ); ?>>
-						<?php esc_html_e( $language['name'] ); ?>
+						<?php echo esc_html( $language['name'] ); ?>
 					</label>
 				</li>
 				<?php $i++; } ?>
