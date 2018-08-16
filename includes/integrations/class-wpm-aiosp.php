@@ -30,9 +30,18 @@ class WPM_AIOSP {
 		add_filter( 'wpm_option_aioseop_options_config', array( $this, 'set_posts_config' ) );
 		add_filter( 'delete_post_metadata', array( $this, 'save_old_fields' ), 10, 5 );
 		add_filter( 'add_post_metadata', array( $this, 'update_old_fields' ), 10, 4 );
+		add_filter( 'init', array( $this, 'translate_options' ) );
 
 		// AIOSP Sitemap do not support simple tag in sitemap like "xhtml:link" what needed in multilingual sitemap
 		//add_filter( 'aiosp_sitemap_xml_namespace', array( $this, 'add_namespace' ) );
+	}
+
+	/**
+	 * Translate options array on init.
+	 */
+	public function translate_options() {
+		global $aioseop_options;
+		$aioseop_options = wpm_translate_value( $aioseop_options );
 	}
 
 	/**
