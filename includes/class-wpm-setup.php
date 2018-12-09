@@ -518,7 +518,6 @@ class WPM_Setup {
 			'better-search'              => __NAMESPACE__ . '\Integrations\WPM_Better_Search',
 			'buddypress'                 => __NAMESPACE__ . '\Integrations\WPM_BuddyPress',
 			'contact-form-7'             => __NAMESPACE__ . '\Integrations\WPM_CF7',
-			'gutenberg'                  => __NAMESPACE__ . '\Integrations\WPM_Gutenberg',
 			'js_composer'                => __NAMESPACE__ . '\Integrations\WPM_VC',
 			'mailchimp-for-wp'           => __NAMESPACE__ . '\Integrations\WPM_MailChimp_For_WP',
 			'masterslider'               => __NAMESPACE__ . '\Integrations\WPM_Masterslider',
