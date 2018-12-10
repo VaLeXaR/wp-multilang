@@ -43,7 +43,6 @@ class WPM_Admin_Gutenberg {
 		add_action( 'admin_print_footer_scripts', 'wpm_admin_language_switcher_customizer' );
 		wp_add_inline_script( 'wp-api', "
 (function( $ ) {
-  $(function() {
 	$(window).on('pageshow',function(){
 		wp.api.init().then( function() {
 			if ($('#wpm-language-switcher').length === 0) {
@@ -68,7 +67,6 @@ class WPM_Admin_Gutenberg {
 		}
 		$(this).attr('href', href);
 	});
-  });
 })( jQuery );
 ");
 	}
