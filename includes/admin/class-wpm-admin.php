@@ -9,6 +9,8 @@
 
 namespace WPM\Includes\Admin;
 
+use WPM\Includes\Integrations\WPM_Admin_Gutenberg;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
@@ -54,6 +56,7 @@ class WPM_Admin {
 		new WPM_Admin_Widgets();
 		new WPM_Admin_Assets();
 		new WPM_Admin_Qtranslate();
+		new WPM_Admin_Gutenberg();
 	}
 
 	/**

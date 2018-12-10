@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @category Integrations
  * @author   Valentyn Riaboshtan
  */
-class WPM_Gutenberg {
+class WPM_Admin_Gutenberg {
 
 	/**
 	 * WPM_Gutenberg constructor.
@@ -32,7 +32,7 @@ class WPM_Gutenberg {
 		$screen       = get_current_screen();
 		$screen_id    = $screen ? $screen->id : '';
 
-		if ( null === $screen || ! $screen->post_type || ( $screen_id !== $screen->post_type ) || null === wpm_get_post_config( $screen->post_type ) || ! gutenberg_can_edit_post_type( $screen->post_type ) ) {
+		if ( null === $screen || ! $screen->post_type || ( $screen_id !== $screen->post_type ) || null === wpm_get_post_config( $screen->post_type ) || ( function_exists( 'use_block_editor_for_post_type' ) && ! use_block_editor_for_post_type( $screen->post_type ) ) ) {
 			return;
 		}
 
@@ -41,9 +41,9 @@ class WPM_Gutenberg {
 		}
 
 		add_action( 'admin_print_footer_scripts', 'wpm_admin_language_switcher_customizer' );
+		wp_enqueue_script( 'wp-api' );
 		wp_add_inline_script( 'wp-api', "
 (function( $ ) {
-  $(function() {
 	$(window).on('pageshow',function(){
 		wp.api.init().then( function() {
 			if ($('#wpm-language-switcher').length === 0) {
@@ -54,22 +54,16 @@ class WPM_Gutenberg {
 	});
 	
 	$(document).on('click', '#wpm-language-switcher .lang-dropdown a', function(){
-		var location = String(document.location);
 		var lang = $(this).data('lang');
-		var href = '';
-		var query = location.split('?');
-		var delimiter = '?';
-		if (query[1]) {
-			delimiter = '&';
-		}
-		if (query[1] && (query[1].search(/edit_lang=/i) !== -1)) {
-			href = location.replace(/edit_lang=[a-z]{2,4}/i, 'edit_lang=' + lang);
+		var url = document.location.origin + document.location.pathname;
+		var query = document.location.search;
+		if (query.search(/edit_lang=/i) !== -1) {
+			href = url + query.replace(/edit_lang=[a-z]{2,4}/i, 'edit_lang=' + lang) + document.location.hash;
 		} else {
-			href = location + delimiter + 'edit_lang=' + lang;
+			href = url + query + '&edit_lang=' + lang + document.location.hash;
 		}
 		$(this).attr('href', href);
 	});
-  });
 })( jQuery );
 ");
 	}
