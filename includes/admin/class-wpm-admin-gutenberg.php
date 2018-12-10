@@ -54,18 +54,17 @@ class WPM_Admin_Gutenberg {
 	});
 	
 	$(document).on('click', '#wpm-language-switcher .lang-dropdown a', function(){
-		var location = String(document.location);
 		var lang = $(this).data('lang');
-		var href = '';
-		var query = location.split('?');
+		var url = document.location.origin + document.location.pathname;
+		var query = document.location.search;
 		var delimiter = '?';
-		if (query[1]) {
+		if (query) {
 			delimiter = '&';
 		}
-		if (query[1] && (query[1].search(/edit_lang=/i) !== -1)) {
-			href = location.replace(/edit_lang=[a-z]{2,4}/i, 'edit_lang=' + lang);
+		if (query && (query.search(/edit_lang=/i) !== -1)) {
+			href = url + query.replace(/edit_lang=[a-z]{2,4}/i, 'edit_lang=' + lang) + document.location.hash;
 		} else {
-			href = location + delimiter + 'edit_lang=' + lang;
+			href = url + delimiter + 'edit_lang=' + lang + document.location.hash;
 		}
 		$(this).attr('href', href);
 	});
