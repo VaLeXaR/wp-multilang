@@ -32,7 +32,7 @@ class WPM_Admin_Gutenberg {
 		$screen       = get_current_screen();
 		$screen_id    = $screen ? $screen->id : '';
 
-		if ( null === $screen || ! $screen->post_type || ( $screen_id !== $screen->post_type ) || null === wpm_get_post_config( $screen->post_type ) ) {
+		if ( null === $screen || ! $screen->post_type || ( $screen_id !== $screen->post_type ) || null === wpm_get_post_config( $screen->post_type ) || ! function_exists( 'use_block_editor_for_post_type' ) || ! use_block_editor_for_post_type( $screen->post_type ) ) {
 			return;
 		}
 
@@ -41,6 +41,7 @@ class WPM_Admin_Gutenberg {
 		}
 
 		add_action( 'admin_print_footer_scripts', 'wpm_admin_language_switcher_customizer' );
+		wp_enqueue_script( 'wp-api' );
 		wp_add_inline_script( 'wp-api', "
 (function( $ ) {
 	$(window).on('pageshow',function(){
