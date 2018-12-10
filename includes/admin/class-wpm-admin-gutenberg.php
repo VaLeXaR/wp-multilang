@@ -1,20 +1,18 @@
 <?php
 /**
  * Class for capability with Gutenberg editor
+ *
+ * @author   Valentyn Riaboshtan
+ * @category Admin
+ * @package  WPM/Includes/Admin
  */
 
-namespace WPM\Includes\Integrations;
+namespace WPM\Includes\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Class WPM_Gutenberg
- * @package  WPM/Includes/Integrations
- * @category Integrations
- * @author   Valentyn Riaboshtan
- */
 class WPM_Admin_Gutenberg {
 
 	/**

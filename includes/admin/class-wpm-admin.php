@@ -9,8 +9,6 @@
 
 namespace WPM\Includes\Admin;
 
-use WPM\Includes\Integrations\WPM_Admin_Gutenberg;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
