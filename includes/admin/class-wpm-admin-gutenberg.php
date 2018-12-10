@@ -56,14 +56,10 @@ class WPM_Admin_Gutenberg {
 		var lang = $(this).data('lang');
 		var url = document.location.origin + document.location.pathname;
 		var query = document.location.search;
-		var delimiter = '?';
-		if (query) {
-			delimiter = '&';
-		}
 		if (query.search(/edit_lang=/i) !== -1) {
 			href = url + query.replace(/edit_lang=[a-z]{2,4}/i, 'edit_lang=' + lang) + document.location.hash;
 		} else {
-			href = url + query + delimiter + 'edit_lang=' + lang + document.location.hash;
+			href = url + query + '&edit_lang=' + lang + document.location.hash;
 		}
 		$(this).attr('href', href);
 	});
