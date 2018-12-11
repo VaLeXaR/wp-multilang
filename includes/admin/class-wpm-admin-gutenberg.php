@@ -39,7 +39,6 @@ class WPM_Admin_Gutenberg {
 		}
 
 		add_action( 'admin_print_footer_scripts', 'wpm_admin_language_switcher_customizer' );
-		wp_enqueue_script( 'wp-api' );
 		wp_add_inline_script( 'wp-api', "
 (function( $ ) {
 	$(window).on('pageshow',function(){
