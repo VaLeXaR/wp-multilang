@@ -135,7 +135,12 @@ function wpm_translate_string( $string, $language = '' ) {
  */
 function wpm_translate_value( $value, $language = '' ) {
 	if ( is_array( $value ) ) {
-		return array_map( 'wpm_translate_value', $value );
+		$result = array();
+		foreach ( $value as $k => $item ) {
+			$result[ $k ] = wpm_translate_value( $item, $language );
+		}
+
+		return $result;
 	}
 
 	return wpm_translate_string( $value, $language );
