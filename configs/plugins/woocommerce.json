@@ -2,6 +2,7 @@
   "post_types": {
     "product": {},
     "product_variation": {},
+    "shop_order": {},
     "shop_coupon": {
       "post_title": null,
       "post_content": null
