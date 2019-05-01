@@ -147,6 +147,16 @@ function wpm_translate_value( $value, $language = '' ) {
 }
 
 /**
+ * Decode only wpm related tags <!--:lang--> or <!--:-->
+ *
+ * @param $string
+ *
+ * @return string
+ */
+function wpm_string_decode_translation_delimiters ( $string ) {
+    return preg_replace( '#&lt;!--(:(?:[a-z-]+)?)--&gt;#im', '<!--$1-->', $string );
+}
+/**
  * Transform multilingual string to multilingual array
  *
  * @param $string
@@ -159,7 +169,7 @@ function wpm_string_to_ml_array( $string ) {
 		return $string;
 	}
 
-	$string = htmlspecialchars_decode( $string );
+	$string = wpm_string_decode_translation_delimiters( $string );
 	$blocks = preg_split( '#(<!--:[a-z-]+-->|<!--:-->|\[:[a-z-]+\]|\[:\]|\{:[a-z-]+\}|\{:\})#im', $string, - 1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
 
 	if ( empty( $blocks ) ) {
