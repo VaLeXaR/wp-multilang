@@ -562,8 +562,17 @@ function wpm_set_new_value( $old_value, $new_value, $config = array(), $lang = '
 	}
 
 	$old_value = wpm_value_to_ml_array( $old_value );
-	$value     = wpm_set_language_value( $old_value, $new_value, $config, $lang );
-	$value     = wpm_ml_value_to_string( $value );
+
+	if ( wpm_is_ml_array( $old_value ) ) {
+		foreach ($old_value as $key => $lang_value) {
+			if ( strpos($lang_value, '{"') || strpos($lang_value, ':{"') || strpos($lang_value, '""')  || strpos($lang_value, '":"') ) {
+				$old_value[ $key ] = wp_slash( $lang_value );
+			}
+		}
+	}
+
+	$value = wpm_set_language_value( $old_value, $new_value, $config, $lang );
+	$value = wpm_ml_value_to_string( $value );
 
 	return $value;
 }
