@@ -22,6 +22,8 @@
     "product_page_product_attributes"
   ],
   "options": {
+    "woocommerce_registration_privacy_policy_text": {},
+    "woocommerce_checkout_privacy_policy_text": {},
     "woocommerce_store_address": {},
     "woocommerce_store_address_2": {},
     "woocommerce_store_city": {},
