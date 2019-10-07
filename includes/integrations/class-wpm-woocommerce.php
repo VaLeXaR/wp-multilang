@@ -51,7 +51,6 @@ class WPM_WooCommerce {
 		add_filter( 'woocommerce_gateway_method_title', 'wpm_translate_string' );
 		add_filter( 'woocommerce_gateway_method_description', 'wpm_translate_string' );
 		add_filter( 'wpm_role_translator_capability_types', array( $this, 'add_capabilities_types' ) );
-		add_filter( 'wpm_taxonomies_config', array( $this, 'add_attribute_taxonomies' ) );
 		add_filter( 'woocommerce_attribute_label', 'wpm_translate_string' );
 		add_filter( 'woocommerce_attribute_taxonomies', array( $this, 'translate_attribute_taxonomies' ) );
 		add_action( 'admin_head', array( $this, 'set_translation_for_attribute_taxonomies' ) );
@@ -59,6 +58,10 @@ class WPM_WooCommerce {
 		add_action( 'admin_action_duplicate_product', array( $this, 'remove_filters' ), 9 );
 		add_filter( 'woocommerce_rest_prepare_product_object', array( $this, 'translate_rest_object' ), 10, 3 );
 		add_filter( 'woocommerce_rest_prepare_product_variation_object', array( $this, 'translate_rest_object' ), 10, 3 );
+
+		if ( is_admin() ) {
+			add_filter( 'wpm_taxonomies_config', array( $this, 'add_attribute_taxonomies' ) );
+		}
 	}
 
 
