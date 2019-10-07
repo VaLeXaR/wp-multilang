@@ -210,8 +210,10 @@ class WPM_Menus {
 						$was_current = true;
 						$new_item->classes[] = 'active-language';
 						$new_item->url       = '#';
+                        $new_item->current   = true;
 					} else {
 						$new_item->url = esc_url( wpm_translate_current_url( $code ) );
+                        $new_item->current   = false;
 					}
 
 					if ( ( ( 'flag' === $show_type ) || ( 'both' === $show_type ) ) && ( $language['flag'] ) ) {
