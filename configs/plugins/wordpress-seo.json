@@ -25,7 +25,14 @@
       "title-archive-wpseo" : {},
       "metadesc-archive-wpseo" : {},
       "title-search-wpseo" : {},
-      "title-404-wpseo" : {}
+      "title-404-wpseo" : {},
+      "breadcrumbs-home" : {},
+      "breadcrumbs-prefix" : {},
+      "breadcrumbs-archiveprefix" : {},
+      "breadcrumbs-searchprefix" : {},
+      "breadcrumbs-404crumb" : {},
+      "rssbefore" : {},
+      "rssafter" : {}
     },
     "wpseo_internallinks": {
       "breadcrumbs-home" : {},
