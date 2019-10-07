@@ -217,6 +217,10 @@ class WPM_Menus {
 					if ( ( ( 'flag' === $show_type ) || ( 'both' === $show_type ) ) && ( $language['flag'] ) ) {
 						$language_title = '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" alt="' . esc_attr( $language['name'] ) . '">';
 					}
+					
+					if ( 'both' === $show_type ) {
+                        $language_title .= ' ';
+                    }
 
 					if ( ( 'name' === $show_type ) || ( 'both' === $show_type ) ) {
 						$language_title .= '<span>' . esc_html( $language['name'] ) . '</span>';
