@@ -41,7 +41,7 @@ class WPM_Posts extends WPM_Object {
 		add_filter( 'the_post', 'wpm_translate_post', 5 );
 		add_filter( 'the_title', 'wpm_translate_string', 5 );
 		add_filter( 'the_content', 'wpm_translate_string', 5 );
-		add_filter( 'the_excerpt', 'wpm_translate_string', 5 );
+		add_filter( 'get_the_excerpt', 'wpm_translate_string', 5 );
 		add_filter( 'the_editor_content', 'wpm_translate_string', 5 );
 		add_action( 'parse_query', array( $this, 'filter_posts_by_language' ) );
 		add_filter( "get_{$this->object_type}_metadata", array( $this, 'get_meta_field' ), 5, 3 );
