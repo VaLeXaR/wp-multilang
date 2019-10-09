@@ -29,6 +29,8 @@ class WPM_WooCommerce {
 		add_filter( 'woocommerce_product_get_short_description', 'wpm_translate_string' );
 		add_filter( 'woocommerce_product_title', 'wpm_translate_string' );
 		add_filter( 'woocommerce_coupon_get_description', 'wpm_translate_string' );
+		add_filter( 'woocommerce_gateway_title', 'wpm_translate_string' );
+		add_filter( 'woocommerce_gateway_description', 'wpm_translate_string' );
 		add_filter( 'woocommerce_shortcode_products_query', array( $this, 'remove_filter' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_js_frontend' ) );
 		add_filter( 'woocommerce_cart_shipping_method_full_label', 'wpm_translate_string' );
