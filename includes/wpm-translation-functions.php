@@ -161,11 +161,15 @@ function wpm_string_to_ml_array( $string ) {
 	$string = htmlspecialchars_decode( $string );
 	$blocks = preg_split( '#\[:([a-z-]*)\]#im', $string, - 1, PREG_SPLIT_DELIM_CAPTURE );
 
-	$languages = wpm_get_lang_option();
-	$result = array_fill_keys( array_keys( $languages ), '' );
+	if ( empty( $blocks ) ) {
+		return $string;
+	}
 
-	$language = count( $blocks ) === 1 ? wpm_get_default_language() : '';
-	foreach( $blocks as $idx => $block ) {
+	$languages = wpm_get_lang_option();
+	$result    = array_fill_keys( array_keys( $languages ), '' );
+	$language  = count( $blocks ) === 1 ? wpm_get_default_language() : '';
+
+	foreach ( $blocks as $idx => $block ) {
 		// Every odd block contains the language of '[:language]'.
 		if ( $idx % 2 === 1 ) {
 			$language = $block;
@@ -469,12 +473,12 @@ function wpm_is_ml_string( $string ) {
 function wpm_is_ml_value( $value ) {
 
 	if ( is_array( $value ) && ! empty( $value ) ) {
-		$result = array();
 		foreach ( $value as $item ) {
 			if ( wpm_is_ml_value( $item ) ) {
 				return true;
 			}
 		}
+
 		return false;
 	}
 

@@ -204,6 +204,8 @@ class WPM_Menus {
 					$new_item->type                = 'language';
 					$new_item->menu_item_parent    = $item->menu_item_parent;
 					$new_item->parent_submenu_type = $item->parent_submenu_type;
+					$new_item->xfn                 = '';
+					$new_item->target              = '';
 					$language_title                = '';
 
 					if ( $lang == $code ) {
@@ -219,7 +221,7 @@ class WPM_Menus {
 					if ( ( ( 'flag' === $show_type ) || ( 'both' === $show_type ) ) && ( $language['flag'] ) ) {
 						$language_title = '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" alt="' . esc_attr( $language['name'] ) . '">';
 					}
-					
+
 					if ( 'both' === $show_type ) {
                         $language_title .= ' ';
                     }

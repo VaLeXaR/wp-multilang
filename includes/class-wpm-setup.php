@@ -532,6 +532,7 @@ class WPM_Setup {
 		) );
 
 		$active_plugins = wp_cache_get( 'active_plugins', 'wpm' );
+
 		if ( is_array( $active_plugins ) ) {
 			foreach ( $active_plugins as $plugin ) {
 				if ( ! empty( $integrations[ $plugin ] ) ) {

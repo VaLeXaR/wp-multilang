@@ -18,6 +18,7 @@ class WPM_Shortcodes {
 	 */
 	public function __construct() {
 		add_shortcode( 'wpm_lang_switcher', array( $this, 'language_switcher' ) );
+		add_shortcode( 'wpm_translate', array( $this,'translate_via_shortcode' ));
 	}
 
 	/**
@@ -35,5 +36,22 @@ class WPM_Shortcodes {
 		), $atts );
 
 		return wpm_get_language_switcher( $atts['type'], $atts['show'] );
+	}
+
+	/**
+	 * Shorcode for using with uncompatible plugins
+	 *
+	 * @param array $atts
+	 * @param string $content
+	 *
+	 * @return string
+	 */
+
+	public function translate_via_shortcode( $atts, $content ) {
+		$atts = shortcode_atts( array(
+			'lang' => wpm_get_language()
+		), $atts );
+
+		return wpm_translate_string($content, $atts['lang']);
 	}
 }
