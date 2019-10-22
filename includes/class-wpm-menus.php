@@ -208,7 +208,7 @@ class WPM_Menus {
 					$new_item->target              = '';
 					$language_title                = '';
 
-					if ( $lang == $code ) {
+					if ( $lang === $code ) {
 						$was_current = true;
 						$new_item->classes[] = 'active-language';
 						$new_item->url       = '#';
@@ -222,10 +222,6 @@ class WPM_Menus {
 						$language_title = '<img src="' . esc_url( wpm_get_flag_url( $language['flag'] ) ) . '" alt="' . esc_attr( $language['name'] ) . '">';
 					}
 
-					if ( 'both' === $show_type ) {
-                        $language_title .= ' ';
-                    }
-
 					if ( ( 'name' === $show_type ) || ( 'both' === $show_type ) ) {
 						$language_title .= '<span>' . esc_html( $language['name'] ) . '</span>';
 					}
@@ -233,7 +229,7 @@ class WPM_Menus {
 					$new_item->title = $language_title;
 
 					if ( 'dropdown' === $item_type ) {
-						if ( $lang == $code ) {
+						if ( $lang === $code ) {
 							$new_item->classes[] = 'menu-item-has-children';
 						} else {
 							$new_item->menu_item_parent = 'language-' . $lang;
@@ -241,11 +237,11 @@ class WPM_Menus {
 					}
 
 					if ( 'single' === $item_type ) {
-						if ( 1 == $i ) {
+						if ( 1 === $i ) {
 							$first_lang = $new_item;
 						}
 
-						if ( ( $i == $count_languages ) && ( $lang == $code ) && $first_lang ) {
+						if ( ( $i === $count_languages ) && ( $lang === $code ) && $first_lang ) {
 							$new_items[] = $first_lang;
 							break;
 						}

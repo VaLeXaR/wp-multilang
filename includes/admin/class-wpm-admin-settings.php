@@ -317,7 +317,7 @@ class WPM_Admin_Settings {
 								style="<?php echo esc_attr( $value['css'] ); ?>"
 								class="<?php echo esc_attr( $value['class'] ); ?>"
 								<?php echo implode( ' ', $custom_attributes ); ?>
-								<?php echo ( 'multiselect' == $value['type'] ) ? 'multiple="multiple"' : ''; ?>
+								<?php echo ( 'multiselect' === $value['type'] ) ? 'multiple="multiple"' : ''; ?>
 								>
 								<?php
 									foreach ( $value['options'] as $key => $val ) {
@@ -325,7 +325,7 @@ class WPM_Admin_Settings {
 										<option value="<?php echo esc_attr( $key ); ?>" <?php
 
 											if ( is_array( $option_value ) ) {
-												selected( in_array( $key, $option_value ), true );
+												selected( in_array( $key, $option_value, true ), true );
 											} else {
 												selected( $option_value, $key );
 											}
@@ -388,17 +388,17 @@ class WPM_Admin_Settings {
 					if ( ! isset( $value['show_if_checked'] ) ) {
 						$value['show_if_checked'] = false;
 					}
-					if ( 'yes' == $value['hide_if_checked'] || 'yes' == $value['show_if_checked'] ) {
+					if ( 'yes' === $value['hide_if_checked'] || 'yes' === $value['show_if_checked'] ) {
 						$visibility_class[] = 'hidden_option';
 					}
-					if ( 'option' == $value['hide_if_checked'] ) {
+					if ( 'option' === $value['hide_if_checked'] ) {
 						$visibility_class[] = 'hide_options_if_checked';
 					}
-					if ( 'option' == $value['show_if_checked'] ) {
+					if ( 'option' === $value['show_if_checked'] ) {
 						$visibility_class[] = 'show_options_if_checked';
 					}
 
-					if ( ! isset( $value['checkboxgroup'] ) || 'start' == $value['checkboxgroup'] ) {
+					if ( ! isset( $value['checkboxgroup'] ) || 'start' === $value['checkboxgroup'] ) {
 						?>
 							<tr valign="top" class="<?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
 								<th scope="row" class="titledesc"><?php echo esc_html( $value['title'] ) ?></th>
@@ -431,7 +431,7 @@ class WPM_Admin_Settings {
 						</label> <?php echo $tooltip_html; ?>
 					<?php
 
-					if ( ! isset( $value['checkboxgroup'] ) || 'end' == $value['checkboxgroup'] ) {
+					if ( ! isset( $value['checkboxgroup'] ) || 'end' === $value['checkboxgroup'] ) {
 									?>
 									</fieldset>
 								</td>
@@ -475,13 +475,13 @@ class WPM_Admin_Settings {
 
 		if ( $description && in_array( $value['type'], array( 'textarea', 'radio' ) ) ) {
 			$description = '<p style="margin-top:0">' . wp_kses_post( $description ) . '</p>';
-		} elseif ( $description && in_array( $value['type'], array( 'checkbox' ) ) ) {
+		} elseif ( $description && $value['type'] === 'checkbox' ) {
 			$description = wp_kses_post( $description );
 		} elseif ( $description ) {
 			$description = '<span class="description">' . wp_kses_post( $description ) . '</span>';
 		}
 
-		if ( $tooltip_html && in_array( $value['type'], array( 'checkbox' ) ) ) {
+		if ( $tooltip_html && $value['type'] === 'checkbox' ) {
 			$tooltip_html = '<p class="description">' . $tooltip_html . '</p>';
 		} elseif ( $tooltip_html ) {
 			$tooltip_html = wpm_help_tip( $tooltip_html );
@@ -521,7 +521,7 @@ class WPM_Admin_Settings {
 			}
 
 			// Get posted value.
-			if ( strstr( $option['id'], '[' ) ) {
+			if ( strpos($option['id'], '[') !== false ) {
 				parse_str( $option['id'], $option_name_array );
 				$option_name  = current( array_keys( $option_name_array ) );
 				$setting_name = key( $option_name_array[ $option_name ] );

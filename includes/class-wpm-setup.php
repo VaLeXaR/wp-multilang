@@ -463,7 +463,7 @@ class WPM_Setup {
 		if ( ! $this->config ) {
 			if ( ! $config = wp_cache_get( 'config', 'wpm' ) ) {
 				WPM_Config::load_config_run();
-				$config = wp_cache_get( 'config', 'wpm' );
+				$config = WPM_Config::$config;
 			}
 
 			$this->config = $config;

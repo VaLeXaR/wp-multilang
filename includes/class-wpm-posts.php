@@ -86,10 +86,8 @@ class WPM_Posts extends WPM_Object {
 
 		if ( isset( $query->query_vars['post_type'] ) && ! empty( $query->query_vars['post_type'] ) ) {
 			$post_type = $query->query_vars['post_type'];
-			if ( is_string( $post_type ) ) {
-				if ( null === wpm_get_post_config( $post_type ) ) {
-					return $query;
-				}
+			if ( is_string( $post_type ) && null === wpm_get_post_config( $post_type ) ) {
+				return $query;
 			}
 		}
 

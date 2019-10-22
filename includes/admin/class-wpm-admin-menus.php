@@ -24,11 +24,7 @@ class WPM_Admin_Menus {
 
 		// Add endpoints custom URLs in Appearance > Menus > Pages.
 		add_action( 'admin_head-nav-menus.php', array( $this, 'add_nav_menu_meta_boxes' ) );
-
-		if ( ! has_action( 'wp_nav_menu_item_custom_fields' ) ) {
-			add_filter( 'wp_edit_nav_menu_walker', array( $this, 'filter_walker' ) );
-		}
-
+		add_filter( 'wp_edit_nav_menu_walker', array( $this, 'filter_walker' ) );
 		add_action( 'wp_nav_menu_item_custom_fields', array( $this, 'menu_item_languages_setting' ), 5, 2 );
 		add_action( 'wp_update_nav_menu_item', array( $this, 'update_nav_menu_item' ), 10, 2 );
 	}
@@ -41,10 +37,17 @@ class WPM_Admin_Menus {
 	 * only injecting some HTMLs.
 	 *
 	 * @wp_hook filter wp_edit_nav_menu_walker
+	 *
+	 * @param $class_name
+	 *
 	 * @return  string Walker class name
 	 */
-	public static function filter_walker() {
-		return 'WPM\Includes\Libraries\WPM_Walker_Nav_Menu_Edit';
+	public static function filter_walker( $class_name ) {
+		if ( ! has_action( 'wp_nav_menu_item_custom_fields') ) {
+			return 'WPM\Includes\Libraries\WPM_Walker_Nav_Menu_Edit';
+		}
+
+		return $class_name;
 	}
 
 	/**

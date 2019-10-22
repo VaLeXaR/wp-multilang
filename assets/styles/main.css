@@ -45,4 +45,8 @@
   .switcher-dropdown .item-language-main > span:hover {
     cursor: pointer; }
 
+.wpm-languages.menu-item > a img {
+  display: inline-block;
+  margin-right: 5px; }
+
 /*# sourceMappingURL=main.css.map */
