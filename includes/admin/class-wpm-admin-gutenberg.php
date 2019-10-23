@@ -19,7 +19,7 @@ class WPM_Admin_Gutenberg {
 	 * WPM_Gutenberg constructor.
 	 */
 	public function __construct() {
-		add_action( 'admin_enqueue_scripts', array( $this, 'add_language_switcher' ) );
+		add_action( 'enqueue_block_editor_assets', array( $this, 'add_language_switcher' ) );
 	}
 
 
@@ -38,33 +38,31 @@ class WPM_Admin_Gutenberg {
 			return;
 		}
 
-		add_action( 'admin_print_footer_scripts', 'wpm_admin_language_switcher_customizer' );
-		add_action( 'admin_print_footer_scripts', function(){
-			?>
-			<script type="text/javascript">
-				(function( $ ) {
-					$(window).on('pageshow',function(){
-						if ($('#wpm-language-switcher').length === 0) {
-							var language_switcher = wp.template( 'wpm-ls-customizer' );
-							$('.edit-post-header-toolbar').prepend(language_switcher);
-						}
-					});
+		$script = "
+			(function( $ ) {
+                $(window).on('pageshow',function(){
+                    if ($('#wpm-language-switcher').length === 0) {
+                        var language_switcher = wp.template( 'wpm-ls-customizer' );
+                        $('.edit-post-header-toolbar').prepend(language_switcher);
+                    }
+                });
 
-					$(document).on('click', '#wpm-language-switcher .lang-dropdown a', function(){
-						var lang = $(this).data('lang');
-						var url = document.location.origin + document.location.pathname;
-						var query = document.location.search;
-						var href = '';
-						if (query.search(/edit_lang=/i) !== -1) {
-							href = url + query.replace(/edit_lang=[a-z]{2,4}/i, 'edit_lang=' + lang) + document.location.hash;
-						} else {
-							href = url + query + '&edit_lang=' + lang + document.location.hash;
-						}
-						$(this).attr('href', href);
-					});
-				})( jQuery );
-			</script>
-			<?php
-		} );
+				$(document).on('click', '#wpm-language-switcher .lang-dropdown a', function(){
+					var lang = $(this).data('lang');
+					var url = document.location.origin + document.location.pathname;
+					var query = document.location.search;
+					var href = '';
+					if (query.search(/edit_lang=/i) !== -1) {
+						href = url + query.replace(/edit_lang=[a-z]{2,4}/i, 'edit_lang=' + lang) + document.location.hash;
+					} else {
+						href = url + query + '&edit_lang=' + lang + document.location.hash;
+					}
+					$(this).attr('href', href);
+				});
+			})( jQuery );
+		";
+
+		wp_add_inline_script( 'wp-edit-post', $script );
+		add_action( 'admin_footer', 'wpm_admin_language_switcher_customizer' );
 	}
 }
