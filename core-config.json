@@ -2,6 +2,7 @@
   "post_types": {
     "page": {},
     "post": {},
+    "wp_block": {},
     "attachment": {},
     "nav_menu_item": {
       "attr_title": {},

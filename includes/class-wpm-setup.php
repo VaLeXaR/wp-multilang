@@ -134,7 +134,7 @@ class WPM_Setup {
 	 *
 	 * @return array|string
 	 */
-	static function get_option( $key, $default = '' ) {
+	public static function get_option( $key, $default = '' ) {
 		if ( ! isset( self::$options[ $key ] ) ) {
 			self::$options[ $key ] = get_option( 'wpm_' . $key, $default );
 		}
@@ -148,7 +148,7 @@ class WPM_Setup {
 	 * @param string $key
 	 * @param $data
 	 */
-	static function set_option( $key, $data ) {
+	public static function set_option( $key, $data ) {
 		self::$options[ $key ] = $data;
 	}
 
@@ -227,7 +227,9 @@ class WPM_Setup {
 			$options   = self::get_option( 'languages', array() );
 			$languages = array();
 
-			if ( version_compare( self::get_option( 'version' ), '2.0.0', '<' ) ) {
+			if ( version_compare( self::get_option( 'version' ),
+				'2.0.0',
+				'<' ) ) {
 				return array();
 			}
 

@@ -27,6 +27,7 @@ class WPM_Admin {
 		add_action( 'admin_init', array( $this, 'set_edit_lang' ) );
 		add_action( 'admin_footer', 'wpm_print_js', 25 );
 		add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 1 );
+		add_filter( 'wp_prepare_attachment_for_js', 'wpm_translate_value' );
 	}
 
 	/**
@@ -40,8 +41,6 @@ class WPM_Admin {
 	 * Include any classes we need within admin.
 	 */
 	public function includes() {
-		include_once __DIR__ . '/wpm-admin-functions.php';
-
 		new WPM_Admin_Menus();
 		new WPM_Admin_Edit_Menus();
 		new WPM_Admin_Customizer();
@@ -54,7 +53,6 @@ class WPM_Admin {
 		new WPM_Admin_Widgets();
 		new WPM_Admin_Assets();
 		new WPM_Admin_Qtranslate();
-		new WPM_Admin_Gutenberg();
 	}
 
 	/**
@@ -79,10 +77,11 @@ class WPM_Admin {
 		if ( ! current_user_can( 'manage_translations' ) ) {
 			return $footer_text;
 		}
+
 		$current_screen = get_current_screen();
 
 		// Check to make sure we're on a WP Multilang settings page.
-		if ( ! empty( $current_screen ) && ( 'settings_page_wpm-settings' === $current_screen->id ) ) {
+		if ( $current_screen !== null && ( 'settings_page_wpm-settings' === $current_screen->id ) ) {
 			// Change the footer text
 			if ( ! get_option( 'wpm_admin_footer_text_rated' ) ) {
 				$footer_text = sprintf(
