@@ -49,6 +49,7 @@ class WPM_Admin_Settings {
 			$settings[] = new Settings\WPM_Settings_General();
 			$settings[] = new Settings\WPM_Settings_Languages();
 			$settings[] = new Settings\WPM_Settings_Additional();
+			$settings[] = new Settings\WPM_Settings_Donate();
 
 			self::$settings = apply_filters( 'wpm_get_settings_pages', $settings );
 		}

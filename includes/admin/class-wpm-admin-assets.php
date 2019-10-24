@@ -74,7 +74,7 @@ class WPM_Admin_Assets {
 		$script = "
 			(function( $ ) {
 			  $(function () {
-				  $(document).on('ready', function(){
+				  $(document).ready(function(){
 					$('form').each(function(){
 				      var form = $(this);
 				      var input = $('<input type=\"hidden\" id=\"lang\" name=\"edit_lang\" value=\"" . wpm_get_language() . "\">');
@@ -82,6 +82,15 @@ class WPM_Admin_Assets {
 				        form.append(input);
 				      }
 				    });
+
+				    wp.data.subscribe(function () {
+					  var isSavingPost = wp.data.select('core/editor').isSavingPost();
+					  var isAutosavingPost = wp.data.select('core/editor').isAutosavingPost();
+					
+					  if (isSavingPost && !isAutosavingPost) {
+					    console.log(isSavingPost, isAutosavingPost);					
+					  }
+					})
 				  });
 			  });
 			})( jQuery );

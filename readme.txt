@@ -1,7 +1,7 @@
 === WP Multilang ===
 
 Contributors: valexar
-Donate link: https://www.liqpay.ua/en/checkout/card/valexar
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EKM42LUA5CVZ4&source=url
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
 Tested up to: 5.0
