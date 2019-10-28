@@ -36,6 +36,7 @@ class WPM_Posts extends WPM_Object {
 		add_filter( 'get_pages', array( $this, 'translate_posts' ), 5 );
 		add_filter( 'posts_results', array( $this, 'translate_posts' ), 5 );
 		add_filter( 'post_title', 'wpm_translate_string', 5 );
+		add_filter( 'single_post_title', 'wpm_translate_string', 5 );
 		add_filter( 'post_excerpt', 'wpm_translate_value', 5 );
 		add_filter( 'post_content', 'wpm_translate_value', 5 );
 		add_filter( 'the_post', 'wpm_translate_post', 5 );
@@ -85,10 +86,8 @@ class WPM_Posts extends WPM_Object {
 
 		if ( isset( $query->query_vars['post_type'] ) && ! empty( $query->query_vars['post_type'] ) ) {
 			$post_type = $query->query_vars['post_type'];
-			if ( is_string( $post_type ) ) {
-				if ( null === wpm_get_post_config( $post_type ) ) {
-					return $query;
-				}
+			if ( is_string( $post_type ) && null === wpm_get_post_config( $post_type ) ) {
+				return $query;
 			}
 		}
 

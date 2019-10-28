@@ -30,7 +30,7 @@ var wpm_translator = {
       return text;
     }
 
-    var split_regex = /(<!--:[a-z-]+-->|<!--:-->|\[:[a-z-]+\]|\[:\]|\{:[a-z-]+\}|\{:\})/gi;
+    var split_regex = /(\[:[a-z-]+\]|\[:\])/gi;
     var blocks = text.xsplit(split_regex);
 
     if (typeof blocks !== 'object' || !Object.keys(blocks).length)
@@ -43,48 +43,19 @@ var wpm_translator = {
     var results = {},
       languages = wpm_translator_params.languages;
 
-
     languages.forEach(function(item){
       results[item] = '';
     });
 
-    var clang_regex = /<!--:([a-z-]+)-->/gi;
-    var blang_regex = /\[:([a-z-]+)\]/gi;
-    var slang_regex = /\{:([a-z-]+)\}/gi;
-    var lang = false;
-    var matches;
-    for (var i = 0; i < blocks.length; ++i) {
-      var b = blocks[i];
-      if (!b.length) continue;
-      matches = clang_regex.exec(b);
-      clang_regex.lastIndex = 0;
-      if (matches !== null) {
-        lang = matches[1];
-        continue;
+    var lang = blocks.length === 1 ? wpm_translator_params.default_language : '';
+
+    blocks.forEach(function(block, index) {
+      if (index % 2 === 1) {
+        lang = block;
+      } else if (!!results[lang]) {
+        results[lang] += block.trim();
       }
-      matches = blang_regex.exec(b);
-      blang_regex.lastIndex = 0;
-      if (matches !== null) {
-        lang = matches[1];
-        continue;
-      }
-      matches = slang_regex.exec(b);
-      slang_regex.lastIndex = 0;
-      if (matches !== null) {
-        lang = matches[1];
-        continue;
-      }
-      if (b === '<!--:-->' || b === '[:]' || b === '{:}') {
-        lang = false;
-        continue;
-      }
-      if (lang) {
-        if (typeof(results[lang]) !== 'undefined') {
-          results[lang] += b;
-        }
-        lang = false;
-      }
-    }
+    });
 
     return results;
   },
@@ -101,11 +72,11 @@ var wpm_translator = {
     var languages = wpm_translator_params.languages;
 
     if (language) {
-      if (typeof(languages[language]) !== 'undefined') {
+      if (!!languages[language]) {
         return strings[language];
-      } else {
-        return '';
       }
+
+      return '';
     }
 
     language = wpm_translator_params.language;
@@ -114,6 +85,10 @@ var wpm_translator = {
       return strings[wpm_translator_params.default_language];
     }
 
-    return strings[language];
+    if (!!strings[language]) {
+      return strings[language];
+    }
+
+    return '';
   }
 };
