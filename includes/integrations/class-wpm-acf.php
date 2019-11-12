@@ -144,7 +144,8 @@ class WPM_Acf {
 		$acf_field_config = apply_filters( "wpm_acf_{$info['type']}_config", null, $value, $post_id, $field );
 		$acf_field_config = apply_filters( "wpm_acf_{$field['type']}_config", $acf_field_config, $value, $post_id, $field );
 		$acf_field_config = apply_filters( "wpm_acf_name_{$field['name']}_config", $acf_field_config, $value, $post_id, $field );
-
+		$acf_field_config = apply_filters( "wpm_acf_name_{$field['_name']}_config", $acf_field_config, $value, $post_id, $field );
+		
 		if ( null === $acf_field_config ) {
 			return $value;
 		}
