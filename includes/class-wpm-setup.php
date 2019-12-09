@@ -531,6 +531,7 @@ class WPM_Setup {
 			'woocommerce'                => __NAMESPACE__ . '\Integrations\WPM_WooCommerce',
 			'wordpress-seo'              => __NAMESPACE__ . '\Integrations\WPM_Yoast_Seo',
 			'seo-by-rank-math'           => __NAMESPACE__ . '\Integrations\WPM_Rank_Math',
+			'elementor'					 => __NAMESPACE__ . '\Integrations\WPM_Elementor',
 		) );
 
 		$active_plugins = wp_cache_get( 'active_plugins', 'wpm' );
