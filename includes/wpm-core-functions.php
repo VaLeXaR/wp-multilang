@@ -222,7 +222,7 @@ function wpm_get_orig_home_url() {
  * @return string
  */
 function wpm_escaping_text( $string ) {
-	if ( 'GET' === $_SERVER['REQUEST_METHOD'] ) {
+	if ( 'GET' === $_SERVER['REQUEST_METHOD'] || ! is_admin() ) {
 		$string = wpm_translate_string( $string );
 	}
 
@@ -237,7 +237,7 @@ function wpm_escaping_text( $string ) {
  * @return string
  */
 function wpm_attribute_escape( $string ) {
-	if ( 'GET' === $_SERVER['REQUEST_METHOD'] ) {
+	if ( 'GET' === $_SERVER['REQUEST_METHOD'] || ! is_admin() ) {
 		$string = wp_specialchars_decode( $string, ENT_QUOTES );
 
 		if ( isJSON( $string ) ) {
