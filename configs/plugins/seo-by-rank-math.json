@@ -11,7 +11,27 @@
     "rank_math_facebook_title": {},
     "rank_math_facebook_description": {},
     "rank_math_twitter_title": {},
-    "rank_math_twitter_description": {}
+    "rank_math_twitter_description": {},
+    "rank_math_snippet_name": {},
+    "rank_math_snippet_desc": {},
+    "rank_math_snippet_article_type": {},
+    "rank_math_facebook_title": {},
+    "rank_math_facebook_description": {},
+    "rank_math_facebook_enable_image_overlay": {},
+    "rank_math_facebook_image_id": {},
+    "rank_math_facebook_image": {},
+    "rank_math_twitter_use_facebook": {},
+    "rank_math_twitter_card_type": {},
+    "rank_math_twitter_title": {},
+    "rank_math_twitter_description": {},
+    "rank_math_twitter_enable_image_overlay": {},
+    "rank_math_twitter_image_id": {},
+    "rank_math_twitter_image": {},
+    "rank_math_twitter_image_overlay": {},
+    "rank_math_canonical_url": {},
+    "rank_math_breadcrumb_title": {},
+    "redirection_header_code": {},
+    "redirection_url_to": {}
   },
   "admin_pages": [
     "toplevel_page_rank-math"
@@ -27,7 +47,7 @@
       "date_archive_title" : {},
       "date_archive_description" : {},
       "search_title" : {},
-      "404_title" : {},
+      "404_title" : {}
     },
     "rank-math-options-general": {
       "breadcrumbs_home_label" : {},
