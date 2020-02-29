@@ -179,6 +179,14 @@ class WPM_Posts extends WPM_Object {
 
 				if ( $post_id ) {
 					$old_value = get_post_field( $key, $post_id, 'edit' );
+
+					// Override "(Auto Draft)" new post default title with empty string.
+					if ( 'post_title' === $key ) {
+						$old_post_status = get_post_field( 'post_status', $post_id, 'edit' );
+						if ( 'auto-draft' === $old_post_status ) {
+							$old_value = '';
+						}
+					}
 				} else {
 					$old_value = '';
 				}
