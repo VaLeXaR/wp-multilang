@@ -147,3 +147,6 @@ Support translating from syntax qTranslate-X, WPGlobus etc.
 Compatible with REST-API.   
 Support transfer the required translation through option `lang` in the GET request to REST.   
 Has the ability to keep recording the target language through the transmission parameter `lang` in the request.
+
+## Uninstall tips
+- If you get 404s after uninstalling the plugin, try to regenerate the permalinks, from the `Settings` admin menu.
