@@ -47,6 +47,7 @@ class WPM_Posts extends WPM_Object {
 		add_action( 'parse_query', array( $this, 'filter_posts_by_language' ) );
 		add_filter( "get_{$this->object_type}_metadata", array( $this, 'get_meta_field' ), 5, 3 );
 		add_filter( "update_{$this->object_type}_metadata", array( $this, 'update_meta_field' ), 99, 5 );
+		add_filter( "update_{$this->object_type}_metadata_by_mid", array( $this, 'update_meta_field_by_mid' ), 99, 4 );
 		add_filter( "add_{$this->object_type}_metadata", array( $this, 'add_meta_field' ), 99, 5 );
 		add_action( "delete_{$this->object_type}_metadata", array( $this, 'delete_meta_field' ), 99, 3 );
 		add_action( 'wp', array( $this, 'translate_queried_object' ), 5 );
