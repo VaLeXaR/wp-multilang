@@ -121,6 +121,10 @@ class WPM_Acf {
 		if ( wpm_is_ml_value( $value ) ) {
 			return $value;
 		}
+		
+		if( $field['type'] == 'wysiwyg' || $field['type'] == 'text' || $field['type'] == 'textarea' ) {
+			return $value;
+		}
 
 		$info = acf_get_post_id_info( $post_id );
 
