@@ -122,7 +122,7 @@ class WPM_Acf {
 			return $value;
 		}
 		
-		if( $field['type'] == 'wysiwyg' || $field['type'] == 'text' || $field['type'] == 'textarea' ) {
+		if ( ( strpos($post_id, 'block') !== false ) &&  ( $field['type'] == 'wysiwyg' || $field['type'] == 'text' || $field['type'] == 'textarea' ) )  {
 			return $value;
 		}
 
