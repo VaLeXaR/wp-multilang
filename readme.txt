@@ -4,9 +4,9 @@ Contributors: valexar
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EKM42LUA5CVZ4&source=url
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
-Tested up to: 5.3
-Stable tag: 2.4.1
-Requires PHP: 5.6+
+Tested up to: 5.7
+Stable tag: 2.4.2
+Requires PHP: 7.0+
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -158,6 +158,9 @@ Compatible with REST-API.
 Support transfer the required translation through option `lang` in the GET request to REST.
 Has the ability to keep recording the target language through the transmission parameter `lang` in the request.
 
+## Uninstall tips
+- If you get 404s after uninstalling the plugin, try to regenerate the permalinks, from the `Settings` admin menu.
+
 == Migration from qTranslate-X ==
 
 1. Before installing/uninstalling, make database backup.
@@ -209,6 +212,23 @@ If you have opened several browser tabs for editing this post in different langu
 5. Post edit page
 
 == Changelog ==
+= 2.4.2 =
+- added translate support for shop_order (WooCommerce)
+- added support for ACF repeater field
+- added support for ACF image field
+- added Russian language (thanks @Balya)
+- added support for WordPress update_{$meta_type}_metadata_by_mid function for translating meta data
+- added integration for Elementor plugin
+- fix admin nav menu custom fields metabox not showing
+- fix translation of the "title" attribute in the shortcode of Contact Form 7
+- fix translation of "_post_name" tag of Contact Form 7
+- fix Rank Math custom fields getting duplicated on the translated posts
+- fix post title "Auto Draft" bug
+- fix display of alternate links when languages are selected in WP Dashboard
+- fix of wpseo_og:locale:alternate to be set properly
+- fix so flag width and height outputs properly on wpml langauge listing regarding SEO
+- fix so ACF Gutenberg Blocks render properly with wysiwyg, text and textarea fields
+- fix translate escaping text
 
 = 2.4.1 =
 - removed support old version of ACF lower 5.0
