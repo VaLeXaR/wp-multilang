@@ -6,7 +6,7 @@ Multilingual plugin for WordPress.
 
 **WP Multilang** is a multilingual plugin for WordPress.
 
-Translations of post types, taxonomies, meta fields, options, text fields in miltimedia files, menus, titles and text field in widgets.
+Translation for any post types, taxonomies, meta fields, options, text fields in miltimedia files, menus, titles and text fields in widgets.
 
 Features of the plugin WP Multilang:
 * 100% free.
@@ -14,7 +14,7 @@ Features of the plugin WP Multilang:
 * Compatible with REST.
 * Support configuration for translate multidimensional arrays in options, meta fields, post content.
 * Support multisite.
-* Support WordPress in sub-folder.
+* Support WordPress in a sub-folder.
 * Separate menu items, posts, terms, widgets, comments per language.
 * Many filters for dynamic applying translation settings.
 * No duplicate posts, terms, menus, widgets.
@@ -26,7 +26,7 @@ Features of the plugin WP Multilang:
 * Exist the role "Translator" for editing posts, terms. It can not publish or delete.
 * No limits by languages or by possibilities.
 
-**WP Multilang** compatible out of the box with the plugin:
+**WP Multilang** compatible out of the box with the plugins:
 * ACF, ACF Pro
 * WooCommerce
 * WooCommerce Customizer
@@ -48,19 +48,20 @@ Features of the plugin WP Multilang:
 * TablePress
 * Download Monitor (Redefine templates for links in your theme and translate link texts)
 * Better Search
+* Rank Math SEO (thanks for @pratikmts)
    
 Supports configuration via json.   
    
 Add in the root of your theme or plugin file `wpm-config.json` settings.
    
-Sample configurations can be viewed in a configuration file in the folder configs in the root plugin.   
+Sample configurations can be viewed in a configuration file in a folder configs in the root of the plugin.   
    
-Configuration is updated after switching threads off/on or update any plugins.   
+Configuration is updated after switching a theme off/on or after update any plugin.   
 
-The plugin has filters for dynamic application configuration for translate.   
+The plugin has filters for dynamic applying configuration for translate.   
 
-To disable translation set `null` into the desired configuration.
-For example, you must turn off translation for a post type `post`.
+For disabling translation set `null` into the desired configuration.
+For example, you should turn off translation for a post type `post`.
 There are two ways:   
 
 1. In json.
@@ -135,8 +136,14 @@ Example, add config for each item 'title' in custom post field array:
 For set translation uses the syntax:   
 `[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut[:]`
 
-Supports translating from syntax qTranslate, qTranslate-X, WPGlobus etc.
+Added shortcode for translate text in any place:
+`[wpm_translate][:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut[:][wpm_translate]`
+
+If You translate text in established language, add lang parameter:
+`[wpm_translate lang="de"][:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut[:][wpm_translate]`
+
+Support translating from syntax qTranslate-X, WPGlobus etc.
 
 Compatible with REST-API.   
-Supports transfer the required translation through option `lang` in the GET request to REST.   
+Support transfer the required translation through option `lang` in the GET request to REST.   
 Has the ability to keep recording the target language through the transmission parameter `lang` in the request.

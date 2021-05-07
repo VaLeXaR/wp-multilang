@@ -113,7 +113,7 @@ function wpm_get_language() {
 	if ( ( defined( 'REST_REQUEST' ) && ( 'GET' !== $_SERVER['REQUEST_METHOD'] || is_admin_url( $referrer ) ) ) || is_admin() ) {
 
 		$languages = wpm_get_languages();
-		$query     = $_GET;
+		$query     = $_REQUEST;
 
 		if ( wp_doing_ajax() ) {
 			if ( $referrer && ! is_front_ajax() ) {

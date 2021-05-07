@@ -109,10 +109,10 @@ function wpm_translate_string( $string, $language = '' ) {
 		return '';
 	}
 
-	$language         = wpm_get_language();
-	$default_language = wpm_get_default_language();
+	$language = wpm_get_language();
 
 	if ( isset( $strings[ $language ] ) && ( '' === $strings[ $language ] ) && get_option( 'wpm_show_untranslated_strings', 'yes' ) === 'yes' ) {
+		$default_language = wpm_get_default_language();
 		$default_text = apply_filters( 'wpm_untranslated_text', $strings[ $default_language ], $strings, $language );
 
 		return $default_text;
@@ -154,66 +154,31 @@ function wpm_translate_value( $value, $language = '' ) {
  * @return array|mixed|string
  */
 function wpm_string_to_ml_array( $string ) {
-
-	if ( ! is_string( $string ) || is_serialized_string( $string ) || isJSON( $string ) ) {
+	if ( ! is_string( $string ) || $string === '' || is_serialized_string( $string ) || isJSON( $string ) ) {
 		return $string;
 	}
 
 	$string = htmlspecialchars_decode( $string );
-	$blocks = preg_split( '#(<!--:[a-z-]+-->|<!--:-->|\[:[a-z-]+\]|\[:\]|\{:[a-z-]+\}|\{:\})#im', $string, - 1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
+	$blocks = preg_split( '#\[:([a-z-]*)\]#im', $string, - 1, PREG_SPLIT_DELIM_CAPTURE );
 
 	if ( empty( $blocks ) ) {
 		return $string;
 	}
 
-	if ( count( $blocks ) === 1 ) {
-		array_unshift( $blocks, '[:' . wpm_get_default_language() . ']' );
-	}
-
-	$result = array();
 	$languages = wpm_get_lang_option();
+	$result    = array_fill_keys( array_keys( $languages ), '' );
+	$language  = count( $blocks ) === 1 ? wpm_get_default_language() : '';
 
-	foreach ( $languages as $key => $language ) {
-		$result[ $key ] = '';
-	}
-
-	$language = '';
-	foreach ( $blocks as $block ) {
-
-		if ( preg_match( '#^<!--:([a-z-]+)-->$#ism', $block, $matches ) ) {
-			$language = $matches[1];
-			continue;
-
-		} elseif ( preg_match( '#^\[:([a-z-]+)\]$#ism', $block, $matches ) ) {
-			$language = $matches[1];
-			continue;
-
-		} elseif ( preg_match( '#^\{:([a-z-]+)\}$#ism', $block, $matches ) ) {
-			$language = $matches[1];
-			continue;
-		}
-
-		switch ( $block ) {
-			case '[:]':
-			case '{:}':
-			case '<!--:-->':
-				$language = '';
-				break;
-			default:
-				if ( $language ) {
-					if ( isset( $result[ $language ] ) ) {
-						$result[ $language ] .= $block;
-					}
-					$language = '';
-				}
+	foreach ( $blocks as $idx => $block ) {
+		// Every odd block contains the language of '[:language]'.
+		if ( $idx % 2 === 1 ) {
+			$language = $block;
+		} elseif ( isset( $result[ $language ] ) ) {
+			$result[ $language ] .= $block;
 		}
 	}
 
-	foreach ( $result as $code => $string ) {
-		$result[ $code ] = trim( $string );
-	}
-
-	return $result;
+	return array_map( 'trim', $result );
 }
 
 /**
@@ -225,12 +190,7 @@ function wpm_string_to_ml_array( $string ) {
  */
 function wpm_value_to_ml_array( $value ) {
 	if ( is_array( $value ) ) {
-		$result = array();
-		foreach ( $value as $k => $item ) {
-			$result[ $k ] = wpm_value_to_ml_array( $item );
-		}
-
-		return $result;
+		return array_map( 'wpm_value_to_ml_array', $value );
 	}
 
 	return wpm_string_to_ml_array( $value );
@@ -283,12 +243,7 @@ function wpm_ml_value_to_string( $value ) {
 			return wpm_ml_array_to_string( $value );
 		}
 
-		$result = array();
-		foreach ( $value as $key => $item ) {
-			$result[ $key ] = wpm_ml_value_to_string( $item );
-		}
-
-		return $result;
+		return array_map( 'wpm_ml_value_to_string', $value );
 	}
 
 	return $value;
@@ -340,10 +295,7 @@ function wpm_set_language_value( $localize_array, $value, $config = array(), $la
 				if ( isJSON( $value ) || is_serialized_string( $value ) ) {
 					$new_value  = $value;
 				} else {
-					$result = array();
-					foreach ( $languages as $lg => $language ) {
-						$result[ $lg ] = '';
-					}
+					$result = array_fill_keys( array_keys( $languages ), '' );
 					$result[ $lang ] = $value;
 					$new_value  = $result;
 				}
@@ -504,16 +456,11 @@ function wpm_is_ml_array( $array ) {
  * @return bool
  */
 function wpm_is_ml_string( $string ) {
-
 	if ( ! is_string( $string ) || is_serialized_string( $string ) || isJSON( $string ) ) {
 		return false;
 	}
 
-	if ( preg_match( '#(<!--:[a-z-]+-->|\[:[a-z-]+\]|\{:[a-z-]+\})#im', $string ) ) {
-		return true;
-	}
-
-	return false;
+	return preg_match( '#\[:[a-z-]+\]#im', $string );
 }
 
 /**
@@ -526,13 +473,10 @@ function wpm_is_ml_string( $string ) {
 function wpm_is_ml_value( $value ) {
 
 	if ( is_array( $value ) && ! empty( $value ) ) {
-		$result = array();
 		foreach ( $value as $item ) {
-			$result[] = wpm_is_ml_value( $item );
-		}
-
-		if ( in_array( true, $result, true ) ) {
-			return true;
+			if ( wpm_is_ml_value( $item ) ) {
+				return true;
+			}
 		}
 
 		return false;
@@ -562,8 +506,17 @@ function wpm_set_new_value( $old_value, $new_value, $config = array(), $lang = '
 	}
 
 	$old_value = wpm_value_to_ml_array( $old_value );
-	$value     = wpm_set_language_value( $old_value, $new_value, $config, $lang );
-	$value     = wpm_ml_value_to_string( $value );
+
+	if ( wpm_is_ml_array( $old_value ) ) {
+		foreach ($old_value as $key => $lang_value) {
+			if ( strpos($lang_value, '{"') || strpos($lang_value, ':{"') || strpos($lang_value, '""')  || strpos($lang_value, '":"') ) {
+				$old_value[ $key ] = wp_slash( $lang_value );
+			}
+		}
+	}
+
+	$value = wpm_set_language_value( $old_value, $new_value, $config, $lang );
+	$value = wpm_ml_value_to_string( $value );
 
 	return $value;
 }

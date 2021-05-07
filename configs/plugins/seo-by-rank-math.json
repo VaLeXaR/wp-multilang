@@ -1,0 +1,39 @@
+{
+  "post_fields": {
+    "rank_math_seo_score": {},
+    "rank_math_title": {},
+    "rank_math_description": {},
+    "rank_math_focus_keyword": {},
+    "rank_math_permalink": {},
+    "rank_math_primary_category": {},
+    "rank_math_robots": {},
+    "rank_math_rich_snippet": {},
+    "rank_math_facebook_title": {},
+    "rank_math_facebook_description": {},
+    "rank_math_twitter_title": {},
+    "rank_math_twitter_description": {}
+  },
+  "admin_pages": [
+    "toplevel_page_rank-math"
+  ],
+  "options": {
+    "rank-math-options-titles": {
+      "homepage_title" : {},
+      "homepage_description" : {},
+      "homepage_custom_robots" : {},
+      "author_archive_title" : {},
+      "author_archive_description" : {},
+      "author_robots" : {},
+      "date_archive_title" : {},
+      "date_archive_description" : {},
+      "search_title" : {},
+      "404_title" : {},
+    },
+    "rank-math-options-general": {
+      "breadcrumbs_home_label" : {},
+      "breadcrumbs_archive_format" : {},
+      "breadcrumbs_search_format" : {},
+      "breadcrumbs_404_label" : {}
+    }
+  }
+}

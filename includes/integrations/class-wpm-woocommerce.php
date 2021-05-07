@@ -23,14 +23,18 @@ class WPM_WooCommerce {
 	 * WPM_WooCommerce constructor.
 	 */
 	public function __construct() {
+		add_filter( 'woocommerce_format_content', 'wpm_translate_string' );
 		add_filter( 'woocommerce_product_get_name', 'wpm_translate_string' );
 		add_filter( 'woocommerce_product_get_description', 'wpm_translate_string' );
 		add_filter( 'woocommerce_product_get_short_description', 'wpm_translate_string' );
 		add_filter( 'woocommerce_product_title', 'wpm_translate_string' );
 		add_filter( 'woocommerce_coupon_get_description', 'wpm_translate_string' );
+		add_filter( 'woocommerce_gateway_title', 'wpm_translate_string' );
+		add_filter( 'woocommerce_gateway_description', 'wpm_translate_string' );
 		add_filter( 'woocommerce_shortcode_products_query', array( $this, 'remove_filter' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_js_frontend' ) );
 		add_filter( 'woocommerce_cart_shipping_method_full_label', 'wpm_translate_string' );
+		add_filter( 'woocommerce_breadcrumb_defaults', array( $this, 'breadcrumbs_defaults_home_page_on_front' ), 10, 1 );
 		add_filter( 'woocommerce_shipping_instance_form_fields_flat_rate', 'wpm_translate_value' );
 		add_filter( 'woocommerce_shipping_instance_form_fields_free_shipping', 'wpm_translate_value' );
 		add_filter( 'woocommerce_shipping_instance_form_fields_legacy_flat_rate', 'wpm_translate_value' );
@@ -51,7 +55,6 @@ class WPM_WooCommerce {
 		add_filter( 'woocommerce_gateway_method_title', 'wpm_translate_string' );
 		add_filter( 'woocommerce_gateway_method_description', 'wpm_translate_string' );
 		add_filter( 'wpm_role_translator_capability_types', array( $this, 'add_capabilities_types' ) );
-		add_filter( 'wpm_taxonomies_config', array( $this, 'add_attribute_taxonomies' ) );
 		add_filter( 'woocommerce_attribute_label', 'wpm_translate_string' );
 		add_filter( 'woocommerce_attribute_taxonomies', array( $this, 'translate_attribute_taxonomies' ) );
 		add_action( 'admin_head', array( $this, 'set_translation_for_attribute_taxonomies' ) );
@@ -59,6 +62,10 @@ class WPM_WooCommerce {
 		add_action( 'admin_action_duplicate_product', array( $this, 'remove_filters' ), 9 );
 		add_filter( 'woocommerce_rest_prepare_product_object', array( $this, 'translate_rest_object' ), 10, 3 );
 		add_filter( 'woocommerce_rest_prepare_product_variation_object', array( $this, 'translate_rest_object' ), 10, 3 );
+
+		if ( is_admin() ) {
+			add_filter( 'wpm_taxonomies_config', array( $this, 'add_attribute_taxonomies' ) );
+		}
 	}
 
 
@@ -73,6 +80,26 @@ class WPM_WooCommerce {
 				});
 			");
 		}
+	}
+
+	/**
+	 * Translate woocommerce breadcrumbs defaults for home link title
+	 * if set page_on_front option in Reading
+	 *
+	 * @param array $defaults
+	 *
+	 * @return array $defaults
+	 */
+	public function breadcrumbs_defaults_home_page_on_front( $defaults ) {
+		$show_on_front = get_option( 'show_on_front' );
+		$page_on_front = get_option( 'page_on_front' );
+
+		if ( $show_on_front === 'page' && $page_on_front != '0' ) {
+			$home_title = get_the_title( (int) $page_on_front );
+			$defaults['home'] = $home_title;
+		}
+
+		return $defaults;
 	}
 
 	/**

@@ -1,11 +1,11 @@
 === WP Multilang ===
 
 Contributors: valexar
-Donate link: https://www.liqpay.ua/en/checkout/card/valexar
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EKM42LUA5CVZ4&source=url
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
-Tested up to: 5.0
-Stable tag: 2.3.0
+Tested up to: 5.3
+Stable tag: 2.4.1
 Requires PHP: 5.6+
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -60,6 +60,7 @@ Translations of post types, taxonomies, meta fields, options, text fields in mil
 * TablePress
 * Download Monitor (Redefine templates for links in your theme and translate link texts)
 * Better Search
+* Rank Math SEO (thanks for @pratikmts)
 
 Manage translation settings via json.
 
@@ -145,10 +146,16 @@ Example, add config for each item 'title' in custom post field array:
 For set translation uses the syntax:
 `[:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut[:]`
 
-Supports translating from syntax qTranslate, qTranslate-X, WPGlobus etc.
+Added shortcode for translate text in any place:
+`[wpm_translate][:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut[:][wpm_translate]`
+
+If You translate text in established language, add lang parameter:
+`[wpm_translate lang="de"][:en]Donec vitae orci sed dolor[:de]Cras risus ipsum faucibus ut[:][wpm_translate]`
+
+Support translating from syntax qTranslate, qTranslate-X, WPGlobus etc.
 
 Compatible with REST-API.
-Supports transfer the required translation through option `lang` in the GET request to REST.
+Support transfer the required translation through option `lang` in the GET request to REST.
 Has the ability to keep recording the target language through the transmission parameter `lang` in the request.
 
 == Migration from qTranslate-X ==
@@ -202,6 +209,15 @@ If you have opened several browser tabs for editing this post in different langu
 5. Post edit page
 
 == Changelog ==
+
+= 2.4.1 =
+- removed support old version of ACF lower 5.0
+
+= 2.4.0 =
+- added support for Rank Math SEO (thanks for @pratikmts)
+- optimized speed
+- deleted support for old translate syntax
+- other fixes and improvements
 
 = 2.3.0 =
 - fixed compatibility with WordPress 5.0
