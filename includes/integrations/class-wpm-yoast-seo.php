@@ -307,7 +307,7 @@ class WPM_Yoast_Seo {
 				continue;
 			}
 
-			if ( ! empty( $language['wpseo_og_locale'] ) ) {
+			if ( ! empty( $language['wpseo_og_locale'] ) && null !== $wpseo_og ) {
 				$wpseo_og->og_tag( 'og:locale:alternate', $language['wpseo_og_locale'] );
 			}
 		}
