@@ -68,7 +68,7 @@ class WPM_Admin_Assets {
 			'language'                  => wpm_get_language(),
 			'show_untranslated_strings' => get_option( 'wpm_show_untranslated_strings', 'yes' ),
 		);
-		wp_localize_script( 'wpm_translator', 'wpm_translator_params', $translator_params );
+		wp_add_inline_script( 'wpm_translator', 'const wpm_translator_params = '.json_encode($translator_params), 'before' );
 		wp_register_script( 'wpm_additional_settings', wpm_asset_path( 'scripts/additional-settings' . $suffix . '.js' ), array( 'jquery' ), WPM_VERSION );
 
 		$script = "
