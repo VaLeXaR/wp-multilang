@@ -229,6 +229,7 @@ If you have opened several browser tabs for editing this post in different langu
 - fix so flag width and height outputs properly on wpml langauge listing regarding SEO
 - fix so ACF Gutenberg Blocks render properly with wysiwyg, text and textarea fields
 - fix translate escaping text
+- fix deprecated wp_localize_script function to be handled by wp_add_inline_script
 
 = 2.4.1 =
 - removed support old version of ACF lower 5.0
