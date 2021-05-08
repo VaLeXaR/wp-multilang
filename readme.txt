@@ -225,7 +225,8 @@ If you have opened several browser tabs for editing this post in different langu
 - fix Rank Math custom fields getting duplicated on the translated posts
 - fix post title "Auto Draft" bug
 - fix display of alternate links when languages are selected in WP Dashboard
-- fix of wpseo_og:locale:alternate to be set properly
+- fix of wpseo_og:locale:alternate to be set properly on WPSEO < 14
+- fix of wpseo_og:locale:alternate to be set properly on WPSEO > 14
 - fix so flag width and height outputs properly on wpml langauge listing regarding SEO
 - fix so ACF Gutenberg Blocks render properly with wysiwyg, text and textarea fields
 - fix translate escaping text
