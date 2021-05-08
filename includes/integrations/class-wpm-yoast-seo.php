@@ -36,7 +36,12 @@ class WPM_Yoast_Seo {
 			add_filter( 'wpm_rest_schema_languages', array( $this, 'add_schema_to_rest' ) );
 			add_filter( 'wpm_save_languages', array( $this, 'save_languages' ), 10, 2 );
 			add_filter( 'wpseo_locale', array( $this, 'add_opengraph_locale' ) );
-			add_action( 'wpseo_opengraph', array( $this, 'add_alternate_opengraph_locale' ), 40 );
+
+			if ( version_compare( WPSEO_VERSION, '14.0', '<' ) ) {
+				add_action( 'wpseo_opengraph', array( $this, 'add_alternate_opengraph_locale' ), 40 );
+			} else {
+				add_filter( 'wpseo_frontend_presenters', array( $this, 'add_wpseo_frontend_presenters' ) );
+			}
 		}
 	}
 
@@ -311,5 +316,51 @@ class WPM_Yoast_Seo {
 				$wpseo_og->og_tag( 'og:locale:alternate', $language['wpseo_og_locale'] );
 			}
 		}
+	}
+
+	/**
+	 * Adds opengraph support for translations
+	 *
+	 * @since 2.4.2
+	 * 
+	 * @param array $presenters An array of objects implementing Abstract_Indexable_Presenter
+	 * @return array
+	 */
+	public function add_wpseo_frontend_presenters( $presenters ) {
+		$_presenters = array();
+
+		foreach ( $presenters as $presenter ) {
+			$_presenters[] = $presenter;
+
+			if ( get_class($presenter) == 'Yoast\WP\SEO\Presenters\Open_Graph\Locale_Presenter' ) {
+				error_log(print_r($presenter, 1));
+
+				foreach ( $this->get_ogp_alternate_languages() as $lang ) {
+					$_presenters[] = new WPM_Yoast_Seo_Presenters( $lang );
+				}
+			}
+		}
+
+		return $_presenters;
+	}
+
+	/**
+	 * Get alternate language codes for Opengraph
+	 *
+	 * @since 2.4.2
+	 *
+	 * @return array
+	 */
+	protected function get_ogp_alternate_languages() {
+		$alternates = array();
+
+		foreach ( wpm_get_languages() as $code => $language ) {
+			if ( $code !== wpm_get_language() && ! empty( $language['locale'] ) ) {
+				$alternates[] = $language['locale'];
+			}
+		}
+
+		// There is a risk that 2 languages have the same Facebook locale. So let's make sure to output each locale only once.
+		return array_unique( $alternates );
 	}
 }
