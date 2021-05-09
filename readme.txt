@@ -231,6 +231,7 @@ If you have opened several browser tabs for editing this post in different langu
 - fix so ACF Gutenberg Blocks render properly with wysiwyg, text and textarea fields
 - fix translate escaping text
 - fix deprecated wp_localize_script function to be handled by wp_add_inline_script
+- fix (admin_html_tags) leaving empty fields
 
 = 2.4.1 =
 - removed support old version of ACF lower 5.0
