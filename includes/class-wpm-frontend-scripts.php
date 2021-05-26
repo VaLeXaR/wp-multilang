@@ -166,7 +166,7 @@ class WPM_Frontend_Scripts {
 		if ( ! in_array( $handle, self::$wp_localize_scripts, true ) && wp_script_is( $handle ) && ( $data = self::get_script_data( $handle ) ) ) {
 			$name                        = str_replace( '-', '_', $handle ) . '_params';
 			self::$wp_localize_scripts[] = $handle;
-			wp_localize_script( $handle, $name, apply_filters( $name, $data ) );
+			wp_add_inline_script( $handle, 'const {$name} = '.json_encode( apply_filters( $name, $data ) ), 'before' );
 		}
 	}
 

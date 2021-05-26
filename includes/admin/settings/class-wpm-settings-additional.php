@@ -76,7 +76,7 @@ class WPM_Settings_Additional extends WPM_Settings_Page {
 			'qtx_import_nonce'           => wp_create_nonce( 'qtx-import' ),
 			'confirm_question'           => __( 'Are you sure you want to delete this localization?', 'wp-multilang' ),
 		);
-		wp_localize_script( 'wpm_additional_settings', 'wpm_additional_settings_params', $main_params );
+		wp_add_inline_script( 'wpm_additional_settings', 'const wpm_additional_settings_params = '.json_encode($main_params), 'before' );
 		wp_enqueue_script( 'wpm_additional_settings' );
 
 		parent::output();

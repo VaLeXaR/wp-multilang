@@ -51,8 +51,8 @@ var wpm_translator = {
 
     blocks.forEach(function(block, index) {
       if (index % 2 === 1) {
-        lang = block;
-      } else if (!!results[lang]) {
+        lang = block.replace(/\[|\]|:/g,'');
+      } else if (lang in results) {
         results[lang] += block.trim();
       }
     });

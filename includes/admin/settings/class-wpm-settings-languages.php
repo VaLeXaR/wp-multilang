@@ -69,7 +69,7 @@ class WPM_Settings_Languages extends WPM_Settings_Page {
 			'delete_lang_nonce'         => wp_create_nonce( 'delete-lang' ),
 			'confirm_question'          => __( 'Are you sure you want to delete this language?', 'wp-multilang' ),
 		);
-		wp_localize_script( 'wpm_languages', 'wpm_languages_params', $main_params );
+		wp_add_inline_script( 'wpm_languages', 'const wpm_languages_params = '.json_encode($main_params), 'before' );
 
 		wp_enqueue_script( 'wpm_languages' );
 		wp_enqueue_style( 'select2' );
