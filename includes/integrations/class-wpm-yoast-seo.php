@@ -333,8 +333,6 @@ class WPM_Yoast_Seo {
 			$_presenters[] = $presenter;
 
 			if ( get_class($presenter) == 'Yoast\WP\SEO\Presenters\Open_Graph\Locale_Presenter' ) {
-				error_log(print_r($presenter, 1));
-
 				foreach ( $this->get_ogp_alternate_languages() as $lang ) {
 					$_presenters[] = new WPM_Yoast_Seo_Presenters( $lang );
 				}
