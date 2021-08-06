@@ -122,9 +122,10 @@ class WPM_Admin_Settings {
 
 		wp_enqueue_script( 'wpm_settings', wpm_asset_path( 'scripts/settings' . $suffix . '.js' ), array( 'jquery' ), wpm()->version, true );
 
-		wp_localize_script( 'wpm_settings', 'wpm_settings_params', array(
-			'nav_warning' => __( 'The changes you made will be lost if you navigate away from this page.', 'wp-multilang' ),
-		) );
+		$main_params = array(
+			'nav_warning' => __( 'The changes you made will be lost if you navigate away from this page.', 'wp-multilang' )
+		);
+		wp_add_inline_script( 'wpm_settings', 'const wpm_settings_params = '.json_encode($main_params), 'before' );
 
 		// Get tabs for the settings page
 		$tabs = apply_filters( 'wpm_settings_tabs_array', array() );
