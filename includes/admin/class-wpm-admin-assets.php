@@ -130,11 +130,18 @@ class WPM_Admin_Assets {
 				$js_code = '';
 				foreach ( ( array ) $admin_html_tags[ $screen_id ] as $attr => $selector ) {
 					$js_code .= '$( "' . implode( ', ', $selector ) . '" ).each( function () {';
+					$js_code .= 'var selectorID = $(this).attr("id");'; 
 					if ( 'text' === $attr ) {
-						$js_code .= '$(this).text(wpm_translator.translate_string($(this).text()));';
+						$js_code .= '$(this).html(wpm_translator.translate_string($(this).text()));';
 					} elseif ( 'value' === $attr ) {
 						$js_code .= '$(this).val(wpm_translator.translate_string($(this).val()));';
-					} else {
+					} elseif ( 'option' === $attr ) {
+						$js_code .= 'var selectedClear = ($("#select2-" + selectorID + "-container .select2-selection__clear") && $("#select2-" + selectorID + "-container .select2-selection__clear").length > 0) ? "<span class=\"select2-selection__clear\">×</span>" : "";';
+						$js_code .= '$(this).find("option:selected").text(wpm_translator.translate_string($(this).find("option:selected").text()));';
+						$js_code .= '$("#select2-" + selectorID + "-container").attr("title", wpm_translator.translate_string($("#select2-" + selectorID + "-container").attr("title")));';
+						$js_code .= '$("#select2-" + selectorID + "-container").html(selectedClear + " " + wpm_translator.translate_string($(this).find("option:selected").text()));';
+					}
+				 	else {
 						$js_code .= '$(this).attr("' . $attr . '", wpm_translator.translate_string($(this).attr("' . $attr . '")));';
 					}
 					$js_code .= '} );';
