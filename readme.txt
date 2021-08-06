@@ -4,8 +4,8 @@ Contributors: valexar
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EKM42LUA5CVZ4&source=url
 Tags: localization, multilanguage, multilingual, translation, multilang
 Requires at least: 4.7
-Tested up to: 5.7
-Stable tag: 2.4.2
+Tested up to: 5.8
+Stable tag: 2.4.3
 Requires PHP: 7.0+
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -210,6 +210,10 @@ If you have opened several browser tabs for editing this post in different langu
 3. Taxonomy list page
 4. Taxonomy edit page
 5. Post edit page
+
+== Changelog ==
+= 2.4.3 =
+- fix WooCommerce settings options for admin pages translation
 
 == Changelog ==
 = 2.4.2 =
