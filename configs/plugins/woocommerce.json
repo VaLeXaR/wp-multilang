@@ -1,5 +1,6 @@
 {
   "post_types": {
+    "shop_order": {},
     "product": {},
     "product_variation": {},
     "shop_coupon": {
@@ -111,6 +112,14 @@
     }
   },
   "admin_html_tags": {
+    "woocommerce_page_wc-settings": {
+      "option": [
+        "#woocommerce_cart_page_id",
+        "#woocommerce_checkout_page_id",
+        "#woocommerce_myaccount_page_id",
+        "#woocommerce_terms_page_id"
+      ]
+    },
     "product_page_product_attributes": {
       "value": [
         "#attribute_label"
