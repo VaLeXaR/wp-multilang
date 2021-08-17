@@ -214,6 +214,7 @@ If you have opened several browser tabs for editing this post in different langu
 == Changelog ==
 = 2.4.3 =
 - fix WooCommerce settings options for admin pages translation
+- fix bug with preview mode for posts and pages where the proper URL was not correct in admin
 
 == Changelog ==
 = 2.4.2 =
