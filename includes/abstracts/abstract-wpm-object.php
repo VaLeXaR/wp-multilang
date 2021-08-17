@@ -294,6 +294,129 @@ abstract class WPM_Object {
 	}
 
 	/**
+	 * Save meta by meta_id with translations (since WP 5.0.0)
+	 *
+	 * @param null|bool   $check      Whether to allow updating metadata for the given type.
+	 * @param int         $meta_id    Meta ID.
+	 * @param mixed       $meta_value Meta value. Must be serializable if non-scalar.
+	 * @param string|bool $meta_key   New meta key or false if it mustn't be changed.
+	 *
+	 * @return bool|null Returning a non-null value will short-circuit the WP update function
+	 */
+	public function update_meta_field_by_mid( $check, $meta_id, $meta_value, $meta_key ) {
+		global $wpdb;
+
+		$meta_type = $this->object_type;
+
+		// Fetch the meta and go on if it's found.
+		$meta = get_metadata_by_mid( $meta_type, $meta_id );
+		if ( ! $meta ) {
+			return false;
+		}
+
+		$column       = sanitize_key( $this->object_type . '_id' );
+		$original_key = $meta->meta_key;
+		$object_id    = $meta->{$column};
+
+		switch ( $this->object_type ) {
+
+			case 'post':
+				if ( null === wpm_get_post_config( get_post_type( $object_id ) ) ) {
+					return $check;
+				}
+
+				break;
+
+			case 'term':
+				$term = get_term( $object_id );
+				if ( ! $term || null === wpm_get_taxonomy_config( $term->taxonomy ) ) {
+					return $check;
+				}
+		}
+
+		$config               = wpm_get_config();
+		$object_fields_config = apply_filters( "wpm_{$this->object_type}_fields_config", $config[ "{$this->object_type}_fields" ] );
+
+		if ( ! isset( $object_fields_config[ $meta_key ] ) ) {
+			return $check;
+		}
+
+		$meta_config = apply_filters( "wpm_{$meta_key}_meta_config", $object_fields_config[ $meta_key ], $meta_value, $object_id );
+		$meta_config = apply_filters( "wpm_{$this->object_type}_meta_{$meta_key}_config", $meta_config, $meta_value, $object_id );
+
+		$table      = $wpdb->{$this->object_table};
+		$id_column  = 'user' === $this->object_type ? 'umeta_id' : 'meta_id';
+		$meta_value = apply_filters( 'wpm_update_meta_value', $meta_value, $meta_key );
+		$meta_value = apply_filters( "wpm_update_{$meta_key}_meta_value", $meta_value );
+		$meta_value = apply_filters( "wpm_update_{$this->object_type}_meta_{$meta_key}_value", $meta_value );
+
+		if ( null === $meta_config ) {
+			return $check;
+		}
+
+		// If a new meta_key (last parameter) was specified, change the meta key,
+		// otherwise use the original key in the update statement.
+		if ( false === $meta_key ) {
+			$meta_key = $original_key;
+		} elseif ( ! is_string( $meta_key ) ) {
+			return false;
+		}
+
+		$meta_subtype = get_object_subtype( $meta_type, $object_id );
+
+		// Sanitize the meta.
+		$_meta_value = $meta_value;
+
+		if ( ! wpm_is_ml_value( $meta_value ) ) {
+			$old_value  = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->{$this->object_table}} WHERE meta_key = %s AND {$column} = %d LIMIT 1;", $meta_key, $object_id ) );
+			$old_value  = maybe_unserialize( $old_value );
+			$old_value  = apply_filters( "wpm_filter_old_{$meta_key}_meta_value", $old_value, $meta_value, $meta_config );
+			$meta_value = wpm_set_new_value( $old_value, $meta_value, $meta_config );
+			$meta_value = apply_filters( "wpm_filter_new_{$meta_key}_meta_value", $meta_value, $old_value, $meta_config );
+		}
+
+		$meta_value  = sanitize_meta( $meta_key, $meta_value, $meta_type, $meta_subtype );
+		$meta_value  = maybe_serialize( $meta_value );
+
+		// Format the data query arguments.
+		$data = array(
+			'meta_key'   => $meta_key,
+			'meta_value' => $meta_value,
+		);
+
+		// Format the where query arguments.
+		$where               = array();
+		$where[ $id_column ] = $meta_id;
+
+		/** This action is documented in wp-includes/meta.php */
+		do_action( "update_{$meta_type}_meta", $meta_id, $object_id, $meta_key, $_meta_value );
+
+		if ( 'post' === $meta_type ) {
+			/** This action is documented in wp-includes/meta.php */
+			do_action( 'update_postmeta', $meta_id, $object_id, $meta_key, $meta_value );
+		}
+
+		// Run the update query, all fields in $data are %s, $where is a %d.
+		$result = $wpdb->update( $table, $data, $where, '%s', '%d' );
+		if ( ! $result ) {
+			return false;
+		}
+
+		// Clear the caches.
+		wp_cache_delete( $object_id, $meta_type . '_meta' );
+
+		/** This action is documented in wp-includes/meta.php */
+		do_action( "updated_{$meta_type}_meta", $meta_id, $object_id, $meta_key, $_meta_value );
+
+		if ( 'post' === $meta_type ) {
+			/** This action is documented in wp-includes/meta.php */
+			do_action( 'updated_postmeta', $meta_id, $object_id, $meta_key, $meta_value );
+		}
+
+		return true;
+	}
+
+	/**
 	 * Add new meta for translation
 	 *
 	 * @param $check null|mixed

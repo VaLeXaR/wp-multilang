@@ -68,7 +68,7 @@ class WPM_Admin_Assets {
 			'language'                  => wpm_get_language(),
 			'show_untranslated_strings' => get_option( 'wpm_show_untranslated_strings', 'yes' ),
 		);
-		wp_localize_script( 'wpm_translator', 'wpm_translator_params', $translator_params );
+		wp_add_inline_script( 'wpm_translator', 'const wpm_translator_params = '.json_encode($translator_params), 'before' );
 		wp_register_script( 'wpm_additional_settings', wpm_asset_path( 'scripts/additional-settings' . $suffix . '.js' ), array( 'jquery' ), WPM_VERSION );
 
 		$script = "
@@ -130,11 +130,18 @@ class WPM_Admin_Assets {
 				$js_code = '';
 				foreach ( ( array ) $admin_html_tags[ $screen_id ] as $attr => $selector ) {
 					$js_code .= '$( "' . implode( ', ', $selector ) . '" ).each( function () {';
+					$js_code .= 'var selectorID = $(this).attr("id");'; 
 					if ( 'text' === $attr ) {
-						$js_code .= '$(this).text(wpm_translator.translate_string($(this).text()));';
+						$js_code .= '$(this).html(wpm_translator.translate_string($(this).text()));';
 					} elseif ( 'value' === $attr ) {
 						$js_code .= '$(this).val(wpm_translator.translate_string($(this).val()));';
-					} else {
+					} elseif ( 'option' === $attr ) {
+						$js_code .= 'var selectedClear = ($("#select2-" + selectorID + "-container .select2-selection__clear") && $("#select2-" + selectorID + "-container .select2-selection__clear").length > 0) ? "<span class=\"select2-selection__clear\">×</span>" : "";';
+						$js_code .= '$(this).find("option:selected").text(wpm_translator.translate_string($(this).find("option:selected").text()));';
+						$js_code .= '$("#select2-" + selectorID + "-container").attr("title", wpm_translator.translate_string($("#select2-" + selectorID + "-container").attr("title")));';
+						$js_code .= '$("#select2-" + selectorID + "-container").html(selectedClear + " " + wpm_translator.translate_string($(this).find("option:selected").text()));';
+					}
+				 	else {
 						$js_code .= '$(this).attr("' . $attr . '", wpm_translator.translate_string($(this).attr("' . $attr . '")));';
 					}
 					$js_code .= '} );';
@@ -209,6 +216,30 @@ class WPM_Admin_Assets {
 						href = url + query + '&edit_lang=' + lang + document.location.hash;
 					}
 					$(this).attr('href', href);
+				});
+
+				$(document).on('click', 'button.block-editor-post-preview__button-toggle', function(e){
+					var parent = $(this).parent();
+					var url = window.location.href;
+					var href = $('.editor-post-preview').attr('href');
+
+					setTimeout(function(){
+						parent.find('#wpm-preview-data').remove();
+						parent.append('<div id=\"wpm-preview-data\"><input id=\"wpm-preview-url\" type=\"hidden\" value=\"' + url + '\" readonly><input id=\"wpm-preview-href\" type=\"hidden\" value=\"' + href + '\" readonly></div>');
+					}, 1000);
+				});
+
+				$(document).on('click', '.edit-post-header-preview__grouping-external a', function(e){
+					var preview = $('button.block-editor-post-preview__button-toggle').parent().find('#wpm-preview-data');
+
+					if(preview){
+						setTimeout(function(){ 
+							var href = $('#wpm-preview-href').val();
+							var url = $('#wpm-preview-url').val();
+
+							window.history.pushState({}, null, url);
+						}, 1000);
+					}
 				});
 			})( jQuery );
 		";

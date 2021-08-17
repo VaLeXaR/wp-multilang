@@ -16,7 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author   Valentyn Riaboshtan
  */
 class WPM_Acf {
-
 	/**
 	 * WPM_Acf constructor.
 	 */
@@ -31,11 +30,12 @@ class WPM_Acf {
 		add_filter( 'wpm_acf_field_text_config', array( $this, 'add_text_field_config' ) );
 		add_filter( 'wpm_acf_field_textarea_config', array( $this, 'add_text_field_config' ) );
 		add_filter( 'wpm_acf_field_wysiwyg_config', array( $this, 'add_text_field_config' ) );
+		add_filter( 'wpm_acf_field_image_config', array( $this, 'add_image_field_config' ) );
 		add_filter( 'wpm_acf_text_config', '__return_empty_array' );
 		add_filter( 'wpm_acf_textarea_config', '__return_empty_array' );
 		add_filter( 'wpm_acf_wysiwyg_config', '__return_empty_array' );
+		add_filter( 'wpm_acf_image_config', '__return_empty_array' );
 	}
-
 
 	/**
 	 * Add config for 'acf' post types
@@ -116,9 +116,12 @@ class WPM_Acf {
 	 *
 	 * @return array|bool|string
 	 */
-	public function update_value( $value, $post_id, $field ) {
-
+	public function update_value( $value, $post_id, $field ) {	
 		if ( wpm_is_ml_value( $value ) ) {
+			return $value;
+		}
+
+		if ( ( strpos($post_id, 'block') !== false ) &&  ( $field['type'] == 'wysiwyg' || $field['type'] == 'text' || $field['type'] == 'textarea' ) )  {
 			return $value;
 		}
 
@@ -144,6 +147,7 @@ class WPM_Acf {
 		$acf_field_config = apply_filters( "wpm_acf_{$info['type']}_config", null, $value, $post_id, $field );
 		$acf_field_config = apply_filters( "wpm_acf_{$field['type']}_config", $acf_field_config, $value, $post_id, $field );
 		$acf_field_config = apply_filters( "wpm_acf_name_{$field['name']}_config", $acf_field_config, $value, $post_id, $field );
+		$acf_field_config = apply_filters( "wpm_acf_name_{$field['_name']}_config", $acf_field_config, $value, $post_id, $field );
 
 		if ( null === $acf_field_config ) {
 			return $value;

@@ -125,7 +125,7 @@ function wpm_set_alternate_links() {
 
 	foreach ( wpm_get_languages() as $code => $language ) {
 
-		if ( $languages && ! isset( $languages[ $code ] ) ) {
+		if ( $languages && ! in_array( $code, $languages, true ) ) {
 			continue;
 		}
 
