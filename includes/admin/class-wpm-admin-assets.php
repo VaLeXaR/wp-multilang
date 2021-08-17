@@ -217,6 +217,30 @@ class WPM_Admin_Assets {
 					}
 					$(this).attr('href', href);
 				});
+
+				$(document).on('click', 'button.block-editor-post-preview__button-toggle', function(e){
+					var parent = $(this).parent();
+					var url = window.location.href;
+					var href = $('.editor-post-preview').attr('href');
+
+					setTimeout(function(){
+						parent.find('#wpm-preview-data').remove();
+						parent.append('<div id=\"wpm-preview-data\"><input id=\"wpm-preview-url\" type=\"hidden\" value=\"' + url + '\" readonly><input id=\"wpm-preview-href\" type=\"hidden\" value=\"' + href + '\" readonly></div>');
+					}, 1000);
+				});
+
+				$(document).on('click', '.edit-post-header-preview__grouping-external a', function(e){
+					var preview = $('button.block-editor-post-preview__button-toggle').parent().find('#wpm-preview-data');
+
+					if(preview){
+						setTimeout(function(){ 
+							var href = $('#wpm-preview-href').val();
+							var url = $('#wpm-preview-url').val();
+
+							window.history.pushState({}, null, url);
+						}, 1000);
+					}
+				});
 			})( jQuery );
 		";
 
