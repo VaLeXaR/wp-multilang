@@ -154,16 +154,15 @@ function wpm_translate_value( $value, $language = '' ) {
  * @return array|mixed|string
  */
 function wpm_string_to_ml_array( $string ) {
-	if ( ! is_string( $string ) || $string === '' || is_serialized_string( $string ) || isJSON( $string ) ) {
+	if ( ! is_string( $string ) || strlen( $string ) === 0 || is_serialized_string( $string ) || isJSON( $string ) ) {
 		return $string;
 	}
+
+	//Improves speed
+	if ( ! str_contains( $string, '[:' ) ) return $string;
 
 	$string = htmlspecialchars_decode( $string );
 	$blocks = preg_split( '#\[:([a-z-]*)\]#im', $string, - 1, PREG_SPLIT_DELIM_CAPTURE );
-
-	if ( empty( $blocks ) ) {
-		return $string;
-	}
 
 	$languages = wpm_get_lang_option();
 	$result    = array_fill_keys( array_keys( $languages ), '' );
