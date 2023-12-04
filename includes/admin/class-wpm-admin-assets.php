@@ -204,7 +204,7 @@ class WPM_Admin_Assets {
 					var query = document.location.search;
 					var href = '';
 					if (query.search(/edit_lang=/i) !== -1) {
-						href = url + query.replace(/edit_lang=[a-z]{2,4}(-[a-z]{2,4})?/i, 'edit_lang=' + lang) + document.location.hash;
+						href = url + query.replace(/edit_lang=[a-z]{2,4}((-[a-z]{2,4})?)*/i, 'edit_lang=' + lang) + document.location.hash;
 					} else {
 						href = url + query + '&edit_lang=' + lang + document.location.hash;
 					}
